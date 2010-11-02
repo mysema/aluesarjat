@@ -9,9 +9,6 @@ import java.util.Map;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 
-import com.mysema.pcaxis.PCAxisANTLRLexer;
-import com.mysema.pcaxis.PCAxisANTLRParser;
-
 public class PCAxis {
 
     public static final Key DATA = new Key("DATA");

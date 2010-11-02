@@ -4,10 +4,10 @@ options {
 	language=Java;
 }
 @header {
-package com.mysema.pcaxis;
+package com.mysema.stat.pcaxis;
 }
 @lexer::header {
-package com.mysema.pcaxis;
+package com.mysema.stat.pcaxis;
 }
 @members{
 	private java.util.Map pxMap = new java.util.LinkedHashMap();
