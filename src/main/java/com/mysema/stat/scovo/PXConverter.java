@@ -9,18 +9,11 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.rdfbean.model.BID;
-import com.mysema.rdfbean.model.ID;
-import com.mysema.rdfbean.model.LIT;
-import com.mysema.rdfbean.model.NODE;
-import com.mysema.rdfbean.model.RDF;
-import com.mysema.rdfbean.model.RDFConnection;
-import com.mysema.rdfbean.model.RDFS;
-import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.model.STMT;
-import com.mysema.rdfbean.model.UID;
-import com.mysema.rdfbean.model.XSD;
+import com.mysema.rdfbean.model.*;
 import com.mysema.rdfbean.owl.OWL;
 import com.mysema.stat.pcaxis.Dataset;
 import com.mysema.stat.pcaxis.Dimension;
@@ -28,6 +21,8 @@ import com.mysema.stat.pcaxis.DimensionType;
 import com.mysema.stat.pcaxis.Item;
 
 public class PXConverter {
+    
+    private static final Logger logger = LoggerFactory.getLogger(PXConverter.class);
 
     private static final String UTF8 = "UTF-8";
     
@@ -72,7 +67,7 @@ public class PXConverter {
                 add(t, RDFS.subClassOf, SCV.Dimension);
                 add(t, DC.title, type.getName());
             } else {
-                System.out.println("Referring to existing DimensionType: " + print(t));
+                logger.info("Referring to existing DimensionType: " + print(t));
             }
             
             
@@ -88,7 +83,7 @@ public class PXConverter {
                     add(d, RDF.type, t);
                     add(d, DC.title, dimension.getName());
                 } else {
-                    System.out.println("Referring to existing Dimension: " + print(d) + " of type " + print(t));
+                    logger.info("Referring to existing Dimension: " + print(d) + " of type " + print(t));
                 }
                 
                 // TODO: hierarchy?

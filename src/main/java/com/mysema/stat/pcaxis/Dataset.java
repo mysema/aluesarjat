@@ -11,10 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.commons.lang.Assert;
 
 public class Dataset {
 
+    private static final Logger logger = LoggerFactory.getLogger(Dataset.class);
+    
     private int dataSize;
     
     private final List<DimensionType> dimensionTypes = new ArrayList<DimensionType>();
@@ -40,7 +45,8 @@ public class Dataset {
         try {
             addItems(0, new Dimension[dimensionTypes.size()], px.get(DATA), new AtomicInteger(0));
         } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
+//            System.err.println(e.getMessage());
+            logger.error(e.getMessage(), e);
         }
     }
 

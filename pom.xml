@@ -19,6 +19,7 @@
 
 		<!-- mysema dependencies -->
 		<rdfbean.version>1.4.1</rdfbean.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
