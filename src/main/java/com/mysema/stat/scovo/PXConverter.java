@@ -1,0 +1,145 @@
+package com.mysema.stat.scovo;
+
+import static com.mysema.commons.lang.URLEncoder.encodeParam;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.rdfbean.model.BID;
+import com.mysema.rdfbean.model.ID;
+import com.mysema.rdfbean.model.LIT;
+import com.mysema.rdfbean.model.NODE;
+import com.mysema.rdfbean.model.RDF;
+import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.RDFS;
+import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.model.UID;
+import com.mysema.rdfbean.model.XSD;
+import com.mysema.rdfbean.owl.OWL;
+import com.mysema.stat.pcaxis.Dataset;
+import com.mysema.stat.pcaxis.Dimension;
+import com.mysema.stat.pcaxis.DimensionType;
+import com.mysema.stat.pcaxis.Item;
+
+public class PXConverter {
+
+    private static final String UTF8 = "UTF-8";
+    
+    private String baseURI;
+    
+    private Repository repository;
+    
+    private UID context;
+    
+    private String ns;
+    
+    private Set<STMT> statements;
+    
+    public PXConverter(Repository repository, String baseURI) {
+        this.repository = repository;
+        this.baseURI = baseURI;
+    }
+    
+    public void convert(Dataset dataset) {
+        context = new UID(baseURI, encode(dataset.getName()));
+        ns = context.getId() + "#";
+        statements = new LinkedHashSet<STMT>();
+        RDFConnection conn = repository.openConnection();
+
+        Map<Dimension, UID> dimensions = new HashMap<Dimension, UID>();
+        
+        /*
+         * METADATA
+         */
+        // Dataset
+        add(context, RDF.type, SCV.Dataset);
+        add(context, DC.title, dataset.getName());
+        
+        // DimensionTypes
+        for (DimensionType type : dataset.getDimensionTypes()) {
+            // TODO: Use / update common metadata? 
+            UID t = new UID(ns, encode(type.getName()));
+
+            if (!exists(t, conn)) {
+                add(t, RDF.type, RDFS.Class);
+                add(t, RDF.type, OWL.Class);
+                add(t, RDFS.subClassOf, SCV.Dimension);
+                add(t, DC.title, type.getName());
+            } else {
+                System.out.println("Referring to existing DimensionType: " + print(t));
+            }
+            
+            
+            // Dimensions
+            for (Dimension dimension : type.getDimensions()) {
+                // TODO: Use / update common metadata? 
+                
+                // XXX: ensure, there's no clash here!
+                UID d = new UID(ns, encode(dimension.getName()));
+                dimensions.put(dimension, d);
+                
+                if (!exists(d, conn)) {
+                    add(d, RDF.type, t);
+                    add(d, DC.title, dimension.getName());
+                } else {
+                    System.out.println("Referring to existing Dimension: " + print(d) + " of type " + print(t));
+                }
+                
+                // TODO: hierarchy?
+                // TODO: subProperty of scv:dimension?
+            }
+        }
+        
+        /*
+         * DATA
+         */
+        for (Item item : dataset.getItems()) {
+            BID id = conn.createBNode();
+            
+            add(id, RDF.type, SCV.Item);
+            add(id, RDF.value, item.getValue());
+            add(id, SCV.dataset, context);
+            
+            for (Dimension dimension : item.getDimensions()) {
+                // TODO: subProperty of scv:dimension?
+                add(id, SCV.dimension, dimensions.get(dimension));
+            }
+        }
+        
+        conn.update(null, statements);
+    }
+
+    private String print(UID t) {
+        String uri = t.getId();
+        return uri.startsWith(baseURI) ? uri.substring(baseURI.length()) : uri;
+    }
+
+    private boolean exists(UID id, RDFConnection conn) {
+        CloseableIterator<STMT> iter = conn.findStatements(id, null, null, context, false);
+        boolean exists = iter.hasNext();
+        iter.close();
+        return exists;
+    }
+    
+    private void add(ID subject, UID predicate, BigDecimal decimal) {
+        add(subject, predicate, new LIT(decimal.toPlainString(), XSD.decimalType));
+    }
+    
+    private void add(ID subject, UID predicate, String name) {
+        add(subject, predicate, new LIT(name));
+    }
+
+    private String encode(String str) {
+        return encodeParam(str, UTF8);
+    }
+    
+    private void add(ID subject, UID predicate, NODE object) {
+        statements.add( new STMT(subject, predicate, object, context) );
+    }
+    
+}

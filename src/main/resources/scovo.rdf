@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:vann="http://purl.org/vocab/vann/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+  <owl:Ontology rdf:about="http://vocab.deri.ie/scovo">
+    <dc:title>The Statistical Core Vocabulary (SCOVO)</dc:title>
+    <dc:description>A vocabulary for representing statistical data on the Web.</dc:description>
+    <vann:preferredNamespaceUri>http://purl.org/NET/scovo#</vann:preferredNamespaceUri>
+    <vann:preferredNamespacePrefix>scovo</vann:preferredNamespacePrefix>
+    <dc:creator rdf:resource="http://vocab.deri.ie/scovo#dayers"/>
+    <dc:creator rdf:resource="http://vocab.deri.ie/scovo#lfeigenbaum"/>
+    <dc:creator rdf:resource="http://vocab.deri.ie/scovo#Michael%20Hausenblas"/>
+    <dc:creator rdf:resource="http://vocab.deri.ie/scovo#theath"/>
+    <dc:creator rdf:resource="http://vocab.deri.ie/scovo#whalb"/>
+    <dc:creator rdf:resource="http://vocab.deri.ie/scovo#yraimond"/>
+  </owl:Ontology>
+
+  <foaf:Person rdf:about="http://vocab.deri.ie/scovo#dayers">
+    <foaf:name>Danny Ayers</foaf:name>
+  </foaf:Person>
+
+  <foaf:Person rdf:about="http://vocab.deri.ie/scovo#lfeigenbaum">
+    <foaf:name>Lee Feigenbaum</foaf:name>
+  </foaf:Person>
+
+  <foaf:Person rdf:about="http://vocab.deri.ie/scovo#Michael%20Hausenblas">
+    <foaf:name>Michael Hausenblas</foaf:name>
+    <foaf:homepage rdf:resource="http://sw-app.org/about.html"/>
+    <foaf:mbox rdf:resource="mailto:michael.hausenblas@deri.org"/>
+  </foaf:Person>
+
+  <foaf:Organization rdf:about="http://vocab.deri.ie/scovo#LiDRC">
+    <foaf:member rdf:resource="http://vocab.deri.ie/scovo#Michael%20Hausenblas"/>
+    <foaf:name>LiDRC</foaf:name>
+    <foaf:homepage rdf:resource="http://linkeddata.deri.ie/"/>
+  </foaf:Organization>
+
+  <foaf:Person rdf:about="http://vocab.deri.ie/scovo#theath">
+    <foaf:name>Tom Heath</foaf:name>
+  </foaf:Person>
+
+  <foaf:Person rdf:about="http://vocab.deri.ie/scovo#whalb">
+    <foaf:name>Wolfgang Halb</foaf:name>
+  </foaf:Person>
+
+  <foaf:Organization rdf:about="http://vocab.deri.ie/scovo#JOANNEUM%20RESEARCH">
+    <foaf:member rdf:resource="http://vocab.deri.ie/scovo#whalb"/>
+    <foaf:name>JOANNEUM RESEARCH</foaf:name>
+    <foaf:homepage rdf:resource="http://www.joanneum.at/en/digital/iis.html"/>
+  </foaf:Organization>
+
+  <foaf:Person rdf:about="http://vocab.deri.ie/scovo#yraimond">
+    <foaf:name>Yves Raimond</foaf:name>
+  </foaf:Person>
+
+  <rdfs:Class rdf:about="http://purl.org/NET/scovo#Dataset">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:isDefinedBy rdf:resource="http://vocab.deri.ie/scovo"/>
+    <rdfs:label>Dataset</rdfs:label>
+    <rdfs:comment>a statistical dataset</rdfs:comment>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/NET/scovo#Item">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:isDefinedBy rdf:resource="http://vocab.deri.ie/scovo"/>
+    <rdfs:label>Item</rdfs:label>
+    <rdfs:comment>a statistical data item</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/NET/c4dm/event.owl#Event"/>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/NET/scovo#Dimension">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:isDefinedBy rdf:resource="http://vocab.deri.ie/scovo"/>
+    <rdfs:label>Dimension</rdfs:label>
+    <rdfs:comment>a dimension of a statistical data item</rdfs:comment>
+  </rdfs:Class>
+
+  <rdf:Property rdf:about="http://purl.org/NET/scovo#dataset">
+    <rdfs:isDefinedBy rdf:resource="http://vocab.deri.ie/scovo"/>
+    <rdfs:label>belongs to dataset</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/NET/scovo#Item"/>
+    <rdfs:range rdf:resource="http://purl.org/NET/scovo#Dataset"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/NET/scovo#datasetOf">
+    <rdfs:isDefinedBy rdf:resource="http://vocab.deri.ie/scovo"/>
+    <rdfs:label>is the dataset of</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/NET/scovo#Dataset"/>
+    <rdfs:range rdf:resource="http://purl.org/NET/scovo#Item"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/NET/scovo#dimension">
+    <rdfs:isDefinedBy rdf:resource="http://vocab.deri.ie/scovo"/>
+    <rdfs:label>has a dimension</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/NET/scovo#Item"/>
+    <rdfs:range rdf:resource="http://purl.org/NET/scovo#Dimension"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/NET/scovo#min">
+    <rdfs:isDefinedBy rdf:resource="http://vocab.deri.ie/scovo"/>
+    <rdfs:label>has a minimum range value</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/NET/scovo#Dimension"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/NET/scovo#max">
+    <rdfs:isDefinedBy rdf:resource="http://vocab.deri.ie/scovo"/>
+    <rdfs:label>has a maximum range value</rdfs:label>
+    <rdfs:domain rdf:resource="http://purl.org/NET/scovo#Dimension"/>
+  </rdf:Property>
+
+</rdf:RDF>
