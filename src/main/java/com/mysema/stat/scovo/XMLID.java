@@ -4,7 +4,7 @@ import com.mysema.commons.lang.Assert;
 
 public final class XMLID {
 
-    private static class CharRange {
+    public static class CharRange {
         private char start;
         private char end;
         public CharRange(char ch) {
@@ -20,7 +20,7 @@ public final class XMLID {
         }
     }
     
-    private static class CharRanges {
+    public static class CharRanges {
         private CharRanges[] nestedRanges;
         private CharRange[] ranges;
         public CharRanges(CharRanges... nestedRanges) {
@@ -63,7 +63,7 @@ public final class XMLID {
         return new CharRange(start, end);
     }
     
-    private static final CharRanges ID_START_CHAR = new CharRanges(
+    private static final CharRanges ID_START_CHARS = new CharRanges(
             range('A', 'Z'),
             range('_'),
             range('a', 'z'),
@@ -80,8 +80,8 @@ public final class XMLID {
             range('\uFDF0', '\uFFFD')
     );
  
-    private static final CharRanges ID_CHAR = new CharRanges(
-            ID_START_CHAR,
+    private static final CharRanges ID_CHARS = new CharRanges(
+            ID_START_CHARS,
             range('-'),
             range('.'),
             range('0', '9'),
@@ -92,20 +92,35 @@ public final class XMLID {
     
     public static String toXMLID(String name) {
         Assert.hasLength(name, "name");
+
         StringBuilder sb = new StringBuilder(name.length() + 10);
         char[] chars = name.toCharArray();
 
-        append(sb, chars[0], ID_START_CHAR);
+        if (ID_START_CHARS.contains(chars[0])) {
+            sb.append(chars[0]);
+        } else {
+            sb.append('_');
+            if (ID_CHARS.contains(chars[0])) {
+                sb.append(chars[0]);
+            } else if (!Character.isWhitespace(chars[0])) {
+                sb.append(encode(chars[0]));
+            }
+        }
         
+        for (int i=1; i < chars.length; i++) {
+            if (ID_CHARS.contains(chars[i])) {
+                sb.append(chars[i]);
+            } else if (Character.isWhitespace(chars[i])) {
+                sb.append('_');
+            } else {
+                sb.append(encode(chars[i]));
+            }
+        }
         return sb.toString();
     }
-
-    private static void append(StringBuilder sb, char ch, CharRanges ranges) {
-        if (ranges.contains(ch)) {
-            sb.append(ch);
-        } else {
-            
-        }
+    
+    private static String encode(char ch) {
+        return Integer.toString(ch, Character.MAX_RADIX);
     }
     
     private XMLID(){}

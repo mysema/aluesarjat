@@ -42,7 +42,7 @@ public class PXConverter {
     }
     
     public void convert(Dataset dataset) {
-        context = new UID(baseURI, encode(dataset.getName()));
+        context = new UID(baseURI, encodeID(dataset.getName()));
         ns = context.getId() + "#";
         statements = new LinkedHashSet<STMT>();
         RDFConnection conn = repository.openConnection();
@@ -59,7 +59,7 @@ public class PXConverter {
         // DimensionTypes
         for (DimensionType type : dataset.getDimensionTypes()) {
             // TODO: Use / update common metadata? 
-            UID t = new UID(ns, encode(type.getName()));
+            UID t = new UID(ns, encodeID(type.getName()));
 
             if (!exists(t, conn)) {
                 add(t, RDF.type, RDFS.Class);
@@ -76,7 +76,7 @@ public class PXConverter {
                 // TODO: Use / update common metadata? 
                 
                 // XXX: ensure, there's no clash here!
-                UID d = new UID(ns, encode(dimension.getName()));
+                UID d = new UID(ns, encodeID(dimension.getName()));
                 dimensions.put(dimension, d);
                 
                 if (!exists(d, conn)) {
@@ -130,8 +130,8 @@ public class PXConverter {
         add(subject, predicate, new LIT(name));
     }
 
-    private String encode(String str) {
-        return encodeParam(str, UTF8);
+    private String encodeID(String name) {
+        return XMLID.toXMLID(name);
     }
     
     private void add(ID subject, UID predicate, NODE object) {
