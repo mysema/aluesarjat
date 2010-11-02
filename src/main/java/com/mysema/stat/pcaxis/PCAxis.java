@@ -11,7 +11,7 @@ import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 
-public class PCAxis {
+public final class PCAxis {
 
     public static final Key DATA = new Key("DATA");
     
@@ -51,5 +51,7 @@ public class PCAxis {
             throw new RuntimeException(e);
         }
     }
+    
+    private PCAxis(){}
     
 }
