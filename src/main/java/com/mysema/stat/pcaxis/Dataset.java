@@ -83,7 +83,7 @@ public class Dataset {
         }
     }
 
-    private ArrayList<Dimension> asList(final Dimension[] dimensionValues) {
+    private List<Dimension> asList(final Dimension[] dimensionValues) {
         return new ArrayList<Dimension>(Arrays.asList(dimensionValues));
     }
 

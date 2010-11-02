@@ -16,7 +16,7 @@ public final class SCV {
 
     public static final UID dataset = uid("dataset");
 
-    private static final UID uid(String ln) {
+    private static UID uid(String ln) {
         return new UID(NS, ln);
     }
     

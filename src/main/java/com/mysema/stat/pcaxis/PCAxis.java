@@ -1,6 +1,7 @@
 package com.mysema.stat.pcaxis;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.RecognitionException;
 
 public class PCAxis {
 
@@ -43,7 +45,9 @@ public class PCAxis {
             PCAxisANTLRParser parser = new PCAxisANTLRParser(tokens); // begin parsing at rule r parser.r();
             
             return (Map<Key, List<Object>>) parser.px().result;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (RecognitionException e) {
             throw new RuntimeException(e);
         }
     }

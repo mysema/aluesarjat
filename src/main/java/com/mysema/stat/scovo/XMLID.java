@@ -2,7 +2,7 @@ package com.mysema.stat.scovo;
 
 import com.mysema.commons.lang.Assert;
 
-public class XMLID {
+public final class XMLID {
 
     private static class CharRange {
         private char start;
@@ -107,5 +107,7 @@ public class XMLID {
             
         }
     }
+    
+    private XMLID(){}
     
 }
