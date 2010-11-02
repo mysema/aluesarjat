@@ -2,19 +2,10 @@ package com.mysema.stat.pcaxis;
 
 import static junit.framework.Assert.assertEquals;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
-import org.antlr.runtime.RecognitionException;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.mysema.stat.pcaxis.Dataset;
-import com.mysema.stat.pcaxis.Dimension;
-import com.mysema.stat.pcaxis.Item;
-import com.mysema.stat.pcaxis.PCAxis;
 
 public class DatasetTest {
 

@@ -3,6 +3,7 @@ package com.mysema.stat.scovo;
 import static com.mysema.commons.lang.URLEncoder.encodeParam;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -111,7 +112,7 @@ public class PXConverter {
             }
         }
         
-        conn.update(null, statements);
+        conn.update(Collections.<STMT>emptySet(), statements);
     }
 
     private String print(UID t) {
