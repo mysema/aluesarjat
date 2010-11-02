@@ -46,7 +46,7 @@ public class Dataset {
             addItems(0, new Dimension[dimensionTypes.size()], px.get(DATA), new AtomicInteger(0));
         } catch (IllegalArgumentException e) {
 //            System.err.println(e.getMessage());
-            logger.error(e.getMessage(), e);
+            logger.warn(e.getMessage());
         }
     }
 
