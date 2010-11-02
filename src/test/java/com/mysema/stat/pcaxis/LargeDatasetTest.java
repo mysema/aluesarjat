@@ -1,5 +1,8 @@
 package com.mysema.stat.pcaxis;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
@@ -8,21 +11,13 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mysema.stat.pcaxis.Dataset;
-import com.mysema.stat.pcaxis.Dimension;
-import com.mysema.stat.pcaxis.Item;
-import com.mysema.stat.pcaxis.Key;
-import com.mysema.stat.pcaxis.PCAxis;
-
-import static junit.framework.Assert.*;
-
 public class LargeDatasetTest {
     
     private static Map<Key, List<Object>> px;
 
     @BeforeClass
     public static void init() {
-        px = PCAxis.parse("src/test/resources/A01S_HKI_Vakiluku.px");
+        px = PCAxis.parse(LargeDatasetTest.class.getResourceAsStream("/A01S_HKI_Vakiluku.px"));
     }
 
     @Test

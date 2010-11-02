@@ -11,7 +11,7 @@ public class DatasetTest {
 
     @Test
     public void ignoreDots() {
-        Dataset dataset = new Dataset("example-1", PCAxis.parse("src/test/resources/example-1.px"));
+        Dataset dataset = new Dataset("example-1", PCAxis.parse(getClass().getResourceAsStream("/example-1.px")));
         List<Item> items = dataset.getItems();
         assertEquals(21*2 + 15*36, items.size());
         

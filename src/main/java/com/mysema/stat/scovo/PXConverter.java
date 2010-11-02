@@ -1,7 +1,5 @@
 package com.mysema.stat.scovo;
 
-import static com.mysema.commons.lang.URLEncoder.encodeParam;
-
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,8 +21,6 @@ import com.mysema.stat.pcaxis.Item;
 public class PXConverter {
     
     private static final Logger logger = LoggerFactory.getLogger(PXConverter.class);
-
-    private static final String UTF8 = "UTF-8";
     
     private String baseURI;
     

@@ -1,6 +1,5 @@
 package com.mysema.stat.pcaxis;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -34,9 +33,8 @@ public final class PCAxis {
     }
     
     @SuppressWarnings("unchecked")
-    public static Map<Key, List<Object>> parse(String fileName) {
+    public static Map<Key, List<Object>> parse(InputStream in) {
         try {
-            InputStream in = new FileInputStream(fileName);
             // create a CharStream that reads from standard input
             ANTLRInputStream input = new ANTLRInputStream(in, "Windows-1252"); // create a lexer that feeds off of input CharStream
             PCAxisANTLRLexer lexer = new PCAxisANTLRLexer(input); // create a buffer of tokens pulled from the lexer

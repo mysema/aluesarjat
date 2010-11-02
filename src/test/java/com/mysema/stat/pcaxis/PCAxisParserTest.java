@@ -20,7 +20,7 @@ public class PCAxisParserTest {
 
     @BeforeClass
     public static void init() {
-        px = PCAxis.parse("src/test/resources/example-1.px");
+        px = PCAxis.parse(PCAxisParserTest.class.getResourceAsStream("/example-1.px"));
     }
     
     @Test
