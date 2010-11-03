@@ -1,6 +1,5 @@
 package com.mysema.stat.scovo;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,74 +41,74 @@ public class PXConverter {
         context = new UID(baseURI, encodeID(dataset.getName()));
         ns = context.getId() + "#";
         statements = new LinkedHashSet<STMT>();
+        
         RDFConnection conn = repository.openConnection();
-
-        Map<Dimension, UID> dimensions = new HashMap<Dimension, UID>();
-        
-        /*
-         * METADATA
-         */
-        // Dataset
-        add(context, RDF.type, SCV.Dataset);
-        add(context, DC.title, dataset.getName());
-        
-        // DimensionTypes
-        for (DimensionType type : dataset.getDimensionTypes()) {
-            // TODO: Use / update common metadata? 
-            UID t = new UID(ns, encodeID(type.getName()));
-
-            if (!exists(t, conn)) {
-                add(t, RDF.type, RDFS.Class);
-                add(t, RDF.type, OWL.Class);
-                add(t, RDFS.subClassOf, SCV.Dimension);
-                add(t, DC.title, type.getName());
-            } else {
-                logger.info("Referring to existing DimensionType: " + print(t));
-            }
+        try{
+            Map<Dimension, UID> dimensions = new HashMap<Dimension, UID>();
             
+            /*
+             * METADATA
+             */
+            // Dataset
+            add(context, RDF.type, SCV.Dataset);
+            add(context, DC.title, dataset.getName());
             
-            // Dimensions
-            for (Dimension dimension : type.getDimensions()) {
+            // DimensionTypes
+            for (DimensionType type : dataset.getDimensionTypes()) {
                 // TODO: Use / update common metadata? 
-                
-                // XXX: ensure, there's no clash here!
-                UID d = new UID(ns, encodeID(dimension.getName()));
-                dimensions.put(dimension, d);
-                
-                if (!exists(d, conn)) {
-                    add(d, RDF.type, t);
-                    add(d, DC.title, dimension.getName());
+                UID t = new UID(ns, encodeID(type.getName()));
+
+                if (!exists(t, conn)) {
+                    add(t, RDF.type, RDFS.Class);
+                    add(t, RDF.type, OWL.Class);
+                    add(t, RDFS.subClassOf, SCV.Dimension);
+                    add(t, DC.title, type.getName());
                 } else {
-                    logger.info("Referring to existing Dimension: " + print(d) + " of type " + print(t));
+                    logger.info("Referring to existing DimensionType: " + print(t));
                 }
                 
-                // TODO: hierarchy?
-                // TODO: subProperty of scv:dimension?
+                
+                // Dimensions
+                for (Dimension dimension : type.getDimensions()) {
+                    // TODO: Use / update common metadata? 
+                    
+                    // XXX: ensure, there's no clash here!
+                    UID d = new UID(ns, encodeID(dimension.getName()));
+                    dimensions.put(dimension, d);
+                    
+                    if (!exists(d, conn)) {
+                        add(d, RDF.type, t);
+                        add(d, DC.title, dimension.getName());
+                    } else {
+                        logger.info("Referring to existing Dimension: " + print(d) + " of type " + print(t));
+                    }
+                    
+                    // TODO: hierarchy?
+                    // TODO: subProperty of scv:dimension?
+                }
             }
-        }
-        
-        /*
-         * DATA
-         */
-        for (Item item : dataset.getItems()) {
-            BID id = conn.createBNode();
             
-            add(id, RDF.type, SCV.Item);
-            add(id, RDF.value, item.getValue());
-            add(id, SCV.dataset, context);
-            
-            for (Dimension dimension : item.getDimensions()) {
-                // TODO: subProperty of scv:dimension?
-                add(id, SCV.dimension, dimensions.get(dimension));
+            /*
+             * DATA
+             */
+            for (Item item : dataset.getItems()) {
+                BID id = conn.createBNode();
+                
+                add(id, RDF.type, SCV.Item);
+                add(id, RDF.value, item.getValue());
+                add(id, SCV.dataset, context);
+                
+                for (Dimension dimension : item.getDimensions()) {
+                    // TODO: subProperty of scv:dimension?
+                    add(id, SCV.dimension, dimensions.get(dimension));
+                }
             }
-        }
-        
-        conn.update(Collections.<STMT>emptySet(), statements);
-        try {
+            
+            conn.update(Collections.<STMT>emptySet(), statements);
+        }finally{
             conn.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+                
     }
 
     private String print(UID t) {
