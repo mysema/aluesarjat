@@ -38,8 +38,8 @@ public final class XMLID {
         }
         public boolean contains(char ch) {
             if (nestedRanges != null) {
-                for (CharRanges ranges : nestedRanges) {
-                    if (ranges.contains(ch)) {
+                for (CharRanges r : nestedRanges) {
+                    if (r.contains(ch)) {
                         return true;
                     }
                 }
