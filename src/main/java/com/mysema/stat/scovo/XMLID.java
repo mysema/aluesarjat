@@ -83,7 +83,7 @@ public final class XMLID {
     private static final CharRanges ID_CHARS = new CharRanges(
             ID_START_CHARS,
             range('-'),
-            range('.'),
+//            range('.'), // Causes problems in Turtle and Sparql
             range('0', '9'),
             range('\u00B7'),
             range('\u0300', '\u036F'),
@@ -102,7 +102,7 @@ public final class XMLID {
             sb.append('_');
             if (ID_CHARS.contains(chars[0])) {
                 sb.append(chars[0]);
-            } else if (!Character.isWhitespace(chars[0])) {
+            } else if (!replaceWithUnderscore(chars[0])) { // No need to duplicate _
                 sb.append(encode(chars[0]));
             }
         }
@@ -110,13 +110,17 @@ public final class XMLID {
         for (int i=1; i < chars.length; i++) {
             if (ID_CHARS.contains(chars[i])) {
                 sb.append(chars[i]);
-            } else if (Character.isWhitespace(chars[i])) {
+            } else if (replaceWithUnderscore(chars[i])) {
                 sb.append('_');
             } else {
                 sb.append(encode(chars[i]));
             }
         }
         return sb.toString();
+    }
+
+    private static boolean replaceWithUnderscore(char ch) {
+        return Character.isWhitespace(ch) || '.' == ch;
     }
     
     private static String encode(char ch) {

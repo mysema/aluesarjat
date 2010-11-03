@@ -18,7 +18,7 @@
 		<spring.security.version>2.0.4</spring.security.version>
 
 		<!-- mysema dependencies -->
-		<rdfbean.version>1.4.1</rdfbean.version>
+		<rdfbean.version>1.4.1-SNAPSHOT</rdfbean.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

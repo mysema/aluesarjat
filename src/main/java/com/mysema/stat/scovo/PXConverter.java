@@ -1,5 +1,6 @@
 package com.mysema.stat.scovo;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
@@ -104,6 +105,11 @@ public class PXConverter {
         }
         
         conn.update(Collections.<STMT>emptySet(), statements);
+        try {
+            conn.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String print(UID t) {
