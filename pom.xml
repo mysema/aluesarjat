@@ -18,7 +18,7 @@
 		<spring.security.version>2.0.4</spring.security.version>
 
 		<!-- mysema dependencies -->
-		<rdfbean.version>1.4.1-SNAPSHOT</rdfbean.version>
+		<rdfbean.version>1.4.2</rdfbean.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -36,12 +36,12 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.4.2</version>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.4.2</version>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
