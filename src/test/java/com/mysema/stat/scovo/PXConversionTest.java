@@ -1,6 +1,8 @@
 package com.mysema.stat.scovo;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -49,24 +51,30 @@ public class PXConversionTest {
         pxc.convert(new Dataset("example-3", PCAxis.parse(getClass().getResourceAsStream("/example-3.px"))));        
         
         RDFConnection conn = repository.openConnection();
-        SPARQLQuery qry = conn.createQuery(
-                QueryLanguage.SPARQL, 
-                "PREFIX scv:   <" + SCV.NS + "> " +
-                "PREFIX rdf:   <" + RDF.NS + "> " +
-                "PREFIX ex1:   <http://www.aluesarjat.fi/rdf/datasets/example-1#> " +
-                "SELECT ?value " +
-                "WHERE { " +
-                "   ?item rdf:value ?value; " +
-                "       scv:dimension ex1:_049_Espoo, " +
-                "           ex1:_O__Muut_yht_kunn__ja_henk_koht__palv_, " +
-                "           ex1:_1999 ." +
-                "}"
-        );
-        CloseableIterator<Map<String,NODE>> rs = qry.getTuples();
         try {
-            assertEquals("108640", rs.next().get("value").getValue());
+            SPARQLQuery qry = conn.createQuery(
+                    QueryLanguage.SPARQL, 
+                    "PREFIX scv:   <" + SCV.NS + "> " +
+                    "PREFIX rdf:   <" + RDF.NS + "> " +
+                    "PREFIX ex1:   <http://www.aluesarjat.fi/rdf/datasets/example-1#> " +
+                    "SELECT ?value " +
+                    "WHERE { " +
+                    "   ?item rdf:value ?value; " +
+                    "       scv:dimension ex1:_049_Espoo, " +
+                    "           ex1:_O__Muut_yht_kunn__ja_henk_koht__palv_, " +
+                    "           ex1:_1999 ." +
+                    "}"
+            );
+            CloseableIterator<Map<String,NODE>> rs = qry.getTuples();
+            try {
+                assertTrue(rs.hasNext());
+                assertEquals("108640", rs.next().get("value").getValue());
+                assertFalse(rs.hasNext());
+            } finally {
+                rs.close();
+            }
         } finally {
-            rs.close();
+            conn.close();
         }
         
         Map<String, String> namespaces = new HashMap<String, String>();
