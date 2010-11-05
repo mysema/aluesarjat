@@ -8,5 +8,7 @@ public final class DC {
     
     public static final UID title = new UID(NS, "title");
     
+    public static final UID description = new UID(NS, "description");
+    
     private DC() {}
 }

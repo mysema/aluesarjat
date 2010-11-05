@@ -1,7 +1,10 @@
 package com.mysema.stat.pcaxis;
 
+import static com.mysema.stat.pcaxis.PCAxis.CONTENTS;
 import static com.mysema.stat.pcaxis.PCAxis.DATA;
 import static com.mysema.stat.pcaxis.PCAxis.HEADING;
+import static com.mysema.stat.pcaxis.PCAxis.NOTE;
+import static com.mysema.stat.pcaxis.PCAxis.SOURCE;
 import static com.mysema.stat.pcaxis.PCAxis.STUB;
 
 import java.math.BigDecimal;
@@ -22,11 +25,19 @@ public class Dataset {
     
     private int dataSize;
     
-    private final List<DimensionType> dimensionTypes = new ArrayList<DimensionType>();
+    private String description;
 
-    private final List<Item> items;
+    private List<DimensionType> dimensionTypes = new ArrayList<DimensionType>();
 
-    private final String name;
+    private List<Item> items;
+    
+    private String name;
+    
+    private String publisher;
+    
+    private String title;
+    
+    // TODO: units?
 
     public Dataset(String name, Map<Key, List<Object>> px) {
         this.name = Assert.notNull(name, "name");
@@ -48,6 +59,10 @@ public class Dataset {
 //            System.err.println(e.getMessage());
             logger.warn(e.getMessage());
         }
+        
+        title = toString(px.get(CONTENTS));
+        description = toString(px.get(NOTE));
+        publisher = toString(px.get(SOURCE));
     }
 
     private int addDimension(String name, Map<Key, List<Object>> px) {
@@ -65,7 +80,7 @@ public class Dataset {
         }
         return valueNames.size();
     }
-    
+
     private void addItems(final int dimensionIndex, final Dimension[] dimensionValues, final List<Object> data, AtomicInteger dataIndex) {
         DimensionType dimension = dimensionTypes.get(dimensionIndex);
 
@@ -93,16 +108,39 @@ public class Dataset {
         return new ArrayList<Dimension>(Arrays.asList(dimensionValues));
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public List<DimensionType> getDimensionTypes() {
         return dimensionTypes;
     }
-
+    
     public List<Item> getItems() {
         return items;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    private String toString(List<Object> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+        StringBuilder sb  = new StringBuilder(list.size() * 80);
+        for (Object o : list) {
+            sb.append(o.toString().replace('#', '\n'));
+        }
+        return sb.toString();
     }
 
 }

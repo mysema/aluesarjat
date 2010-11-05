@@ -113,7 +113,12 @@ public class PXConverter {
              * DATASET
              */
             add(datasetContext, RDF.type, SCV.Dataset, datasetContext);
-            add(datasetContext, DC.title, dataset.getName(), datasetContext);
+            if (dataset.getTitle() != null) {
+                add(datasetContext, DC.title, dataset.getTitle(), datasetContext);
+            }
+            if (dataset.getDescription() != null) {
+                add(datasetContext, DC.description, dataset.getDescription(), datasetContext);
+            }
             
             for (Item item : dataset.getItems()) {
                 BID id = conn.createBNode();
