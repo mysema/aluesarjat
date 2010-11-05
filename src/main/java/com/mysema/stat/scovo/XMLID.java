@@ -93,8 +93,9 @@ public final class XMLID {
     public static String toXMLID(String name) {
         Assert.hasLength(name, "name");
 
-        StringBuilder sb = new StringBuilder(name.length() + 10);
-        char[] chars = name.toCharArray();
+        String normalizedName = name.trim();
+        StringBuilder sb = new StringBuilder(normalizedName.length() + 10);
+        char[] chars = normalizedName.toCharArray();
 
         if (ID_START_CHARS.contains(chars[0])) {
             sb.append(chars[0]);
