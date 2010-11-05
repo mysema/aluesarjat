@@ -1,9 +1,13 @@
 package com.mysema.stat.scovo;
 
+import java.util.regex.Pattern;
+
 import com.mysema.commons.lang.Assert;
 
 public final class XMLID {
 
+    private static final Pattern WHITESPACE = Pattern.compile("\\s+");
+    
     public static class CharRange {
         private char start;
         private char end;
@@ -93,7 +97,7 @@ public final class XMLID {
     public static String toXMLID(String name) {
         Assert.hasLength(name, "name");
 
-        String normalizedName = name.trim();
+        String normalizedName = WHITESPACE.matcher(name.trim()).replaceAll(" ");
         StringBuilder sb = new StringBuilder(normalizedName.length() + 10);
         char[] chars = normalizedName.toCharArray();
 

@@ -9,7 +9,8 @@ public class XMLIDTest {
     @Test
     public void toXMLID(){
         assertEquals("_123_ABC", XMLID.toXMLID(" 123 ABC"));
-        assertEquals("ABC", XMLID.toXMLID(" ABC"));
+        assertEquals("ABC",      XMLID.toXMLID(" ABC"));
+        assertEquals("A_B",      XMLID.toXMLID("A  B"));
     }
     
 }
