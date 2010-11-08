@@ -10,16 +10,12 @@
 	<properties>
 		<finalName>aluesarjat</finalName>
 		<extraResources>src/main/resources</extraResources>
-
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
 		<!-- versions of dependencies -->
 		<jetty.version>6.1.0-SNAPSHOT</jetty.version>
-		<lucene.version>2.3.2</lucene.version>
 		<spring.version>2.5.5</spring.version>
-		<spring.security.version>2.0.4</spring.security.version>
-
-		<!-- mysema dependencies -->
 		<rdfbean.version>1.4.2-SNAPSHOT</rdfbean.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -97,6 +93,18 @@
 			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-core</artifactId>
+	      <version>${spring.version}</version>
+	      <scope>test</scope>
+	    </dependency>  
+	    <dependency>
+	      <groupId>org.springframework</groupId>
+	      <artifactId>spring-test</artifactId>
+	      <version>${spring.version}</version>
+	      <scope>test</scope>
+	    </dependency>			
 
 	</dependencies>
 

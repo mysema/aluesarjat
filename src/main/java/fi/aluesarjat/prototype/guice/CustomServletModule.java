@@ -20,9 +20,13 @@ public class CustomServletModule extends ServletModule{
     @Provides
     @Singleton
     public SPARQLServlet createSPARQLServlet(Repository repository){
-        SPARQLServlet servlet = new SPARQLServlet();
-        servlet.setRepository(repository);
-        return servlet;
+        return new SPARQLServlet(repository);
+    }
+    
+    @Provides
+    @Singleton
+    public ContextAccessServlet createContextAccessServlet(Repository repository){
+        return new ContextAccessServlet(repository);
     }
 
 }
