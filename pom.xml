@@ -6,7 +6,7 @@
 	<artifactId>prototype</artifactId>
 	<version>0.1.1-SNAPSHOT</version>
 	<name>Aluesarjat</name>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<properties>
 		<finalName>aluesarjat</finalName>
 		<extraResources>src/main/resources</extraResources>
@@ -18,7 +18,7 @@
 		<spring.security.version>2.0.4</spring.security.version>
 
 		<!-- mysema dependencies -->
-		<rdfbean.version>1.4.2</rdfbean.version>
+		<rdfbean.version>1.4.2-SNAPSHOT</rdfbean.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -31,6 +31,16 @@
 		<dependency>
 			<groupId>com.mysema.rdf</groupId>
 			<artifactId>rdfbean-sesame</artifactId>
+			<version>${rdfbean.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mysema.rdf</groupId>
+			<artifactId>rdfbean-guice</artifactId>
+			<version>${rdfbean.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mysema.rdf</groupId>
+			<artifactId>rdfbean-sparql</artifactId>
 			<version>${rdfbean.version}</version>
 		</dependency>
 		<dependency>
@@ -50,6 +60,25 @@
 		</dependency>
 		
 		<dependency>
+      	  <groupId>com.google.inject</groupId>
+          <artifactId>guice</artifactId>
+          <version>2.0</version>
+    	</dependency>		
+	    <dependency>
+	      <groupId>com.google.inject.extensions</groupId>
+	      <artifactId>guice-servlet</artifactId>
+	      <version>2.0</version>
+	    </dependency>		
+	    <dependency>
+	      <groupId>javax.servlet</groupId>
+	      <artifactId>servlet-api</artifactId>
+	      <version>2.5</version>
+	      <scope>provided</scope>
+	    </dependency>			
+			
+		<!-- tests -->
+		
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
@@ -60,6 +89,13 @@
 					<artifactId>servlet-api</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mysema.commons</groupId>
+			<artifactId>mysema-commons-jetty</artifactId>
+			<version>${jetty.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
