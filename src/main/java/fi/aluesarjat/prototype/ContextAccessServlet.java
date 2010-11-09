@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDFConnection;
@@ -54,7 +54,7 @@ public class ContextAccessServlet extends HttpServlet{
     
     private String getAcceptedType(HttpServletRequest request, Format defaultFormat){
         String accept = request.getHeader("Accept");
-        if (StringUtils.hasLength(accept)){
+        if (!StringUtils.isEmpty(accept)){
             if (accept.contains(",")){
                 accept = accept.substring(0, accept.indexOf(','));
             }
