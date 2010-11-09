@@ -40,12 +40,8 @@ public class ContextAccessServlet extends HttpServlet{
         String context = request.getRequestURL().toString();
         RDFConnection connection = repository.openConnection();
         try{
-            StringBuilder q = new StringBuilder();
-            q.append("CONSTRUCT { ?s ?p ?o } \n");
-            q.append("FROM    <").append(context).append("> \n");
-            q.append("WHERE   { ?s ?p ?o } ");
-
-            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, q.toString());
+            String queryString = String.format("CONSTRUCT { ?s ?p ?o} FROM <%s> WHERE { ?s ?p ?o }", context);            
+            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, queryString);
             String contentType = getAcceptedType(request, Format.RDFXML.getMimetype());
             response.setContentType(contentType);
             query.streamTriples(response.getWriter(), contentType);
