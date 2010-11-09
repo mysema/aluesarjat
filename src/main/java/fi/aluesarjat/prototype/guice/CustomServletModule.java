@@ -1,5 +1,7 @@
 package fi.aluesarjat.prototype.guice;
 
+import java.io.IOException;
+
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
@@ -12,9 +14,13 @@ public class CustomServletModule extends ServletModule{
     
     @Override
     protected void configureServlets() {
-        install(new CustomRDFBeanModule());
-        serve("/query").with(SPARQLServlet.class);
-        serve("/rdf/*").with(ContextAccessServlet.class);
+        try {
+            install(new CustomRDFBeanModule());
+            serve("/query").with(SPARQLServlet.class);
+            serve("/rdf/*").with(ContextAccessServlet.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }        
     }
     
     @Provides
