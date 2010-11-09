@@ -124,7 +124,12 @@ public class PXConverter {
                 BID id = conn.createBNode();
                 
                 add(id, RDF.type, SCV.Item, datasetContext);
-                add(id, RDF.value, item.getValue(), datasetContext);
+
+                if (item.getValue() instanceof BigDecimal) {
+                    add(id, RDF.value, (BigDecimal) item.getValue(), datasetContext);
+                } else {
+                    add(id, RDF.value, (String) item.getValue(), datasetContext);
+                }
                 add(id, SCV.dataset, datasetContext, datasetContext);
                 
                 for (Dimension dimension : item.getDimensions()) {

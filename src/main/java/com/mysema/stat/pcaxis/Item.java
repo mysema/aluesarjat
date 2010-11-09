@@ -1,6 +1,5 @@
 package com.mysema.stat.pcaxis;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class Item {
@@ -9,9 +8,9 @@ public class Item {
 
     private final List<Dimension> dimensions;
 
-    private final BigDecimal value;
+    private final Object value;
     
-    public Item(Dataset dataset, List<Dimension> dimensions, BigDecimal value) {
+    public Item(Dataset dataset, List<Dimension> dimensions, Object value) {
         this.dataset = dataset;
         this.dimensions = dimensions;
         this.value = value;
@@ -25,7 +24,10 @@ public class Item {
         return dimensions;
     }
 
-    public BigDecimal getValue() {
+    /**
+     * @return String or BigDecimal
+     */
+    public Object getValue() {
         return value;
     }
     

@@ -10,8 +10,10 @@ import static com.mysema.stat.pcaxis.PCAxis.STUB;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
@@ -37,9 +39,16 @@ public class Dataset {
     
     private String title;
     
+    public Set<Object> ignoredValues;
+    
     // TODO: units?
 
     public Dataset(String name, Map<Key, List<Object>> px) {
+        this(name, px, new HashSet<Object>(Arrays.asList(".")));
+    }
+
+    public Dataset(String name, Map<Key, List<Object>> px, Set<Object> ignoredValues) {
+        this.ignoredValues = ignoredValues;
         this.name = Assert.notNull(name, "name");
         
         dataSize = 1;
@@ -95,8 +104,9 @@ public class Dataset {
             
             if (dimensionIndex + 1 == dimensionTypes.size()) {
                 Object dataValue = data.get(dataIndex.getAndIncrement());
-                if (dataValue instanceof BigDecimal) {
-                    items.add(new Item(this, asList(dimensionValues), (BigDecimal) dataValue));
+                
+                if (!ignoredValues.contains(dataValue)) {
+                    items.add(new Item(this, asList(dimensionValues), dataValue));
                 }
             } else {
                 addItems(dimensionIndex + 1, dimensionValues, data, dataIndex);
