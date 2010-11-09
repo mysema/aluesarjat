@@ -1,5 +1,6 @@
 package fi.aluesarjat.prototype;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -69,6 +70,7 @@ public class ContextAccessServletTest {
         request.setRequestURI("/rdf/test");       
         servlet.service(request, response);
         
+        assertEquals(Format.RDFXML.getMimetype(), response.getContentType());
         assertTrue(response.getContentAsString().contains("rdf:RDF"));
         assertTrue(response.getContentAsString().contains("type"));
         assertTrue(response.getContentAsString().contains("label"));
@@ -80,6 +82,7 @@ public class ContextAccessServletTest {
         request.addHeader("Accept", Format.TURTLE.getMimetype());
         servlet.service(request, response);
         
+        assertEquals(Format.TURTLE.getMimetype(), response.getContentType());
         assertFalse(response.getContentAsString().contains("rdf:RDF"));
         assertTrue(response.getContentAsString().contains(" a "));
     }
@@ -88,10 +91,20 @@ public class ContextAccessServletTest {
     public void Get_Unavailable_Context() throws ServletException, IOException{
         request.setRequestURI("/rdf/unknown");        
         servlet.service(request, response);
-        
+    
+        assertEquals(Format.RDFXML.getMimetype(), response.getContentType());
         assertTrue(response.getContentAsString().contains("rdf:RDF"));
         assertFalse(response.getContentAsString().contains("type"));
         assertFalse(response.getContentAsString().contains("label"));
+    }
+    
+    @Test
+    public void Get_with_Html_Accept() throws ServletException, IOException{
+        request.setRequestURI("/rdf/unknown");        
+        request.addHeader("Accept", "text/html");
+        servlet.service(request, response);
+        
+        assertEquals(Format.RDFXML.getMimetype(), response.getContentType());
     }
     
 }

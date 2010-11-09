@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.util.StringUtils;
+
 import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
@@ -42,7 +44,7 @@ public class ContextAccessServlet extends HttpServlet{
         try{
             String queryString = String.format("CONSTRUCT { ?s ?p ?o} FROM <%s> WHERE { ?s ?p ?o }", context);            
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, queryString);
-            String contentType = getAcceptedType(request, Format.RDFXML.getMimetype());
+            String contentType = getAcceptedType(request, Format.RDFXML);
             response.setContentType(contentType);
             query.streamTriples(response.getWriter(), contentType);
         }finally{
@@ -50,12 +52,15 @@ public class ContextAccessServlet extends HttpServlet{
         }        
     }
     
-    private String getAcceptedType(HttpServletRequest request, String defaultType){
+    private String getAcceptedType(HttpServletRequest request, Format defaultFormat){
         String accept = request.getHeader("Accept");
-        if (accept != null){
-            return accept.contains(",") ? accept.substring(0, accept.indexOf(',')) : accept;
+        if (StringUtils.hasLength(accept)){
+            if (accept.contains(",")){
+                accept = accept.substring(0, accept.indexOf(','));
+            }
+            return Format.getFormat(accept, defaultFormat).getMimetype();
         }else{
-            return defaultType;
+            return defaultFormat.getMimetype();
         }
     }
     

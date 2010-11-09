@@ -14,7 +14,7 @@ public class CustomServletModule extends ServletModule{
     protected void configureServlets() {
         install(new CustomRDFBeanModule());
         serve("/query").with(SPARQLServlet.class);
-        serve("/rdf").with(ContextAccessServlet.class);
+        serve("/rdf/*").with(ContextAccessServlet.class);
     }
     
     @Provides
