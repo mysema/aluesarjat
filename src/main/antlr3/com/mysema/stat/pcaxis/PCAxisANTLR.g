@@ -2,6 +2,8 @@ grammar PCAxisANTLR;
 options {
 	output=AST;
 	language=Java;
+	memoize=false;
+	backtrack=false;
 }
 @header {
 package com.mysema.stat.pcaxis;
@@ -12,6 +14,7 @@ package com.mysema.stat.pcaxis;
 @members{
 	private java.util.Map pxMap = new java.util.LinkedHashMap();
 
+    private int dataSize = 1;
 }
 
 /*------------------------------------------------------------------
@@ -32,7 +35,12 @@ keySpec returns [String spec]
 
 mapValue returns [List values]
 	@init {
-		$values = new java.util.ArrayList();
+		$values = PCAxis.DATA.equals($map::currentKey) ? new java.util.ArrayList(dataSize) : new java.util.ArrayList();
+	}
+	@after {
+	   if ("VALUES".equals($map::currentKey.getName())) {
+	       dataSize *= $values.size();
+	   }
 	}
 	:	(NL)? value[$values] (delim value[$values])*;
 	

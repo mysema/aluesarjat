@@ -8,6 +8,8 @@ import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysema.rdfbean.guice.RDFBeanModule;
 import com.mysema.rdfbean.model.RDF;
@@ -22,6 +24,8 @@ import com.mysema.stat.scovo.PXConverter;
 import com.mysema.stat.scovo.SCV;
 
 public class CustomRDFBeanModule extends RDFBeanModule{
+    
+    private static final Logger logger = LoggerFactory.getLogger(CustomRDFBeanModule.class);
 
     private Properties properties = new Properties();
     
@@ -55,12 +59,17 @@ public class CustomRDFBeanModule extends RDFBeanModule{
                     RDFConnection conn = repository.openConnection();
                     try {
                         if (forceReload || !conn.exists(uid, RDF.type, SCV.Dataset, uid, false)) {
+                            long time = System.currentTimeMillis();
+                            logger.info("Importing " + datasetName);
                             InputStream in = getStream("/data/" + datasetName + ".px");
                             try {
                                 pxc.convert(new Dataset(datasetName, PCAxis.parse(in)), conn);
                             } finally {
                                 in.close();
                             }
+                            logger.info("Imported " + datasetName + " in " + (System.currentTimeMillis() - time) + " ms");
+                        } else {
+                            logger.info("Skipped " + datasetName);
                         }
                     } finally {
                         conn.close();

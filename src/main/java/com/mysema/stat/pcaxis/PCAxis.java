@@ -3,6 +3,7 @@ package com.mysema.stat.pcaxis;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,17 +26,26 @@ public final class PCAxis {
     public static final Key STUB = new Key("STUB");
     
     public static final Key TITLE = new Key("TITLE");
+    
+    private static final Map<String, BigDecimal> DECIMAL_CACHE = new HashMap<String, BigDecimal>();
+    
+    static {
+        for (int i=0; i <= 1000; i++) {
+            String str = Integer.toString(i);
+            DECIMAL_CACHE.put(str, BigDecimal.valueOf(i));
+        }
+    }
 
     public static Object convert(String value) {
         if (value.startsWith("\"")) {
             return value.substring(1, value.length() - 1);
         } else {
-            return new BigDecimal(value);
+            return DECIMAL_CACHE.containsKey(value)? DECIMAL_CACHE.get(value) : new BigDecimal(value);
         }
     }
     
     public static String convertString(String value) {
-        return value.substring(1, value.length() - 1);
+        return value.substring(1, value.length() - 1).intern();
     }
     
     @SuppressWarnings("unchecked")
