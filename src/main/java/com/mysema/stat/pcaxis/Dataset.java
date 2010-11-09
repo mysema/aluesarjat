@@ -7,7 +7,6 @@ import static com.mysema.stat.pcaxis.PCAxis.NOTE;
 import static com.mysema.stat.pcaxis.PCAxis.SOURCE;
 import static com.mysema.stat.pcaxis.PCAxis.STUB;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
