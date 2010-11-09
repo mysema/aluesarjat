@@ -1,0 +1,20 @@
+[
+{id:"luokka", dcTitle:"luokka"},
+{id:"instanssi1", dcTitle:"instanssi1", rdfType:{id:"luokka"}}
+]
+
+[
+{rdfValue:321645, scvDataset:{uri:"ex1"}, 
+ 	dimension:[{id:"http://www.aluesarjat.fi/rdf/dimensions/Alue#_091_Helsinki"}, 
+		{id:"http://www.aluesarjat.fi/rdf/dimensions/Toimiala#Toimiala_yhteensä"}]}
+]
+
+www.aluesarjat.fi/rest/find?dimension=alue:Helsinki&
+
+
+0 = Yleensä mielenkiintoinen tieto
+. = tietoa ei saatavissa/olemassa => tieto ohitetaan
+.. = tietoa ei saatavilla yksityisyyden suojan vuoksi => konvertoidaan rdf:value=".." -muotoon
+
+Poikkeukset: 
+A01HKI_Astuot_hper_rahoitus_talotyyppi.px => Nollat voisi ohittaa
