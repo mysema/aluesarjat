@@ -62,9 +62,5 @@ public class ContextAccessServlet extends HttpServlet{
             return defaultType;
         }
     }
-
-    public void setRepository(Repository repository) {
-        this.repository = repository;
-    }
     
 }
