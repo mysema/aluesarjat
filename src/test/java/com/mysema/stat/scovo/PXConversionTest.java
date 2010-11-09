@@ -1,9 +1,5 @@
 package com.mysema.stat.scovo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,12 +41,13 @@ public class PXConversionTest {
     
     @Test
     public void convert() throws IOException {
-        PXConverter pxc = new PXConverter(repository, "http://www.aluesarjat.fi/rdf/");        
-        pxc.convert(new Dataset("example-1", PCAxis.parse(getClass().getResourceAsStream("/example-1.px"))));
-        pxc.convert(new Dataset("example-2", PCAxis.parse(getClass().getResourceAsStream("/example-2.px"))));
-        
         RDFConnection conn = repository.openConnection();
+
         try {
+            PXConverter pxc = new PXConverter("http://www.aluesarjat.fi/rdf/");        
+            pxc.convert(new Dataset("example-1", PCAxis.parse(getClass().getResourceAsStream("/example-1.px"))), conn);
+            pxc.convert(new Dataset("example-2", PCAxis.parse(getClass().getResourceAsStream("/example-2.px"))), conn);
+        
             SPARQLQuery qry = conn.createQuery(
                     QueryLanguage.SPARQL, 
                     "PREFIX scv:   <" + SCV.NS + "> " +

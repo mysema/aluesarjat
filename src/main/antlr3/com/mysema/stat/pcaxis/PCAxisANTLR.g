@@ -21,10 +21,11 @@ package com.mysema.stat.pcaxis;
 px returns [java.util.Map result]
  	:	(map (NL map)+ ( NL | WS )* EOF) {$result = pxMap;};
 
-map	:	mapKey EQ mapValue SCOL {pxMap.put($mapKey.key, $mapValue.values);}; 
+map scope {Key currentKey;}
+	:	mapKey EQ mapValue SCOL {pxMap.put($mapKey.key, $mapValue.values);}; 
 
 mapKey returns [Key key]
-	:	KEY (keySpec)? {$key = new Key($KEY.text, $keySpec.spec);};
+	:	KEY (keySpec)? {$map::currentKey = $key = new Key($KEY.text, $keySpec.spec);};
 
 keySpec returns [String spec]
 	:	'(' s=TEXT ')' {$spec = PCAxis.convertString($s.text);};

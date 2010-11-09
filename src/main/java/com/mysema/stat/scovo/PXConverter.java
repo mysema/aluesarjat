@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.BID;
 import com.mysema.rdfbean.model.ID;
 import com.mysema.rdfbean.model.LIT;
@@ -36,13 +35,11 @@ public class PXConverter {
     // http://www.aluesarjat.fi/rdf/
     private String baseURI;
 
-    private static final String DATASET_CONTEXT = "datasets/"; // A01S_HKI_Vakiluku, ...
+    public static final String DATASET_CONTEXT = "datasets/"; // A01S_HKI_Vakiluku, ...
 
-    private static final String DOMAIN = "domain";
+    public static final String DOMAIN = "domain";
 
-    private static final String DIMENSION_CONTEXT = "dimensions/"; // Alue, Toimiala, Vuosi, ...
-    
-    private Repository repository;
+    public static final String DIMENSION_CONTEXT = "dimensions/"; // Alue, Toimiala, Vuosi, ...
     
 //    private UID datasetContext;
 //    
@@ -50,99 +47,97 @@ public class PXConverter {
     
     private Set<STMT> statements;
     
-    public PXConverter(Repository repository, String baseURI) {
-        this.repository = repository;
+    public PXConverter(String baseURI) {
         this.baseURI = baseURI;
         Assert.notNull(baseURI, "baseURI");
         Assert.assertThat(baseURI.endsWith("/"), "baseURI doesn't end with /", null, null);
     }
     
-    public void convert(Dataset dataset) {
-        UID datasetContext = new UID(baseURI + DATASET_CONTEXT, encodeID(dataset.getName()));
-        // NOTE: No need for datasetNs - using BNodes
-        // String datasetNs = datasetContext.getId() + "#"; 
-        
+    public void convert(Dataset dataset, Repository repository) {
+        RDFConnection conn = repository.openConnection();
+        try {
+            convert(dataset, conn);
+        } finally {
+            conn.close();
+        }
+    }
+    
+    public void convert(Dataset dataset, RDFConnection conn) {
+        statements = new LinkedHashSet<STMT>();
+        Map<Dimension, UID> dimensions = new HashMap<Dimension, UID>();
+
+        /*
+         * METADATA
+         */
         UID domainContext = new UID(baseURI + DOMAIN);
         String domainNs = domainContext.getId() + "#";
         
         String dimensionBase = baseURI + DIMENSION_CONTEXT;
         
-        statements = new LinkedHashSet<STMT>();
-        
-        RDFConnection conn = repository.openConnection();
-        try {
-            Map<Dimension, UID> dimensions = new HashMap<Dimension, UID>();
-            
-            /*
-             * METADATA
-             */
-            // SCHEMA: DimensionTypes
-            for (DimensionType type : dataset.getDimensionTypes()) {
-                UID t = new UID(domainNs, encodeID(type.getName()));
+        // SCHEMA: DimensionTypes
+        for (DimensionType type : dataset.getDimensionTypes()) {
+            UID t = new UID(domainNs, encodeID(type.getName()));
 
-                if (!exists(t, domainContext, conn)) {
-                    add(t, RDF.type, RDFS.Class, domainContext);
-                    add(t, RDF.type, OWL.Class, domainContext);
-                    add(t, RDFS.subClassOf, SCV.Dimension, domainContext);
-                    add(t, DC.title, type.getName(), domainContext);
+            if (!exists(t, domainContext, conn)) {
+                add(t, RDF.type, RDFS.Class, domainContext);
+                add(t, RDF.type, OWL.Class, domainContext);
+                add(t, RDFS.subClassOf, SCV.Dimension, domainContext);
+                add(t, DC.title, type.getName(), domainContext);
+            } else {
+                logger.info("Referring to existing DimensionType: " + print(t));
+            }
+            
+            // INSTANCES: Dimensions
+            UID dimensionContext = new UID(dimensionBase + encodeID(type.getName()));
+            String dimensionNs = dimensionContext.getId() + "#";
+
+            for (Dimension dimension : type.getDimensions()) {
+                UID d = new UID(dimensionNs, encodeID(dimension.getName()));
+                dimensions.put(dimension, d);
+                
+                if (!exists(d, dimensionContext, conn)) {
+                    add(d, RDF.type, t, dimensionContext);
+                    add(d, DC.title, dimension.getName(), dimensionContext);
                 } else {
-                    logger.info("Referring to existing DimensionType: " + print(t));
+                    logger.info("Referring to existing Dimension: " + print(d) + " of type " + print(t));
                 }
                 
-                // INSTANCES: Dimensions
-                UID dimensionContext = new UID(dimensionBase + encodeID(type.getName()));
-                String dimensionNs = dimensionContext.getId() + "#";
-
-                for (Dimension dimension : type.getDimensions()) {
-                    UID d = new UID(dimensionNs, encodeID(dimension.getName()));
-                    dimensions.put(dimension, d);
-                    
-                    if (!exists(d, dimensionContext, conn)) {
-                        add(d, RDF.type, t, dimensionContext);
-                        add(d, DC.title, dimension.getName(), dimensionContext);
-                    } else {
-                        logger.info("Referring to existing Dimension: " + print(d) + " of type " + print(t));
-                    }
-                    
-                    // TODO: hierarchy?
-                    // TODO: subProperty of scv:dimension?
-                }
+                // TODO: hierarchy?
+                // TODO: subProperty of scv:dimension?
             }
-            
-            /*
-             * DATASET
-             */
-            add(datasetContext, RDF.type, SCV.Dataset, datasetContext);
-            if (dataset.getTitle() != null) {
-                add(datasetContext, DC.title, dataset.getTitle(), datasetContext);
-            }
-            if (dataset.getDescription() != null) {
-                add(datasetContext, DC.description, dataset.getDescription(), datasetContext);
-            }
-            
-            for (Item item : dataset.getItems()) {
-                BID id = conn.createBNode();
-                
-                add(id, RDF.type, SCV.Item, datasetContext);
-
-                if (item.getValue() instanceof BigDecimal) {
-                    add(id, RDF.value, (BigDecimal) item.getValue(), datasetContext);
-                } else {
-                    add(id, RDF.value, (String) item.getValue(), datasetContext);
-                }
-                add(id, SCV.dataset, datasetContext, datasetContext);
-                
-                for (Dimension dimension : item.getDimensions()) {
-                    // TODO: subProperty of scv:dimension?
-                    add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
-                }
-            }
-            
-            conn.update(Collections.<STMT>emptySet(), statements);
-        } finally {
-            conn.close();
         }
-                
+        
+        /*
+         * DATASET
+         */
+        UID datasetContext = datasetUID(baseURI, dataset.getName());
+        add(datasetContext, RDF.type, SCV.Dataset, datasetContext);
+        if (dataset.getTitle() != null) {
+            add(datasetContext, DC.title, dataset.getTitle(), datasetContext);
+        }
+        if (dataset.getDescription() != null) {
+            add(datasetContext, DC.description, dataset.getDescription(), datasetContext);
+        }
+        
+        for (Item item : dataset.getItems()) {
+            BID id = conn.createBNode();
+            
+            add(id, RDF.type, SCV.Item, datasetContext);
+
+            if (item.getValue() instanceof BigDecimal) {
+                add(id, RDF.value, (BigDecimal) item.getValue(), datasetContext);
+            } else {
+                add(id, RDF.value, (String) item.getValue(), datasetContext);
+            }
+            add(id, SCV.dataset, datasetContext, datasetContext);
+            
+            for (Dimension dimension : item.getDimensions()) {
+                // TODO: subProperty of scv:dimension?
+                add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
+            }
+        }
+        
+        conn.update(Collections.<STMT>emptySet(), statements);
     }
 
     private String print(UID t) {
@@ -151,10 +146,7 @@ public class PXConverter {
     }
 
     private boolean exists(UID id, UID context, RDFConnection conn) {
-        CloseableIterator<STMT> iter = conn.findStatements(id, null, null, context, false);
-        boolean exists = iter.hasNext();
-        iter.close();
-        return exists;
+        return conn.exists(id, null, null, context, false);
     }
     
     private void add(ID subject, UID predicate, BigDecimal decimal, UID context) {
@@ -165,7 +157,11 @@ public class PXConverter {
         add(subject, predicate, new LIT(name), context);
     }
 
-    private String encodeID(String name) {
+    public static UID datasetUID(String baseURI, String datasetName) {
+        return new UID(baseURI + DATASET_CONTEXT, PXConverter.encodeID(datasetName));
+    }
+    
+    public static String encodeID(String name) {
         return XMLID.toXMLID(name);
     }
     
