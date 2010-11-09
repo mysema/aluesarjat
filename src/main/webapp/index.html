@@ -1,8 +1,33 @@
 <html>	
-	<head>
-		<title>Aluesarjat</title>
-	</head>
-	<body>
-		Aluesarjat		
-	</body>
+<head>
+	<title>Aluesarjat</title>
+	<link href="styles/styles.css" type="text/css" rel="stylesheet"/>
+	<script type="text/javascript" src="scripts/jquery-1.4.3.min.js"></script>	
+	<script type="text/javascript" src="scripts/queryform.js"></script>	
+</head>
+<body>
+	<h1>Aluesarjat</h1>		
+	
+	<h3>SPARQL</h3>
+		
+	<form method="GET" action="/query">
+
+		<div>
+<textarea id="query" name="query" cols="80" rows="10">
+PREFIX scv:   &lt;http://purl.org/NET/scovo#&gt; 
+PREFIX rdf:   &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+
+SELECT ?value 
+WHERE { ?item rdf:value ?value }
+</textarea>
+		</div>
+
+	  	<input id="formsubmit" type="submit"/>
+    </form>
+	
+	<div id="results">
+				
+	</div>
+
+</body>
 </html>
