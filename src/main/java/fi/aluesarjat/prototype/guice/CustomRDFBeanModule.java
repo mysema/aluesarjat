@@ -1,11 +1,9 @@
 package fi.aluesarjat.prototype.guice;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
+import java.util.Collections;
+import java.util.List;
 
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.mysema.rdfbean.guice.RDFBeanModule;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.object.Configuration;
@@ -13,10 +11,9 @@ import com.mysema.rdfbean.sesame.NativeRepository;
 
 public class CustomRDFBeanModule extends RDFBeanModule{
     
-    private Properties properties = new Properties();
-    
-    public CustomRDFBeanModule() throws IOException {
-        properties.load(getClass().getResourceAsStream("/aluesarjat.properties"));
+    @Override
+    public List<String> getConfiguration(){
+        return Collections.singletonList("/aluesarjat.properties");
     }
     
     @Override
@@ -28,9 +25,4 @@ public class CustomRDFBeanModule extends RDFBeanModule{
         return repository;
     }
     
-    @Provides
-    @Singleton
-    public Properties createProperties(){
-        return properties;
-    }
 }

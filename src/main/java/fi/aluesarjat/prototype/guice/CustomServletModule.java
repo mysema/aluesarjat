@@ -1,7 +1,5 @@
 package fi.aluesarjat.prototype.guice;
 
-import java.io.IOException;
-
 import org.guiceyfruit.jsr250.Jsr250Module;
 
 import com.google.inject.Provides;
@@ -17,16 +15,12 @@ public class CustomServletModule extends ServletModule{
     
     @Override
     protected void configureServlets() {
-        try {
-            install(new CustomRDFBeanModule());
-            install(new Jsr250Module());
-            bind(DataService.class).asEagerSingleton();
-            
-            serve("/query").with(SPARQLServlet.class);
-            serve("/rdf/*").with(ContextAccessServlet.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }        
+        install(new CustomRDFBeanModule());
+        install(new Jsr250Module());
+        bind(DataService.class).asEagerSingleton();
+        
+        serve("/query").with(SPARQLServlet.class);
+        serve("/rdf/*").with(ContextAccessServlet.class);     
     }
     
     @Provides
