@@ -110,7 +110,7 @@ public class PXConverter {
         /*
          * DATASET
          */
-        UID datasetContext = datasetUID(baseURI, dataset.getName());
+        UID datasetContext = getDatasetUID(dataset.getName());
         add(datasetContext, RDF.type, SCV.Dataset, datasetContext);
         if (dataset.getTitle() != null) {
             add(datasetContext, DC.title, dataset.getTitle(), datasetContext);
@@ -140,13 +140,17 @@ public class PXConverter {
         conn.update(Collections.<STMT>emptySet(), statements);
     }
 
+    public UID getDatasetUID(String datasetName) {
+        return new UID(baseURI + DATASET_CONTEXT, encodeID(datasetName));
+    }
+    
     private String print(UID t) {
         String uri = t.getId();
         return uri.startsWith(baseURI) ? uri.substring(baseURI.length()) : uri;
     }
 
-    private boolean exists(UID id, UID context, RDFConnection conn) {
-        return conn.exists(id, null, null, context, false);
+    private boolean exists(UID subject, UID context, RDFConnection conn) {
+        return conn.exists(subject, null, null, context, false);
     }
     
     private void add(ID subject, UID predicate, BigDecimal decimal, UID context) {
@@ -156,12 +160,8 @@ public class PXConverter {
     private void add(ID subject, UID predicate, String name, UID context) {
         add(subject, predicate, new LIT(name), context);
     }
-
-    public static UID datasetUID(String baseURI, String datasetName) {
-        return new UID(baseURI + DATASET_CONTEXT, PXConverter.encodeID(datasetName));
-    }
     
-    public static String encodeID(String name) {
+    private String encodeID(String name) {
         return XMLID.toXMLID(name);
     }
     

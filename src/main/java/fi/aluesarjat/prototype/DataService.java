@@ -48,7 +48,7 @@ public class DataService {
             for (String d : datasets) {
                 String datasetName = d.toString().trim();
                 if (StringUtils.isNotBlank(datasetName)) {
-                    UID uid = PXConverter.datasetUID(baseURI, datasetName);
+                    UID uid = pxc.getDatasetUID(datasetName);
                     RDFConnection conn = repository.openConnection();
                     try {
                         if (reload || !conn.exists(uid, RDF.type, SCV.Dataset, uid, false)) {
