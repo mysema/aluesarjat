@@ -1,6 +1,5 @@
 package com.mysema.stat.scovo;
 
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -54,14 +53,14 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     private Map<Dimension, UID> dimensions;
 
-    private static final Map<String, BigDecimal> DECIMAL_CACHE = new HashMap<String, BigDecimal>();
+    private static final Map<String, LIT> DECIMAL_CACHE = new HashMap<String, LIT>();
 
     private int itemCount = 0; 
     
     static {
         for (int i=0; i <= 1000; i++) {
             String str = Integer.toString(i);
-            DECIMAL_CACHE.put(str, BigDecimal.valueOf(i));
+            DECIMAL_CACHE.put(str, new LIT(str, XSD.decimalType));
         }
     }
 
@@ -82,7 +81,11 @@ public class RDFDatasetHandler implements DatasetHandler {
     }
     
     private void addDecimal(ID subject, UID predicate, String decimal, UID context) {
-        add(subject, predicate, new LIT(decimal, XSD.decimalType), context);
+        LIT lit = DECIMAL_CACHE.get(decimal);
+        if (lit == null) {
+            lit = new LIT(decimal, XSD.decimalType);
+        }
+        add(subject, predicate, lit, context);
     }
     
     private void add(ID subject, UID predicate, String name, UID context) {
@@ -103,7 +106,16 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     @Override
     public void addDataset(Dataset dataset) {
-        statements = new LinkedHashSet<STMT>();
+
+        UID datasetContext = datasetUID(baseURI, dataset.getName());
+        add(datasetContext, RDF.type, SCV.Dataset, datasetContext);
+        if (dataset.getTitle() != null) {
+            add(datasetContext, DC.title, dataset.getTitle(), datasetContext);
+        }
+        if (dataset.getDescription() != null) {
+            add(datasetContext, DC.description, dataset.getDescription(), datasetContext);
+        }
+        
         UID domainContext = new UID(baseURI + DOMAIN);
         String domainNs = domainContext.getId() + "#";
         
@@ -142,21 +154,13 @@ public class RDFDatasetHandler implements DatasetHandler {
             }
         }
         conn.update(Collections.<STMT>emptySet(), statements);
-        statements = null;
+        statements.clear();
     }
 
     @Override
     public void addItem(Item item) {
-        statements = new LinkedHashSet<STMT>();
         Dataset dataset = item.getDataset();
         UID datasetContext = datasetUID(baseURI, dataset.getName());
-        add(datasetContext, RDF.type, SCV.Dataset, datasetContext);
-        if (dataset.getTitle() != null) {
-            add(datasetContext, DC.title, dataset.getTitle(), datasetContext);
-        }
-        if (dataset.getDescription() != null) {
-            add(datasetContext, DC.description, dataset.getDescription(), datasetContext);
-        }
         
         BID id = conn.createBNode();
         
@@ -182,12 +186,13 @@ public class RDFDatasetHandler implements DatasetHandler {
             logger.info("Loaded " + itemCount + " items");
         }
         
-        statements = null;
+        statements.clear();
     }
 
     @Override
     public void begin() {
         conn = repository.openConnection();
+        statements = new LinkedHashSet<STMT>();
         dimensions = new HashMap<Dimension, UID>();
     }
 
