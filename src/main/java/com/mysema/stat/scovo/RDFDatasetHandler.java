@@ -56,6 +56,8 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     private static final Map<String, BigDecimal> DECIMAL_CACHE = new HashMap<String, BigDecimal>();
 
+    private int itemCount = 0; 
+    
     static {
         for (int i=0; i <= 1000; i++) {
             String str = Integer.toString(i);
@@ -173,6 +175,13 @@ public class RDFDatasetHandler implements DatasetHandler {
             add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
         }
         conn.update(Collections.<STMT>emptySet(), statements);
+        
+        itemCount++;
+        
+        if (itemCount % 1000 == 0) {
+            logger.info("Loaded " + itemCount + " items");
+        }
+        
         statements = null;
     }
 
