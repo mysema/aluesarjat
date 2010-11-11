@@ -6,31 +6,19 @@ import static com.mysema.stat.pcaxis.PCAxis.HEADING;
 import static com.mysema.stat.pcaxis.PCAxis.NOTE;
 import static com.mysema.stat.pcaxis.PCAxis.SOURCE;
 import static com.mysema.stat.pcaxis.PCAxis.STUB;
+import static com.mysema.stat.pcaxis.PCAxis.UNITS;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.NoSuchElementException;
 
 import com.mysema.commons.lang.Assert;
 
 public class Dataset {
 
-    private static final Logger logger = LoggerFactory.getLogger(Dataset.class);
-    
-    private int dataSize;
-    
     private String description;
 
     private List<DimensionType> dimensionTypes = new ArrayList<DimensionType>();
-
-    private List<Item> items;
     
     private String name;
     
@@ -38,83 +26,66 @@ public class Dataset {
     
     private String title;
     
-    public Set<Object> ignoredValues;
+    private String units;
     
-    // TODO: units?
-
-    public Dataset(String name, Map<Key, List<Object>> px) {
-        this(name, px, new HashSet<Object>(Arrays.asList(".")));
+    public String getUnits() {
+        return units;
     }
 
-    public Dataset(String name, Map<Key, List<Object>> px, Set<Object> ignoredValues) {
-        this.ignoredValues = ignoredValues;
+    public Dataset(String name) {
         this.name = Assert.notNull(name, "name");
-        
-        dataSize = 1;
-        for (Object dimensionType : px.get(STUB)) {
-            dataSize *= addDimension((String) dimensionType, px);
-        }
-        for (Object dimensionType : px.get(HEADING)) {
-            dataSize *= addDimension((String) dimensionType, px);
-        }
-
-        // Items
-        items = new ArrayList<Item>(dataSize);
-        
-        try {
-            addItems(0, new Dimension[dimensionTypes.size()], px.get(DATA), new AtomicInteger(0));
-        } catch (IllegalArgumentException e) {
-//            System.err.println(e.getMessage());
-            logger.warn(e.getMessage());
-        }
-        
-        title = toString(px.get(CONTENTS));
-        description = toString(px.get(NOTE));
-        publisher = toString(px.get(SOURCE));
     }
+    
+    public void set(Key key, List<String> values) {
+        if (CONTENTS.equals(key)) {
+            title = toString(values);
+        } 
 
-    private int addDimension(String name, Map<Key, List<Object>> px) {
-        DimensionType dimension = new DimensionType(name);
-        dimensionTypes.add(dimension);
-
-        List<Object> valueNames = px.get(new Key("VALUES", name));
-        List<Object> codes = px.get(new Key("VALUES", name));
-
-        for (int i = 0; i < valueNames.size(); i++) {
-            Dimension value = dimension.addDimension((String) valueNames.get(i));
-            if (codes != null) {
-                value.setCode((String) codes.get(i));
+        else if (NOTE.equals(key)) {
+            description = toString(values);
+        } 
+        
+        else if (SOURCE.equals(key)) {
+            publisher = toString(values);
+        } 
+        
+        else if (UNITS.equals(key)) {
+            units = toString(values);
+        } 
+        
+        else if (STUB.equals(key)) {
+            // Append at start of dimensions
+            for (int i=0; i < values.size(); i++) {
+                dimensionTypes.add(i, new DimensionType(toString(values.get(i))));
             }
-        }
-        return valueNames.size();
-    }
-
-    private void addItems(final int dimensionIndex, final Dimension[] dimensionValues, final List<Object> data, AtomicInteger dataIndex) {
-        DimensionType dimension = dimensionTypes.get(dimensionIndex);
-
-        List<Dimension> values = dimension.getDimensions();
-        for (int valueIndex = 0; valueIndex < values.size(); valueIndex++) {
-            if (dataIndex.get() >= data.size()) {
-                throw new IllegalArgumentException("Missing data: expected " + dataSize + " found " + dataIndex.get());
+        } 
+        
+        else if (HEADING.equals(key)) {
+            // Append to dimensions
+            for (String name : values) {
+                dimensionTypes.add(new DimensionType(toString(name)));
             }
-            
-            Dimension dimensionValue = values.get(valueIndex);
-            dimensionValues[dimensionIndex] = dimensionValue;
-            
-            if (dimensionIndex + 1 == dimensionTypes.size()) {
-                Object dataValue = data.get(dataIndex.getAndIncrement());
-                
-                if (!ignoredValues.contains(dataValue)) {
-                    items.add(new Item(this, asList(dimensionValues), dataValue));
-                }
-            } else {
-                addItems(dimensionIndex + 1, dimensionValues, data, dataIndex);
+        } 
+        
+        else if ("VALUES".equals(key.getName())) {
+            DimensionType type = findDimensionType(key.getSpecifier());
+            for (String value : values) {
+                type.addDimension(toString(value));
             }
+        } 
+        
+        else if (DATA.equals(key)) {
+            throw new IllegalArgumentException("DATA cannot be added directly to Dataset");
         }
     }
 
-    private List<Dimension> asList(final Dimension[] dimensionValues) {
-        return new ArrayList<Dimension>(Arrays.asList(dimensionValues));
+    private DimensionType findDimensionType(String name) {
+        for (DimensionType d : dimensionTypes) {
+            if (d.getName().equals(name)) {
+                return d;
+            }
+        }
+        throw new NoSuchElementException("DimensionType: " + name);
     }
 
     public String getDescription() {
@@ -123,10 +94,6 @@ public class Dataset {
 
     public List<DimensionType> getDimensionTypes() {
         return dimensionTypes;
-    }
-    
-    public List<Item> getItems() {
-        return items;
     }
 
     public String getName() {
@@ -141,15 +108,31 @@ public class Dataset {
         return title;
     }
 
-    private String toString(List<Object> list) {
-        if (list == null || list.isEmpty()) {
+    private String toString(String value) {
+        if (value.startsWith("\"")) {
+            return value.substring(1, value.length()-1).replace('#', '\n');
+        } else {
+            return value;
+        }
+    }
+    
+    private String toString(List<String> values) {
+        if (values == null || values.isEmpty()) {
             return null;
         }
-        StringBuilder sb  = new StringBuilder(list.size() * 80);
-        for (Object o : list) {
-            sb.append(o.toString().replace('#', '\n'));
+        StringBuilder sb  = new StringBuilder(values.size() * 80);
+        for (String value : values) {
+            sb.append(toString(value));
         }
         return sb.toString();
+    }
+
+    public int dimensions() {
+        return dimensionTypes.size();
+    }
+
+    public DimensionType getDimensionType(int dimensionIndex) {
+        return dimensionTypes.get(dimensionIndex);
     }
 
 }

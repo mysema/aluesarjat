@@ -24,13 +24,14 @@ import com.mysema.rdfbean.model.UID;
 import com.mysema.rdfbean.model.XSD;
 import com.mysema.rdfbean.owl.OWL;
 import com.mysema.stat.pcaxis.Dataset;
+import com.mysema.stat.pcaxis.DatasetHandler;
 import com.mysema.stat.pcaxis.Dimension;
 import com.mysema.stat.pcaxis.DimensionType;
 import com.mysema.stat.pcaxis.Item;
 
-public class PXConverter {
+public class RDFDatasetHandler implements DatasetHandler {
     
-    private static final Logger logger = LoggerFactory.getLogger(PXConverter.class);
+    private static final Logger logger = LoggerFactory.getLogger(RDFDatasetHandler.class);
     
     // http://www.aluesarjat.fi/rdf/
     private String baseURI;
@@ -47,28 +48,60 @@ public class PXConverter {
     
     private Set<STMT> statements;
     
-    public PXConverter(String baseURI) {
+    private RDFConnection conn;
+    
+    private Repository repository;
+
+    private Map<Dimension, UID> dimensions;
+
+    private static final Map<String, BigDecimal> DECIMAL_CACHE = new HashMap<String, BigDecimal>();
+
+    static {
+        for (int i=0; i <= 1000; i++) {
+            String str = Integer.toString(i);
+            DECIMAL_CACHE.put(str, BigDecimal.valueOf(i));
+        }
+    }
+
+    public RDFDatasetHandler(Repository repository, String baseURI) {
+        this.repository = repository;
         this.baseURI = baseURI;
         Assert.notNull(baseURI, "baseURI");
         Assert.assertThat(baseURI.endsWith("/"), "baseURI doesn't end with /", null, null);
     }
     
-    public void convert(Dataset dataset, Repository repository) {
-        RDFConnection conn = repository.openConnection();
-        try {
-            convert(dataset, conn);
-        } finally {
-            conn.close();
-        }
+    private String print(UID t) {
+        String uri = t.getId();
+        return uri.startsWith(baseURI) ? uri.substring(baseURI.length()) : uri;
+    }
+
+    private boolean exists(UID id, UID context, RDFConnection conn) {
+        return conn.exists(id, null, null, context, false);
     }
     
-    public void convert(Dataset dataset, RDFConnection conn) {
-        statements = new LinkedHashSet<STMT>();
-        Map<Dimension, UID> dimensions = new HashMap<Dimension, UID>();
+    private void addDecimal(ID subject, UID predicate, String decimal, UID context) {
+        add(subject, predicate, new LIT(decimal, XSD.decimalType), context);
+    }
+    
+    private void add(ID subject, UID predicate, String name, UID context) {
+        add(subject, predicate, new LIT(name), context);
+    }
 
-        /*
-         * METADATA
-         */
+    public static UID datasetUID(String baseURI, String datasetName) {
+        return new UID(baseURI + DATASET_CONTEXT, RDFDatasetHandler.encodeID(datasetName));
+    }
+    
+    public static String encodeID(String name) {
+        return XMLID.toXMLID(name);
+    }
+    
+    private void add(ID subject, UID predicate, NODE object, UID context) {
+        statements.add( new STMT(subject, predicate, object, context) );
+    }
+
+    @Override
+    public void addDataset(Dataset dataset) {
+        statements = new LinkedHashSet<STMT>();
         UID domainContext = new UID(baseURI + DOMAIN);
         String domainNs = domainContext.getId() + "#";
         
@@ -77,20 +110,20 @@ public class PXConverter {
         // SCHEMA: DimensionTypes
         for (DimensionType type : dataset.getDimensionTypes()) {
             UID t = new UID(domainNs, encodeID(type.getName()));
+            UID dimensionContext = new UID(dimensionBase + encodeID(type.getName()));
+            String dimensionNs = dimensionContext.getId() + "#";
 
             if (!exists(t, domainContext, conn)) {
                 add(t, RDF.type, RDFS.Class, domainContext);
                 add(t, RDF.type, OWL.Class, domainContext);
                 add(t, RDFS.subClassOf, SCV.Dimension, domainContext);
                 add(t, DC.title, type.getName(), domainContext);
+                add(t, META.instances, dimensionContext, domainContext);
             } else {
                 logger.info("Referring to existing DimensionType: " + print(t));
             }
             
             // INSTANCES: Dimensions
-            UID dimensionContext = new UID(dimensionBase + encodeID(type.getName()));
-            String dimensionNs = dimensionContext.getId() + "#";
-
             for (Dimension dimension : type.getDimensions()) {
                 UID d = new UID(dimensionNs, encodeID(dimension.getName()));
                 dimensions.put(dimension, d);
@@ -106,11 +139,15 @@ public class PXConverter {
                 // TODO: subProperty of scv:dimension?
             }
         }
-        
-        /*
-         * DATASET
-         */
-        UID datasetContext = getDatasetUID(dataset.getName());
+        conn.update(Collections.<STMT>emptySet(), statements);
+        statements = null;
+    }
+
+    @Override
+    public void addItem(Item item) {
+        statements = new LinkedHashSet<STMT>();
+        Dataset dataset = item.getDataset();
+        UID datasetContext = datasetUID(baseURI, dataset.getName());
         add(datasetContext, RDF.type, SCV.Dataset, datasetContext);
         if (dataset.getTitle() != null) {
             add(datasetContext, DC.title, dataset.getTitle(), datasetContext);
@@ -119,54 +156,40 @@ public class PXConverter {
             add(datasetContext, DC.description, dataset.getDescription(), datasetContext);
         }
         
-        for (Item item : dataset.getItems()) {
-            BID id = conn.createBNode();
-            
-            add(id, RDF.type, SCV.Item, datasetContext);
-
-            if (item.getValue() instanceof BigDecimal) {
-                add(id, RDF.value, (BigDecimal) item.getValue(), datasetContext);
-            } else {
-                add(id, RDF.value, (String) item.getValue(), datasetContext);
-            }
-            add(id, SCV.dataset, datasetContext, datasetContext);
-            
-            for (Dimension dimension : item.getDimensions()) {
-                // TODO: subProperty of scv:dimension?
-                add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
-            }
-        }
+        BID id = conn.createBNode();
         
+        add(id, RDF.type, SCV.Item, datasetContext);
+
+        String value = item.getValue();
+        if (value.startsWith("\"")) {
+            add(id, RDF.value, value.substring(1, value.length() - 1), datasetContext);
+        } else {
+            addDecimal(id, RDF.value, value, datasetContext);
+        }
+        add(id, SCV.dataset, datasetContext, datasetContext);
+        
+        for (Dimension dimension : item.getDimensions()) {
+            // TODO: subProperty of scv:dimension?
+            add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
+        }
         conn.update(Collections.<STMT>emptySet(), statements);
+        statements = null;
     }
 
-    public UID getDatasetUID(String datasetName) {
-        return new UID(baseURI + DATASET_CONTEXT, encodeID(datasetName));
-    }
-    
-    private String print(UID t) {
-        String uri = t.getId();
-        return uri.startsWith(baseURI) ? uri.substring(baseURI.length()) : uri;
+    @Override
+    public void begin() {
+        conn = repository.openConnection();
+        dimensions = new HashMap<Dimension, UID>();
     }
 
-    private boolean exists(UID subject, UID context, RDFConnection conn) {
-        return conn.exists(subject, null, null, context, false);
+    @Override
+    public void rollback() {
+        conn.close();
     }
-    
-    private void add(ID subject, UID predicate, BigDecimal decimal, UID context) {
-        add(subject, predicate, new LIT(decimal.toPlainString(), XSD.decimalType), context);
-    }
-    
-    private void add(ID subject, UID predicate, String name, UID context) {
-        add(subject, predicate, new LIT(name), context);
-    }
-    
-    private String encodeID(String name) {
-        return XMLID.toXMLID(name);
-    }
-    
-    private void add(ID subject, UID predicate, NODE object, UID context) {
-        statements.add( new STMT(subject, predicate, object, context) );
+
+    @Override
+    public void commit() {
+        conn.close();
     }
     
 }

@@ -3,6 +3,7 @@ package com.mysema.stat.pcaxis;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
@@ -12,90 +13,87 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class LargeDatasetTest {
-    
-    private static Map<Key, List<Object>> px;
-
-    @BeforeClass
-    public static void init() {
-        px = PCAxis.parse(LargeDatasetTest.class.getResourceAsStream("/A01S_HKI_Vakiluku.px"));
-    }
 
     @Test
-    public void load() {
-        Dataset dataset = new Dataset("A01S_HKI_Vakiluku", px);
-        Iterator<Item> items = dataset.getItems().iterator();
+    public void load() throws IOException {
+        DefaultDatasetHandler handler = new DefaultDatasetHandler();
+        PCAxisParser parser = new PCAxisParser(handler);
+    
+        Dataset dataset = parser.parse("A01S_HKI_Vakiluku", getClass().getResourceAsStream("/A01S_HKI_Vakiluku.px"));
+
+        Iterator<Item> items = handler.getItems(dataset).iterator();
         Item item; 
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Miehet", "0-vuotiaat", "1996");
         assertNotNull(item);
-        assertEquals(new BigDecimal(69), item.getValue());
+        assertEquals("69", item.getValue());
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Miehet", "0-vuotiaat", "1998");
         assertNotNull(item);
-        assertEquals(new BigDecimal(52), item.getValue());
+        assertEquals("52", item.getValue());
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Miehet", "2-vuotiaat", "1996");
         assertNotNull(item);
-        assertEquals(new BigDecimal(50), item.getValue());
+        assertEquals("50", item.getValue());
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Miehet", "2-vuotiaat", "1998");
         assertNotNull(item);
-        assertEquals(new BigDecimal(44), item.getValue());
+        assertEquals("44", item.getValue());
 
     
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Naiset", "0-vuotiaat", "1996");
         assertNotNull(item);
-        assertEquals(new BigDecimal(58), item.getValue());
+        assertEquals("58", item.getValue());
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Naiset", "0-vuotiaat", "1998");
         assertNotNull(item);
-        assertEquals(new BigDecimal(57), item.getValue());
+        assertEquals("57", item.getValue());
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Naiset", "2-vuotiaat", "1996");
         assertNotNull(item);
-        assertEquals(new BigDecimal(54), item.getValue());
+        assertEquals("54", item.getValue());
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Naiset", "2-vuotiaat", "1998");
         assertNotNull(item);
-        assertEquals(new BigDecimal(42), item.getValue());
+        assertEquals("42", item.getValue());
 
     
         // Kluuvi
         
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Miehet", "0-vuotiaat", "1996");
         assertNotNull(item);
-        assertEquals(new BigDecimal(1), item.getValue());
+        assertEquals("1", item.getValue());
 
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Miehet", "0-vuotiaat", "1998");
         assertNotNull(item);
-        assertEquals(new BigDecimal(0), item.getValue());
+        assertEquals("0", item.getValue());
 
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Miehet", "2-vuotiaat", "1996");
         assertNotNull(item);
-        assertEquals(new BigDecimal(1), item.getValue());
+        assertEquals("1", item.getValue());
 
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Miehet", "2-vuotiaat", "1998");
         assertNotNull(item);
-        assertEquals(new BigDecimal(2), item.getValue());
+        assertEquals("2", item.getValue());
 
     
 
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Naiset", "0-vuotiaat", "1996");
         assertNotNull(item);
-        assertEquals(new BigDecimal(2), item.getValue());
+        assertEquals("2", item.getValue());
 
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Naiset", "0-vuotiaat", "1998");
         assertNotNull(item);
-        assertEquals(new BigDecimal(2), item.getValue());
+        assertEquals("2", item.getValue());
 
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Naiset", "2-vuotiaat", "1996");
         assertNotNull(item);
-        assertEquals(new BigDecimal(0), item.getValue());
+        assertEquals("0", item.getValue());
 
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Naiset", "2-vuotiaat", "1998");
         assertNotNull(item);
-        assertEquals(new BigDecimal(2), item.getValue());
+        assertEquals("2", item.getValue());
     }
 
     private Item findItem(Iterator<Item> items, String... dimensions) {

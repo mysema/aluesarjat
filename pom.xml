@@ -20,11 +20,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.antlr</groupId>
-			<artifactId>antlr-runtime</artifactId>
-			<version>3.2</version>
-		</dependency>
-		<dependency>
 			<groupId>com.mysema.rdf</groupId>
 			<artifactId>rdfbean-sesame</artifactId>
 			<version>${rdfbean.version}</version>
@@ -151,37 +146,6 @@
 				<configuration>
 					<argLine>-Xms512m -Xmx512m</argLine>					    
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.antlr</groupId>
-				<artifactId>antlr3-maven-plugin</artifactId>
-				<version>3.2</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>antlr</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>target/generated-sources/antlr3</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.mysema.maven</groupId>

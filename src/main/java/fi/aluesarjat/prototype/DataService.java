@@ -17,9 +17,8 @@ import com.mysema.rdfbean.model.RDF;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.UID;
-import com.mysema.stat.pcaxis.Dataset;
-import com.mysema.stat.pcaxis.PCAxis;
-import com.mysema.stat.scovo.PXConverter;
+import com.mysema.stat.pcaxis.PCAxisParser;
+import com.mysema.stat.scovo.RDFDatasetHandler;
 import com.mysema.stat.scovo.SCV;
 
 public class DataService {
@@ -42,25 +41,33 @@ public class DataService {
             logger.info("initializing data");
             boolean reload = "true".equals(this.forceReload);
             
-            PXConverter pxc = new PXConverter(baseURI);
+            RDFDatasetHandler handler = new RDFDatasetHandler(repository, baseURI);
+            PCAxisParser parser = new PCAxisParser(handler);
             
             List<String> datasets = IOUtils.readLines(getStream("/data/datasets"));
             for (String d : datasets) {
                 String datasetName = d.toString().trim();
                 if (StringUtils.isNotBlank(datasetName)) {
-                    UID uid = pxc.getDatasetUID(datasetName);
+                    UID uid = RDFDatasetHandler.datasetUID(baseURI, datasetName);
                     RDFConnection conn = repository.openConnection();
+                    boolean load;
                     try {
-                        if (reload || !conn.exists(uid, RDF.type, SCV.Dataset, uid, false)) {
-                            InputStream in = getStream("/data/" + datasetName + ".px");
-                            try {
-                                pxc.convert(new Dataset(datasetName, PCAxis.parse(in)), conn);
-                            } finally {
-                                in.close();
-                            }
-                        }
+                        load = reload || !conn.exists(uid, RDF.type, SCV.Dataset, uid, false);
                     } finally {
                         conn.close();
+                    }
+                    if (load) {
+                        logger.info("Loading " + datasetName + "...");
+                        long time = System.currentTimeMillis();
+                        InputStream in = getStream("/data/" + datasetName + ".px");
+                        try {
+                            parser.parse(datasetName, in);
+                        } finally {
+                            in.close();
+                        }
+                        logger.info("Done loading " + datasetName + " in " + (System.currentTimeMillis() - time) + " ms");
+                    } else {
+                        logger.info("Skipping existing " + datasetName);
                     }
                 }
             }

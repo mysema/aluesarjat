@@ -19,10 +19,11 @@ import com.mysema.rdfbean.model.RDF;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SPARQLQuery;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.model.UID;
 import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.sesame.MemoryRepository;
-import com.mysema.stat.pcaxis.Dataset;
-import com.mysema.stat.pcaxis.PCAxis;
+import com.mysema.stat.pcaxis.PCAxisParser;
 
 public class PXConversionTest {
 
@@ -42,11 +43,21 @@ public class PXConversionTest {
     @Test
     public void convert() throws IOException {
         RDFConnection conn = repository.openConnection();
+        Map<String, String> namespaces = new HashMap<String, String>();
+        namespaces.putAll(Namespaces.DEFAULT);
+        namespaces.put(DC.NS, "dc");
+        namespaces.put(SCV.NS, "scv");
+        namespaces.put(META.NS, "meta");
+        namespaces.put("http://www.aluesarjat.fi/rdf/domain#", "domain");
+        namespaces.put("http://www.aluesarjat.fi/rdf/datasets/example-1#", "ex1");
+        namespaces.put("http://www.aluesarjat.fi/rdf/datasets/example-2#", "ex2");
 
         try {
-            PXConverter pxc = new PXConverter("http://www.aluesarjat.fi/rdf/");        
-            pxc.convert(new Dataset("example-1", PCAxis.parse(getClass().getResourceAsStream("/example-1.px"))), conn);
-            pxc.convert(new Dataset("example-2", PCAxis.parse(getClass().getResourceAsStream("/example-2.px"))), conn);
+            RDFDatasetHandler handler = new RDFDatasetHandler(repository, "http://www.aluesarjat.fi/rdf/");
+            PCAxisParser parser = new PCAxisParser(handler);
+            
+            parser.parse("example-1", getClass().getResourceAsStream("/example-1.px"));
+            parser.parse("example-2", getClass().getResourceAsStream("/example-2.px"));
         
             SPARQLQuery qry = conn.createQuery(
                     QueryLanguage.SPARQL, 
@@ -72,16 +83,24 @@ public class PXConversionTest {
             } finally {
                 rs.close();
             }
+
+            // Dimensions namespace prefixes
+            CloseableIterator<STMT> dimensions = conn.findStatements(null, META.instances, null, null, false);
+            try {
+                while (dimensions.hasNext()) {
+                    STMT stmt = dimensions.next();
+                    UID dimensionType = (UID) stmt.getSubject();
+                    UID instancesContext = (UID) stmt.getObject();
+                    namespaces.put(instancesContext.getId() + "#", dimensionType.getLocalName().toLowerCase());
+                }
+            } finally {
+                dimensions.close();
+            }
         } finally {
             conn.close();
         }
         
-        Map<String, String> namespaces = new HashMap<String, String>();
-        namespaces.putAll(Namespaces.DEFAULT);
-        namespaces.put(DC.NS, "dc");
-        namespaces.put(SCV.NS, "scv");
-        namespaces.put("http://www.aluesarjat.fi/rdf/datasets/example-1#", "ex1");
-        namespaces.put("http://www.aluesarjat.fi/rdf/datasets/example-2#", "ex2");
+        
         
         OutputStream out = new BufferedOutputStream(new FileOutputStream("target/example.ttl"));
         try {

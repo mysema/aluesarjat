@@ -8,9 +8,9 @@ public class Item {
 
     private final List<Dimension> dimensions;
 
-    private final Object value;
+    private final String value;
     
-    public Item(Dataset dataset, List<Dimension> dimensions, Object value) {
+    public Item(Dataset dataset, List<Dimension> dimensions, String value) {
         this.dataset = dataset;
         this.dimensions = dimensions;
         this.value = value;
@@ -25,9 +25,9 @@ public class Item {
     }
 
     /**
-     * @return String or BigDecimal
-     */
-    public Object getValue() {
+    * @return String ".*" or number [0-9.]+
+    */
+    public String getValue() {
         return value;
     }
     
