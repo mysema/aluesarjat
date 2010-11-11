@@ -57,6 +57,11 @@ public class DataService {
                         conn.close();
                     }
                     if (load) {
+                        if ("A01HKI_Astuot_hper_rahoitus_talotyyppi".equals(datasetName)) {
+                            handler.setIgnoredValues("\".\"", "0");
+                        } else {
+                            handler.setIgnoredValues("\".\"");
+                        }
                         logger.info("Loading " + datasetName + "...");
                         long time = System.currentTimeMillis();
                         InputStream in = getStream("/data/" + datasetName + ".px");

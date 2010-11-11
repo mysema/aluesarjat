@@ -1,7 +1,9 @@
 package com.mysema.stat.scovo;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +58,12 @@ public class RDFDatasetHandler implements DatasetHandler {
     private static final Map<String, LIT> DECIMAL_CACHE = new HashMap<String, LIT>();
 
     private int itemCount = 0; 
+    
+    private int skippedCount = 0;
+    
+    private Set<String> ignoredValues = new HashSet<String>(Arrays.asList(
+            "\".\""
+    ));
     
     static {
         for (int i=0; i <= 1000; i++) {
@@ -159,36 +167,44 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     @Override
     public void addItem(Item item) {
-        Dataset dataset = item.getDataset();
-        UID datasetContext = datasetUID(baseURI, dataset.getName());
-        
-        BID id = conn.createBNode();
-        
-        add(id, RDF.type, SCV.Item, datasetContext);
-
-        String value = item.getValue();
-        if (value.startsWith("\"")) {
-            add(id, RDF.value, value.substring(1, value.length() - 1), datasetContext);
+        if (ignoredValues.contains(item.getValue())) {
+            if (++skippedCount % 1000 == 0) {
+                logger.info("Skipped " + skippedCount + " items");
+            }
         } else {
-            addDecimal(id, RDF.value, value, datasetContext);
-        }
-        add(id, SCV.dataset, datasetContext, datasetContext);
-        
-        for (Dimension dimension : item.getDimensions()) {
-            // TODO: subProperty of scv:dimension?
-            add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
-        }
-        conn.update(Collections.<STMT>emptySet(), statements);
-        
-        itemCount++;
-        
-        if (itemCount % 1000 == 0) {
-            logger.info("Loaded " + itemCount + " items");
-        }
-        
-        statements.clear();
+            Dataset dataset = item.getDataset();
+            UID datasetContext = datasetUID(baseURI, dataset.getName());
+            
+            BID id = conn.createBNode();
+            
+            add(id, RDF.type, SCV.Item, datasetContext);
+    
+            String value = item.getValue();
+            if (value.startsWith("\"")) {
+                add(id, RDF.value, value.substring(1, value.length() - 1), datasetContext);
+            } else {
+                addDecimal(id, RDF.value, value, datasetContext);
+            }
+            add(id, SCV.dataset, datasetContext, datasetContext);
+            
+            for (Dimension dimension : item.getDimensions()) {
+                // TODO: subProperty of scv:dimension?
+                add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
+            }
+            conn.update(Collections.<STMT>emptySet(), statements);
+            
+            if (++itemCount % 1000 == 0) {
+                logger.info("Loaded " + itemCount + " items");
+            }
+            
+            statements.clear();
+        } 
     }
 
+    public void setIgnoredValues(String... values) {
+        this.ignoredValues = new HashSet<String>(Arrays.asList(values));
+    }
+    
     @Override
     public void begin() {
         conn = repository.openConnection();
