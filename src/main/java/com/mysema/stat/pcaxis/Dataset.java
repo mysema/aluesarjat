@@ -18,16 +18,16 @@ public class Dataset {
 
     private String description;
 
-    private List<DimensionType> dimensionTypes = new ArrayList<DimensionType>();
-    
-    private String name;
-    
+    private final List<DimensionType> dimensionTypes = new ArrayList<DimensionType>();
+
+    private final String name;
+
     private String publisher;
-    
+
     private String title;
-    
+
     private String units;
-    
+
     public String getUnits() {
         return units;
     }
@@ -35,45 +35,45 @@ public class Dataset {
     public Dataset(String name) {
         this.name = Assert.notNull(name, "name");
     }
-    
+
     public void set(Key key, List<String> values) {
         if (CONTENTS.equals(key)) {
             title = toString(values);
-        } 
+        }
 
         else if (NOTE.equals(key)) {
             description = toString(values);
-        } 
-        
+        }
+
         else if (SOURCE.equals(key)) {
             publisher = toString(values);
-        } 
-        
+        }
+
         else if (UNITS.equals(key)) {
             units = toString(values);
-        } 
-        
+        }
+
         else if (STUB.equals(key)) {
             // Append at start of dimensions
             for (int i=0; i < values.size(); i++) {
                 dimensionTypes.add(i, new DimensionType(toString(values.get(i))));
             }
-        } 
-        
+        }
+
         else if (HEADING.equals(key)) {
             // Append to dimensions
-            for (String name : values) {
-                dimensionTypes.add(new DimensionType(toString(name)));
+            for (String value : values) {
+                dimensionTypes.add(new DimensionType(toString(value)));
             }
-        } 
-        
+        }
+
         else if ("VALUES".equals(key.getName())) {
             DimensionType type = findDimensionType(key.getSpecifier());
             for (String value : values) {
                 type.addDimension(toString(value));
             }
-        } 
-        
+        }
+
         else if (DATA.equals(key)) {
             throw new IllegalArgumentException("DATA cannot be added directly to Dataset");
         }
@@ -115,7 +115,7 @@ public class Dataset {
             return value;
         }
     }
-    
+
     private String toString(List<String> values) {
         if (values == null || values.isEmpty()) {
             return null;
