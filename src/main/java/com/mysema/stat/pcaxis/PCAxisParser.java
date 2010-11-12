@@ -217,7 +217,7 @@ public class PCAxisParser {
 //    }
 
     private void skipWhitespace() throws IOException {
-        while (nextChar().in(WS)) ;
+        while (nextChar().in(WS)) ; //NOSONAR
         pushback();
     }
 
@@ -272,24 +272,24 @@ public class PCAxisParser {
     }
 
     private String location() {
-        StringBuilder s = new StringBuilder(recentRead.length + 10);
+        StringBuilder sb = new StringBuilder(recentRead.length + 10);
         if (ch > 0) {
-            s.append((char) ch);
+            sb.append((char) ch);
         } else {
-            s.append(ch);
+            sb.append(ch);
         }
-        s.append("@");
-        s.append(row);
-        s.append(": ");
+        sb.append("@");
+        sb.append(row);
+        sb.append(": ");
 
         int startIndex = recentIndex+1 - recentRead.length;
         if (startIndex < 0) {
             startIndex = 0;
         }
         for (; startIndex <= recentIndex; startIndex++) {
-            s.append(recentRead[startIndex % recentRead.length]);
+            sb.append(recentRead[startIndex % recentRead.length]);
         }
-        return s.toString();
+        return sb.toString();
     }
 
     @Override
