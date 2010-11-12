@@ -4,12 +4,9 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class LargeDatasetTest {
@@ -18,11 +15,11 @@ public class LargeDatasetTest {
     public void load() throws IOException {
         DefaultDatasetHandler handler = new DefaultDatasetHandler();
         PCAxisParser parser = new PCAxisParser(handler);
-    
+
         Dataset dataset = parser.parse("A01S_HKI_Vakiluku", getClass().getResourceAsStream("/A01S_HKI_Vakiluku.px"));
 
         Iterator<Item> items = handler.getItems(dataset).iterator();
-        Item item; 
+        Item item;
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Miehet", "0-vuotiaat", "1996");
         assertNotNull(item);
@@ -40,7 +37,7 @@ public class LargeDatasetTest {
         assertNotNull(item);
         assertEquals("44", item.getValue());
 
-    
+
 
         item = findItem(items, "091 101 Vironniemen peruspiiri", "Yhteensä", "Naiset", "0-vuotiaat", "1996");
         assertNotNull(item);
@@ -58,9 +55,9 @@ public class LargeDatasetTest {
         assertNotNull(item);
         assertEquals("42", item.getValue());
 
-    
+
         // Kluuvi
-        
+
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Miehet", "0-vuotiaat", "1996");
         assertNotNull(item);
         assertEquals("1", item.getValue());
@@ -77,7 +74,7 @@ public class LargeDatasetTest {
         assertNotNull(item);
         assertEquals("2", item.getValue());
 
-    
+
 
         item = findItem(items, "091 20 Kluuvi", "Yhteensä", "Naiset", "0-vuotiaat", "1996");
         assertNotNull(item);
@@ -110,5 +107,5 @@ public class LargeDatasetTest {
         }
         return item;
     }
-    
+
 }
