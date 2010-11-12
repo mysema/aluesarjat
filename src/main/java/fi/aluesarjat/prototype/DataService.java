@@ -1,6 +1,5 @@
 package fi.aluesarjat.prototype;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
@@ -50,9 +49,16 @@ public class DataService {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @PostConstruct
     public void initialize(){
+        new Thread() {
+            public void run() {
+                importData();
+            }
+        }.start();
+    }
+    
+    private void importData() {
         try {
             logger.info("adding namespaces");
 
@@ -66,11 +72,12 @@ public class DataService {
             addNamespace(baseURI + "datasets#", "dataset");
 
             logger.info("initializing data");
-            boolean reload = "true".equals(this.forceReload);
+            boolean reload = "true".equals(forceReload);
 
             RDFDatasetHandler handler = new RDFDatasetHandler(repository, baseURI);
             PCAxisParser parser = new PCAxisParser(handler);
 
+            @SuppressWarnings("unchecked")
             List<String> datasets = IOUtils.readLines(getStream("/data/datasets"));
             for (String d : datasets) {
                 String datasetDef = d.trim();
@@ -110,7 +117,7 @@ public class DataService {
                 }
             }
             logger.info("initialized data");
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
