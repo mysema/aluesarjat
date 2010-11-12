@@ -11,6 +11,9 @@ $(document).ready(function(){
 		beforeSend : function (xhr) {
     		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
 		},
+		error: function(xhr, textStatus, errorThrown){
+			$("#results").html(xhr.responseText);
+		},		
 		success: function(data){
 			var queryTemplate = [];
 			var bindings = data.results.bindings;
@@ -37,6 +40,9 @@ $(document).ready(function(){
 			beforeSend : function (xhr) {
         		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     		},
+			error: function(xhr, textStatus, errorThrown){
+				$("#results").html(xhr.responseText);
+			},			
 			success: function(data){
 				var vars = data.head.vars;
 				var bindings = data.results.bindings;

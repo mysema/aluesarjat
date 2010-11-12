@@ -28,7 +28,7 @@ public class CustomServletModule extends ServletModule{
     @Provides
     @Singleton
     public SPARQLServlet createSPARQLServlet(Repository repository){
-        return new SPARQLServlet(repository);
+        return new SPARQLServlet(repository, 200);
     }
 
     @Provides
