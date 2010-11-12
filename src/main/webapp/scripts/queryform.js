@@ -72,7 +72,7 @@ $(document).ready(function(){
 							lastColumns[j] = binding[key].value;
 						}
 						if ("uri" == binding[key].type) {
-							html.push("<td class='"+binding[key].type+"'>" + printURI(binding[key].value) + "</td>");
+							html.push("<td class='"+binding[key].type+"'>" + getReadableURI(binding[key].value) + "</td>");
 						} else if ("literal" == binding[key].type) {
 							html.push("<td class='"+binding[key].type+"'>" + binding[key].value.replace(/\n/g, "</br>") + "</td>");
  						} else {
@@ -91,7 +91,7 @@ $(document).ready(function(){
 	});
 });			
 
-function printURI(uri) {
+function getReadableURI(uri) {
 	if (uri == "") {
 		return "";
 	} else {
