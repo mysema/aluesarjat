@@ -2,7 +2,9 @@ package fi.aluesarjat.prototype;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -13,11 +15,16 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import com.mysema.rdfbean.Namespaces;
+import com.mysema.rdfbean.model.LIT;
 import com.mysema.rdfbean.model.RDF;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.pcaxis.PCAxisParser;
+import com.mysema.stat.scovo.DC;
+import com.mysema.stat.scovo.META;
 import com.mysema.stat.scovo.OpenRDFDatasetHandler;
 import com.mysema.stat.scovo.RDFDatasetHandler;
 import com.mysema.stat.scovo.SCV;
@@ -35,10 +42,30 @@ public class DataService {
     @Inject
     private Repository repository;
 
+    private void addNamespace(String ns, String prefix) {
+        RDFConnection conn = repository.openConnection();
+        try {
+            conn.update(null, Collections.singleton(new STMT(new UID(ns), META.nsPrefix, new LIT(prefix), null)));
+        } finally {
+            conn.close();
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     @PostConstruct
     public void initialize(){
         try {
+            logger.info("adding namespaces");
+
+            for (Map.Entry<String,String> entry : Namespaces.DEFAULT.entrySet()) {
+                addNamespace(entry.getKey(), entry.getValue());
+            }
+            addNamespace(SCV.NS, "scv");
+            addNamespace(META.NS, "meta");
+            addNamespace(DC.NS, "dc");
+            addNamespace(baseURI + "domain#", "domain");
+            addNamespace(baseURI + "datasets#", "dataset");
+            
             logger.info("initializing data");
             boolean reload = "true".equals(this.forceReload);
 
@@ -47,22 +74,28 @@ public class DataService {
 
             List<String> datasets = IOUtils.readLines(getStream("/data/datasets"));
             for (String d : datasets) {
-                String datasetName = d.toString().trim();
-                if (StringUtils.isNotBlank(datasetName)) {
+                String datasetDef = d.trim();
+                if (StringUtils.isNotBlank(datasetDef)) {
+                    String[] values = datasetDef.split("\\s+");
+                    String datasetName = values[0];
+                    String[] ignoredValues;
+                    if (values.length > 1) {
+                        ignoredValues = new String[values.length - 1];
+                        System.arraycopy(values, 1, ignoredValues, 0, ignoredValues.length);
+                    } else {
+                        ignoredValues = new String[0];
+                    }
+
                     UID uid = RDFDatasetHandler.datasetUID(baseURI, datasetName);
-                    RDFConnection conn = repository.openConnection();
                     boolean load;
+                    RDFConnection conn = repository.openConnection();
                     try {
                         load = reload || !conn.exists(uid, RDF.type, SCV.Dataset, uid, false);
                     } finally {
                         conn.close();
                     }
                     if (load) {
-                        if ("A01HKI_Astuot_hper_rahoitus_talotyyppi".equals(datasetName)) {
-                            handler.setIgnoredValues("\".\"", "0");
-                        } else {
-                            handler.setIgnoredValues("\".\"");
-                        }
+                        handler.setIgnoredValues(ignoredValues);
                         logger.info("Loading " + datasetName + "...");
                         long time = System.currentTimeMillis();
                         InputStream in = getStream("/data/" + datasetName + ".px");

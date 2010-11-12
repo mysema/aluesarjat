@@ -27,11 +27,13 @@ public class RDFDatasetHandler implements DatasetHandler {
     // http://www.aluesarjat.fi/rdf/
     private final String baseURI;
 
-    public static final String DATASET_CONTEXT = "datasets/"; // A01S_HKI_Vakiluku, ...
-
     public static final String DOMAIN = "domain";
 
-    public static final String DIMENSION_CONTEXT = "dimensions/"; // Alue, Toimiala, Vuosi, ...
+    private static final String DATASETS = "datasets";
+    
+    public static final String DATASET_CONTEXT_BASE = DATASETS + "#"; // A01S_HKI_Vakiluku, ...
+
+    public static final String DIMENSION_CONTEXT_BASE = "dimensions/"; // Alue, Toimiala, Vuosi, ...
 
 //    private UID datasetContext;
 //
@@ -91,7 +93,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     }
 
     public static UID datasetUID(String baseURI, String datasetName) {
-        return new UID(baseURI + DATASET_CONTEXT, RDFDatasetHandler.encodeID(datasetName));
+        return new UID(baseURI + DATASET_CONTEXT_BASE, RDFDatasetHandler.encodeID(datasetName));
     }
 
     public static String encodeID(String name) {
@@ -104,25 +106,26 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     @Override
     public void addDataset(Dataset dataset) {
+        UID datasetsContext = new UID(baseURI + DATASETS);
+        UID datasetUID = datasetUID(baseURI, dataset.getName());
 
-        UID datasetContext = datasetUID(baseURI, dataset.getName());
-        add(datasetContext, RDF.type, SCV.Dataset, datasetContext);
+        add(datasetUID, RDF.type, SCV.Dataset, datasetsContext);
         if (dataset.getTitle() != null) {
-            add(datasetContext, DC.title, dataset.getTitle(), datasetContext);
+            add(datasetUID, DC.title, dataset.getTitle(), datasetsContext);
         }
         if (dataset.getDescription() != null) {
-            add(datasetContext, DC.description, dataset.getDescription(), datasetContext);
+            add(datasetUID, DC.description, dataset.getDescription(), datasetsContext);
         }
 
         UID domainContext = new UID(baseURI + DOMAIN);
         String domainNs = domainContext.getId() + "#";
 
-        String dimensionBase = baseURI + DIMENSION_CONTEXT;
+        String dimensionBase = baseURI + DIMENSION_CONTEXT_BASE;
 
         // SCHEMA: DimensionTypes
         for (DimensionType type : dataset.getDimensionTypes()) {
             UID t = new UID(domainNs, encodeID(type.getName()));
-            UID dimensionContext = new UID(dimensionBase + encodeID(type.getName()));
+            UID dimensionContext = new UID(dimensionBase, encodeID(type.getName()));
             String dimensionNs = dimensionContext.getId() + "#";
 
             if (!exists(t, domainContext)) {
@@ -131,6 +134,9 @@ public class RDFDatasetHandler implements DatasetHandler {
                 add(t, RDFS.subClassOf, SCV.Dimension, domainContext);
                 add(t, DC.title, type.getName(), domainContext);
                 add(t, META.instances, dimensionContext, domainContext);
+                
+                // Namespace for dimension instances
+                add(new UID(dimensionNs), META.nsPrefix, dimensionContext.getLocalName(), null);
             } else {
                 logger.info("Referring to existing DimensionType: " + print(t));
             }
