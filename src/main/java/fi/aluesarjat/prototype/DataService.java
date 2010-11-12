@@ -1,7 +1,6 @@
 package fi.aluesarjat.prototype;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,15 +14,14 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.mysema.rdfbean.Namespaces;
-import com.mysema.rdfbean.model.LIT;
 import com.mysema.rdfbean.model.RDF;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
+import com.mysema.stat.META;
+import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.PCAxisParser;
 import com.mysema.stat.scovo.DC;
-import com.mysema.stat.scovo.META;
 import com.mysema.stat.scovo.RDFDatasetHandler;
 import com.mysema.stat.scovo.SCV;
 
@@ -40,22 +38,15 @@ public class DataService {
     @Inject
     private Repository repository;
 
-    private void addNamespace(String ns, String prefix) {
-        RDFConnection conn = repository.openConnection();
-        try {
-            conn.update(null, Collections.singleton(new STMT(new UID(ns), META.nsPrefix, new LIT(prefix), null)));
-        } finally {
-            conn.close();
-        }
-    }
-
     @PostConstruct
     public void initialize(){
-        new Thread() {
+        Thread thread = new Thread() {
             public void run() {
                 importData();
             }
-        }.start();
+        };
+        thread.setDaemon(true);
+        thread.start();
     }
     
     private void importData() {
@@ -63,13 +54,14 @@ public class DataService {
             logger.info("adding namespaces");
 
             for (Map.Entry<String,String> entry : Namespaces.DEFAULT.entrySet()) {
-                addNamespace(entry.getKey(), entry.getValue());
+                RDFDatasetHandler.addNamespace(repository, entry.getKey(), entry.getValue());
             }
-            addNamespace(SCV.NS, "scv");
-            addNamespace(META.NS, "meta");
-            addNamespace(DC.NS, "dc");
-            addNamespace(baseURI + "domain#", "domain");
-            addNamespace(baseURI + "datasets#", "dataset");
+            RDFDatasetHandler.addNamespace(repository, SCV.NS, "scv");
+            RDFDatasetHandler.addNamespace(repository, META.NS, "meta");
+            RDFDatasetHandler.addNamespace(repository, DC.NS, "dc");
+            RDFDatasetHandler.addNamespace(repository, STAT.NS, "stat");
+            RDFDatasetHandler.addNamespace(repository, baseURI + "domain#", "domain");
+            RDFDatasetHandler.addNamespace(repository, baseURI + "datasets#", "dataset");
 
             logger.info("initializing data");
             boolean reload = "true".equals(forceReload);

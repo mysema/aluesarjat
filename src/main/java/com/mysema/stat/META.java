@@ -1,4 +1,4 @@
-package com.mysema.stat.scovo;
+package com.mysema.stat;
 
 import com.mysema.rdfbean.model.UID;
 

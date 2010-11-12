@@ -23,6 +23,7 @@ import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.sesame.MemoryRepository;
+import com.mysema.stat.META;
 import com.mysema.stat.pcaxis.PCAxisParser;
 
 public class RDFDatasetHandlerTest {

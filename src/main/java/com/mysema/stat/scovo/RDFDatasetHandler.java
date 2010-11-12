@@ -12,8 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.*;
 import com.mysema.rdfbean.owl.OWL;
+import com.mysema.stat.META;
+import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.Dataset;
 import com.mysema.stat.pcaxis.DatasetHandler;
 import com.mysema.stat.pcaxis.Dimension;
@@ -136,7 +139,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                 add(t, META.instances, dimensionContext, domainContext);
                 
                 // Namespace for dimension instances
-                add(new UID(dimensionNs), META.nsPrefix, dimensionContext.getLocalName(), null);
+                addNamespace(repository, dimensionNs, dimensionContext.getLocalName().toLowerCase());
             } else {
                 logger.info("Referring to existing DimensionType: " + print(t));
             }
@@ -153,6 +156,8 @@ public class RDFDatasetHandler implements DatasetHandler {
                     logger.info("Referring to existing Dimension: " + print(d) + " of type " + print(t));
                 }
 
+                add(datasetUID, STAT.datasetDimension, d, datasetsContext);
+                
                 // TODO: hierarchy?
                 // TODO: subProperty of scv:dimension?
             }
@@ -218,6 +223,20 @@ public class RDFDatasetHandler implements DatasetHandler {
     @Override
     public void commit() {
         if (conn != null){
+            conn.close();
+        }
+    }
+
+    public static void addNamespace(Repository repository, String ns, String prefix) {
+        RDFConnection conn = repository.openConnection();
+        try {
+            LIT prefixLiteral = new LIT(prefix);
+            CloseableIterator<STMT> iter = conn.findStatements(null, META.nsPrefix, prefixLiteral, null, false);
+            while(iter.hasNext()) {
+                conn.update(Collections.singleton(iter.next()), null);
+            }
+            conn.update(null, Collections.singleton(new STMT(new UID(ns), META.nsPrefix, prefixLiteral, null)));
+        } finally {
             conn.close();
         }
     }
