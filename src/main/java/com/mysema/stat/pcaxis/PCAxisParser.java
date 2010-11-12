@@ -18,59 +18,59 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.Assert;
 
 public class PCAxisParser {
-    
+
     private static Logger logger = LoggerFactory.getLogger(PCAxisParser.class);
-    
+
     private final static CharSet KEY = CharSet.getInstance("A-Z-");
-    
+
     private final static CharSet EQ = CharSet.getInstance("=");
-    
+
     private final static CharSet SCOL = CharSet.getInstance(";");
-    
+
     private final static CharSet WS = CharSet.getInstance(" \t\n\f\r");
-    
+
     private final static CharSet COMMA = CharSet.getInstance(",");
-    
+
     private final static CharSet DOT = CharSet.getInstance(".");
-    
+
     private final static CharSet NUMBER = CharSet.getInstance("0-9");
-    
+
     private final static CharSet QUOTE = CharSet.getInstance("\"");
-    
+
     private final static CharSet LPAR = CharSet.getInstance("(");
-    
+
     private final static CharSet RPAR = CharSet.getInstance(")");
 
-    private DatasetHandler handler;
-    
+    private final DatasetHandler handler;
+
     private PushbackReader in;
-    
-    private int ch; 
-    
+
+    private int ch;
+
     private StringBuilder sb;
-    
+
     private int row;
 
     private char[] recentRead;
 
     private int recentIndex;
-    
+
     private Dataset dataset;
-    
+
     private List<DimensionType> dimensionTypes;
-    
+
     public PCAxisParser(DatasetHandler handler) {
         this.handler = Assert.notNull(handler, "handler");
     }
-    
+
     private void init() {
-        ch = -2; 
+        ch = -2;
         sb = new StringBuilder(128);
         row = 1;
         recentRead = new char[20];
         recentIndex = -1;
     }
-    
+
     public Dataset parse(String datasetName, InputStream in) throws IOException {
         try {
         this.in = new PushbackReader(new InputStreamReader(in, "Windows-1252"), 1);
@@ -80,11 +80,11 @@ public class PCAxisParser {
             do {
                 Key key = header();
                 expect(EQ);
-                
+
                 if (DATA.equals(key)) {
                     handler.addDataset(dataset);
                     dimensionTypes = dataset.getDimensionTypes();
-                    
+
                     try {
                         streamData(0, new Dimension[dataset.dimensions()]);
                     } catch (EOFException e) {
@@ -106,7 +106,7 @@ public class PCAxisParser {
         }
         throw new IllegalStateException("DATA -block not found");
     }
-    
+
     private void streamData(final int dimensionIndex, final Dimension[] dimensionValues) throws IOException {
         DimensionType dimension = dataset.getDimensionType(dimensionIndex);
 
@@ -114,7 +114,7 @@ public class PCAxisParser {
         for (int valueIndex = 0; valueIndex < values.size(); valueIndex++) {
             Dimension dimensionValue = values.get(valueIndex);
             dimensionValues[dimensionIndex] = dimensionValue;
-            
+
             if (dimensionIndex + 1 == dimensionTypes.size()) {
                 String value = value();
                 if (value == null) {
@@ -130,7 +130,7 @@ public class PCAxisParser {
     private List<Dimension> asList(Dimension[] dimensionValues) {
         return new ArrayList<Dimension>(Arrays.asList(dimensionValues));
     }
-    
+
     private String value() throws IOException {
         skipWhitespace();
         nextChar();
@@ -171,15 +171,15 @@ public class PCAxisParser {
         skipWhitespace();
         String name = collectWhileIn(KEY);
         String spec = null;
-        
+
         if (skipWhileIn(LPAR, QUOTE)) {
             spec = collectWhileNotIn(QUOTE);
             skipWhileIn(QUOTE, RPAR);
         }
-        
+
         return new Key(name, spec);
     }
-    
+
     public String collectWhileNotIn(CharSet... charSets) throws IOException {
         sb.setLength(0);
         while (!nextChar().in(charSets)) {
@@ -188,7 +188,7 @@ public class PCAxisParser {
         pushback();
         return sb.toString();
     }
-    
+
     public String collectWhileIn(CharSet... charSets) throws IOException {
         sb.setLength(0);
         while (nextChar().in(charSets)) {
@@ -197,7 +197,7 @@ public class PCAxisParser {
         pushback();
         return sb.toString();
     }
-    
+
     private boolean skipWhileIn(CharSet... charSets) throws IOException {
         boolean found = false;
         while (nextChar().in(charSets)) {
@@ -206,21 +206,21 @@ public class PCAxisParser {
         pushback();
         return found;
     }
-    
-    private boolean skipWhileNotIn(CharSet... charSets) throws IOException {
-        boolean found = false;
-        while (!nextChar().in(charSets)) {
-            found = true;
-        }
-        pushback();
-        return found;
-    }
-    
+
+//    private boolean skipWhileNotIn(CharSet... charSets) throws IOException {
+//        boolean found = false;
+//        while (!nextChar().in(charSets)) {
+//            found = true;
+//        }
+//        pushback();
+//        return found;
+//    }
+
     private void skipWhitespace() throws IOException {
         while (nextChar().in(WS)) ;
         pushback();
     }
-    
+
     private boolean in(CharSet charSet) throws IOException {
         if (ch == -2) {
             throw new IOException("Advance first!");
@@ -230,7 +230,7 @@ public class PCAxisParser {
             return false;
         }
     }
-    
+
     private boolean notIn(CharSet charSet) throws IOException {
         if (ch == -2) {
             throw new IOException("Advance first!");
@@ -240,7 +240,7 @@ public class PCAxisParser {
             return true;
         }
     }
-    
+
     private boolean in(CharSet... charSets) throws IOException {
         for (CharSet cs : charSets) {
             if (in(cs)) {
@@ -249,7 +249,7 @@ public class PCAxisParser {
         }
         return false;
     }
-    
+
     private PCAxisParser nextChar() throws IOException {
         ch = in.read();
         if (ch == '\n') {
@@ -260,38 +260,39 @@ public class PCAxisParser {
         }
         return this;
     }
-    
+
     private void pushback() throws IOException {
         in.unread(ch);
         if (ch == '\n') {
             row--;
         }
         recentIndex--;
-        
+
         ch = -2;
     }
-    
+
     private String location() {
-        StringBuilder sb = new StringBuilder(recentRead.length + 10);
+        StringBuilder s = new StringBuilder(recentRead.length + 10);
         if (ch > 0) {
-            sb.append((char) ch);
+            s.append((char) ch);
         } else {
-            sb.append(ch);
+            s.append(ch);
         }
-        sb.append("@");
-        sb.append(row);
-        sb.append(": ");
-        
+        s.append("@");
+        s.append(row);
+        s.append(": ");
+
         int startIndex = recentIndex+1 - recentRead.length;
         if (startIndex < 0) {
             startIndex = 0;
         }
         for (; startIndex <= recentIndex; startIndex++) {
-            sb.append(recentRead[startIndex % recentRead.length]);
+            s.append(recentRead[startIndex % recentRead.length]);
         }
-        return sb.toString();
+        return s.toString();
     }
-    
+
+    @Override
     public String toString() {
         return location();
     }
