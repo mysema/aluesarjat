@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openrdf.model.BNode;
+import org.openrdf.model.Literal;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.URI;
@@ -74,6 +75,7 @@ public class OpenRDFDatasetHandler implements DatasetHandler {
 
     private URI meta_instances;
 
+    private Map<String, Literal> decimalCache;
 
     public OpenRDFDatasetHandler(Repository repository, String baseURI) {
         this.repository = repository;
@@ -97,7 +99,11 @@ public class OpenRDFDatasetHandler implements DatasetHandler {
     }
 
     private void addDecimal(Resource subject, URI predicate, String decimal, URI context) {
-        add(subject, predicate, vf.createLiteral(decimal, XMLSchema.DECIMAL), context);
+        Literal lit = decimalCache.get(decimal);
+        if (lit == null) {
+            lit = vf.createLiteral(decimal, XMLSchema.DECIMAL);
+        }
+        add(subject, predicate, lit, context);
     }
 
     private void add(Resource subject, URI predicate, String name, URI context) {
@@ -225,6 +231,11 @@ public class OpenRDFDatasetHandler implements DatasetHandler {
         vf = conn.getValueFactory();
         statements = new LinkedHashSet<Statement>();
         dimensions = new HashMap<Dimension, URI>();
+        decimalCache = new HashMap<String, Literal>();
+        for (int i=0; i <= 1000; i++) {
+            String str = Integer.toString(i);
+            decimalCache.put(str, vf.createLiteral(str, XMLSchema.DECIMAL));
+        }
 
         scv_dataset = vf.createURI(SCV.dataset.getId());
         scv_dimension = vf.createURI(SCV.dimension.getId());
@@ -239,7 +250,9 @@ public class OpenRDFDatasetHandler implements DatasetHandler {
     @Override
     public void rollback() {
         try {
-            conn.close();
+            if (conn != null){
+                conn.close();
+            }
         } catch (StoreException e) {
             throw new RuntimeException(e);
         }
@@ -248,7 +261,9 @@ public class OpenRDFDatasetHandler implements DatasetHandler {
     @Override
     public void commit() {
         try {
-            conn.close();
+            if (conn != null){
+                conn.close();
+            }
         } catch (StoreException e) {
             throw new RuntimeException(e);
         }

@@ -25,7 +25,7 @@ import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.sesame.MemoryRepository;
 import com.mysema.stat.pcaxis.PCAxisParser;
 
-public class PXConversionTest {
+public class RDFDatasetHandlerTest {
 
     private Repository repository;
     

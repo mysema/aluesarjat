@@ -204,12 +204,16 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     @Override
     public void rollback() {
-        conn.close();
+        if (conn != null){
+            conn.close();
+        }
     }
 
     @Override
     public void commit() {
-        conn.close();
+        if (conn != null){
+            conn.close();
+        }
     }
 
 }
