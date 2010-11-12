@@ -10,3 +10,7 @@ table {
 .uri, .bnode {
 	font-style: italic;
 }
+
+.undefined {
+	color: gray;
+}

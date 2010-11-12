@@ -66,7 +66,9 @@ $(document).ready(function(){
 					html.push("<tr>");
 					for (var j = 0; j < vars.length; j++){
 						var key = vars[j];
-						if (lastColumns[j] != null && lastColumns[j] == binding[key].value) {
+						if (typeof binding[key] == "undefined") {
+							binding[key] = {type: "undefined", value: "undefined"};
+						} else if (lastColumns[j] != null && lastColumns[j] == binding[key].value) {
 							binding[key].value = "";
 						} else {
 							lastColumns[j] = binding[key].value;
