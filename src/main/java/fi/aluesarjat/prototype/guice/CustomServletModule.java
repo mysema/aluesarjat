@@ -20,7 +20,9 @@ public class CustomServletModule extends ServletModule{
         bind(DataService.class).asEagerSingleton();
 
         serve("/query").with(SPARQLServlet.class);
-        serve("/rdf/*").with(ContextAccessServlet.class);
+        serve("/rdf/domain*",
+              "/rdf/dimensions*",
+              "/rdf/datasets").with(ContextAccessServlet.class);
     }
 
     @Provides

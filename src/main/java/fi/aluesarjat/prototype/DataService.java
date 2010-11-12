@@ -25,7 +25,6 @@ import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.pcaxis.PCAxisParser;
 import com.mysema.stat.scovo.DC;
 import com.mysema.stat.scovo.META;
-import com.mysema.stat.scovo.OpenRDFDatasetHandler;
 import com.mysema.stat.scovo.RDFDatasetHandler;
 import com.mysema.stat.scovo.SCV;
 
@@ -50,7 +49,7 @@ public class DataService {
             conn.close();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @PostConstruct
     public void initialize(){
@@ -65,11 +64,11 @@ public class DataService {
             addNamespace(DC.NS, "dc");
             addNamespace(baseURI + "domain#", "domain");
             addNamespace(baseURI + "datasets#", "dataset");
-            
+
             logger.info("initializing data");
             boolean reload = "true".equals(this.forceReload);
 
-            OpenRDFDatasetHandler handler = new OpenRDFDatasetHandler(repository, baseURI);
+            RDFDatasetHandler handler = new RDFDatasetHandler(repository, baseURI);
             PCAxisParser parser = new PCAxisParser(handler);
 
             List<String> datasets = IOUtils.readLines(getStream("/data/datasets"));
