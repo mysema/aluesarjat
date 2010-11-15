@@ -8,13 +8,21 @@
 <body>
 	<h1>Aluesarjat</h1>		
 	
-	<h3>SPARQL</h3>
+	<h2>SPARQL</h2>
+
+    <div id="savedQueries">
+    <h3>Saved Queries</h3>
+    </div>
     
+    <h3>Default Namespaces</h3>
+    <div id="namespaces" style="height: 10em; overflow: auto; border: 1px solid gray;">
+    
+    </div>
 	<form method="GET" action="/query">
+        <h3>Query</h3>
 
 		<div>
-			<p>Query</p>			
-			<textarea id="query" name="query" cols="120" rows="25"></textarea>
+			<textarea id="query" name="query" cols="100" rows="12"></textarea>
 		</div>
 
 	  	<input id="formsubmit" type="submit"/>
@@ -24,6 +32,5 @@
 	
 	<div id="results"></div>
 
-    <div id="savedQueries">Saved queries</div>
 </body>
 </html>
