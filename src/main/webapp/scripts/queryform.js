@@ -6,6 +6,11 @@ String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)}
 
 $(document).ready(function(){
 
+	$(".savedquery").live("click",function() {
+		$("#query").val($(this).text());
+	});
+
+	// initialize saved queries
 	if (localStorage.savedQueries) {
 		savedQueries = JSON.parse(localStorage.savedQueries);
 		for (var i=0; i < savedQueries.length; i++) {
@@ -18,6 +23,7 @@ $(document).ready(function(){
 		localStorage.savedQueries = JSON.stringify(savedQueries); 
 	}
 	
+	// get namespaces from SPARQL endpoint
 	var query = "SELECT ?ns ?prefix WHERE { ?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix }";
 	$.ajax({
 		url: "query", 
@@ -44,8 +50,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	
-	
+	// SPARQL query handling
 	$("#formsubmit").click(function(){
 		var query = $("#query").val();
 		$.ajax({
@@ -58,55 +63,12 @@ $(document).ready(function(){
 			error: function(xhr, textStatus, errorThrown){
 				$("#results").html(xhr.responseText);
 			},			
-			success: function(data){
-				var vars = data.head.vars;
-				var bindings = data.results.bindings;
-				var html = new Array();
-				html.push("<p>Results</p>");
-				html.push("<table class='results'>");
-				
-				// head
-				html.push("<thead><tr>");
-				for (var i = 0; i < vars.length; i++){
-				//for (var v in vars) {
-					html.push("<th>" + vars[i] + "</th>");
-				}				
-				html.push("</tr></thead>");
-				
-				// body
-				html.push("<tbody>");
-				var lastColumns = [];
-				for (var i = 0; i < bindings.length; i++){
-					var binding = bindings[i];
-					html.push("<tr>");
-					for (var j = 0; j < vars.length; j++){
-						var key = vars[j];
-						if (typeof binding[key] == "undefined") {
-							binding[key] = {type: "undefined", value: "undefined"};
-						} else if (lastColumns[j] != null && lastColumns[j] == binding[key].value) {
-							binding[key].value = "";
-						} else {
-							lastColumns[j] = binding[key].value;
-						}
-						if ("uri" == binding[key].type) {
-							html.push("<td class='"+binding[key].type+"'>" + getReadableURI(binding[key].value) + "</td>");
-						} else if ("literal" == binding[key].type) {
-							html.push("<td class='"+binding[key].type+"'>" + binding[key].value.replace(/\n/g, "</br>") + "</td>");
- 						} else {
-							html.push("<td class='"+binding[key].type+"'>" + binding[key].value + "</td>");
-						}
-					}
-					html.push("</tr>");
-				}
-				html.push("</tbody>");
-				
-				html.push("</table>");
-				$("#results").html(html.join(""));
-			} 
+			success: handleSPARQLResult
 		});
 		return false;
 	});
 
+	// saved queries
 	$("#saveQuery").click(function(){
 		var query = $("#query").val();
 		var index = savedQueries.length;
@@ -116,15 +78,57 @@ $(document).ready(function(){
 	});
 });
 
+function handleSPARQLResult(data){
+	var vars = data.head.vars;
+	var bindings = data.results.bindings;
+	var html = new Array();
+	html.push("<p>Results</p>");
+	html.push("<table class='results'>");
+	
+	// head
+	html.push("<thead><tr>");
+	for (var i = 0; i < vars.length; i++){
+	//for (var v in vars) {
+		html.push("<th>" + vars[i] + "</th>");
+	}				
+	html.push("</tr></thead>");
+	
+	// body
+	html.push("<tbody>");
+	var lastColumns = [];
+	for (var i = 0; i < bindings.length; i++){
+		var binding = bindings[i];
+		html.push("<tr>");
+		for (var j = 0; j < vars.length; j++){
+			var key = vars[j];
+			if (typeof binding[key] == "undefined") {
+				binding[key] = {type: "undefined", value: "undefined"};
+			} else if (lastColumns[j] != null && lastColumns[j] == binding[key].value) {
+				binding[key].value = "";
+			} else {
+				lastColumns[j] = binding[key].value;
+			}
+			if ("uri" == binding[key].type) {
+				html.push("<td class='"+binding[key].type+"'>" + getReadableURI(binding[key].value) + "</td>");
+			} else if ("literal" == binding[key].type) {
+				html.push("<td class='"+binding[key].type+"'>" + binding[key].value.replace(/\n/g, "</br>") + "</td>");
+				} else {
+				html.push("<td class='"+binding[key].type+"'>" + binding[key].value + "</td>");
+			}
+		}
+		html.push("</tr>");
+	}
+	html.push("</tbody>");
+	
+	html.push("</table>");
+	$("#results").html(html.join(""));
+}
+
 function printSavedQuery(index, query) {
 	var id = "savedQuery-" + index;
 	var div = $("#savedQueries");
 	query = query.replace(/</g, "&lt;");
-	div.html(div.html() + "\n<pre id='" + id + "'>" + query + "\n</pre>");
-	
-	$("#" + id).click(function() {
-		$("#query").val($(this).text());
-	});
+	div.html(div.html() + "\n<pre class='savedquery'>" + query + "\n</pre>");	
 }
 
 function getReadableURI(uri) {
