@@ -1,8 +1,23 @@
 namespaces = {};
 
+var savedQueries; 
+
 String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)}
 
 $(document).ready(function(){
+
+	if (localStorage.savedQueries) {
+		savedQueries = JSON.parse(localStorage.savedQueries);
+		for (var i=0; i < savedQueries.length; i++) {
+			if (savedQueries[i] != null) {
+				printSavedQuery(i, savedQueries[i]);
+			}
+		}
+	} else {
+		savedQueries = [];
+		localStorage.savedQueries = JSON.stringify(savedQueries); 
+	}
+	
 	var query = "SELECT ?ns ?prefix WHERE { ?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix }";
 	$.ajax({
 		url: "query", 
@@ -91,7 +106,26 @@ $(document).ready(function(){
 		});
 		return false;
 	});
-});			
+
+	$("#saveQuery").click(function(){
+		var query = $("#query").val();
+		var index = savedQueries.length;
+		savedQueries[localStorage.savedQueries.length] = query;
+		localStorage.savedQueries = JSON.stringify(savedQueries); 
+		printSavedQuery(index, query);
+	});
+});
+
+function printSavedQuery(index, query) {
+	var id = "savedQuery-" + index;
+	var div = $("#savedQueries");
+	query = query.replace(/</g, "&lt;");
+	div.html(div.html() + "\n<pre id='" + id + "'>" + query + "\n</pre>");
+	
+	$("#" + id).click(function() {
+		$("#query").val($(this).text());
+	});
+}
 
 function getReadableURI(uri) {
 	if (uri == "") {
