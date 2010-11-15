@@ -272,24 +272,24 @@ public class PCAxisParser {
     }
 
     private String location() {
-        StringBuilder sb = new StringBuilder(recentRead.length + 10);
+        StringBuilder s = new StringBuilder(recentRead.length + 10);
         if (ch > 0) {
-            sb.append((char) ch);
+            s.append((char) ch);
         } else {
-            sb.append(ch);
+            s.append(ch);
         }
-        sb.append("@");
-        sb.append(row);
-        sb.append(": ");
+        s.append("@");
+        s.append(row);
+        s.append(": ");
 
         int startIndex = recentIndex+1 - recentRead.length;
         if (startIndex < 0) {
             startIndex = 0;
         }
         for (; startIndex <= recentIndex; startIndex++) {
-            sb.append(recentRead[startIndex % recentRead.length]);
+            s.append(recentRead[startIndex % recentRead.length]);
         }
-        return sb.toString();
+        return s.toString();
     }
 
     @Override
