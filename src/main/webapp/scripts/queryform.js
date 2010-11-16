@@ -91,6 +91,8 @@ $(document).ready(function(){
 		localStorage.savedQueries = JSON.stringify(savedQueries); 
 		printSavedQuery(index, query);
 	});
+
+	limit = new Number($("#pageSize").val());
 	
 	// Change page size
 	$("#pageSize").change(function() {
@@ -99,6 +101,8 @@ $(document).ready(function(){
 			executeQuery();
 		}
 	});
+	
+	
 });
 
 function executeQuery() {
@@ -146,7 +150,7 @@ function handleSPARQLResult(data){
 	var html = new Array();
 	var navigation = [];
 	
-	navigation.push("<a id='openResults' href='javascript: openResults();'>Open results in new window</a> - ");
+	navigation.push("<a id='openResults' href='javascript: openResults();'>Open in new window</a> - ");
 	if (offset > 0) {
 		navigation.push("<a href='javascript: prevPage();'>Previous page</a> - ");
 	} else {
@@ -244,7 +248,7 @@ function getReadableURI(uri) {
 }
 
 function openResults() {
-	var win = window.open('', null, 'left=20,top=20,width=500,height=500,toolbar=no,resizable=yes,menubar=no,');
+	var win = window.open('', null, 'left=20,top=20,width=500,height=500,toolbar=no,resizable=yes,menubar=no,scrollbars=yes');
 	win.document.write("<html><head><title>Results</title><link rel='stylesheet' type='text/css' href='styles/styles.css'></head><body><table class='results'>" +
 			$("#results table.results").html()
 			+ "</table></body></html>");
