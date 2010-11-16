@@ -211,7 +211,7 @@ function handleSPARQLResult(data){
 	html.push("</table><p>");
 	
 	html.push(navigation);
-	html.push("</p>")
+	html.push("</p>");
 	$("#results").html(html.join(""));
 	
 	queryActive = true;
@@ -244,7 +244,7 @@ function getReadableURI(uri) {
 }
 
 function openResults() {
-	var win = window.open('', null, 'left=20,top=20,width=500,height=500,toolbar=no,resizable=yes,menubar=no,scrollbars=yes');
+	var win = window.open('', null, 'left=20,top=20,width=500,height=500,toolbar=no,resizable=yes,menubar=no,');
 	win.document.write("<html><head><title>Results</title><link rel='stylesheet' type='text/css' href='styles/styles.css'></head><body><table class='results'>" +
 			$("#results table.results").html()
 			+ "</table></body></html>");
