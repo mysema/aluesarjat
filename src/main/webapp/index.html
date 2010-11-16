@@ -6,17 +6,17 @@
 	<script type="text/javascript" src="scripts/queryform.js"></script>	
 </head>
 <body>
-	<h1>Aluesarjat</h1>		
-	
-	<h2>SPARQL</h2>
+	<h1>Aluesarjat SPARQL</h1>		
 
     <div id="savedQueries">
     <h3>Saved Queries</h3>
     </div>
     
+    <div id="namespacesInfo">
     <h3>Default Namespaces</h3>
-    <div id="namespaces" style="height: 10em; overflow: auto; border: 1px solid gray;">
+    <div id="namespaces">
     
+    </div>
     </div>
 	<form method="GET" action="/query">
         <h3>Query</h3>
@@ -27,7 +27,8 @@
 
 	  	<input id="formsubmit" type="submit"/>
 	  	
-	  	<input id="saveQuery" type="button" value="Save Query"/>
+   	  	<input id="saveQuery" type="button" value="Save Query"/>
+	   Page size: 200
     </form>
 	
 	<div id="results"></div>

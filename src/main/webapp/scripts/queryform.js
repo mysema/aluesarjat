@@ -2,6 +2,8 @@ namespaces = {};
 
 var savedQueries; 
 var lastClick = null;
+var limit = 200;
+var offset = 0;
 
 String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)}
 
@@ -27,7 +29,7 @@ $(document).ready(function(){
 			$("#query").val(query);
 		}
 	});
-
+	
 	// initialize saved queries
 	if (localStorage.savedQueries) {
 		savedQueries = JSON.parse(localStorage.savedQueries);
@@ -45,7 +47,7 @@ $(document).ready(function(){
 	var query = "SELECT ?ns ?prefix WHERE { ?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix }";
 	$.ajax({
 		url: "query", 
-		data: { query: query}, 
+		data: { "query": query}, 
 		datatype: "json", 
 		beforeSend : function (xhr) {
     		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
@@ -59,7 +61,7 @@ $(document).ready(function(){
 			for (var i = 0; i < bindings.length; i++){
 				var binding = bindings[i];
 				namespaces[binding["prefix"].value] = binding["ns"].value;
-				defaultNamespaces.push("PREFIX ", binding["prefix"].value, ": &lt;", binding["ns"].value, "&gt;</br>");
+				defaultNamespaces.push("PREFIX ", binding["prefix"].value, ": &lt;", binding["ns"].value, "&gt;</br>\n");
 			}
 			
 			$("#namespaces").html(defaultNamespaces.join(""));
@@ -74,20 +76,9 @@ $(document).ready(function(){
 	});
 	
 	// SPARQL query handling
-	$("#formsubmit").click(function(){
-		var query = $("#namespaces").text() + $("#query").val();
-		$.ajax({
-			url: "query", 
-			data: { query: query}, 
-			datatype: "json", 
-			beforeSend : function (xhr) {
-        		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-    		},
-			error: function(xhr, textStatus, errorThrown){
-				$("#results").html(xhr.responseText);
-			},			
-			success: handleSPARQLResult
-		});
+	$("#formsubmit").click(function() {
+		offset = 0;
+		executeQuery();
 		return false;
 	});
 
@@ -101,11 +92,65 @@ $(document).ready(function(){
 	});
 });
 
+function executeQuery() {
+	$("#results").html("<img src='images/ajax-loader.gif' alt='Loading results'/>");
+	var qry = 
+		$("#namespaces").text() // Default namespaces 
+		+ $("#query").val() // Query
+		+ "\nlimit " + limit // Limit
+		+ "\noffset " + offset // Offset
+		;
+
+	$.ajax({
+		url: "query", 
+		data: { "query": qry}, 
+		datatype: "json", 
+		beforeSend : function (xhr) {
+    		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+		},
+		error: function(xhr, textStatus, errorThrown){
+			$("#results").html(xhr.responseText);
+		},			
+		success: handleSPARQLResult
+	});
+	return false;
+}
+
+function nextPage() {
+	offset += limit;
+	executeQuery();
+}
+
+function prevPage() {
+	if (offset > 0) {
+		offset -= limit;
+		if (offset < 0) {
+			offset = 0;
+		}
+		executeQuery();
+	}
+}
+
 function handleSPARQLResult(data){
 	var vars = data.head.vars;
 	var bindings = data.results.bindings;
 	var html = new Array();
-	html.push("<p>Results</p>");
+	var navigation = [];
+	
+	navigation.push("<a id='openResults' href='javascript: openResults();'>Open results in new window</a> - ");
+	if (offset > 0) {
+		navigation.push("<a href='javascript: prevPage();'>Previous page</a> - ");
+	} else {
+		navigation.push("Previous page - ");
+	}
+	if (bindings.length == limit) {
+		navigation.push("<a href='javascript: nextPage();'>Next page</a>");
+	} else {
+		navigation.push("Next page");
+	}
+    navigation = navigation.join("");
+    
+	html.push(navigation);
 	html.push("<table class='results'>");
 	
 	// head
@@ -154,7 +199,10 @@ function handleSPARQLResult(data){
 	}
 	html.push("</tbody>");
 	
-	html.push("</table>");
+	html.push("</table><p>");
+	
+	html.push(navigation);
+	html.push("</p>")
 	$("#results").html(html.join(""));
 }
 
@@ -168,11 +216,27 @@ function getReadableURI(uri) {
 	if (uri == "" || uri == "&nbsp;") {
 		return "";
 	} else {
+		var prefix = null;
 		for (var key in namespaces){
 			if (uri.startsWith(namespaces[key])) {
-				return key + ":" + uri.substring(namespaces[key].length);
+				if (prefix == null || namespaces[prefix].length < namespaces[key].length) {
+					prefix = key;
+				}  
 			}
 		}
-		return "<" + uri + ">";
+		if (prefix != null) {
+			return prefix + ":" + uri.substring(namespaces[prefix].length);
+		} else {
+			return "<" + uri + ">";
+		}
 	}
+}
+
+function openResults() {
+	var win = window.open('', null, 'left=20,top=20,width=500,height=500,toolbar=0,resizable=1');
+	win.document.write("<html><head><title>Results</title><link rel='stylesheet' type='text/css' href='styles/styles.css'></head><body><table class='results'>" +
+			$("#results table.results").html()
+			+ "</table></body></html>");
+    win.document.close();
+	win.focus();
 }

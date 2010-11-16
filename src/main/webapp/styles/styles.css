@@ -20,7 +20,15 @@ table {
 }
 
 #namespaces {
-	width: 600px;
+    border: 1px solid gray;
+    white-space: nowrap;
+    overflow: scroll;
+}
+
+#namespacesInfo {
+    float:right;
+    width: 60ex;
+    clear: right;
 }
 
 .savedQuery {

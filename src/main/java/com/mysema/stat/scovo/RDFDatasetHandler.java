@@ -30,13 +30,14 @@ public class RDFDatasetHandler implements DatasetHandler {
     // http://www.aluesarjat.fi/rdf/
     private final String baseURI;
 
-    public static final String DOMAIN = "domain";
+    public static final String DIMENSIONS = "dimensions";
+
+    public static final String DIMENSION_NS = DIMENSIONS + "/"; // Alue, Toimiala, Vuosi, ...
 
     private static final String DATASETS = "datasets";
     
     public static final String DATASET_CONTEXT_BASE = DATASETS + "#"; // A01S_HKI_Vakiluku, ...
 
-    public static final String DIMENSION_CONTEXT_BASE = "dimensions/"; // Alue, Toimiala, Vuosi, ...
 
 //    private UID datasetContext;
 //
@@ -120,14 +121,12 @@ public class RDFDatasetHandler implements DatasetHandler {
             add(datasetUID, DC.description, dataset.getDescription(), datasetsContext);
         }
 
-        UID domainContext = new UID(baseURI + DOMAIN);
-        String domainNs = domainContext.getId() + "#";
-
-        String dimensionBase = baseURI + DIMENSION_CONTEXT_BASE;
+        UID domainContext = new UID(baseURI,  DIMENSIONS);
+        String dimensionBase = baseURI + DIMENSION_NS;
 
         // SCHEMA: DimensionTypes
         for (DimensionType type : dataset.getDimensionTypes()) {
-            UID t = new UID(domainNs, encodeID(type.getName()));
+            UID t = new UID(dimensionBase, encodeID(type.getName()));
             UID dimensionContext = new UID(dimensionBase, encodeID(type.getName()));
             String dimensionNs = dimensionContext.getId() + "#";
 
@@ -136,7 +135,6 @@ public class RDFDatasetHandler implements DatasetHandler {
                 add(t, RDF.type, OWL.Class, domainContext);
                 add(t, RDFS.subClassOf, SCV.Dimension, domainContext);
                 add(t, DC.title, type.getName(), domainContext);
-                add(t, META.instances, dimensionContext, domainContext);
                 
                 // Namespace for dimension instances
                 addNamespace(repository, dimensionNs, dimensionContext.getLocalName().toLowerCase());
@@ -170,7 +168,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     public void addItem(Item item) {
         if (ignoredValues.contains(item.getValue())) {
             if (++skippedCount % 1000 == 0) {
-                logger.info("Skipped " + skippedCount + " items");
+                logger.info(item.getDataset().getName() + ": skipped " + skippedCount + " items");
             }
         } else {
             Dataset dataset = item.getDataset();
@@ -195,7 +193,7 @@ public class RDFDatasetHandler implements DatasetHandler {
             conn.update(Collections.<STMT>emptySet(), statements);
 
             if (++itemCount % 1000 == 0) {
-                logger.info("Loaded " + itemCount + " items");
+                logger.info(dataset.getName() + ": loaded " + itemCount + " items");
             }
 
             statements.clear();

@@ -21,7 +21,7 @@ public class CustomRDFBeanModule extends RDFBeanModule{
         File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-data");
         dataDir.mkdir();
         NativeRepository repository = new NativeRepository(dataDir, false);
-        repository.setIndexes("spoc,posc,cspo");
+        repository.setIndexes("spoc,posc,cspo,opsc");
         repository.initialize();
         return repository;
     }

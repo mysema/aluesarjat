@@ -1,5 +1,6 @@
 package fi.aluesarjat.prototype;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -39,76 +40,77 @@ public class DataService {
     private Repository repository;
 
     @PostConstruct
-    public void initialize(){
-        Thread thread = new Thread() {
-            public void run() {
-                importData();
-            }
-        };
-        thread.setDaemon(true);
-        thread.start();
+    public void initialize() throws IOException{
+        logger.info("adding namespaces");
+
+        for (Map.Entry<String,String> entry : Namespaces.DEFAULT.entrySet()) {
+            RDFDatasetHandler.addNamespace(repository, entry.getKey(), entry.getValue());
+        }
+        RDFDatasetHandler.addNamespace(repository, SCV.NS, "scv");
+        RDFDatasetHandler.addNamespace(repository, META.NS, "meta");
+        RDFDatasetHandler.addNamespace(repository, DC.NS, "dc");
+        RDFDatasetHandler.addNamespace(repository, STAT.NS, "stat");
+        RDFDatasetHandler.addNamespace(repository, baseURI + RDFDatasetHandler.DIMENSION_NS, "dimension");
+        RDFDatasetHandler.addNamespace(repository, baseURI + RDFDatasetHandler.DATASET_CONTEXT_BASE, "dataset");
+
+        logger.info("initializing data");
+        
+        final boolean reload = "true".equals(forceReload);
+        
+        @SuppressWarnings("unchecked")
+        List<String> datasets = IOUtils.readLines(getStream("/data/datasets"));
+        for (String d : datasets) {
+            final String datasetDef = d.trim();
+            Thread thread = new Thread() {
+                public void run() {
+                    importData(datasetDef, reload);
+                }
+            };
+            thread.setDaemon(true);
+            thread.start();
+        }
     }
     
-    private void importData() {
+    private void importData(String datasetDef, boolean reload) {
         try {
-            logger.info("adding namespaces");
-
-            for (Map.Entry<String,String> entry : Namespaces.DEFAULT.entrySet()) {
-                RDFDatasetHandler.addNamespace(repository, entry.getKey(), entry.getValue());
-            }
-            RDFDatasetHandler.addNamespace(repository, SCV.NS, "scv");
-            RDFDatasetHandler.addNamespace(repository, META.NS, "meta");
-            RDFDatasetHandler.addNamespace(repository, DC.NS, "dc");
-            RDFDatasetHandler.addNamespace(repository, STAT.NS, "stat");
-            RDFDatasetHandler.addNamespace(repository, baseURI + "domain#", "domain");
-            RDFDatasetHandler.addNamespace(repository, baseURI + "datasets#", "dataset");
-
-            logger.info("initializing data");
-            boolean reload = "true".equals(forceReload);
-
             RDFDatasetHandler handler = new RDFDatasetHandler(repository, baseURI);
             PCAxisParser parser = new PCAxisParser(handler);
 
-            @SuppressWarnings("unchecked")
-            List<String> datasets = IOUtils.readLines(getStream("/data/datasets"));
-            for (String d : datasets) {
-                String datasetDef = d.trim();
-                if (StringUtils.isNotBlank(datasetDef)) {
-                    String[] values = datasetDef.split("\\s+");
-                    String datasetName = values[0];
-                    String[] ignoredValues;
-                    if (values.length > 1) {
-                        ignoredValues = new String[values.length - 1];
-                        System.arraycopy(values, 1, ignoredValues, 0, ignoredValues.length);
-                    } else {
-                        ignoredValues = new String[0];
-                    }
+            if (StringUtils.isNotBlank(datasetDef)) {
+                String[] values = datasetDef.split("\\s+");
+                String datasetName = values[0];
+                String[] ignoredValues;
+                if (values.length > 1) {
+                    ignoredValues = new String[values.length - 1];
+                    System.arraycopy(values, 1, ignoredValues, 0, ignoredValues.length);
+                } else {
+                    ignoredValues = new String[0];
+                }
 
-                    UID uid = RDFDatasetHandler.datasetUID(baseURI, datasetName);
-                    boolean load;
-                    RDFConnection conn = repository.openConnection();
+                UID uid = RDFDatasetHandler.datasetUID(baseURI, datasetName);
+                boolean load;
+                RDFConnection conn = repository.openConnection();
+                try {
+                    // TODO: reload -> first delete existing triples
+                    load = !conn.exists(uid, RDF.type, SCV.Dataset, uid, false);
+                } finally {
+                    conn.close();
+                }
+                if (load) {
+                    handler.setIgnoredValues(ignoredValues);
+                    logger.info("Loading " + datasetName + "...");
+                    long time = System.currentTimeMillis();
+                    InputStream in = getStream("/data/" + datasetName + ".px");
                     try {
-                        load = reload || !conn.exists(uid, RDF.type, SCV.Dataset, uid, false);
+                        parser.parse(datasetName, in);
                     } finally {
-                        conn.close();
+                        in.close();
                     }
-                    if (load) {
-                        handler.setIgnoredValues(ignoredValues);
-                        logger.info("Loading " + datasetName + "...");
-                        long time = System.currentTimeMillis();
-                        InputStream in = getStream("/data/" + datasetName + ".px");
-                        try {
-                            parser.parse(datasetName, in);
-                        } finally {
-                            in.close();
-                        }
-                        logger.info("Done loading " + datasetName + " in " + (System.currentTimeMillis() - time) + " ms");
-                    } else {
-                        logger.info("Skipping existing " + datasetName);
-                    }
+                    logger.info("Done loading " + datasetName + " in " + (System.currentTimeMillis() - time) + " ms");
+                } else {
+                    logger.info("Skipping existing " + datasetName);
                 }
             }
-            logger.info("initialized data");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
