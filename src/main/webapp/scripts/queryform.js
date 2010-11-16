@@ -4,6 +4,7 @@ var savedQueries;
 var lastClick = null;
 var limit = 200;
 var offset = 0;
+var queryActive = false;
 
 String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)}
 
@@ -89,6 +90,14 @@ $(document).ready(function(){
 		savedQueries[localStorage.savedQueries.length] = query;
 		localStorage.savedQueries = JSON.stringify(savedQueries); 
 		printSavedQuery(index, query);
+	});
+	
+	// Change page size
+	$("#pageSize").change(function() {
+		limit = new Number($(this).val());
+		if (queryActive) {
+			executeQuery();
+		}
 	});
 });
 
@@ -204,6 +213,8 @@ function handleSPARQLResult(data){
 	html.push(navigation);
 	html.push("</p>")
 	$("#results").html(html.join(""));
+	
+	queryActive = true;
 }
 
 function printSavedQuery(index, query) {
@@ -233,7 +244,7 @@ function getReadableURI(uri) {
 }
 
 function openResults() {
-	var win = window.open('', null, 'left=20,top=20,width=500,height=500,toolbar=0,resizable=1');
+	var win = window.open('', null, 'left=20,top=20,width=500,height=500,toolbar=no,resizable=yes,menubar=no,scrollbars=yes');
 	win.document.write("<html><head><title>Results</title><link rel='stylesheet' type='text/css' href='styles/styles.css'></head><body><table class='results'>" +
 			$("#results table.results").html()
 			+ "</table></body></html>");
