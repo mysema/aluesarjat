@@ -1,20 +1,34 @@
 package com.mysema.stat.scovo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.rdfbean.model.*;
+import com.mysema.rdfbean.model.BID;
+import com.mysema.rdfbean.model.ID;
+import com.mysema.rdfbean.model.LIT;
+import com.mysema.rdfbean.model.NODE;
+import com.mysema.rdfbean.model.RDF;
+import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.RDFS;
+import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.model.UID;
+import com.mysema.rdfbean.model.XSD;
 import com.mysema.rdfbean.owl.OWL;
+import com.mysema.rdfbean.xsd.DateTimeConverter;
 import com.mysema.stat.META;
 import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.Dataset;
@@ -27,7 +41,7 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RDFDatasetHandler.class);
 
-    // http://www.aluesarjat.fi/rdf/
+    // E.g. http://www.aluesarjat.fi/rdf/
     private final String baseURI;
 
     public static final String DIMENSIONS = "dimensions";
@@ -38,6 +52,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     
     public static final String DATASET_CONTEXT_BASE = DATASETS + "#"; // A01S_HKI_Vakiluku, ...
 
+    private static final DateTimeConverter DATE_TIME_CONVERTER = new DateTimeConverter();
 
 //    private UID datasetContext;
 //
@@ -52,6 +67,8 @@ public class RDFDatasetHandler implements DatasetHandler {
     private Map<Dimension, UID> dimensions;
 
     private static final Map<String, LIT> DECIMAL_CACHE = new HashMap<String, LIT>();
+    
+    private List<UID> datasets; 
 
     private int itemCount = 0;
 
@@ -84,6 +101,10 @@ public class RDFDatasetHandler implements DatasetHandler {
         return conn.exists(id, null, null, context, false);
     }
 
+    private void add(ID subject, UID predicate, DateTime dateTime, UID context) {
+        add(subject, DCTERMS.created, new LIT(DATE_TIME_CONVERTER.toString(dateTime), XSD.dateTime), context);
+    }
+    
     private void addDecimal(ID subject, UID predicate, String decimal, UID context) {
         LIT lit = DECIMAL_CACHE.get(decimal);
         if (lit == null) {
@@ -107,12 +128,17 @@ public class RDFDatasetHandler implements DatasetHandler {
     private void add(ID subject, UID predicate, NODE object, UID context) {
         statements.add( new STMT(subject, predicate, object, context) );
     }
+    
+    public static UID datasetsContext(String baseURI) {
+        return new UID(baseURI, DATASETS);
+    }
 
     @Override
     public void addDataset(Dataset dataset) {
-        UID datasetsContext = new UID(baseURI + DATASETS);
+        UID datasetsContext = datasetsContext(baseURI);
         UID datasetUID = datasetUID(baseURI, dataset.getName());
 
+        datasets.add(datasetUID);
         add(datasetUID, RDF.type, SCV.Dataset, datasetsContext);
         if (dataset.getTitle() != null) {
             add(datasetUID, DC.title, dataset.getTitle(), datasetsContext);
@@ -120,6 +146,8 @@ public class RDFDatasetHandler implements DatasetHandler {
         if (dataset.getDescription() != null) {
             add(datasetUID, DC.description, dataset.getDescription(), datasetsContext);
         }
+        
+        add(datasetUID, DCTERMS.created, new DateTime(), datasetsContext);
 
         UID domainContext = new UID(baseURI,  DIMENSIONS);
         String dimensionBase = baseURI + DIMENSION_NS;
@@ -209,6 +237,7 @@ public class RDFDatasetHandler implements DatasetHandler {
         conn = repository.openConnection();
         statements = new LinkedHashSet<STMT>();
         dimensions = new HashMap<Dimension, UID>();
+        datasets = new ArrayList<UID>();
     }
 
     @Override
@@ -221,20 +250,60 @@ public class RDFDatasetHandler implements DatasetHandler {
     @Override
     public void commit() {
         if (conn != null){
+            UID datasetsContext = datasetsContext(baseURI);
+            for (UID ds : datasets) {
+                add(ds, DCTERMS.modified, new DateTime(), datasetsContext);
+            }
+            
             conn.close();
         }
     }
 
     public static void addNamespace(Repository repository, String ns, String prefix) {
         RDFConnection conn = repository.openConnection();
+        CloseableIterator<STMT> iter = null;
         try {
             LIT prefixLiteral = new LIT(prefix);
-            CloseableIterator<STMT> iter = conn.findStatements(null, META.nsPrefix, prefixLiteral, null, false);
+            UID uid = new UID(ns);
+            STMT nsStmt = new STMT(uid, META.nsPrefix, prefixLiteral, null);
+            boolean found = false;
+
+            // Prefix mapped already
+            iter = conn.findStatements(null, META.nsPrefix, prefixLiteral, null, false);
             while(iter.hasNext()) {
-                conn.update(Collections.singleton(iter.next()), null);
+                STMT stmt = iter.next();
+                if (stmt.equals(nsStmt)) {
+                    // Retain valid mapping
+                    found = true;
+                } else {
+                    // Remove duplicate prefix-mapping
+                    conn.update(Collections.singleton(stmt), null);
+                }
             }
-            conn.update(null, Collections.singleton(new STMT(new UID(ns), META.nsPrefix, prefixLiteral, null)));
+            iter.close();
+
+            // URI mapped already
+            iter = conn.findStatements(uid, META.nsPrefix, null, null, false);
+            while(iter.hasNext()) {
+                STMT stmt = iter.next();
+                if (stmt.equals(nsStmt)) {
+                    // Retain valid mapping
+                    found = true;
+                } else {
+                    // Remove duplicate URI-mapping
+                    conn.update(Collections.singleton(stmt), null);
+                }
+            }
+            iter.close();
+            
+            if (!found) {
+                // Add new mapping
+                conn.update(null, Collections.singleton(nsStmt));
+            }
         } finally {
+            if (iter != null) {
+                iter.close();
+            }
             conn.close();
         }
     }

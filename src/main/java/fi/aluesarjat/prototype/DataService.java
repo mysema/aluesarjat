@@ -23,6 +23,7 @@ import com.mysema.stat.META;
 import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.PCAxisParser;
 import com.mysema.stat.scovo.DC;
+import com.mysema.stat.scovo.DCTERMS;
 import com.mysema.stat.scovo.RDFDatasetHandler;
 import com.mysema.stat.scovo.SCV;
 
@@ -49,6 +50,7 @@ public class DataService {
         RDFDatasetHandler.addNamespace(repository, SCV.NS, "scv");
         RDFDatasetHandler.addNamespace(repository, META.NS, "meta");
         RDFDatasetHandler.addNamespace(repository, DC.NS, "dc");
+        RDFDatasetHandler.addNamespace(repository, DCTERMS.NS, "dcterms");
         RDFDatasetHandler.addNamespace(repository, STAT.NS, "stat");
         RDFDatasetHandler.addNamespace(repository, baseURI + RDFDatasetHandler.DIMENSION_NS, "dimension");
         RDFDatasetHandler.addNamespace(repository, baseURI + RDFDatasetHandler.DATASET_CONTEXT_BASE, "dataset");
@@ -88,11 +90,12 @@ public class DataService {
                 }
 
                 UID uid = RDFDatasetHandler.datasetUID(baseURI, datasetName);
+                UID datasetsContext = RDFDatasetHandler.datasetsContext(baseURI);
                 boolean load;
                 RDFConnection conn = repository.openConnection();
                 try {
                     // TODO: reload -> first delete existing triples
-                    load = !conn.exists(uid, RDF.type, SCV.Dataset, uid, false);
+                    load = !conn.exists(uid, RDF.type, SCV.Dataset, datasetsContext, false);
                 } finally {
                     conn.close();
                 }

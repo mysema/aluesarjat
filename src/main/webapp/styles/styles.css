@@ -38,11 +38,11 @@ table {
 }
 
 .results th {
-	background-color: #FFEECA;
+	background-color: #F1EDC2;
 }
 
 .results td.even {
-	background-color: #FDFDF0;
+	background-color: #FCF6CF;
 }
 
 .results td, .results th {

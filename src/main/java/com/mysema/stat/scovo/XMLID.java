@@ -33,8 +33,6 @@ public final class XMLID {
 
        ID_START_CHARS = CharSet.getInstance(idStartChars.toArray(new String[idStartChars.size()]));
        ID_CHARS = CharSet.getInstance(idChars.toArray(new String[idChars.size()]));
-
-
     }
 
     public static String toXMLID(String name) {
