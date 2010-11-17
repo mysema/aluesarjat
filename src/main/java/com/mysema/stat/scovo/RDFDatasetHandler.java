@@ -102,7 +102,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     }
 
     private void add(ID subject, UID predicate, DateTime dateTime, UID context) {
-        add(subject, DCTERMS.created, new LIT(DATE_TIME_CONVERTER.toString(dateTime), XSD.dateTime), context);
+        add(subject, predicate, new LIT(DATE_TIME_CONVERTER.toString(dateTime), XSD.dateTime), context);
     }
     
     private void addDecimal(ID subject, UID predicate, String decimal, UID context) {
@@ -254,8 +254,8 @@ public class RDFDatasetHandler implements DatasetHandler {
         if (conn != null){
             DateTime now = new DateTime();
             UID datasetsContext = datasetsContext(baseURI);
-            for (UID ds : datasets) {
-                add(ds, DCTERMS.modified, now, datasetsContext);
+            for (UID dataset : datasets) {
+                add(dataset, DCTERMS.modified, now, datasetsContext);
             }
             flush();
             conn.close();

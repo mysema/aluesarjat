@@ -47,6 +47,7 @@ public class RDFDatasetHandlerTest {
         Map<String, String> namespaces = new HashMap<String, String>();
         namespaces.putAll(Namespaces.DEFAULT);
         namespaces.put(DC.NS, "dc");
+        namespaces.put(DCTERMS.NS, "dcterms");
         namespaces.put(SCV.NS, "scv");
         namespaces.put(META.NS, "meta");
         namespaces.put("http://www.aluesarjat.fi/rdf/domain#", "domain");
