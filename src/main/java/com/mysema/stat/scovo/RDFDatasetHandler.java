@@ -188,6 +188,10 @@ public class RDFDatasetHandler implements DatasetHandler {
                 // TODO: subProperty of scv:dimension?
             }
         }
+        flush();
+    }
+    
+    private void flush() {
         conn.update(Collections.<STMT>emptySet(), statements);
         statements.clear();
     }
@@ -218,13 +222,11 @@ public class RDFDatasetHandler implements DatasetHandler {
                 // TODO: subProperty of scv:dimension?
                 add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
             }
-            conn.update(Collections.<STMT>emptySet(), statements);
+            flush();
 
             if (++itemCount % 1000 == 0) {
                 logger.info(dataset.getName() + ": loaded " + itemCount + " items");
             }
-
-            statements.clear();
         }
     }
 
@@ -250,11 +252,12 @@ public class RDFDatasetHandler implements DatasetHandler {
     @Override
     public void commit() {
         if (conn != null){
+            DateTime now = new DateTime();
             UID datasetsContext = datasetsContext(baseURI);
             for (UID ds : datasets) {
-                add(ds, DCTERMS.modified, new DateTime(), datasetsContext);
+                add(ds, DCTERMS.modified, now, datasetsContext);
             }
-            
+            flush();
             conn.close();
         }
     }
