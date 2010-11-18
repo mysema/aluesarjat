@@ -16,17 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.rdfbean.model.BID;
-import com.mysema.rdfbean.model.ID;
-import com.mysema.rdfbean.model.LIT;
-import com.mysema.rdfbean.model.NODE;
-import com.mysema.rdfbean.model.RDF;
-import com.mysema.rdfbean.model.RDFConnection;
-import com.mysema.rdfbean.model.RDFS;
-import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.model.STMT;
-import com.mysema.rdfbean.model.UID;
-import com.mysema.rdfbean.model.XSD;
+import com.mysema.rdfbean.model.*;
 import com.mysema.rdfbean.owl.OWL;
 import com.mysema.rdfbean.xsd.DateTimeConverter;
 import com.mysema.stat.META;
@@ -49,7 +39,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     public static final String DIMENSION_NS = DIMENSIONS + "/"; // Alue, Toimiala, Vuosi, ...
 
     private static final String DATASETS = "datasets";
-    
+
     public static final String DATASET_CONTEXT_BASE = DATASETS + "#"; // A01S_HKI_Vakiluku, ...
 
     private static final DateTimeConverter DATE_TIME_CONVERTER = new DateTimeConverter();
@@ -67,8 +57,10 @@ public class RDFDatasetHandler implements DatasetHandler {
     private Map<Dimension, UID> dimensions;
 
     private static final Map<String, LIT> DECIMAL_CACHE = new HashMap<String, LIT>();
-    
-    private List<UID> datasets; 
+
+    private List<UID> datasets;
+
+    private final int batchSize = 2000;
 
     private int itemCount = 0;
 
@@ -104,7 +96,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     private void add(ID subject, UID predicate, DateTime dateTime, UID context) {
         add(subject, predicate, new LIT(DATE_TIME_CONVERTER.toString(dateTime), XSD.dateTime), context);
     }
-    
+
     private void addDecimal(ID subject, UID predicate, String decimal, UID context) {
         LIT lit = DECIMAL_CACHE.get(decimal);
         if (lit == null) {
@@ -128,7 +120,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     private void add(ID subject, UID predicate, NODE object, UID context) {
         statements.add( new STMT(subject, predicate, object, context) );
     }
-    
+
     public static UID datasetsContext(String baseURI) {
         return new UID(baseURI, DATASETS);
     }
@@ -146,7 +138,7 @@ public class RDFDatasetHandler implements DatasetHandler {
         if (dataset.getDescription() != null) {
             add(datasetUID, DC.description, dataset.getDescription(), datasetsContext);
         }
-        
+
         add(datasetUID, DCTERMS.created, new DateTime(), datasetsContext);
 
         UID domainContext = new UID(baseURI,  DIMENSIONS);
@@ -163,7 +155,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                 add(t, RDF.type, OWL.Class, domainContext);
                 add(t, RDFS.subClassOf, SCV.Dimension, domainContext);
                 add(t, DC.title, type.getName(), domainContext);
-                
+
                 // Namespace for dimension instances
                 addNamespace(repository, dimensionNs, dimensionContext.getLocalName().toLowerCase());
             } else {
@@ -183,14 +175,14 @@ public class RDFDatasetHandler implements DatasetHandler {
                 }
 
                 add(datasetUID, STAT.datasetDimension, d, datasetsContext);
-                
+
                 // TODO: hierarchy?
                 // TODO: subProperty of scv:dimension?
             }
         }
         flush();
     }
-    
+
     private void flush() {
         conn.update(Collections.<STMT>emptySet(), statements);
         statements.clear();
@@ -222,9 +214,12 @@ public class RDFDatasetHandler implements DatasetHandler {
                 // TODO: subProperty of scv:dimension?
                 add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
             }
-            flush();
 
-            if (++itemCount % 1000 == 0) {
+            if (++itemCount % batchSize == 0){
+                flush();
+            }
+
+            if (itemCount % 1000 == 0) {
                 logger.info(dataset.getName() + ": loaded " + itemCount + " items");
             }
         }
@@ -298,7 +293,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                 }
             }
             iter.close();
-            
+
             if (!found) {
                 // Add new mapping
                 conn.update(null, Collections.singleton(nsStmt));
