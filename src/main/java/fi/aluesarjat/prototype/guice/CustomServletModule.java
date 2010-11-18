@@ -16,6 +16,7 @@ public class CustomServletModule extends ServletModule{
     @Override
     protected void configureServlets() {
         install(new CustomRDFBeanModule());
+//        install(new VirtuosoRDFBeanModule());
         install(new Jsr250Module());
         bind(DataService.class).asEagerSingleton();
 
