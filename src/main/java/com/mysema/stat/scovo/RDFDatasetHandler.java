@@ -13,6 +13,7 @@ import java.util.Set;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Isolation;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
@@ -30,6 +31,10 @@ import com.mysema.stat.pcaxis.Item;
 public class RDFDatasetHandler implements DatasetHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RDFDatasetHandler.class);
+
+    private static final int TX_TIMEOUT = -1;
+
+    private static final int TX_ISOLATION = Isolation.DEFAULT.value();
 
     // E.g. http://www.aluesarjat.fi/rdf/
     private final String baseURI;
@@ -51,6 +56,8 @@ public class RDFDatasetHandler implements DatasetHandler {
     private Set<STMT> statements;
 
     private RDFConnection conn;
+
+    private RDFBeanTransaction tx;
 
     private final Repository repository;
 
@@ -186,6 +193,9 @@ public class RDFDatasetHandler implements DatasetHandler {
     private void flush() {
         conn.update(Collections.<STMT>emptySet(), statements);
         statements.clear();
+
+        tx.commit();
+        tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
     }
 
     @Override
@@ -230,6 +240,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     @Override
     public void begin() {
         conn = repository.openConnection();
+        tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
         statements = new LinkedHashSet<STMT>();
         dimensions = new HashMap<Dimension, UID>();
         datasets = new ArrayList<UID>();
@@ -237,6 +248,9 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     @Override
     public void rollback() {
+        if (tx != null){
+            tx.rollback();
+        }
         if (conn != null){
             conn.close();
         }
@@ -244,6 +258,9 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     @Override
     public void commit() {
+        if (tx != null){
+            tx.commit();
+        }
         if (conn != null){
             DateTime now = new DateTime();
             UID datasetsContext = datasetsContext(baseURI);
@@ -257,6 +274,7 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     public static void addNamespace(Repository repository, String ns, String prefix) {
         RDFConnection conn = repository.openConnection();
+        RDFBeanTransaction tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
         CloseableIterator<STMT> iter = null;
         try {
             LIT prefixLiteral = new LIT(prefix);
@@ -296,6 +314,11 @@ public class RDFDatasetHandler implements DatasetHandler {
                 // Add new mapping
                 conn.update(null, Collections.singleton(nsStmt));
             }
+            tx.commit();
+
+        } catch(Exception e){
+            tx.rollback();
+
         } finally {
             if (iter != null) {
                 iter.close();

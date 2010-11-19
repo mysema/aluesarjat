@@ -1,4 +1,4 @@
-package fi.aluesarjat.prototype;
+package etc;
 
 import org.junit.Ignore;
 import org.junit.Test;

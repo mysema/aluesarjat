@@ -1,4 +1,4 @@
-package fi.aluesarjat.prototype.guice;
+package etc;
 
 import java.io.File;
 
