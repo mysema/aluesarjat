@@ -64,6 +64,22 @@ public final class XMLID {
         }
         return sb.toString();
     }
+    
+    public static boolean isValidXMLID(String value) {
+        if (value == null || value.length() == 0) {
+            return false;
+        } else {
+            if (!ID_START_CHARS.contains(value.charAt(0))) {
+                return false;
+            }
+            for (int i=1; i < value.length(); i++) {
+                if (!ID_CHARS.contains(value.charAt(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 
     private static boolean replaceWithUnderscore(char ch) {
         return Character.isWhitespace(ch) || '.' == ch;

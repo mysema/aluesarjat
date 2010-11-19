@@ -10,6 +10,8 @@ import com.mysema.rdfbean.sparql.SPARQLServlet;
 
 import fi.aluesarjat.prototype.ContextAccessServlet;
 import fi.aluesarjat.prototype.DataService;
+import fi.aluesarjat.prototype.FacetsServlet;
+import fi.aluesarjat.prototype.SearchServlet;
 
 public class CustomServletModule extends ServletModule{
 
@@ -21,7 +23,9 @@ public class CustomServletModule extends ServletModule{
         install(new Jsr250Module());
         bind(DataService.class).asEagerSingleton();
 
-        serve("/query").with(SPARQLServlet.class);
+        serve("/sparql").with(SPARQLServlet.class);
+        serve("/search").with(SearchServlet.class);
+        serve("/facets").with(FacetsServlet.class);
         serve("/rdf/domain*",
               "/rdf/dimensions*",
               "/rdf/datasets").with(ContextAccessServlet.class);
@@ -37,6 +41,18 @@ public class CustomServletModule extends ServletModule{
     @Singleton
     public ContextAccessServlet createContextAccessServlet(Repository repository){
         return new ContextAccessServlet(repository);
+    }
+
+    @Provides
+    @Singleton
+    public SearchServlet createFacetedSearchServlet(Repository repository){
+        return new SearchServlet(repository);
+    }
+
+    @Provides
+    @Singleton
+    public FacetsServlet createFacetedSearchInitServlet(Repository repository){
+        return new FacetsServlet(repository);
     }
 
 }

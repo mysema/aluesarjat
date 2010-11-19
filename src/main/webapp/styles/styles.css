@@ -48,3 +48,18 @@ table {
 .results td, .results th {
 	border: 1px solid #FEE0C6;
 }
+
+.facetValue {
+	-moz-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid #FEE0C6;
+    background-color: #FCF6CF;
+    padding: 2px 10px;
+    margin: 2px 10px 2px 0px;
+    white-space: nowrap;
+    float: left;
+}
+
+.facet {
+	clear: both;
+}

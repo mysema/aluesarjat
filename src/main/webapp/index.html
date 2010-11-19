@@ -3,44 +3,16 @@
 	<title>Aluesarjat</title>
 	<link href="styles/styles.css" type="text/css" rel="stylesheet"/>
 	<script type="text/javascript" src="scripts/jquery-1.4.3.min.js"></script>	
-	<script type="text/javascript" src="scripts/queryform.js"></script>	
+    <script type="text/javascript" src="scripts/jquery.corner.js"></script>    
+	<script type="text/javascript" src="scripts/search.js"></script>	
 </head>
 <body>
-	<h1>Aluesarjat SPARQL</h1>		
+	<h1>Aluesarjat</h1>
 
-    <div id="savedQueries">
-    <h3>Saved Queries</h3>
-    </div>
-    
-    <div id="namespacesInfo">
-    <h3>Default Namespaces</h3>
-    <div id="namespaces">
-    
-    </div>
-    </div>
-	<form method="GET" action="/query">
-        <h3>Query</h3>
-
-		<div>
-			<textarea id="query" name="query" cols="100" rows="12"></textarea>
-		</div>
-
-	  	<input id="formsubmit" type="submit"/>
-	  	
-   	  	<input id="saveQuery" type="button" value="Save Query"/>
-
-        Page size:   	  	
-   	  	<select id="pageSize">
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="200" selected="selected">200</option>
-            <option value="500">500</option>
-            <option value="1000">1000</option>
-   	  	</select>
-    </form>
-	
-	<div id="results"></div>
-
+    <table>
+        <tbody>
+            <tr><td id="facets"></td><td id="results"></td></tr>
+        </tbody>
+    </table>
 </body>
 </html>

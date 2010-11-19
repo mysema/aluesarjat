@@ -47,7 +47,7 @@ $(document).ready(function(){
 	// get namespaces from SPARQL endpoint
 	var query = "SELECT ?ns ?prefix WHERE { ?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix }";
 	$.ajax({
-		url: "query", 
+		url: "sparql", 
 		data: { "query": query}, 
 		datatype: "json", 
 		beforeSend : function (xhr) {
@@ -66,15 +66,17 @@ $(document).ready(function(){
 			}
 			
 			$("#namespaces").html(defaultNamespaces.join(""));
-			$("#query").val(
-					"SELECT ?dimensionName ?dimensionURI\n" +
-					"WHERE {\n" +
-					"?dimensionURI rdfs:subClassOf scv:Dimension ;\n" + 
-					"    dc:title ?dimensionName .\n" + 
-					"}"
-			);
 		}
 	});
+
+	// Example query
+	$("#query").val(
+			"SELECT ?dimensionName ?dimensionURI\n" +
+			"WHERE {\n" +
+			"?dimensionURI rdfs:subClassOf scv:Dimension ;\n" + 
+			"    dc:title ?dimensionName .\n" + 
+			"}"
+	);
 	
 	// SPARQL query handling
 	$("#formsubmit").click(function() {
@@ -115,7 +117,7 @@ function executeQuery() {
 		;
 
 	$.ajax({
-		url: "query", 
+		url: "sparql", 
 		data: { "query": qry}, 
 		datatype: "json", 
 		beforeSend : function (xhr) {
@@ -233,7 +235,7 @@ function getReadableURI(uri) {
 	} else {
 		var prefix = null;
 		for (var key in namespaces){
-			if (uri.startsWith(namespaces[key])) {
+			if (uri.startsWith(namespaces[key]) && uri.length > namespaces[key].length) {
 				if (prefix == null || namespaces[prefix].length < namespaces[key].length) {
 					prefix = key;
 				}  
@@ -242,7 +244,7 @@ function getReadableURI(uri) {
 		if (prefix != null) {
 			return prefix + ":" + uri.substring(namespaces[prefix].length);
 		} else {
-			return "<" + uri + ">";
+			return "&lt;" + uri + ">";
 		}
 	}
 }

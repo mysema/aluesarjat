@@ -1,5 +1,8 @@
 package com.mysema.stat.scovo;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +21,17 @@ import org.springframework.transaction.annotation.Isolation;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.rdfbean.model.*;
+import com.mysema.rdfbean.model.ID;
+import com.mysema.rdfbean.model.LIT;
+import com.mysema.rdfbean.model.NODE;
+import com.mysema.rdfbean.model.RDF;
+import com.mysema.rdfbean.model.RDFBeanTransaction;
+import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.RDFS;
+import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.model.UID;
+import com.mysema.rdfbean.model.XSD;
 import com.mysema.rdfbean.owl.OWL;
 import com.mysema.rdfbean.xsd.DateTimeConverter;
 import com.mysema.stat.META;
@@ -205,32 +219,54 @@ public class RDFDatasetHandler implements DatasetHandler {
                 logger.info(item.getDataset().getName() + ": skipped " + skippedCount + " items");
             }
         } else {
-            Dataset dataset = item.getDataset();
-            UID datasetContext = datasetUID(baseURI, dataset.getName());
+            try {
+                Dataset dataset = item.getDataset();
+                UID datasetContext = datasetUID(baseURI, dataset.getName());
 
-            BID id = conn.createBNode();
+                MessageDigest md = MessageDigest.getInstance("SHA-1");
+                List<NODE[]> properties = new ArrayList<NODE[]>();
 
-            add(id, RDF.type, SCV.Item, datasetContext);
+                // PROPERTIES from which an ID for the Item is derived
+                addProperty(RDF.type, SCV.Item, properties, md);
 
-            String value = item.getValue();
-            if (value.startsWith("\"")) {
-                add(id, RDF.value, value.substring(1, value.length() - 1), datasetContext);
-            } else {
-                addDecimal(id, RDF.value, value, datasetContext);
-            }
-            add(id, SCV.dataset, datasetContext, datasetContext);
+                String value = item.getValue();
+                if (value.startsWith("\"")) {
+                    addProperty(RDF.value, value.substring(1, value.length() - 1), properties, md);
+                } else {
+                    addProperty(RDF.value, value, properties, md);
+                }
+                addProperty(SCV.dataset, datasetContext, properties, md);
 
-            for (Dimension dimension : item.getDimensions()) {
-                // TODO: subProperty of scv:dimension?
-                add(id, SCV.dimension, dimensions.get(dimension), datasetContext);
-            }
-
-            if (++itemCount % batchSize == 0){
-                flush();
-                logger.info(dataset.getName() + ": loaded " + itemCount + " items");
+                for (Dimension dimension : item.getDimensions()) {
+                    addProperty(SCV.dimension, dimensions.get(dimension), properties, md);
+                }
+                // ADD TRIPLES
+                UID id = new UID("item:", new String(Hex.encodeHex(md.digest())));
+                for (NODE[] property : properties) {
+                    add(id, (UID) property[0], property[1], datasetContext);
+                }
+                
+                if (++itemCount % batchSize == 0) {
+                    flush();
+                    logger.info(dataset.getName() + ": loaded " + itemCount + " items");
+                }
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
             }
 
         }
+    }
+
+    private void addProperty(UID predicate, String object, List<NODE[]> properties, MessageDigest md) throws UnsupportedEncodingException {
+        addProperty(predicate, new LIT(object), properties, md);
+    }
+
+    private void addProperty(UID predicate, NODE object, List<NODE[]> properties, MessageDigest md) throws UnsupportedEncodingException {
+        properties.add(new NODE[] { predicate, object } );
+        md.update(predicate.getId().getBytes("UTF-8"));
+        md.update(object.toString().getBytes("UTF-8"));
     }
 
     public void setIgnoredValues(String... values) {
