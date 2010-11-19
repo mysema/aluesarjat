@@ -43,17 +43,17 @@ public class SearchServlet extends HttpServlet {
         this.repository = repository;
     }
 
-    private StringBuilder whereDimensions(String[] dimensions, String subject, String predicate) {
+    private StringBuilder whereDimensions(List<String> dimensions, String subject, String predicate) {
         StringBuilder where = new StringBuilder();
-        if (dimensions.length > 0) {
+        if (!dimensions.isEmpty()) {
             where.append(subject);
             // TODO Should we support multiple selections from a given facet?
-            for (int i=0; i < dimensions.length; i++) {
+            for (int i=0; i < dimensions.size(); i++) {
                 if (i > 0) {
                     where.append(" ;\n");
                 }
                 // TODO use parameters
-                where.append(" ").append(predicate).append(" ").append(dimensions[i]);
+                where.append(" ").append(predicate).append(" ").append(dimensions.get(i));
             }
             where.append(" .\n");
         }
@@ -66,8 +66,16 @@ public class SearchServlet extends HttpServlet {
         HttpServletResponse response = (HttpServletResponse)res;
         response.setContentType("application/json");
 
-        String[] dimensions = nullToEmpty(request.getParameterValues("dimension"));
-        String[] datasets = nullToEmpty(request.getParameterValues("dataset"));
+        List<String> dimensions = new ArrayList<String>();
+        List<String> datasets = new ArrayList<String>();
+        for (String value : nullToEmpty(request.getParameterValues("value"))) {
+            if (value.startsWith("dataset:")) {
+                datasets.add(value);
+            } else {
+                dimensions.add(value);
+            }
+        }
+
         int limit = Math.min(getInt(request, "limit", 200), 1000);
         int offset = getInt(request, "offset", 0);
 
@@ -75,12 +83,15 @@ public class SearchServlet extends HttpServlet {
         CloseableIterator<Map<String,NODE>> iter = null;
         CloseableIterator<STMT> stmts = null;
         try {
+            int restrictionCount = datasets.size() + dimensions.size();
+            if (restrictionCount == 0) {
+                throw new IllegalArgumentException("No restrictions (value) specified");
+            } 
             List<JSONObject> items = null;
             StringBuilder sparql;
             SPARQLQuery query;
             Map<String, NODE> row;
-            Collection<String> availableDimensions;
-            Collection<String> availableDatasets;
+            Collection<String> availableValues;
 
             // NAMESPACES
             Map<String,String> namespaces = getNamespaces(conn);
@@ -93,25 +104,24 @@ public class SearchServlet extends HttpServlet {
                 sparqlNamespaces.append(">\n");
             }
 
-            int restrictionCount = datasets.length + dimensions.length;
             if (restrictionCount < 3) {
-                availableDatasets = new LinkedHashSet<String>();
-                availableDimensions = new LinkedHashSet<String>();
+                availableValues = new LinkedHashSet<String>();
+                availableValues.addAll(dimensions);
 
                 // Find available dimensions via dataset definitions
 
                 StringBuilder filter = new StringBuilder();
-                if (datasets.length > 0) {
-                    filter.append("FILTER (?dataset = ").append(datasets[0]).append("\n");
+                if (datasets.size() > 0) {
+                    filter.append("FILTER (?dataset = ").append(datasets.get(0)).append("\n");
                 }
-                for (int i=0; i < dimensions.length; i++) {
+                for (int i=0; i < dimensions.size(); i++) {
                     if (filter.length() == 0) {
                         filter.append("FILTER (");
                     } else {
                         filter.append(" && ");
                     }
 
-                    stmts = conn.findStatements(getUID(dimensions[i], namespaces), RDF.type, null, null, false);
+                    stmts = conn.findStatements(getUID(dimensions.get(i), namespaces), RDF.type, null, null, false);
                     if (stmts.hasNext()) {
                         STMT stmt = stmts.next();
                         filter.append("?dimensionType != <");
@@ -129,7 +139,7 @@ public class SearchServlet extends HttpServlet {
                 .append("?dataset stat:datasetDimension ?dimension .\n");
 
                 if (filter.length() > 0) {
-                    if (dimensions.length > 0) {
+                    if (dimensions.size() > 0) {
                         sparql.append("?dimension rdf:type ?dimensionType .\n");
                     }
                     sparql.append(filter).append(")\n}\n");
@@ -141,18 +151,18 @@ public class SearchServlet extends HttpServlet {
                 iter = query.getTuples();
                 while (iter.hasNext()) {
                     row = iter.next();
-                    availableDatasets.add(getPrefixed((UID) row.get("dataset"), namespaces));
-                    availableDimensions.add(getPrefixed((UID) row.get("dimension"), namespaces));
+                    availableValues.add(getPrefixed((UID) row.get("dataset"), namespaces));
+                    availableValues.add(getPrefixed((UID) row.get("dimension"), namespaces));
                 }
                 iter.close();
             } else {
                 items = new ArrayList<JSONObject>(limit);
                 StringBuilder where = whereDimensions(dimensions, "?item", "scv:dimension");
 
-                if (datasets.length > 0) {
+                if (!datasets.isEmpty()) {
                     // TODO Should we support multiple dataset selections?
                     // TODO use parameters
-                    where.append("?item scv:dataset " + datasets[0] + " .\n");
+                    where.append("?item scv:dataset " + datasets.get(0) + " .\n");
                 }
 
                 // Distinct items
@@ -175,12 +185,12 @@ public class SearchServlet extends HttpServlet {
 
                     JSONObject json = new JSONObject();
                     json.put("value", value.getValue());
-                    json.put("dataset", getPrefixed(dataset, namespaces));
+                    json.accumulate("values", getPrefixed(dataset, namespaces));
 
                     stmts = conn.findStatements(id, SCV.dimension, null, dataset, false);
                     while (stmts.hasNext()) {
                         STMT stmt = stmts.next();
-                        json.accumulate("dimensions", getPrefixed((UID) stmt.getObject(), namespaces));
+                        json.accumulate("values", getPrefixed((UID) stmt.getObject(), namespaces));
                     }
                     stmts.close();
                     items.add(json);
@@ -189,7 +199,7 @@ public class SearchServlet extends HttpServlet {
 
 
                 // AVAILABLE DIMENSIONS
-                availableDimensions = new ArrayList<String>();
+                availableValues = new ArrayList<String>();
 
                 sparql = new StringBuilder()
                 .append(sparqlNamespaces)
@@ -202,13 +212,11 @@ public class SearchServlet extends HttpServlet {
                 while (iter.hasNext()) {
                     row = iter.next();
                     UID id = (UID) row.get("dimension");
-                    availableDimensions.add(getPrefixed(id, namespaces));
+                    availableValues.add(getPrefixed(id, namespaces));
                 }
                 iter.close();
 
                 // AVAILABLE DATASETS
-                availableDatasets = new ArrayList<String>();
-
                 sparql = new StringBuilder()
                 .append(sparqlNamespaces)
                 .append("SELECT distinct ?dataset\nWHERE {\n")
@@ -220,7 +228,7 @@ public class SearchServlet extends HttpServlet {
                 while (iter.hasNext()) {
                     row = iter.next();
                     UID id = (UID) row.get("dataset");
-                    availableDatasets.add(getPrefixed(id, namespaces));
+                    availableValues.add(getPrefixed(id, namespaces));
                 }
                 iter.close();
             }
@@ -229,8 +237,7 @@ public class SearchServlet extends HttpServlet {
             if (items != null) {
                 result.put("items", items);
             }
-            result.put("dimensions", availableDimensions);
-            result.put("datasets", availableDatasets);
+            result.put("values", availableValues);
             Writer out = response.getWriter();
             result.write(out);
             out.flush();

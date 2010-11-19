@@ -53,6 +53,12 @@ td {
 	border: 1px solid #FEE0C6;
 }
 
+
+
+td {
+	vertical-align: top;
+}
+
 .facetValue {
 	-moz-border-radius: 10px;
     border-radius: 10px;
@@ -60,10 +66,39 @@ td {
     background-color: #FCF6CF;
     padding: 2px 10px;
     margin: 2px 10px 2px 0px;
-    white-space: nowrap;
     float: left;
+}
+
+.items td {
+	border-top: 1px solid #FEE0C6;
+} 
+
+.selectedValue {
+    font-weight: bold;
+    background-color: #FEE0C6;
+}
+
+.itemRow {
+	clear: both;
+}
+
+.itemValue {
+    font-weight: bold;
+    white-space: nowrap;
 }
 
 .facet {
 	clear: both;
+}
+
+tr.even .facetValue {
+    background-color: #FFFFF2;
+}
+
+.items th {
+	background-color: #FDFDF0;
+}
+
+.items {
+	border: 1px solid #FEE0C6;
 }

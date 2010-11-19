@@ -2,10 +2,8 @@ package fi.aluesarjat.prototype;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -24,6 +22,7 @@ import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SPARQLQuery;
 import com.mysema.rdfbean.model.UID;
+import com.mysema.stat.scovo.SCV;
 
 public class FacetsServlet extends HttpServlet {
 
@@ -45,7 +44,6 @@ public class FacetsServlet extends HttpServlet {
         CloseableIterator<Map<String,NODE>> iter = null;
         try {
             Map<UID,JSONObject> dimensionTypes = new LinkedHashMap<UID,JSONObject>();
-            List<JSONObject> datasets = new ArrayList<JSONObject>();
 
             SPARQLQuery query;
             Map<String, NODE> row;
@@ -91,11 +89,16 @@ public class FacetsServlet extends HttpServlet {
                 dimension.put("id", getPrefixed((UID) row.get("dimension"), namespaces));
                 dimension.put("name", ((LIT) row.get("dimensionName")).getValue());
 
-                dimensionType.accumulate("dimensions", dimension);
+                dimensionType.accumulate("values", dimension);
             }
             iter.close();
             
             // DATASETS
+            JSONObject dimensionType = new JSONObject();
+            dimensionType.put("id", "scv:Dataset");
+            dimensionType.put("name", "Tilasto");
+            dimensionTypes.put(SCV.Dataset, dimensionType);
+
             query = conn.createQuery(QueryLanguage.SPARQL, 
                     "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                     "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
@@ -111,12 +114,11 @@ public class FacetsServlet extends HttpServlet {
                 dataset.put("id", getPrefixed((UID) row.get("dataset"), namespaces));
                 dataset.put("name", ((LIT) row.get("datasetName")).getValue());
                 
-                datasets.add(dataset);
+                dimensionType.accumulate("values", dataset);
             }
             
             JSONObject result = new JSONObject();
-            result.put("dimensionTypes", dimensionTypes.values());
-            result.put("datasets", datasets);
+            result.put("facets", dimensionTypes.values());
             Writer out = response.getWriter();
             result.write(out);
             out.flush();
