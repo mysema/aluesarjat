@@ -2,6 +2,10 @@ table {
 	border-collapse: collapse;
 }
 
+td {
+	vertical-align: top;
+}
+
 .results th, .results td {
 	border:1px solid black;
 	padding:0.2ex 0.5em;	
@@ -16,7 +20,7 @@ table {
 }
 
 #savedQueries {
-	float:right;
+	/*float:right;*/
 }
 
 #namespaces {
@@ -26,7 +30,7 @@ table {
 }
 
 #namespacesInfo {
-    float:right;
+    /*float:right;*/
     width: 60ex;
     clear: right;
 }

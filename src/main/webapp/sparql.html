@@ -8,39 +8,49 @@
 <body>
 	<h1>Aluesarjat SPARQL</h1>		
 
-    <div id="savedQueries">
-    <h3>Saved Queries</h3>
-    </div>
+	<table>
+	<tr>	
+	<td width="100%">
     
-    <div id="namespacesInfo">
-    <h3>Default Namespaces</h3>
-    <div id="namespaces">
-    
-    </div>
-    </div>
-	<form method="GET" action="/query">
-        <h3>Query</h3>
-
-		<div>
-			<textarea id="query" name="query" cols="80" rows="12"></textarea>
-		</div>
-
-	  	<input id="formsubmit" type="submit"/>
-	  	
-   	  	<input id="saveQuery" type="button" value="Save Query"/>
-
-        Page size:   	  	
-   	  	<select id="pageSize">
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="200" selected="selected">200</option>
-            <option value="500">500</option>
-            <option value="1000">1000</option>
-   	  	</select>
-    </form>
+		<form method="GET" action="/query">
+	        <h3>Query</h3>
 	
-	<div id="results"></div>
+			<div>
+				<textarea id="query" name="query" cols="80" rows="12"></textarea>
+			</div>
+	
+		  	<input id="formsubmit" type="submit"/>
+		  	
+	   	  	<input id="saveQuery" type="button" value="Save Query"/>
+	
+	        Page size:   	  	
+	   	  	<select id="pageSize">
+	            <option value="20">20</option>
+	            <option value="50">50</option>
+	            <option value="100">100</option>
+	            <option value="200" selected="selected">200</option>
+	            <option value="500">500</option>
+	            <option value="1000">1000</option>
+	   	  	</select>
+	    </form>
+		
+		<div id="results"></div>
+	
+	</td>
+	<td>
+		
+		<div id="savedQueries">
+	    <h3>Saved Queries</h3>
+	    </div>
+	    
+	    <div id="namespacesInfo">
+	    <h3>Default Namespaces</h3>
+	    <div id="namespaces"></div>
+	    </div>
+	
+	</td>
+	</tr>
+	</table>
 
 </body>
 </html>
