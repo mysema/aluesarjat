@@ -1,36 +1,34 @@
-package fi.aluesarjat.prototype.guice;
+package com.mysema.stat.scovo;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
+
+import org.apache.commons.io.FileUtils;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.sail.BigdataSail;
-import com.mysema.rdfbean.guice.RDFBeanModule;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.RepositoryException;
-import com.mysema.rdfbean.object.Configuration;
 
-public class BigDataRDFBeanModule extends RDFBeanModule{
+import fi.aluesarjat.prototype.guice.BigDataSesameRepository;
 
-    @Override
-    public List<String> getConfiguration(){
-        return Collections.singletonList("/aluesarjat.properties");
-    }
+public class BigDataDatasetHandlertest extends AbstractDatasetHandlerTest{
 
     @Override
-    public Repository createRepository(Configuration configuration) {
+    protected Repository createRepository() {
         try {
-            File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-data");
+            File dataDir = new File("target/bigdata");
+            if (dataDir.exists()){
+                FileUtils.cleanDirectory(dataDir);
+            }
             dataDir.mkdir();
             File journal = new File(dataDir, "bigdata.jnl");
             journal.createNewFile();
+
             Properties properties = new Properties();
             properties.setProperty(BigdataSail.Options.FILE, journal.getAbsolutePath());
             properties.setProperty(BigdataSail.Options.TRUTH_MAINTENANCE, "false");
-            properties.setProperty(BigdataSail.Options.STATEMENT_IDENTIFIERS, "false");
             properties.setProperty(BigdataSail.Options.AXIOMS_CLASS, NoAxioms.class.getName());
             properties.setProperty(BigdataSail.Options.QUADS, "true");
             return new BigDataSesameRepository(dataDir, properties);
