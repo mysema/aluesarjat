@@ -138,6 +138,10 @@
 		<resources>
 			<resource>
 				<directory>${extraResources}</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
 		<plugins>
@@ -176,5 +180,14 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>demo</id>
+			<properties>
+				<extraResources>profiles/demo</extraResources>
+			</properties>
+		</profile>
+	</profiles>	
 	
 </project>

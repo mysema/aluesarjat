@@ -217,11 +217,9 @@ public class RDFDatasetHandler implements DatasetHandler {
 
             if (++itemCount % batchSize == 0){
                 flush();
-            }
-
-            if (itemCount % 1000 == 0) {
                 logger.info(dataset.getName() + ": loaded " + itemCount + " items");
             }
+
         }
     }
 
