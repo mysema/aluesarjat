@@ -21,7 +21,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.mysema.rdf</groupId>
-			<artifactId>rdfbean-sesame</artifactId>
+			<artifactId>rdfbean-sesame2</artifactId>
 			<version>${rdfbean.version}</version>
 		</dependency>
 		<dependency>
@@ -71,7 +71,8 @@
 	      <version>2.5</version>
 	      <scope>provided</scope>
 	    </dependency>			
-			
+		
+		<!-- 	
 		<dependency>
 		  <groupId>com.openlinksw</groupId>
 		  <artifactId>virtuoso-sesame</artifactId>
@@ -82,6 +83,13 @@
 		  <artifactId>virtjdbc4</artifactId>
 		  <version>1.0</version>
 		</dependency>		
+		-->
+		
+		<dependency>
+	      <groupId>com.bigdata</groupId>
+	      <artifactId>bigdata</artifactId>
+	      <version>0.81b.TEST</version>
+    	</dependency>   
 			
 		<!-- tests -->
 		
@@ -142,6 +150,7 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 		<plugins>
