@@ -19,7 +19,7 @@ import com.mysema.rdfbean.object.Configuration;
 import com.mysema.rdfbean.sesame.NativeRepository;
 import com.mysema.stat.scovo.SCV;
 
-public class CustomRDFBeanModule extends RDFBeanModule{
+public class NativeStoreRDFBeanModule extends RDFBeanModule{
 
     @Override
     public List<String> getConfiguration(){

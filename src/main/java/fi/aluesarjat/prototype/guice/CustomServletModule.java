@@ -17,7 +17,7 @@ public class CustomServletModule extends ServletModule{
 
     @Override
     protected void configureServlets() {
-//        install(new CustomRDFBeanModule());
+//        install(new NativeStoreRDFBeanModule());
 //        install(new VirtuosoRDFBeanModule());
         install(new BigDataRDFBeanModule());
         install(new Jsr250Module());
