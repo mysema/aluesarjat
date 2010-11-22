@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import com.bigdata.rdf.sail.remoting.IOUtils;
+import org.apache.commons.io.IOUtils;
+
 import com.mysema.rdfbean.guice.Config;
 import com.mysema.rdfbean.guice.RDFBeanModule;
 import com.mysema.rdfbean.model.Repository;
@@ -42,7 +43,7 @@ public class CustomRDFBeanModule extends RDFBeanModule{
 
     private RDFSource getAreaDescriptions(Properties properties){
         try {
-            String str = IOUtils.readString(getClass().getResourceAsStream("/alue.ttl"), "ISO-8859-1");
+            String str = IOUtils.toString(getClass().getResourceAsStream("/alue.ttl"), "ISO-8859-1");
             String normalized = str.replace("http://localhost:8080/rdf/", properties.getProperty("baseURI"));
             return new RDFSource(new ByteArrayInputStream(normalized.getBytes("ISO-8859-1")), Format.TURTLE, normalized + "dimensions/Alue");
         } catch (IOException e) {
