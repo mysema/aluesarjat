@@ -13,22 +13,28 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDF;
 import com.mysema.rdfbean.model.RDFConnection;
-import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SPARQLQuery;
+import com.mysema.rdfbean.model.io.Format;
+import com.mysema.rdfbean.model.io.RDFSource;
+import com.mysema.rdfbean.sesame.SesameRepository;
 import com.mysema.stat.META;
 import com.mysema.stat.pcaxis.PCAxisParser;
 
 public abstract class AbstractDatasetHandlerTest {
 
-    private Repository repository;
+    private SesameRepository repository;
 
     @Before
     public void setUp(){
         repository = createRepository();
+        repository.setSources(new RDFSource[]{
+                new RDFSource("classpath:/alue.ttl", Format.TURTLE, "http://localhost:8080/rdf/dimensions/Alue"),
+                new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
+                new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#")});
         repository.initialize();
     }
 
-    protected abstract Repository createRepository();
+    protected abstract SesameRepository createRepository();
 
     @After
     public void tearDown(){

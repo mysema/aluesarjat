@@ -8,15 +8,15 @@ import org.apache.commons.io.FileUtils;
 
 import com.bigdata.rdf.axioms.NoAxioms;
 import com.bigdata.rdf.sail.BigdataSail;
-import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.RepositoryException;
+import com.mysema.rdfbean.sesame.SesameRepository;
 
 import fi.aluesarjat.prototype.guice.BigDataSesameRepository;
 
 public class BigDataDatasetHandlertest extends AbstractDatasetHandlerTest{
 
     @Override
-    protected Repository createRepository() {
+    protected SesameRepository createRepository() {
         try {
             File dataDir = new File("target/bigdata");
             if (dataDir.exists()){
