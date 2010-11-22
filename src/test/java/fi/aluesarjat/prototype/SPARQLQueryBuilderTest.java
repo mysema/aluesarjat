@@ -36,6 +36,43 @@ public class SPARQLQueryBuilderTest {
     }
 
     @Test
+    public void Select_From(){
+        qry.select("?s", "?p", "?o").from(new UID(TEST.NS)).where("?s ?p ?o");
+
+        assertEquals("SELECT ?s ?p ?o\n" +
+        	"FROM <http://semantics.mysema.com/test#>\n" +
+        	"WHERE {\n  ?s ?p ?o . }\n", qry.toString());
+        execute();
+    }
+
+    @Test
+    public void Select_From_Named(){
+        qry.select("?s", "?p", "?o").fromNamed(new UID(TEST.NS)).where("?s ?p ?o");
+
+        assertEquals("SELECT ?s ?p ?o\n" +
+                "FROM NAMED <http://semantics.mysema.com/test#>\n" +
+        	"WHERE {\n  ?s ?p ?o . }\n", qry.toString());
+        execute();
+    }
+
+
+    @Test
+    public void Select_Where_Order(){
+        qry.select("?s", "?p", "?o").where("?s ?p ?o").orderBy("?s", "?p", "?o");
+
+        assertEquals("SELECT ?s ?p ?o\nWHERE {\n  ?s ?p ?o . }\nORDER BY ?s ?p ?o\n", qry.toString());
+        execute();
+    }
+
+    @Test
+    public void Select_Where_Limit(){
+        qry.select("?s", "?p", "?o").where("?s ?p ?o").limit(5);
+
+        assertEquals("SELECT ?s ?p ?o\nWHERE {\n  ?s ?p ?o . }\nLIMIT 5\n", qry.toString());
+        execute();
+    }
+
+    @Test
     public void Select_Where(){
         qry.select("?s", "?p", "?o").where("?s ?p ?o");
 

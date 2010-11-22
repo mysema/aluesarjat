@@ -40,7 +40,7 @@ public class SPARQLQueryBuilder {
 
     private final List<String> order = new ArrayList<String>();
 
-    private Long limit, offset;
+    private Integer limit, offset;
 
     public SPARQLQueryBuilder() {
         this.knownPrefixes = Namespaces.DEFAULT;
@@ -94,7 +94,7 @@ public class SPARQLQueryBuilder {
         return this;
     }
 
-    public SPARQLQueryBuilder order(String... o){
+    public SPARQLQueryBuilder orderBy(String... o){
         order.addAll(Arrays.asList(o));
         return this;
     }
@@ -109,12 +109,12 @@ public class SPARQLQueryBuilder {
         return this;
     }
 
-    public SPARQLQueryBuilder limit(Long l){
+    public SPARQLQueryBuilder limit(Integer l){
         this.limit = l;
         return this;
     }
 
-    public SPARQLQueryBuilder offset(Long o){
+    public SPARQLQueryBuilder offset(Integer o){
         this.offset = o;
         return this;
     }
