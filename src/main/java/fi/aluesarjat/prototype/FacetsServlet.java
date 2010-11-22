@@ -59,9 +59,10 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
             addFacets(conn, "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                     "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
                     "PREFIX scv: <http://purl.org/NET/scovo#>\n" +
-                    "SELECT ?dimension ?dimensionName ?dimensionType\n" +
+                    "PREFIX stat: <http://data.mysema.com/schemas/stat#>\n" +
+                    "SELECT ?dimension ?dimensionName ?dimensionType ?units\n" +
                     "WHERE {\n" +
-                    "?dimension rdf:type ?dimensionType ; dc:title ?dimensionName .\n" +
+                    "?dimension rdf:type ?dimensionType ; dc:title ?dimensionName ; stat:units ?units .\n" +
                     "FILTER (?dimensionType = scv:Dataset)\n" +
                     "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, null);
 

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.mysema.commons.lang.CloseableIterator;
@@ -56,7 +57,7 @@ public abstract class AbstractFacetSearchServlet extends HttpServlet {
                 if (typeName != null) {
                     dimensionType.put("name", typeName.getValue());
                 }
-            }                    
+            }
             facets.put(type, dimensionType);
         }
         // Create dimension
@@ -67,7 +68,15 @@ public abstract class AbstractFacetSearchServlet extends HttpServlet {
         if (dimensionName != null) {
             dimension.put("name", dimensionName.getValue());
         }
-
+        
+        LIT units = (LIT) row.get("units");
+        if (units != null) {
+            dimension.put("units", units.getValue());
+        }
+        
+        if (!dimensionType.containsKey("values")) {
+            dimensionType.put("values", new JSONArray());
+        }
         dimensionType.accumulate("values", dimension);
     }
     

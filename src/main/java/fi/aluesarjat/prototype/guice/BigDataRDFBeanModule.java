@@ -29,7 +29,7 @@ public class BigDataRDFBeanModule extends RDFBeanRepositoryModule{
     @Override
     public Repository createRepository(@Config Properties props) {
         try {
-            File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-data");
+            File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-bigdata");
             dataDir.mkdir();
             File journal = new File(dataDir, "bigdata.jnl");
             journal.createNewFile();

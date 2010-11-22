@@ -208,9 +208,9 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     // AVAILABLE DATASETS
                     sparql = new StringBuilder()
                     .append(sparqlNamespaces)
-                    .append("SELECT distinct ?dimension ?dimensionType\nWHERE {\n")
+                    .append("SELECT distinct ?dimension ?dimensionType ?units\nWHERE {\n")
                     .append(where)
-                    .append("?item scv:dataset ?dimension .\n}");
+                    .append("?item scv:dataset ?dimension .\n?dimension stat:units ?units .\n}");
     
                     addFacets(conn, sparql.toString(), namespaces, facets, 
                             Collections.singletonMap("dimensionType", (NODE) SCV.Dataset));

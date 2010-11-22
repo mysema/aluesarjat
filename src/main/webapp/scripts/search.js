@@ -7,22 +7,32 @@ $(document).ready(function(){
 
 	var restrictions = [];
 
+	var allFacets = {};
+	
+	var allValues = {};
+	
 	var getFacetName = function(facetId) {
-		return $("#" + toID(facetId) + " .facetTitle").text();
+		return allFacets[facetId].name;
+	}
+	
+	var getValueName = function(valueId) {
+		return allValues[valueId].name;
 	}
 	
 	var getFacetId = function(facetValue) {
-		var id = toID(facetValue);
-		return $("#" + id).data("facet");
+		return allValues[facetValue].facet.id;
 	}
 	
 	var printFacet = function(facet, template) {
 		template.push("<div class='facet' id='", toID(facet.id), "' data-id='", facet.id, "'><h3 class='facetTitle'>", facet.name, "</h3>");
+		allFacets[facet.id] = facet;
 		
 		var values = facet.values;
 		for (var i=0; i < values.length; i++) {
 			var value = values[i];
+			value.facet = facet;
 			template.push("<div class='facetValue' id='", toID(value.id), "' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name, "</div>");
+			allValues[value.id] = value;
 		}
 		template.push("</div>");
 	}
@@ -39,6 +49,24 @@ $(document).ready(function(){
 	var toID = function(prefixed) {
 		return prefixed.replace(':', '-');
 	}
+	
+	$.ajax({
+		url: "facets", 
+		datatype: "json", 
+		error: function(xhr, textStatus, errorThrown){
+			$("#results").html(xhr.responseText);
+		},
+		success: function(data){
+			var template = [];
+
+			var facets = data.facets;
+			for (var i=0; i < facets.length; i++) {
+				printFacet(facets[i], template);
+			}
+			
+			$("#facets").html(template.join(""));
+		}
+	});
 	
 	$(".facetValue").live("click",function(event) {
 		var id = $(event.target).data("id");
@@ -71,14 +99,11 @@ $(document).ready(function(){
 					
 					var restrictionFacets = {};
 					for (var i=0; i < restrictions.length; i++) {
-						var id = toID(restrictions[i]);
-						var facetValue =  $("#" + id);
-						var facetId = facetValue.data("facet");
-						restrictionFacets[facetId] = true;
-						var facet = getFacetName(facetId);
-						template.push("<tr><th>", facet, ":</th><td colspan='10'>");
-						template.push("<div class='facetValue selectedValue' data-id='", restrictions[i], "'>", facetValue.text(), "</div>");
-						template.push("</td></tr>");
+						var restriction = allValues[restrictions[i]];
+						var facet = restriction.facet;
+						restrictionFacets[facet.id] = true;
+						template.push("<tr><th>", facet.name, ":</th><td colspan='10'><div class='facetValue selectedValue' data-id='", 
+								restriction.id, "'>", restriction.name, "</div></td></tr>");
 					}
 					
 					template.push("<tr>");
@@ -142,15 +167,13 @@ $(document).ready(function(){
 							var columnValues = [];
 							template.push("<tr class='itemRow ", (i % 2 == 0 ? "odd" : "even"),"'>")
 							for (var j=0; j < values.length; j++) {
-								var value = values[j];
-								var colIndex = columns.indexOf(getFacetId(value));
+								var value = allValues[values[j]];
+								var colIndex = columns.indexOf(value.facet.id);
 								if (colIndex >= 0) {
 									if (value == previousValues[j]) {
-										var id = toID(value);
-										columnValues[colIndex] = "<td><div class='facetValueDuplicate' data-id='" + value + "'>" + $("#" + id).text() + "</div></td>";
+										columnValues[colIndex] = "<td><div class='facetValueDuplicate' data-id='" + value.id + "'>" + value.name + "</div></td>";
 									} else {
-										var id = toID(value);
-										columnValues[colIndex] = "<td><div class='facetValue' data-id='" + value + "'>" + $("#" + id).text() + "</div></td>";
+										columnValues[colIndex] = "<td><div class='facetValue' data-id='" + value.id + "'>" + value.name + "</div></td>";
 									}
 								}
 							}
@@ -167,24 +190,6 @@ $(document).ready(function(){
 					
 				}
 			});
-		}
-	});
-	
-	$.ajax({
-		url: "facets", 
-		datatype: "json", 
-		error: function(xhr, textStatus, errorThrown){
-			$("#results").html(xhr.responseText);
-		},
-		success: function(data){
-			var template = [];
-
-			var facets = data.facets;
-			for (var i=0; i < facets.length; i++) {
-				printFacet(facets[i], template);
-			}
-			
-			$("#facets").html(template.join(""));
 		}
 	});
 
