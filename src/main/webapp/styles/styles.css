@@ -6,11 +6,6 @@ td {
 	vertical-align: top;
 }
 
-.results th, .results td {
-	border:1px solid black;
-	padding:0.2ex 0.5em;	
-}
-
 .uri, .bnode {
 	font-style: italic;
 }
@@ -50,7 +45,8 @@ td {
 }
 
 .results td, .results th {
-	border: 1px solid #FEE0C6;
+	border: 1px solid #8B8378;
+    padding:0.2ex 0.5em;    
 }
 
 
@@ -59,7 +55,7 @@ td {
 	vertical-align: top;
 }
 
-.facetValue {
+.facetValue, .facetValueDuplicate {
 	-moz-border-radius: 10px;
     border-radius: 10px;
     border: 1px solid #FEE0C6;
@@ -69,7 +65,7 @@ td {
     float: left;
 }
 
-.items td {
+.items td, .items th {
 	border-top: 1px solid #FEE0C6;
 } 
 
@@ -91,8 +87,12 @@ td {
 	clear: both;
 }
 
-tr.even .facetValue {
+tr.even .facetValue, tr.even .facetValueDuplicate {
     background-color: #FFFFF2;
+}
+
+.facetValueDuplicate {
+    color: #C1CDCD;
 }
 
 .items th {

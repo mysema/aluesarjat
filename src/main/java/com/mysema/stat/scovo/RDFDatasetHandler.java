@@ -159,6 +159,9 @@ public class RDFDatasetHandler implements DatasetHandler {
         if (dataset.getDescription() != null) {
             add(datasetUID, DC.description, dataset.getDescription(), datasetsContext);
         }
+        if (dataset.getUnits() != null) {
+            add(datasetUID, STAT.units, dataset.getUnits(), datasetsContext);
+        }
 
         add(datasetUID, DCTERMS.created, new DateTime(), datasetsContext);
 

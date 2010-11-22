@@ -3,16 +3,17 @@ package fi.aluesarjat.prototype;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,7 +32,7 @@ import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.scovo.SCV;
 
-public class SearchServlet extends HttpServlet {
+public class SearchServlet extends AbstractFacetSearchServlet {
 
     private static final long serialVersionUID = 2149808648205848159L;
 
@@ -88,26 +89,16 @@ public class SearchServlet extends HttpServlet {
                 throw new IllegalArgumentException("No restrictions (value) specified");
             } 
             List<JSONObject> items = null;
+            Map<UID,JSONObject> facets = new LinkedHashMap<UID,JSONObject>();
             StringBuilder sparql;
             SPARQLQuery query;
             Map<String, NODE> row;
-            Collection<String> availableValues;
 
             // NAMESPACES
             Map<String,String> namespaces = getNamespaces(conn);
-            StringBuilder sparqlNamespaces = new StringBuilder();
-            for (Map.Entry<String, String> entry : namespaces.entrySet()) {
-                sparqlNamespaces.append("PREFIX ");
-                sparqlNamespaces.append(entry.getValue());
-                sparqlNamespaces.append(": <");
-                sparqlNamespaces.append(entry.getKey());
-                sparqlNamespaces.append(">\n");
-            }
+            StringBuilder sparqlNamespaces = getSPARQLNamespaces(namespaces);
 
             if (restrictionCount < 3) {
-                availableValues = new LinkedHashSet<String>();
-                availableValues.addAll(dimensions);
-
                 // Find available dimensions via dataset definitions
 
                 StringBuilder filter = new StringBuilder();
@@ -134,25 +125,30 @@ public class SearchServlet extends HttpServlet {
                 StringBuilder where = whereDimensions(dimensions, "?dataset", "stat:datasetDimension");
                 sparql = new StringBuilder()
                 .append(sparqlNamespaces)
-                .append("SELECT ?dataset ?dimension ?value\nWHERE {\n")
+                .append("SELECT ?dataset ?dimension ?dimensionType\nWHERE {\n")
                 .append(where)
-                .append("?dataset stat:datasetDimension ?dimension .\n");
+                .append("?dataset stat:datasetDimension ?dimension .\n?dimension rdf:type ?dimensionType .\n");
 
                 if (filter.length() > 0) {
-                    if (dimensions.size() > 0) {
-                        sparql.append("?dimension rdf:type ?dimensionType .\n");
-                    }
-                    sparql.append(filter).append(")\n}\n");
+                    sparql.append(filter).append(")\n}");
                 } else {
-                    sparql.append("}\n");
+                    sparql.append("}");
                 }
 
+                Set<UID> distinctDataset = new HashSet<UID>();
                 query = conn.createQuery(QueryLanguage.SPARQL, sparql.toString());
                 iter = query.getTuples();
                 while (iter.hasNext()) {
                     row = iter.next();
-                    availableValues.add(getPrefixed((UID) row.get("dataset"), namespaces));
-                    availableValues.add(getPrefixed((UID) row.get("dimension"), namespaces));
+                    addFacet(row, namespaces, facets);
+                    
+                    UID dataset = (UID) row.get("dataset");
+                    if (distinctDataset.add(dataset)) {
+                        row = new HashMap<String, NODE>();
+                        row.put("dimension", dataset);
+                        row.put("dimensionType", SCV.Dataset);
+                        addFacet(row, namespaces, facets);
+                    }
                 }
                 iter.close();
             } else {
@@ -166,78 +162,66 @@ public class SearchServlet extends HttpServlet {
                 }
 
                 // Distinct items
-                sparql = new StringBuilder()
-                .append(sparqlNamespaces)
-                .append("SELECT ?item ?dataset ?value\nWHERE {\n")
-                .append(where)
-                .append("?item scv:dataset ?dataset ; rdf:value ?value.\n}\nLIMIT ")
-                .append(limit)
-                .append("\nOFFSET ")
-                .append(offset);
-
-                query = conn.createQuery(QueryLanguage.SPARQL, sparql.toString());
-                iter = query.getTuples();
-                while (iter.hasNext()) {
-                    row = iter.next();
-                    UID id = (UID) row.get("item");
-                    UID dataset = (UID) row.get("dataset");
-                    LIT value = (LIT) row.get("value");
-
-                    JSONObject json = new JSONObject();
-                    json.put("value", value.getValue());
-                    json.accumulate("values", getPrefixed(dataset, namespaces));
-
-                    stmts = conn.findStatements(id, SCV.dimension, null, dataset, false);
-                    while (stmts.hasNext()) {
-                        STMT stmt = stmts.next();
-                        json.accumulate("values", getPrefixed((UID) stmt.getObject(), namespaces));
+                if (0 < limit) {
+                    sparql = new StringBuilder()
+                    .append(sparqlNamespaces)
+                    .append("SELECT ?item ?dataset ?value\nWHERE {\n")
+                    .append(where)
+                    .append("?item scv:dataset ?dataset ; rdf:value ?value.\n}\nLIMIT ")
+                    .append(limit)
+                    .append("\nOFFSET ")
+                    .append(offset);
+    
+                    query = conn.createQuery(QueryLanguage.SPARQL, sparql.toString());
+                    iter = query.getTuples();
+                    while (iter.hasNext()) {
+                        row = iter.next();
+                        UID id = (UID) row.get("item");
+                        UID dataset = (UID) row.get("dataset");
+                        LIT value = (LIT) row.get("value");
+    
+                        JSONObject json = new JSONObject();
+                        json.put("value", value.getValue());
+                        json.accumulate("values", getPrefixed(dataset, namespaces));
+    
+                        stmts = conn.findStatements(id, SCV.dimension, null, dataset, false);
+                        while (stmts.hasNext()) {
+                            STMT stmt = stmts.next();
+                            json.accumulate("values", getPrefixed((UID) stmt.getObject(), namespaces));
+                        }
+                        stmts.close();
+                        items.add(json);
                     }
-                    stmts.close();
-                    items.add(json);
+                    iter.close();
                 }
-                iter.close();
-
 
                 // AVAILABLE DIMENSIONS
-                availableValues = new ArrayList<String>();
-
-                sparql = new StringBuilder()
-                .append(sparqlNamespaces)
-                .append("SELECT distinct ?dimension\nWHERE {\n")
-                .append(where)
-                .append("?item scv:dimension ?dimension .\n}\n");
-
-                query = conn.createQuery(QueryLanguage.SPARQL, sparql.toString());
-                iter = query.getTuples();
-                while (iter.hasNext()) {
-                    row = iter.next();
-                    UID id = (UID) row.get("dimension");
-                    availableValues.add(getPrefixed(id, namespaces));
+                if (offset <= 0) {
+                    sparql = new StringBuilder()
+                    .append(sparqlNamespaces)
+                    .append("SELECT distinct ?dimensionType ?dimension\nWHERE {\n")
+                    .append(where)
+                    .append("?item scv:dimension ?dimension .\n?dimension rdf:type ?dimensionType .\n}");
+    
+                    addFacets(conn, sparql.toString(), namespaces, facets, null);
+    
+                    // AVAILABLE DATASETS
+                    sparql = new StringBuilder()
+                    .append(sparqlNamespaces)
+                    .append("SELECT distinct ?dimension ?dimensionType\nWHERE {\n")
+                    .append(where)
+                    .append("?item scv:dataset ?dimension .\n}");
+    
+                    addFacets(conn, sparql.toString(), namespaces, facets, 
+                            Collections.singletonMap("dimensionType", (NODE) SCV.Dataset));
                 }
-                iter.close();
-
-                // AVAILABLE DATASETS
-                sparql = new StringBuilder()
-                .append(sparqlNamespaces)
-                .append("SELECT distinct ?dataset\nWHERE {\n")
-                .append(where)
-                .append("?item scv:dataset ?dataset .\n}\n");
-
-                query = conn.createQuery(QueryLanguage.SPARQL, sparql.toString());
-                iter = query.getTuples();
-                while (iter.hasNext()) {
-                    row = iter.next();
-                    UID id = (UID) row.get("dataset");
-                    availableValues.add(getPrefixed(id, namespaces));
-                }
-                iter.close();
             }
 
             JSONObject result = new JSONObject();
             if (items != null) {
                 result.put("items", items);
             }
-            result.put("values", availableValues);
+            result.put("facets", facets.values());
             Writer out = response.getWriter();
             result.write(out);
             out.flush();
@@ -267,15 +251,6 @@ public class SearchServlet extends HttpServlet {
         throw new IllegalArgumentException("Unknown prefix: " + prefixed);
     }
 
-    // TODO: Join implementation with FacetedSearchServlet
-    private String getPrefixed(UID uri, Map<String, String> namespaces) {
-        String prefix = namespaces.get(uri.getNamespace());
-        if (prefix == null) {
-            throw new IllegalArgumentException("Unknown namespace: " + uri);
-        }
-        return prefix + ":" + uri.getLocalName();
-    }
-
     private int getInt(HttpServletRequest request, String name, int defaultValue) {
         String value = request.getParameter(name);
         if (value != null) {
@@ -287,28 +262,6 @@ public class SearchServlet extends HttpServlet {
 
     private String[] nullToEmpty(String[] values) {
         return values == null ? EMPTY : values;
-    }
-
-    // TODO: Join implementation with FacetedSearchServlet
-    private Map<String,String> getNamespaces(RDFConnection conn) {
-        SPARQLQuery query = conn.createQuery(QueryLanguage.SPARQL, 
-                "SELECT ?ns ?prefix\n" +
-                "WHERE {\n" +
-                "?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix .\n" +
-                "}"
-        );
-        // Order by descending string length of NS -> when applying namespaces to output longest match comes first
-        CloseableIterator<Map<String,NODE>> iter = query.getTuples();
-        Map<String,String> namespaces = new HashMap<String, String>(32);
-        try {
-            while (iter.hasNext()) {
-                Map<String, NODE> entry = iter.next();
-                namespaces.put(((UID) entry.get("ns")).getId(), ((LIT) entry.get("prefix")).getValue());
-            }
-        } finally {
-            iter.close();
-        }
-        return namespaces;
     }
 
 }
