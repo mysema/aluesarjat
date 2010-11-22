@@ -93,7 +93,7 @@
 		<dependency>
 	      <groupId>com.bigdata</groupId>
 	      <artifactId>bigdata</artifactId>
-	      <version>0.81b.TEST</version>
+	      <version>0.81b.TEST2</version>
     	</dependency>   
 			
 		<!-- tests -->
