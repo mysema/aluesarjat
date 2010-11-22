@@ -10,16 +10,14 @@ import java.util.Properties;
 import org.apache.commons.io.IOUtils;
 
 import com.mysema.rdfbean.guice.Config;
-import com.mysema.rdfbean.guice.RDFBeanModule;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.RepositoryException;
 import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.model.io.RDFSource;
-import com.mysema.rdfbean.object.Configuration;
 import com.mysema.rdfbean.sesame.NativeRepository;
 import com.mysema.stat.scovo.SCV;
 
-public class NativeStoreRDFBeanModule extends RDFBeanModule{
+public class NativeStoreRDFBeanModule extends RDFBeanRepositoryModule{
 
     @Override
     public List<String> getConfiguration(){
@@ -27,7 +25,7 @@ public class NativeStoreRDFBeanModule extends RDFBeanModule{
     }
 
     @Override
-    public Repository createRepository(Configuration configuration, @Config Properties properties) {
+    public Repository createRepository(@Config Properties properties) {
         File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-data");
         dataDir.mkdir();
 
