@@ -18,6 +18,8 @@ import com.mysema.rdfbean.model.XSD;
 
 public class SPARQLQueryBuilder {
 
+    // TODO : union
+
     private final Map<String,String> knownPrefixes;
 
     private UID base;
@@ -69,14 +71,82 @@ public class SPARQLQueryBuilder {
         return this;
     }
 
+    public SPARQLQueryBuilder graph(Object c, String... patterns){
+        StringBuilder builder = new StringBuilder("GRAPH ");
+        builder.append(str(c));
+        builder.append(" { ").append(StringUtils.join(patterns, " . ")).append(" }");
+        where.add(builder.toString());
+        return this;
+    }
+
     public SPARQLQueryBuilder where(String... w){
         where.addAll(Arrays.asList(w));
         return this;
     }
 
     public SPARQLQueryBuilder where(Object s, Object p, Object o){
-        where.add(str(s) + " " + str(p) + " " + str(o));
+        where.add(pattern(s, p, o));
         return this;
+    }
+
+    public SPARQLQueryBuilder where(Object s, Object p, Object o, Object c){
+        where.add(pattern(s, p, o, c));
+        return this;
+    }
+
+    public SPARQLQueryBuilder order(String... o){
+        order.addAll(Arrays.asList(o));
+        return this;
+    }
+
+    public SPARQLQueryBuilder distinct(){
+        distinct = true;
+        return this;
+    }
+
+    public SPARQLQueryBuilder reduced(){
+        reduced = true;
+        return this;
+    }
+
+    public SPARQLQueryBuilder limit(Long l){
+        this.limit = l;
+        return this;
+    }
+
+    public SPARQLQueryBuilder offset(Long o){
+        this.offset = o;
+        return this;
+    }
+
+    public SPARQLQueryBuilder filter(String filter) {
+        if (filter.contains("(") && filter.contains(")")){
+            where.add("FILTER " + filter);
+        }else{
+            where.add("FILTER (" + filter + ")");
+        }
+        return this;
+    }
+
+    public SPARQLQueryBuilder optional(String... str){
+        StringBuilder builder = new StringBuilder("OPTIONAL { ");
+        builder.append(StringUtils.join(str, " . "));
+        builder.append(" }");
+        where.add(builder.toString());
+        return this;
+    }
+
+    public SPARQLQueryBuilder optional(Object s, Object p, Object o){
+        where.add("OPTIONAL { " + pattern(s, p, o) + " }");
+        return this;
+    }
+
+    private String pattern(Object s, Object p, Object o){
+        return str(s) + " " + str(p) + " " + str(o);
+    }
+
+    private String pattern(Object s, Object p, Object o, Object c){
+        return "GRAPH " + str(c) + " { " + pattern(s, p, o) + " }";
     }
 
     private String str(Object n){
@@ -116,40 +186,6 @@ public class SPARQLQueryBuilder {
         }else{
             return value;
         }
-    }
-
-    public SPARQLQueryBuilder order(String... o){
-        order.addAll(Arrays.asList(o));
-        return this;
-    }
-
-    public SPARQLQueryBuilder distinct(){
-        distinct = true;
-        return this;
-    }
-
-    public SPARQLQueryBuilder reduced(){
-        reduced = true;
-        return this;
-    }
-
-    public SPARQLQueryBuilder limit(Long l){
-        this.limit = l;
-        return this;
-    }
-
-    public SPARQLQueryBuilder offset(Long o){
-        this.offset = o;
-        return this;
-    }
-
-    public SPARQLQueryBuilder filter(String filter) {
-        if (filter.contains("(") && filter.contains(")")){
-            where.add("FILTER " + filter);
-        }else{
-            where.add("FILTER (" + filter + ")");
-        }
-        return this;
     }
 
     @Override

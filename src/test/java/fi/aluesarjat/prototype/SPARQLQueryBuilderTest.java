@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.mysema.rdfbean.TEST;
 import com.mysema.rdfbean.model.LIT;
 import com.mysema.rdfbean.model.QueryLanguage;
+import com.mysema.rdfbean.model.RDF;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.RDFS;
 import com.mysema.rdfbean.model.Repository;
@@ -39,6 +40,22 @@ public class SPARQLQueryBuilderTest {
         qry.select("?s", "?p", "?o").where("?s ?p ?o");
 
         assertEquals("SELECT ?s ?p ?o\nWHERE {\n  ?s ?p ?o . }\n", qry.toString());
+        execute();
+    }
+
+    @Test
+    public void Select_Where_Quad(){
+        qry.select("?s", "?p", "?o").where("?s", "?p", "?o", new UID(TEST.NS));
+
+        assertEquals("SELECT ?s ?p ?o\nWHERE {\n  GRAPH <http://semantics.mysema.com/test#> { ?s ?p ?o } . }\n", qry.toString());
+        execute();
+    }
+
+    @Test
+    public void Select_Where_Graph_Quad(){
+        qry.select("?s", "?p", "?o").graph(new UID(TEST.NS), "?s ?p ?o");
+
+        assertEquals("SELECT ?s ?p ?o\nWHERE {\n  GRAPH <http://semantics.mysema.com/test#> { ?s ?p ?o } . }\n", qry.toString());
         execute();
     }
 
@@ -76,6 +93,20 @@ public class SPARQLQueryBuilderTest {
 
         assertEquals("PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
         	"SELECT ?s\nWHERE {\n  ?s <http://semantics.mysema.com/test#test> \"123\"^^xsd:integer . }\n", qry.toString());
+        execute();
+    }
+
+    @Test
+    public void Optional(){
+        qry.select("?s", "?lit", "?type")
+            .where("?s", new UID(TEST.NS, "test"), "?lit")
+            .optional("?s", RDF.type, "?type");
+
+        assertEquals("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+        	"SELECT ?s ?lit ?type\n" +
+        	"WHERE {\n" +
+        	"  ?s <http://semantics.mysema.com/test#test> ?lit . \n" +
+        	"  OPTIONAL { ?s rdf:type ?type } . }\n", qry.toString());
         execute();
     }
 
