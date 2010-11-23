@@ -3,6 +3,7 @@ package fi.aluesarjat.prototype;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,6 +77,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 dimensions.add(value);
             }
         }
+        Set<String> includes = getIncludes(request.getParameterValues("include"));
 
         int limit = Math.min(getInt(request, "limit", 200), 1000);
         int offset = getInt(request, "offset", 0);
@@ -89,7 +91,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 throw new IllegalArgumentException("No restrictions (value) specified");
             } 
             List<JSONObject> items = null;
-            Map<UID,JSONObject> facets = new LinkedHashMap<UID,JSONObject>();
+            Map<UID,JSONObject> facets = null;
             StringBuilder sparql;
             SPARQLQuery query;
             Map<String, NODE> row;
@@ -99,6 +101,8 @@ public class SearchServlet extends AbstractFacetSearchServlet {
             StringBuilder sparqlNamespaces = getSPARQLNamespaces(namespaces);
 
             if (restrictionCount < 3) {
+                facets = new LinkedHashMap<UID,JSONObject>();
+                
                 // Find available dimensions via dataset definitions
 
                 StringBuilder filter = new StringBuilder();
@@ -162,7 +166,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 }
 
                 // Distinct items
-                if (0 < limit) {
+                if (includes.contains("items")) {
                     sparql = new StringBuilder()
                     .append(sparqlNamespaces)
                     .append("SELECT ?item ?dataset ?value\nWHERE {\n")
@@ -196,21 +200,23 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 }
 
                 // AVAILABLE DIMENSIONS
-                if (offset <= 0) {
+                if (includes.contains("facets")) {
+                    facets = new LinkedHashMap<UID,JSONObject>();
+                    
                     sparql = new StringBuilder()
                     .append(sparqlNamespaces)
                     .append("SELECT distinct ?dimensionType ?dimension\nWHERE {\n")
                     .append(where)
-                    .append("?item scv:dimension ?dimension .\n?dimension rdf:type ?dimensionType .\n}");
+                    .append("?item scv:dimension ?dimension . ?dimension rdf:type ?dimensionType .\n}");
     
                     addFacets(conn, sparql.toString(), namespaces, facets, null);
     
                     // AVAILABLE DATASETS
                     sparql = new StringBuilder()
                     .append(sparqlNamespaces)
-                    .append("SELECT distinct ?dimension ?dimensionType ?units\nWHERE {\n")
+                    .append("SELECT distinct ?dimension ?units\nWHERE {\n")
                     .append(where)
-                    .append("?item scv:dataset ?dimension .\n?dimension stat:units ?units .\n}");
+                    .append("?item scv:dataset ?dimension . GRAPH <http://localhost:8080/rdf/datasets> { ?dimension stat:units ?units }\n}");
     
                     addFacets(conn, sparql.toString(), namespaces, facets, 
                             Collections.singletonMap("dimensionType", (NODE) SCV.Dataset));
@@ -221,7 +227,9 @@ public class SearchServlet extends AbstractFacetSearchServlet {
             if (items != null) {
                 result.put("items", items);
             }
-            result.put("facets", facets.values());
+            if (facets != null) {
+                result.put("facets", facets.values());
+            }
             Writer out = response.getWriter();
             result.write(out);
             out.flush();
@@ -234,6 +242,13 @@ public class SearchServlet extends AbstractFacetSearchServlet {
             }
             conn.close();
         }
+    }
+
+    private Set<String> getIncludes(String[] parameterValues) {
+        if (parameterValues == null) {
+            parameterValues = new String[] {"items", "values"};
+        } 
+        return new HashSet<String>(Arrays.asList(parameterValues));
     }
 
     private ID getUID(String prefixed, Map<String, String> namespaces) {

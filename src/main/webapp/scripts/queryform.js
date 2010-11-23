@@ -9,6 +9,7 @@ $(document).ready(function(){
 	var limit = 200;
 	var offset = 0;
 	var queryActive = false;
+	var queryStartTime;
 
 	var executeQuery = function() {
 		$("#results").html("<img src='images/ajax-loader.gif' alt='Loading results'/>");
@@ -18,7 +19,9 @@ $(document).ready(function(){
 			+ "\nlimit " + limit // Limit
 			+ "\noffset " + offset // Offset
 			;
-
+		
+		queryStartTime = new Date().getTime()
+		
 		$.ajax({
 			url: "sparql", 
 			data: { "query": qry}, 
@@ -55,6 +58,7 @@ $(document).ready(function(){
 		var html = new Array();
 		var navigation = [];
 		
+		navigation.push(((new Date().getTime() - queryStartTime) / 1000), " s  - "); 
 		navigation.push("<a id='openResults' href='javascript: openResults();'>Open in new window</a> - ");
 		if (offset > 0) {
 			navigation.push("<a href='javascript: prevPage();'>Previous page</a> - ");

@@ -102,14 +102,14 @@ $(document).ready(function(){
 		if (restrictions.length == 0) {
 			$(".facet").show();
 			$(".facetValue").show();
-			$(this).removeClass("selectedValue");
+			$(".selectedValue").removeClass("selectedValue");
 			$("#results").html("");
 		} else {
 			$("#results").html("<img src='images/ajax-loader.gif' alt='Loading results'/>");
 			$.ajax({
 				url: "search", 
 				datatype: "json",
-				data: {"value": restrictions},
+				data: {"value": restrictions, "include": ["items", "facets"]},
 				error: function(xhr, textStatus, errorThrown) {
 					$("#results").html(xhr.responseText);
 				},
@@ -194,11 +194,17 @@ $(document).ready(function(){
 								var value = allValues[values[j]];
 								var colIndex = columns.indexOf(value.facet.id);
 								if (colIndex >= 0) {
+									var columnTemplate = [];
 									if (value == previousValues[j]) {
-										columnValues[colIndex] = "<td><div class='facetValueDuplicate' data-id='" + value.id + "'>" + value.name + "</div></td>";
+										 columnTemplate.push("<td><div class='facetValueDuplicate' data-id='", value.id, "'>", value.name);
 									} else {
-										columnValues[colIndex] = "<td><div class='facetValue' data-id='" + value.id + "'>" + value.name + "</div></td>";
+										columnTemplate.push("<td><div class='facetValue' data-id='", value.id, "'>", value.name);
 									}
+									if (restriction.description) {
+										columnTemplate.push("<img src='images/info-16x16.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id, "'/>");
+									}
+									columnTemplate.push("</div></td>");
+									columnValues[colIndex] = columnTemplate.join("");
 								}
 								if (value.units) {
 									units = value.units;
