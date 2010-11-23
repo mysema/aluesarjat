@@ -17,9 +17,9 @@ public class CustomServletModule extends ServletModule{
 
     @Override
     protected void configureServlets() {
-        install(new NativeStoreRDFBeanModule());
+//        install(new NativeStoreRDFBeanModule());
 //        install(new VirtuosoRDFBeanModule());
-//        install(new BigDataRDFBeanModule());
+        install(new BigDataRDFBeanModule());
         install(new Jsr250Module());
         bind(DataService.class).asEagerSingleton();
 
@@ -34,7 +34,7 @@ public class CustomServletModule extends ServletModule{
     @Provides
     @Singleton
     public SPARQLServlet createSPARQLServlet(Repository repository){
-        return new SPARQLServlet(repository, 1000);
+        return new SPARQLServlet(repository, 1000, 120);
     }
 
     @Provides
