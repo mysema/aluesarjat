@@ -40,6 +40,7 @@ public class BigDataRDFBeanModule extends RDFBeanRepositoryModule{
             properties.setProperty(BigdataSail.Options.STATEMENT_IDENTIFIERS, "false");
             properties.setProperty(BigdataSail.Options.AXIOMS_CLASS, NoAxioms.class.getName());
             properties.setProperty(BigdataSail.Options.QUADS, "true");
+
             SesameRepository repository = new BigDataSesameRepository(dataDir, properties);
             repository.setSources(new RDFSource[]{
                 getAreaDescriptions(props),
@@ -56,7 +57,7 @@ public class BigDataRDFBeanModule extends RDFBeanRepositoryModule{
         try {
             String str = IOUtils.toString(getClass().getResourceAsStream("/alue.ttl"), "ISO-8859-1");
             String normalized = str.replace("http://localhost:8080/rdf/", properties.getProperty("baseURI"));
-            return new RDFSource(new ByteArrayInputStream(normalized.getBytes("ISO-8859-1")), Format.TURTLE, normalized + "dimensions/Alue");
+            return new RDFSource(new ByteArrayInputStream(normalized.getBytes("UTF-8")), Format.TURTLE, normalized + "dimensions/Alue");
         } catch (IOException e) {
             throw new RepositoryException(e);
         }
