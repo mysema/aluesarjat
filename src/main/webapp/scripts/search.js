@@ -31,7 +31,11 @@ $(document).ready(function(){
 		for (var i=0; i < values.length; i++) {
 			var value = values[i];
 			value.facet = facet;
-			template.push("<div class='facetValue' id='", toID(value.id), "' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name, "</div>");
+			template.push("<div class='facetValue' id='", toID(value.id), "' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name);
+			if (value.description) {
+				template.push("<img src='images/info-16x16.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id,"'/>");
+			}
+			template.push("</div>");
 			allValues[value.id] = value;
 		}
 		template.push("</div>");
@@ -66,6 +70,23 @@ $(document).ready(function(){
 			
 			$("#facets").html(template.join(""));
 		}
+	});
+
+	
+	$(".facetValueInfo").live("click",function(event) {
+		var id = $(event.target).data("id");
+		var value = allValues[id];
+		if (value.description) {
+			var popup = $("#popup");
+			popup.html("<h3>" + value.name + "</h3>" + value.description.replace(/\n/g, "</br>"));
+			popup.show();
+		}
+		return false;
+	});
+	
+	$("#popup").click(function(event){
+		$(this).hide();
+		return false;
 	});
 	
 	$(".facetValue").live("click",function(event) {
@@ -102,8 +123,12 @@ $(document).ready(function(){
 						var restriction = allValues[restrictions[i]];
 						var facet = restriction.facet;
 						restrictionFacets[facet.id] = true;
-						template.push("<tr><th>", facet.name, ":</th><td colspan='10'><div class='facetValue selectedValue' data-id='", 
-								restriction.id, "'>", restriction.name, "</div></td></tr>");
+						template.push("<tr><th class='restriction'>", facet.name, ":</th><td colspan='10'><div class='facetValue selectedValue' data-id='", 
+								restriction.id, "'>", restriction.name);
+						if (restriction.description) {
+							template.push("<img src='images/info-16x16.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id,"'/>");
+						}
+						template.push("</div></td></tr>");
 					}
 					
 					template.push("<tr>");

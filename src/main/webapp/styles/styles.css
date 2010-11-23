@@ -97,8 +97,27 @@ tr.even .facetValue, tr.even .facetValueDuplicate {
 
 .items th {
 	background-color: #FDFDF0;
+	text-align: left;
+}
+
+th.restriction {
+    text-align: right;
 }
 
 .items {
 	border: 1px solid #FEE0C6;
+}
+
+#popup {
+position: fixed;
+top: 15%;
+background-color: #FDFCDC;
+border: 1px solid gray;
+width: 70%;
+margin-right: 15%;
+margin-left: 15%;
+height: 75%;
+padding: 1em;
+z-index: 9002;
+overflow: auto;
 }
