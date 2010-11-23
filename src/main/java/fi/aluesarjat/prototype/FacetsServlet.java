@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.rdfbean.model.NODE;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.UID;
@@ -22,7 +20,7 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
 
     private static final long serialVersionUID = 2149808648205848159L;
 
-    private Repository repository;
+    private final Repository repository;
 
     public FacetsServlet(Repository repository) {
         this.repository = repository;
@@ -35,13 +33,13 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
         response.setContentType("application/json");
 
         RDFConnection conn = repository.openConnection();
-        CloseableIterator<Map<String,NODE>> iter = null;
+//        CloseableIterator<Map<String,NODE>> iter = null;
         try {
             Map<UID,JSONObject> dimensionTypes = new LinkedHashMap<UID,JSONObject>();
 
             // NAMESPACES
             Map<String,String> namespaces = getNamespaces(conn);
-            
+
             // DIMENSIONS
             addFacets(conn, "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
@@ -53,7 +51,7 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                     "?dimension rdf:type ?dimensionType ; dc:title ?dimensionName .\n"+
                     "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
                     "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, null);
-            
+
             // DATASETS
             addFacets(conn, "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                     "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
@@ -72,9 +70,9 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
             result.write(out);
             out.flush();
         } finally {
-            if (iter != null) {
-                iter.close();
-            }
+//            if (iter != null) {
+//                iter.close();
+//            }
             conn.close();
         }
     }

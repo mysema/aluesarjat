@@ -21,17 +21,7 @@ import org.springframework.transaction.annotation.Isolation;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.rdfbean.model.ID;
-import com.mysema.rdfbean.model.LIT;
-import com.mysema.rdfbean.model.NODE;
-import com.mysema.rdfbean.model.RDF;
-import com.mysema.rdfbean.model.RDFBeanTransaction;
-import com.mysema.rdfbean.model.RDFConnection;
-import com.mysema.rdfbean.model.RDFS;
-import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.model.STMT;
-import com.mysema.rdfbean.model.UID;
-import com.mysema.rdfbean.model.XSD;
+import com.mysema.rdfbean.model.*;
 import com.mysema.rdfbean.owl.OWL;
 import com.mysema.rdfbean.xsd.DateTimeConverter;
 import com.mysema.stat.META;
@@ -118,13 +108,13 @@ public class RDFDatasetHandler implements DatasetHandler {
         add(subject, predicate, new LIT(DATE_TIME_CONVERTER.toString(dateTime), XSD.dateTime), context);
     }
 
-    private void addDecimal(ID subject, UID predicate, String decimal, UID context) {
-        LIT lit = DECIMAL_CACHE.get(decimal);
-        if (lit == null) {
-            lit = new LIT(decimal, XSD.decimalType);
-        }
-        add(subject, predicate, lit, context);
-    }
+//    private void addDecimal(ID subject, UID predicate, String decimal, UID context) {
+//        LIT lit = DECIMAL_CACHE.get(decimal);
+//        if (lit == null) {
+//            lit = new LIT(decimal, XSD.decimalType);
+//        }
+//        add(subject, predicate, lit, context);
+//    }
 
     private void add(ID subject, UID predicate, String name, UID context) {
         add(subject, predicate, new LIT(name), context);
@@ -248,7 +238,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                 for (NODE[] property : properties) {
                     add(id, (UID) property[0], property[1], datasetContext);
                 }
-                
+
                 if (++itemCount % batchSize == 0) {
                     flush();
                     logger.info(dataset.getName() + ": loaded " + itemCount + " items");
