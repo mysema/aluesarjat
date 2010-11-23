@@ -151,11 +151,9 @@ $(document).ready(function(){
 							}
 						});
 					}
-					template.push("</tr></thead>");
-					
-					
 					// SHOW ITEMS
 					if (data.items) {
+						template.push("<th>Tilastoarvo</th><th>Yksikk&ouml;</th></tr></thead>");
 						var items = data.items;
 
 						template.push("<tbody>");
@@ -165,6 +163,7 @@ $(document).ready(function(){
 							var item = items[i];
 							var values = item.values;
 							var columnValues = [];
+							var units = null;
 							template.push("<tr class='itemRow ", (i % 2 == 0 ? "odd" : "even"),"'>")
 							for (var j=0; j < values.length; j++) {
 								var value = allValues[values[j]];
@@ -176,14 +175,19 @@ $(document).ready(function(){
 										columnValues[colIndex] = "<td><div class='facetValue' data-id='" + value.id + "'>" + value.name + "</div></td>";
 									}
 								}
+								if (value.units) {
+									units = value.units;
+								}
 							}
 							template.push(columnValues.join(""));
-							template.push("<td><div class='itemValue'> = ", item.value, "</div></td>");
+							template.push("<td><div class='itemValue'> = ", item.value, "</div></td><td>", units, "</td>");
 							template.push("</div>");
 							previousValues = values;
 						}
 						template.push("</tbody>");
-					} 
+					} else {
+						template.push("</tr></thead>");
+					}
 					
 					template.push("</table>");
 					$("#results").html(template.join(""));
