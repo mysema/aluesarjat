@@ -47,12 +47,11 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                     "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
                     "PREFIX scv: <http://purl.org/NET/scovo#>\n" +
-                    "SELECT ?dimensionType ?dimensionTypeName ?dimension ?dimensionName\n"+
+                    "SELECT ?dimensionType ?dimensionTypeName ?dimension ?dimensionDescription ?dimensionName\n"+
                     "WHERE {\n"+
-                    "?dimensionType rdfs:subClassOf scv:Dimension ;\n"+
-                    "    dc:title ?dimensionTypeName .\n"+
-                    "?dimension rdf:type ?dimensionType ;\n"+
-                    "    dc:title ?dimensionName .\n"+
+                    "?dimensionType rdfs:subClassOf scv:Dimension ; dc:title ?dimensionTypeName .\n"+
+                    "?dimension rdf:type ?dimensionType ; dc:title ?dimensionName .\n"+
+                    "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
                     "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, null);
             
             // DATASETS
@@ -60,9 +59,10 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                     "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
                     "PREFIX scv: <http://purl.org/NET/scovo#>\n" +
                     "PREFIX stat: <http://data.mysema.com/schemas/stat#>\n" +
-                    "SELECT ?dimension ?dimensionName ?dimensionType ?units\n" +
+                    "SELECT ?dimension ?dimensionName ?dimensionType ?dimensionDescription ?units\n" +
                     "WHERE {\n" +
                     "?dimension rdf:type ?dimensionType ; dc:title ?dimensionName ; stat:units ?units .\n" +
+                    "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
                     "FILTER (?dimensionType = scv:Dataset)\n" +
                     "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, null);
 

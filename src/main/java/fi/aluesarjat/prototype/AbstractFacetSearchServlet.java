@@ -64,14 +64,20 @@ public abstract class AbstractFacetSearchServlet extends HttpServlet {
         JSONObject dimension = new JSONObject();
         dimension.put("id", getPrefixed((UID) row.get("dimension"), namespaces));
         
-        LIT dimensionName = (LIT) row.get("dimensionName");
-        if (dimensionName != null) {
-            dimension.put("name", dimensionName.getValue());
+        // Literal metadata
+        LIT lit = (LIT) row.get("dimensionName");
+        if (lit != null) {
+            dimension.put("name", lit.getValue());
         }
         
-        LIT units = (LIT) row.get("units");
-        if (units != null) {
-            dimension.put("units", units.getValue());
+        lit = (LIT) row.get("dimensionDescription");
+        if (lit != null) {
+            dimension.put("description", lit.getValue());
+        }
+        
+        lit = (LIT) row.get("units");
+        if (lit != null) {
+            dimension.put("units", lit.getValue());
         }
         
         if (!dimensionType.containsKey("values")) {
