@@ -65,7 +65,7 @@ public class FacetsServletTest {
         servlet.service(request, response);
         assertEquals("UTF-8", response.getCharacterEncoding());
         assertEquals("application/json", response.getContentType());
-//        System.err.println(response.getContentAsString());
+        System.err.println(response.getContentAsString());
         assertTrue(response.getContentAsString().contains("Etel\u00E4inen suurpiiri"));
     }
 }

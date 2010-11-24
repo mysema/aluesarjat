@@ -10,12 +10,12 @@ import java.util.Set;
 
 public class DefaultDatasetHandler implements DatasetHandler {
 
-    private Map<Dataset, List<Item>> datasets = new HashMap<Dataset, List<Item>>();
-    
-    private Set<String> ignoredValues = new HashSet<String>(Arrays.asList(
+    private final Map<Dataset, List<Item>> datasets = new HashMap<Dataset, List<Item>>();
+
+    private final Set<String> ignoredValues = new HashSet<String>(Arrays.asList(
             "\".\""
     ));
-        
+
     @Override
     public void addDataset(Dataset dataset) {
         datasets.put(dataset, new ArrayList<Item>());
@@ -31,11 +31,11 @@ public class DefaultDatasetHandler implements DatasetHandler {
     @Override
     public void begin() {
     }
-    
+
     @Override
     public void commit() {
     }
-    
+
     public Dataset getDataset(String name) {
         for (Dataset dataset : datasets.keySet()) {
             if (dataset.getName().equals(name)) {

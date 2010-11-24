@@ -46,6 +46,10 @@ public class SPARQLQueryBuilder {
         this.knownPrefixes = Namespaces.DEFAULT;
     }
 
+    public SPARQLQueryBuilder(Map<String,String> namespaces) {
+        this.knownPrefixes = namespaces;
+    }
+
     public SPARQLQueryBuilder base(UID uid){
         base = uid;
         return this;
@@ -76,6 +80,11 @@ public class SPARQLQueryBuilder {
         builder.append(str(c));
         builder.append(" { ").append(StringUtils.join(patterns, " . ")).append(" }");
         where.add(builder.toString());
+        return this;
+    }
+
+    public SPARQLQueryBuilder ns(String namespace){
+        usedNamespaces.add(namespace);
         return this;
     }
 

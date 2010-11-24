@@ -57,8 +57,8 @@ public class SearchServlet extends AbstractFacetSearchServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
-        response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
         List<String> dimensions = new ArrayList<String>();
         List<String> datasets = new ArrayList<String>();
