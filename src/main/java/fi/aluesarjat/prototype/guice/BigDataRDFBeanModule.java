@@ -31,15 +31,38 @@ public class BigDataRDFBeanModule extends RDFBeanRepositoryModule{
         try {
             File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-bigdata");
             dataDir.mkdir();
-            File journal = new File(dataDir, "bigdata.jnl");
-            journal.createNewFile();
+            File journalFile = new File(dataDir, "bigdata.jnl");
+            journalFile.createNewFile();
             // TODO : use external properties ?!?
             Properties properties = new Properties();
-            properties.setProperty(BigdataSail.Options.FILE, journal.getAbsolutePath());
+            properties.setProperty(BigdataSail.Options.FILE, journalFile.getAbsolutePath());
             properties.setProperty(BigdataSail.Options.TRUTH_MAINTENANCE, "false");
             properties.setProperty(BigdataSail.Options.STATEMENT_IDENTIFIERS, "false");
             properties.setProperty(BigdataSail.Options.AXIOMS_CLASS, NoAxioms.class.getName());
             properties.setProperty(BigdataSail.Options.QUADS, "true");
+            properties.setProperty(BigdataSail.Options.TEXT_INDEX, "false");
+//            properties.setProperty(BigdataSail.Options.BUFFER_MODE, BufferMode.DiskRW.name());
+
+//            properties.setProperty(Options.FILE, journalFile.getAbsolutePath());
+//            properties.setProperty(Options.TRUTH_MAINTENANCE, "false");
+//            properties.setProperty(Options.STATEMENT_IDENTIFIERS, "false");
+//            properties.setProperty(Options.AXIOMS_CLASS, NoAxioms.class.getName());
+//            properties.setProperty(Options.QUADS, "true");
+//            properties.setProperty(Options.TEXT_INDEX, "false");
+//            properties.setProperty(Options.BUFFER_MODE, BufferMode.DiskRW.name());
+
+//            Journal journal = new Journal(properties);
+//            if (journal.getIndex("testIndex") == null){
+//                IndexMetadata indexMetadata = new IndexMetadata( "testIndex", UUID.randomUUID());
+//                indexMetadata.setIsolatable(true);
+//                journal.registerIndex(indexMetadata);
+//                journal.commit();
+//            }
+//            LocalTripleStore store = new LocalTripleStore(journal, "kb", ITx.UNISOLATED, properties);
+//            if (journalFile.length() == 0){
+//                store.create();
+//            }
+//            SesameRepository repository = new BigDataSesameRepository(dataDir, store);
 
             SesameRepository repository = new BigDataSesameRepository(dataDir, properties);
             repository.setSources(new RDFSource[]{

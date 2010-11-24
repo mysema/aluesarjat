@@ -55,7 +55,8 @@ private Repository repository;
         namespaces.put("http://www.aluesarjat.fi/rdf/datasets/example-2#", "ex2");
 
         try {
-            RDFDatasetHandler handler = new RDFDatasetHandler(repository, "http://www.aluesarjat.fi/rdf/");
+            NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
+            RDFDatasetHandler handler = new RDFDatasetHandler(repository, namespaceHandler, "http://www.aluesarjat.fi/rdf/");
             PCAxisParser parser = new PCAxisParser(handler);
 
             parser.parse("example-1", getClass().getResourceAsStream("/example-1.px"));

@@ -24,6 +24,7 @@ import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.PCAxisParser;
 import com.mysema.stat.scovo.DC;
 import com.mysema.stat.scovo.DCTERMS;
+import com.mysema.stat.scovo.NamespaceHandler;
 import com.mysema.stat.scovo.RDFDatasetHandler;
 import com.mysema.stat.scovo.SCV;
 
@@ -31,51 +32,73 @@ public class DataService {
 
     private static final Logger logger = LoggerFactory.getLogger(DataService.class);
 
-    @Inject @Named("baseURI")
-    private String baseURI;
+    private final String baseURI;
 
-    @Inject @Named("forceReload")
-    private String forceReload;
+    private final String forceReload;
+
+    private final Repository repository;
+
+    private final NamespaceHandler namespaceHandler;
+
+    private List<String> datasets;
+
+    private boolean sequential = false;
 
     @Inject
-    private Repository repository;
+    public DataService(
+            Repository repository,
+            NamespaceHandler namespaceHandler,
+            @Named("baseURI") String baseURI,
+            @Named("forceReload") String forceReload){
+        this.repository = repository;
+        this.namespaceHandler = namespaceHandler;
+        this.baseURI = baseURI;
+        this.forceReload = forceReload;
+    }
 
     @PostConstruct
     public void initialize() throws IOException{
         logger.info("adding namespaces");
 
         for (Map.Entry<String,String> entry : Namespaces.DEFAULT.entrySet()) {
-            RDFDatasetHandler.addNamespace(repository, entry.getKey(), entry.getValue());
+            namespaceHandler.addNamespace(entry.getKey(), entry.getValue());
         }
-        RDFDatasetHandler.addNamespace(repository, SCV.NS, "scv");
-        RDFDatasetHandler.addNamespace(repository, META.NS, "meta");
-        RDFDatasetHandler.addNamespace(repository, DC.NS, "dc");
-        RDFDatasetHandler.addNamespace(repository, DCTERMS.NS, "dcterms");
-        RDFDatasetHandler.addNamespace(repository, STAT.NS, "stat");
-        RDFDatasetHandler.addNamespace(repository, baseURI + RDFDatasetHandler.DIMENSION_NS, "dimension");
-        RDFDatasetHandler.addNamespace(repository, baseURI + RDFDatasetHandler.DATASET_CONTEXT_BASE, "dataset");
+        namespaceHandler.addNamespace(SCV.NS, "scv");
+        namespaceHandler.addNamespace(META.NS, "meta");
+        namespaceHandler.addNamespace(DC.NS, "dc");
+        namespaceHandler.addNamespace(DCTERMS.NS, "dcterms");
+        namespaceHandler.addNamespace(STAT.NS, "stat");
+        namespaceHandler.addNamespace(baseURI + RDFDatasetHandler.DIMENSION_NS, "dimension");
+        namespaceHandler.addNamespace(baseURI + RDFDatasetHandler.DATASET_CONTEXT_BASE, "dataset");
 
         logger.info("initializing data");
-        
+
         final boolean reload = "true".equals(forceReload);
-        
-        @SuppressWarnings("unchecked")
-        List<String> datasets = IOUtils.readLines(getStream("/data/datasets"));
+
+        if (datasets == null){
+            datasets = IOUtils.readLines(getStream("/data/datasets"));
+        }
+
         for (String d : datasets) {
             final String datasetDef = d.trim();
-            Thread thread = new Thread() {
-                public void run() {
-                    importData(datasetDef, reload);
-                }
-            };
-            thread.setDaemon(true);
-            thread.start();
+            if (sequential){
+                importData(datasetDef, reload);
+            }else{
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        importData(datasetDef, reload);
+                    }
+                };
+                thread.setDaemon(true);
+                thread.start();
+            }
         }
     }
-    
+
     private void importData(String datasetDef, boolean reload) {
         try {
-            RDFDatasetHandler handler = new RDFDatasetHandler(repository, baseURI);
+            RDFDatasetHandler handler = new RDFDatasetHandler(repository, namespaceHandler, baseURI);
             PCAxisParser parser = new PCAxisParser(handler);
 
             if (StringUtils.isNotBlank(datasetDef)) {
@@ -121,6 +144,14 @@ public class DataService {
 
     private InputStream getStream(String name) {
         return getClass().getResourceAsStream(name);
+    }
+
+    public void setDatasets(List<String> datasets) {
+        this.datasets = datasets;
+    }
+
+    public void setSequential(boolean sequential){
+        this.sequential = sequential;
     }
 
 }

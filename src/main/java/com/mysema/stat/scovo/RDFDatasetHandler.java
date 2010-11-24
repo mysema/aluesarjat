@@ -20,11 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Isolation;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.*;
 import com.mysema.rdfbean.owl.OWL;
 import com.mysema.rdfbean.xsd.DateTimeConverter;
-import com.mysema.stat.META;
 import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.Dataset;
 import com.mysema.stat.pcaxis.DatasetHandler;
@@ -65,6 +63,8 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     private final Repository repository;
 
+    private final NamespaceHandler namespaceHandler;
+
     private Map<Dimension, UID> dimensions;
 
     private static final Map<String, LIT> DECIMAL_CACHE = new HashMap<String, LIT>();
@@ -88,8 +88,9 @@ public class RDFDatasetHandler implements DatasetHandler {
         }
     }
 
-    public RDFDatasetHandler(Repository repository, String baseURI) {
+    public RDFDatasetHandler(Repository repository, NamespaceHandler namespaceHandler, String baseURI) {
         this.repository = repository;
+        this.namespaceHandler = namespaceHandler;
         this.baseURI = baseURI;
         Assert.notNull(baseURI, "baseURI");
         Assert.assertThat(baseURI.endsWith("/"), "baseURI doesn't end with /", null, null);
@@ -107,14 +108,6 @@ public class RDFDatasetHandler implements DatasetHandler {
     private void add(ID subject, UID predicate, DateTime dateTime, UID context) {
         add(subject, predicate, new LIT(DATE_TIME_CONVERTER.toString(dateTime), XSD.dateTime), context);
     }
-
-//    private void addDecimal(ID subject, UID predicate, String decimal, UID context) {
-//        LIT lit = DECIMAL_CACHE.get(decimal);
-//        if (lit == null) {
-//            lit = new LIT(decimal, XSD.decimalType);
-//        }
-//        add(subject, predicate, lit, context);
-//    }
 
     private void add(ID subject, UID predicate, String name, UID context) {
         add(subject, predicate, new LIT(name), context);
@@ -171,7 +164,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                 add(t, DC.title, type.getName(), domainContext);
 
                 // Namespace for dimension instances
-                addNamespace(repository, dimensionNs, dimensionContext.getLocalName().toLowerCase());
+                namespaceHandler.addNamespace(dimensionNs, dimensionContext.getLocalName().toLowerCase());
             } else {
                 logger.info("Referring to existing DimensionType: " + print(t));
             }
@@ -301,59 +294,6 @@ public class RDFDatasetHandler implements DatasetHandler {
         }
     }
 
-    public static void addNamespace(Repository repository, String ns, String prefix) {
-        RDFConnection conn = repository.openConnection();
-        RDFBeanTransaction tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
-        CloseableIterator<STMT> iter = null;
-        try {
-            LIT prefixLiteral = new LIT(prefix);
-            UID uid = new UID(ns);
-            STMT nsStmt = new STMT(uid, META.nsPrefix, prefixLiteral, null);
-            boolean found = false;
 
-            // Prefix mapped already
-            iter = conn.findStatements(null, META.nsPrefix, prefixLiteral, null, false);
-            while(iter.hasNext()) {
-                STMT stmt = iter.next();
-                if (stmt.equals(nsStmt)) {
-                    // Retain valid mapping
-                    found = true;
-                } else {
-                    // Remove duplicate prefix-mapping
-                    conn.update(Collections.singleton(stmt), null);
-                }
-            }
-            iter.close();
-
-            // URI mapped already
-            iter = conn.findStatements(uid, META.nsPrefix, null, null, false);
-            while(iter.hasNext()) {
-                STMT stmt = iter.next();
-                if (stmt.equals(nsStmt)) {
-                    // Retain valid mapping
-                    found = true;
-                } else {
-                    // Remove duplicate URI-mapping
-                    conn.update(Collections.singleton(stmt), null);
-                }
-            }
-            iter.close();
-
-            if (!found) {
-                // Add new mapping
-                conn.update(null, Collections.singleton(nsStmt));
-            }
-            tx.commit();
-
-        } catch(Exception e){
-            tx.rollback();
-
-        } finally {
-            if (iter != null) {
-                iter.close();
-            }
-            conn.close();
-        }
-    }
 
 }

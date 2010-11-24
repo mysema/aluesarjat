@@ -21,16 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.rdfbean.model.ID;
-import com.mysema.rdfbean.model.LIT;
-import com.mysema.rdfbean.model.NODE;
-import com.mysema.rdfbean.model.QueryLanguage;
-import com.mysema.rdfbean.model.RDF;
-import com.mysema.rdfbean.model.RDFConnection;
-import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.model.SPARQLQuery;
-import com.mysema.rdfbean.model.STMT;
-import com.mysema.rdfbean.model.UID;
+import com.mysema.rdfbean.model.*;
 import com.mysema.stat.scovo.SCV;
 
 public class SearchServlet extends AbstractFacetSearchServlet {
@@ -39,7 +30,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
 
     private static final String[] EMPTY = new String[0];
 
-    private Repository repository;
+    private final Repository repository;
 
     public SearchServlet(Repository repository) {
         this.repository = repository;
@@ -66,6 +57,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 
         List<String> dimensions = new ArrayList<String>();
@@ -89,7 +81,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
             int restrictionCount = datasets.size() + dimensions.size();
             if (restrictionCount == 0) {
                 throw new IllegalArgumentException("No restrictions (value) specified");
-            } 
+            }
             List<JSONObject> items = null;
             Map<UID,JSONObject> facets = null;
             StringBuilder sparql;
@@ -102,7 +94,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
 
             if (restrictionCount < 3) {
                 facets = new LinkedHashMap<UID,JSONObject>();
-                
+
                 // Find available dimensions via dataset definitions
 
                 StringBuilder filter = new StringBuilder();
@@ -145,7 +137,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 while (iter.hasNext()) {
                     row = iter.next();
                     addFacet(row, namespaces, facets);
-                    
+
                     UID dataset = (UID) row.get("dataset");
                     if (distinctDataset.add(dataset)) {
                         row = new HashMap<String, NODE>();
@@ -175,7 +167,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     .append(limit)
                     .append("\nOFFSET ")
                     .append(offset);
-    
+
                     query = conn.createQuery(QueryLanguage.SPARQL, sparql.toString());
                     iter = query.getTuples();
                     while (iter.hasNext()) {
@@ -183,11 +175,11 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                         UID id = (UID) row.get("item");
                         UID dataset = (UID) row.get("dataset");
                         LIT value = (LIT) row.get("value");
-    
+
                         JSONObject json = new JSONObject();
                         json.put("value", value.getValue());
                         json.accumulate("values", getPrefixed(dataset, namespaces));
-    
+
                         stmts = conn.findStatements(id, SCV.dimension, null, dataset, false);
                         while (stmts.hasNext()) {
                             STMT stmt = stmts.next();
@@ -202,23 +194,23 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 // AVAILABLE DIMENSIONS
                 if (includes.contains("facets")) {
                     facets = new LinkedHashMap<UID,JSONObject>();
-                    
+
                     sparql = new StringBuilder()
                     .append(sparqlNamespaces)
                     .append("SELECT distinct ?dimensionType ?dimension\nWHERE {\n")
                     .append(where)
                     .append("?item scv:dimension ?dimension . ?dimension rdf:type ?dimensionType .\n}");
-    
+
                     addFacets(conn, sparql.toString(), namespaces, facets, null);
-    
+
                     // AVAILABLE DATASETS
                     sparql = new StringBuilder()
                     .append(sparqlNamespaces)
                     .append("SELECT distinct ?dimension ?units\nWHERE {\n")
                     .append(where)
                     .append("?item scv:dataset ?dimension . GRAPH <http://localhost:8080/rdf/datasets> { ?dimension stat:units ?units }\n}");
-    
-                    addFacets(conn, sparql.toString(), namespaces, facets, 
+
+                    addFacets(conn, sparql.toString(), namespaces, facets,
                             Collections.singletonMap("dimensionType", (NODE) SCV.Dataset));
                 }
             }
@@ -247,7 +239,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
     private Set<String> getIncludes(String[] parameterValues) {
         if (parameterValues == null) {
             parameterValues = new String[] {"items", "values"};
-        } 
+        }
         return new HashSet<String>(Arrays.asList(parameterValues));
     }
 

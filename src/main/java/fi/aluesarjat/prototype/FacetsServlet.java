@@ -30,6 +30,7 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 //        HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 
         RDFConnection conn = repository.openConnection();

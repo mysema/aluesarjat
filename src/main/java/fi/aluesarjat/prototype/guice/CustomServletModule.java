@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 import com.google.inject.servlet.ServletModule;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.sparql.SPARQLServlet;
+import com.mysema.stat.scovo.NamespaceHandler;
 
 import fi.aluesarjat.prototype.ContextAccessServlet;
 import fi.aluesarjat.prototype.DataService;
@@ -29,6 +30,12 @@ public class CustomServletModule extends ServletModule{
         serve("/rdf/domain*",
               "/rdf/dimensions*",
               "/rdf/datasets").with(ContextAccessServlet.class);
+    }
+
+    @Provides
+    @Singleton
+    public NamespaceHandler createNamespaceHandler(Repository repository){
+        return new NamespaceHandler(repository);
     }
 
     @Provides
