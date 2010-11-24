@@ -3,15 +3,7 @@ package com.mysema.stat.scovo;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
@@ -164,7 +156,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                 add(t, DC.title, type.getName(), domainContext);
 
                 // Namespace for dimension instances
-                namespaceHandler.addNamespace(dimensionNs, dimensionContext.getLocalName().toLowerCase());
+                namespaceHandler.addNamespace(dimensionNs, dimensionContext.getLocalName().toLowerCase(Locale.ENGLISH));
             } else {
                 logger.info("Referring to existing DimensionType: " + print(t));
             }

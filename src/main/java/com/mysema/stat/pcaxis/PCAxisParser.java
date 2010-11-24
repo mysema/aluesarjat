@@ -21,25 +21,25 @@ public class PCAxisParser {
 
     private static Logger logger = LoggerFactory.getLogger(PCAxisParser.class);
 
-    private final static CharSet KEY = CharSet.getInstance("A-Z-");
+    private static final CharSet KEY = CharSet.getInstance("A-Z-");
 
-    private final static CharSet EQ = CharSet.getInstance("=");
+    private static final CharSet EQ = CharSet.getInstance("=");
 
-    private final static CharSet SCOL = CharSet.getInstance(";");
+    private static final CharSet SCOL = CharSet.getInstance(";");
 
-    private final static CharSet WS = CharSet.getInstance(" \t\n\f\r");
+    private static final CharSet WS = CharSet.getInstance(" \t\n\f\r");
 
-    private final static CharSet COMMA = CharSet.getInstance(",");
+    private static final CharSet COMMA = CharSet.getInstance(",");
 
-    private final static CharSet DOT = CharSet.getInstance(".");
+    private static final CharSet DOT = CharSet.getInstance(".");
 
-    private final static CharSet NUMBER = CharSet.getInstance("0-9");
+    private static final CharSet NUMBER = CharSet.getInstance("0-9");
 
-    private final static CharSet QUOTE = CharSet.getInstance("\"");
+    private static final CharSet QUOTE = CharSet.getInstance("\"");
 
-    private final static CharSet LPAR = CharSet.getInstance("(");
+    private static final CharSet LPAR = CharSet.getInstance("(");
 
-    private final static CharSet RPAR = CharSet.getInstance(")");
+    private static final CharSet RPAR = CharSet.getInstance(")");
 
     private final DatasetHandler handler;
 
