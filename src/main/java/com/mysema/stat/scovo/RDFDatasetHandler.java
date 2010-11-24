@@ -229,9 +229,9 @@ public class RDFDatasetHandler implements DatasetHandler {
                     logger.info(dataset.getName() + ": loaded " + itemCount + " items");
                 }
             } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
 
         }

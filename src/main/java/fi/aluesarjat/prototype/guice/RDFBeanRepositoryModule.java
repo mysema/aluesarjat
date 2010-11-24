@@ -16,6 +16,7 @@ import com.google.inject.name.Names;
 import com.mysema.rdfbean.guice.Config;
 import com.mysema.rdfbean.guice.RDFBeanModule;
 import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.RepositoryException;
 
 // TODO : move to rdfbean-guice, when working
 public abstract class RDFBeanRepositoryModule extends AbstractModule{
@@ -42,9 +43,7 @@ public abstract class RDFBeanRepositoryModule extends AbstractModule{
                     .toInstance(entry.getValue().toString());
             }
         } catch (IOException e) {
-            String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
-            throw new RuntimeException(error, e);
+            throw new RepositoryException(e.getMessage(), e);
         }
 
     }

@@ -143,7 +143,7 @@ public class DataService {
     }
 
     private InputStream getStream(String name) {
-        return getClass().getResourceAsStream(name);
+        return DataService.class.getResourceAsStream(name);
     }
 
     public void setDatasets(List<String> datasets) {
