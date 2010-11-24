@@ -3,7 +3,7 @@ package fi.aluesarjat.prototype;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SearchServletTest {
+public class SearchServletTest extends AbstractFacetSearchServletTest{
 
     @Test
     public void test(){
