@@ -1,0 +1,5 @@
+START
+
+cd /usr/local/virtuoso-opensource/var/lib/virtuoso/db
+virtuoso-t -f &
+ 

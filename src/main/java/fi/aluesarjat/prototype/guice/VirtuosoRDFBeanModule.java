@@ -1,24 +1,24 @@
 package fi.aluesarjat.prototype.guice;
 
 import java.io.File;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
-import com.mysema.rdfbean.guice.RDFBeanModule;
+import com.mysema.rdfbean.guice.Config;
 import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.object.Configuration;
 import com.mysema.rdfbean.ontology.EmptyOntology;
 
-public class VirtuosoRDFBeanModule extends RDFBeanModule{
+public class VirtuosoRDFBeanModule extends RDFBeanRepositoryModule{
 
     @Override
     public List<String> getConfiguration(){
-        return Collections.singletonList("/aluesarjat.properties");
+        return Arrays.asList("/aluesarjat.properties", "/import-serial.properties");
     }
 
     @Override
-    public Repository createRepository(Configuration configuration){
-        File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-data");
+    public Repository createRepository(@Config Properties properties){
+        File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-virtuoso");
         dataDir.mkdir();
         VirtuosoSesameRepository repository = new VirtuosoSesameRepository(dataDir, "localhost:1111", "dba", "dba");
         repository.setOntology(EmptyOntology.DEFAULT);

@@ -34,26 +34,28 @@ public class DataService {
 
     private final String baseURI;
 
-    private final String forceReload;
+    private final boolean forceReload;
 
     private final Repository repository;
 
     private final NamespaceHandler namespaceHandler;
 
-    private List<String> datasets;
+    private final boolean parallel;
 
-    private boolean sequential = false;
+    private List<String> datasets;
 
     @Inject
     public DataService(
             Repository repository,
             NamespaceHandler namespaceHandler,
             @Named("baseURI") String baseURI,
+            @Named("import.parallel") String parallel,
             @Named("forceReload") String forceReload){
         this.repository = repository;
         this.namespaceHandler = namespaceHandler;
         this.baseURI = baseURI;
-        this.forceReload = forceReload;
+        this.forceReload = Boolean.valueOf(forceReload);
+        this.parallel = Boolean.valueOf(parallel);
     }
 
     @PostConstruct
@@ -73,25 +75,23 @@ public class DataService {
 
         logger.info("initializing data");
 
-        final boolean reload = "true".equals(forceReload);
-
         if (datasets == null){
             datasets = IOUtils.readLines(getStream("/data/datasets"));
         }
 
         for (String d : datasets) {
             final String datasetDef = d.trim();
-            if (sequential){
-                importData(datasetDef, reload);
-            }else{
+            if (parallel){
                 Thread thread = new Thread() {
                     @Override
                     public void run() {
-                        importData(datasetDef, reload);
+                        importData(datasetDef, forceReload);
                     }
                 };
                 thread.setDaemon(true);
                 thread.start();
+            }else{
+                importData(datasetDef, forceReload);
             }
         }
     }
@@ -148,10 +148,6 @@ public class DataService {
 
     public void setDatasets(List<String> datasets) {
         this.datasets = datasets;
-    }
-
-    public void setSequential(boolean sequential){
-        this.sequential = sequential;
     }
 
 }

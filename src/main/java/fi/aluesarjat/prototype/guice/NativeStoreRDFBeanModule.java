@@ -3,7 +3,7 @@ package fi.aluesarjat.prototype.guice;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -21,7 +21,7 @@ public class NativeStoreRDFBeanModule extends RDFBeanRepositoryModule{
 
     @Override
     public List<String> getConfiguration(){
-        return Collections.singletonList("/aluesarjat.properties");
+        return Arrays.asList("/aluesarjat.properties", "import-parallel.properties");
     }
 
     @Override

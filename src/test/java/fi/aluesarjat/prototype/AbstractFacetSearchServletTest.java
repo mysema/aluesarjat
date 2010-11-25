@@ -35,9 +35,8 @@ public abstract class AbstractFacetSearchServletTest {
         repository.initialize();
 
         NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
-        DataService dataService = new DataService(repository, namespaceHandler, "http://localhost:8080/rdf/", "true");
+        DataService dataService = new DataService(repository, namespaceHandler, "http://localhost:8080/rdf/", "false", "true");
         dataService.setDatasets(Collections.singletonList("A01HKIS_Vaestotulot \".\""));
-        dataService.setSequential(true);
         dataService.initialize();
     }
 
