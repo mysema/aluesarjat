@@ -216,10 +216,10 @@ public class SearchServlet extends AbstractFacetSearchServlet {
             }
 
             JSONObject result = new JSONObject();
-            if (items != null) {
+            if (items != null && includes.contains("items")) {
                 result.put("items", items);
             }
-            if (facets != null) {
+            if (facets != null && includes.contains("facets")) {
                 result.put("facets", facets.values());
             }
             Writer out = response.getWriter();

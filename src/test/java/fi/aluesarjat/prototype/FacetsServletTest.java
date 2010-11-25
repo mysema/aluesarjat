@@ -11,8 +11,16 @@ import org.junit.Test;
 
 public class FacetsServletTest extends AbstractFacetSearchServletTest{
 
+    private FacetsServlet servlet;
+
+    @Override
+    public void setUp(){
+        super.setUp();
+        servlet = new FacetsServlet(repository);
+    }
+
     @Test
-    public void Initial() throws ServletException, IOException{
+    public void Correct_CharsetEncoding() throws ServletException, IOException{
         servlet.service(request, response);
         assertEquals("UTF-8", response.getCharacterEncoding());
         assertEquals("application/json", response.getContentType());

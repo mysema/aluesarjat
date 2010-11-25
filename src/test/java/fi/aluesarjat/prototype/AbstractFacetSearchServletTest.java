@@ -19,9 +19,7 @@ import com.mysema.stat.scovo.SCV;
 
 public abstract class AbstractFacetSearchServletTest {
 
-    private static MemoryRepository repository;
-
-    protected static FacetsServlet servlet;
+    protected static MemoryRepository repository;
 
     protected MockHttpServletRequest request;
 
@@ -41,8 +39,6 @@ public abstract class AbstractFacetSearchServletTest {
         dataService.setDatasets(Collections.singletonList("A01HKIS_Vaestotulot \".\""));
         dataService.setSequential(true);
         dataService.initialize();
-
-        servlet = new FacetsServlet(repository);
     }
 
     @AfterClass
@@ -55,4 +51,5 @@ public abstract class AbstractFacetSearchServletTest {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
     }
+
 }

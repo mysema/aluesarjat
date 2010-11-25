@@ -1,6 +1,6 @@
 package com.mysema.stat.pcaxis;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -16,7 +16,9 @@ public class DefaultDatasetHandlerTest {
         parser.parse("A01HKIS_Vaestotulot", getClass().getResourceAsStream("/data/A01HKIS_Vaestotulot.px"));
         for (Item item : handler.getItems("A01HKIS_Vaestotulot")){
             String str = item.getDimensions().toString();
-            assertFalse(str, str.contains("yhteensï¿½"));
+            if (str.contains("yhteens")){
+                assertTrue(str, str.contains("yhteens\u00E4"));
+            }
         }
     }
 

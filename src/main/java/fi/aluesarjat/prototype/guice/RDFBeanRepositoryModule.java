@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -20,8 +17,6 @@ import com.mysema.rdfbean.model.RepositoryException;
 
 // TODO : move to rdfbean-guice, when working
 public abstract class RDFBeanRepositoryModule extends AbstractModule{
-
-    private static final Logger logger = LoggerFactory.getLogger(RDFBeanModule.class);
 
     public List<String> getConfiguration(){
         return Collections.singletonList("/persistence.properties");

@@ -151,11 +151,11 @@
 		<resources>
 			<resource>
 				<directory>${extraResources}</directory>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
+				<filtering>false</filtering>
 			</resource>
 		</resources>
 		<plugins>

@@ -28,13 +28,11 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
 
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-//        HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         RDFConnection conn = repository.openConnection();
-//        CloseableIterator<Map<String,NODE>> iter = null;
         try {
             Map<UID,JSONObject> dimensionTypes = new LinkedHashMap<UID,JSONObject>();
 
@@ -91,9 +89,6 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
             result.write(out);
             out.flush();
         } finally {
-//            if (iter != null) {
-//                iter.close();
-//            }
             conn.close();
         }
     }
