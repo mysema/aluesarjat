@@ -1,8 +1,8 @@
 package com.mysema.stat.scovo;
 
+import java.sql.Connection;
 import java.util.Collections;
-
-import org.springframework.transaction.annotation.Isolation;
+import java.util.Map;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.LIT;
@@ -17,7 +17,7 @@ public class NamespaceHandler {
 
     private static final int TX_TIMEOUT = -1;
 
-    private static final int TX_ISOLATION = Isolation.DEFAULT.value();
+    private static final int TX_ISOLATION = Connection.TRANSACTION_READ_COMMITTED;
 
     private final Repository repository;
 
@@ -25,49 +25,53 @@ public class NamespaceHandler {
         this.repository = repository;
     }
 
-    public void addNamespace(String ns, String prefix) {
+    public void addNamespaces(Map<String,String> namespaces) {
         RDFConnection conn = repository.openConnection();
         RDFBeanTransaction tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
         CloseableIterator<STMT> iter = null;
         try {
-            LIT prefixLiteral = new LIT(prefix);
-            UID uid = new UID(ns);
-            STMT nsStmt = new STMT(uid, META.nsPrefix, prefixLiteral, null);
-            boolean found = false;
+            for (Map.Entry<String,String> entry : namespaces.entrySet()){
+                LIT prefixLiteral = new LIT(entry.getValue());
+                UID uid = new UID(entry.getKey());
+                STMT nsStmt = new STMT(uid, META.nsPrefix, prefixLiteral, null);
+                boolean found = false;
 
-            // Prefix mapped already
-            iter = conn.findStatements(null, META.nsPrefix, prefixLiteral, null, false);
-            while(iter.hasNext()) {
-                STMT stmt = iter.next();
-                if (stmt.equals(nsStmt)) {
-                    // Retain valid mapping
-                    found = true;
-                } else {
-                    // Remove duplicate prefix-mapping
-                    conn.update(Collections.singleton(stmt), null);
+                // Prefix mapped already
+                iter = conn.findStatements(null, META.nsPrefix, prefixLiteral, null, false);
+                while(iter.hasNext()) {
+                    STMT stmt = iter.next();
+                    if (stmt.equals(nsStmt)) {
+                        // Retain valid mapping
+                        found = true;
+                    } else {
+                        // Remove duplicate prefix-mapping
+                        conn.update(Collections.singleton(stmt), null);
+                    }
                 }
-            }
-            iter.close();
+                iter.close();
 
-            // URI mapped already
-            iter = conn.findStatements(uid, META.nsPrefix, null, null, false);
-            while(iter.hasNext()) {
-                STMT stmt = iter.next();
-                if (stmt.equals(nsStmt)) {
-                    // Retain valid mapping
-                    found = true;
-                } else {
-                    // Remove duplicate URI-mapping
-                    conn.update(Collections.singleton(stmt), null);
+                // URI mapped already
+                iter = conn.findStatements(uid, META.nsPrefix, null, null, false);
+                while(iter.hasNext()) {
+                    STMT stmt = iter.next();
+                    if (stmt.equals(nsStmt)) {
+                        // Retain valid mapping
+                        found = true;
+                    } else {
+                        // Remove duplicate URI-mapping
+                        conn.update(Collections.singleton(stmt), null);
+                    }
                 }
-            }
-            iter.close();
+                iter.close();
 
-            if (!found) {
-                // Add new mapping
-                conn.update(null, Collections.singleton(nsStmt));
+                if (!found) {
+                    // Add new mapping
+                    conn.update(null, Collections.singleton(nsStmt));
+                }
+
             }
             tx.commit();
+
 
         } catch(Exception e){
             tx.rollback();

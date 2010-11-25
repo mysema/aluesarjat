@@ -3,13 +3,13 @@ package com.mysema.stat.scovo;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.util.*;
 
 import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Isolation;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.rdfbean.model.*;
@@ -28,7 +28,7 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     private static final int TX_TIMEOUT = -1;
 
-    private static final int TX_ISOLATION = Isolation.DEFAULT.value();
+    private static final int TX_ISOLATION = Connection.TRANSACTION_READ_COMMITTED;
 
     // E.g. http://www.aluesarjat.fi/rdf/
     private final String baseURI;
@@ -143,6 +143,7 @@ public class RDFDatasetHandler implements DatasetHandler {
         UID domainContext = new UID(baseURI,  DIMENSIONS);
         String dimensionBase = baseURI + DIMENSION_NS;
 
+        Map<String,String> namespaces = new HashMap<String,String>();
         // SCHEMA: DimensionTypes
         for (DimensionType type : dataset.getDimensionTypes()) {
             UID t = new UID(dimensionBase, encodeID(type.getName()));
@@ -156,7 +157,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                 add(t, DC.title, type.getName(), domainContext);
 
                 // Namespace for dimension instances
-                namespaceHandler.addNamespace(dimensionNs, dimensionContext.getLocalName().toLowerCase(Locale.ENGLISH));
+                namespaces.put(dimensionNs, dimensionContext.getLocalName().toLowerCase(Locale.ENGLISH));
             } else {
                 logger.info("Referring to existing DimensionType: " + print(t));
             }
@@ -180,14 +181,16 @@ public class RDFDatasetHandler implements DatasetHandler {
             }
         }
         flush();
+        tx.commit();
+
+        namespaceHandler.addNamespaces(namespaces);
+
+        tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
     }
 
     private void flush() {
         conn.update(Collections.<STMT>emptySet(), statements);
         statements.clear();
-
-        tx.commit();
-        tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
     }
 
     @Override
@@ -226,6 +229,8 @@ public class RDFDatasetHandler implements DatasetHandler {
 
                 if (++itemCount % batchSize == 0) {
                     flush();
+                    tx.commit();
+                    tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
                     logger.info(dataset.getName() + ": loaded " + itemCount + " items");
                 }
             } catch (NoSuchAlgorithmException e) {

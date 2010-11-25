@@ -2,6 +2,7 @@ package fi.aluesarjat.prototype;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,16 +63,15 @@ public class DataService {
     public void initialize() throws IOException{
         logger.info("adding namespaces");
 
-        for (Map.Entry<String,String> entry : Namespaces.DEFAULT.entrySet()) {
-            namespaceHandler.addNamespace(entry.getKey(), entry.getValue());
-        }
-        namespaceHandler.addNamespace(SCV.NS, "scv");
-        namespaceHandler.addNamespace(META.NS, "meta");
-        namespaceHandler.addNamespace(DC.NS, "dc");
-        namespaceHandler.addNamespace(DCTERMS.NS, "dcterms");
-        namespaceHandler.addNamespace(STAT.NS, "stat");
-        namespaceHandler.addNamespace(baseURI + RDFDatasetHandler.DIMENSION_NS, "dimension");
-        namespaceHandler.addNamespace(baseURI + RDFDatasetHandler.DATASET_CONTEXT_BASE, "dataset");
+        Map<String,String> namespaces = new HashMap<String,String>(Namespaces.DEFAULT);
+        namespaces.put(SCV.NS, "scv");
+        namespaces.put(META.NS, "meta");
+        namespaces.put(DC.NS, "dc");
+        namespaces.put(DCTERMS.NS, "dcterms");
+        namespaces.put(STAT.NS, "stat");
+        namespaces.put(baseURI + RDFDatasetHandler.DIMENSION_NS, "dimension");
+        namespaces.put(baseURI + RDFDatasetHandler.DATASET_CONTEXT_BASE, "dataset");
+        namespaceHandler.addNamespaces(namespaces);
 
         logger.info("initializing data");
 
