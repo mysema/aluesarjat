@@ -21,7 +21,7 @@ public class NativeStoreRDFBeanModule extends RDFBeanRepositoryModule{
 
     @Override
     public List<String> getConfiguration(){
-        return Arrays.asList("/aluesarjat.properties", "import-parallel.properties");
+        return Arrays.asList("/aluesarjat.properties", "/import-parallel.properties");
     }
 
     @Override
