@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServlet;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.LIT;
 import com.mysema.rdfbean.model.NODE;
@@ -18,10 +21,15 @@ import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.scovo.SCV;
 
 public abstract class AbstractFacetSearchServlet extends HttpServlet {
+    
+    private static final Logger log = LoggerFactory.getLogger(AbstractFacetSearchServlet.class);
 
     private static final long serialVersionUID = 1L;
 
     protected void addFacets(RDFConnection conn, String queryString, Map<String,String> namespaces, Map<UID,JSONObject> dimensionTypes, Map<String, NODE> bindings) {
+        if (log.isInfoEnabled()) {
+            log.info(queryString);
+        }
         SPARQLQuery query = conn.createQuery(QueryLanguage.SPARQL, queryString);
         if (bindings != null) {
             for (Map.Entry<String, NODE> entry : bindings.entrySet()) {

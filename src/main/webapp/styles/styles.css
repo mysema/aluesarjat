@@ -112,6 +112,10 @@ th.restriction {
 	border: 1px solid #FEE0C6;
 }
 
+.facetValueInfo {
+	margin-left: 10px;
+}
+
 #popup {
 	position: fixed;
 	top: 15%;

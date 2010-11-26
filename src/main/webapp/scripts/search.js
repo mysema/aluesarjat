@@ -33,7 +33,7 @@ $(document).ready(function(){
 			value.facet = facet;
 			template.push("<div class='facetValue' id='", toID(value.id), "' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name);
 			if (value.description) {
-				template.push("<img src='images/info-16x16.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id,"'/>");
+				template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id,"'/>");
 			}
 			template.push("</div>");
 			allValues[value.id] = value;
@@ -126,7 +126,7 @@ $(document).ready(function(){
 						template.push("<tr><th class='restriction'>", facet.name, ":</th><td colspan='10'><div class='facetValue selectedValue' data-id='", 
 								restriction.id, "'>", restriction.name);
 						if (restriction.description) {
-							template.push("<img src='images/info-16x16.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id,"'/>");
+							template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id,"'/>");
 						}
 						template.push("</div></td></tr>");
 					}
@@ -195,13 +195,13 @@ $(document).ready(function(){
 								var colIndex = columns.indexOf(value.facet.id);
 								if (colIndex >= 0) {
 									var columnTemplate = [];
-									if (value == previousValues[j]) {
+									if (previousValues[j] && value.id == previousValues[j].id) {
 										 columnTemplate.push("<td><div class='facetValueDuplicate' data-id='", value.id, "'>", value.name);
 									} else {
 										columnTemplate.push("<td><div class='facetValue' data-id='", value.id, "'>", value.name);
 									}
 									if (restriction.description) {
-										columnTemplate.push("<img src='images/info-16x16.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id, "'/>");
+										columnTemplate.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id, "'/>");
 									}
 									columnTemplate.push("</div></td>");
 									columnValues[colIndex] = columnTemplate.join("");

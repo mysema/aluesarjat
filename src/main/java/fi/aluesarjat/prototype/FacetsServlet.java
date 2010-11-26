@@ -2,6 +2,7 @@ package fi.aluesarjat.prototype;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -12,9 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import com.mysema.rdfbean.model.NODE;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.UID;
+import com.mysema.stat.scovo.SCV;
 
 public class FacetsServlet extends AbstractFacetSearchServlet {
 
@@ -65,12 +68,11 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                     "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
                     "PREFIX scv: <http://purl.org/NET/scovo#>\n" +
                     "PREFIX stat: <http://data.mysema.com/schemas/stat#>\n" +
-                    "SELECT ?dimension ?dimensionName ?dimensionType ?dimensionDescription ?units\n" +
+                    "SELECT ?dimension ?dimensionName ?dimensionDescription ?units\n" +
                     "WHERE {\n" +
-                    "?dimension rdf:type ?dimensionType ; dc:title ?dimensionName ; stat:units ?units .\n" +
+                    "?dimension rdf:type scv:Dataset ; dc:title ?dimensionName ; stat:units ?units .\n" +
                     "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
-                    "FILTER (?dimensionType = scv:Dataset)\n" +
-                    "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, null);
+                    "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, Collections.singletonMap("dimensionType", (NODE) SCV.Dataset));
 
 //            SPARQLQueryBuilder qry = new SPARQLQueryBuilder(namespaces);
 //            qry.select("?dimension ?dimensionName ?dimensionType ?dimensionDescription ?units")
