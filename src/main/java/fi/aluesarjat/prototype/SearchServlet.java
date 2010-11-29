@@ -18,10 +18,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.sf.json.JSONObject;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.*;
@@ -30,7 +30,7 @@ import com.mysema.stat.scovo.SCV;
 public class SearchServlet extends AbstractFacetSearchServlet {
 
     private static final Logger log = LoggerFactory.getLogger(SearchServlet.class);
-    
+
     private static final long serialVersionUID = 2149808648205848159L;
 
     private static final String[] EMPTY = new String[0];
@@ -138,7 +138,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 }
 
                 Set<UID> distinctDataset = new HashSet<UID>();
-                
+
                 if (log.isInfoEnabled()) {
                     log.info(sparql.toString());
                 }
@@ -157,7 +157,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     }
                 }
                 iter.close();
-            } 
+            }
             // Find items and exact non-empty facet values
             else {
                 items = new ArrayList<JSONObject>(limit);
@@ -214,7 +214,8 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     .append(sparqlNamespaces)
                     .append("SELECT distinct ?dimensionType ?dimension\nWHERE {\n")
                     .append(where)
-                    .append("?item scv:dimension ?dimension . OPTIONAL { ?dimension rdf:type ?dimensionType }.\n}");
+//                    .append("?item scv:dimension ?dimension . OPTIONAL { ?dimension rdf:type ?dimensionType }.\n}");
+                    .append("?item scv:dimension ?dimension . ?dimension rdf:type ?dimensionType .\n}");
 
                     addFacets(conn, sparql.toString(), namespaces, facets, null);
 
