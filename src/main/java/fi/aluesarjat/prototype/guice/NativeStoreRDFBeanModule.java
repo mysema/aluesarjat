@@ -10,6 +10,7 @@ import java.util.Properties;
 import org.apache.commons.io.IOUtils;
 
 import com.mysema.rdfbean.guice.Config;
+import com.mysema.rdfbean.guice.RDFBeanRepositoryModule;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.RepositoryException;
 import com.mysema.rdfbean.model.io.Format;

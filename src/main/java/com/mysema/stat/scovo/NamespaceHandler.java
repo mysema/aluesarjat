@@ -75,6 +75,7 @@ public class NamespaceHandler {
 
         } catch(Exception e){
             tx.rollback();
+            throw new RuntimeException(e);
 
         } finally {
             if (iter != null) {
