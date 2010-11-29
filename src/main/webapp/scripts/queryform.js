@@ -1,169 +1,169 @@
-
 String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)}
 
-$(document).ready(function(){
+var qry = {}
+var namespaces = {};
+var savedQueries; 
+var lastClick = null;
+var limit = 200;
+var offset = 0;
+var queryActive = false;
+var queryStartTime;
 
-	var namespaces = {};
-	var savedQueries; 
-	var lastClick = null;
-	var limit = 200;
-	var offset = 0;
-	var queryActive = false;
-	var queryStartTime;
+function executeQuery () {
+	$("#results").html("<img src='images/ajax-loader.gif' alt='Loading results'/>");
+	var qry = 
+		$("#namespaces").text() // Default namespaces 
+		+ $("#query").val() // Query
+		+ "\nlimit " + limit // Limit
+		+ "\noffset " + offset // Offset
+		;
+	
+	queryStartTime = new Date().getTime()
+	
+	$.ajax({
+		url: "sparql", 
+		data: { "query": qry}, 
+		datatype: "json", 
+		beforeSend : function (xhr) {
+    		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+		},
+		error: function(xhr, textStatus, errorThrown){
+			$("#results").html(xhr.responseText);
+		},			
+		success: handleSPARQLResult
+	});
+	return false;
+}
 
-	var executeQuery = function() {
-		$("#results").html("<img src='images/ajax-loader.gif' alt='Loading results'/>");
-		var qry = 
-			$("#namespaces").text() // Default namespaces 
-			+ $("#query").val() // Query
-			+ "\nlimit " + limit // Limit
-			+ "\noffset " + offset // Offset
-			;
-		
-		queryStartTime = new Date().getTime()
-		
-		$.ajax({
-			url: "sparql", 
-			data: { "query": qry}, 
-			datatype: "json", 
-			beforeSend : function (xhr) {
-	    		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-			},
-			error: function(xhr, textStatus, errorThrown){
-				$("#results").html(xhr.responseText);
-			},			
-			success: handleSPARQLResult
-		});
-		return false;
-	}
+function nextPage() {
+	offset += limit;
+	executeQuery();
+}
 
-	var nextPage = function() {
-		offset += limit;
+function prevPage() {
+	if (offset > 0) {
+		offset -= limit;
+		if (offset < 0) {
+			offset = 0;
+		}
 		executeQuery();
 	}
+}
 
-	var prevPage = function() {
-		if (offset > 0) {
-			offset -= limit;
-			if (offset < 0) {
-				offset = 0;
-			}
-			executeQuery();
-		}
+function handleSPARQLResult(data){
+	var vars = data.head.vars;
+	var bindings = data.results.bindings;
+	var html = new Array();
+	var navigation = [];
+	
+	navigation.push(((new Date().getTime() - queryStartTime) / 1000), " s  - "); 
+	navigation.push("<a id='openResults' href='javascript: openResults();'>Open in new window</a> - ");
+	if (offset > 0) {
+		navigation.push("<a href='javascript: prevPage();'>Previous page</a> - ");
+	} else {
+		navigation.push("Previous page - ");
 	}
-
-	var handleSPARQLResult = function(data){
-		var vars = data.head.vars;
-		var bindings = data.results.bindings;
-		var html = new Array();
-		var navigation = [];
-		
-		navigation.push(((new Date().getTime() - queryStartTime) / 1000), " s  - "); 
-		navigation.push("<a id='openResults' href='javascript: openResults();'>Open in new window</a> - ");
-		if (offset > 0) {
-			navigation.push("<a href='javascript: prevPage();'>Previous page</a> - ");
-		} else {
-			navigation.push("Previous page - ");
-		}
-		if (bindings.length == limit) {
-			navigation.push("<a href='javascript: nextPage();'>Next page</a>");
-		} else {
-			navigation.push("Next page");
-		}
-	    navigation = navigation.join("");
-	    
-		html.push(navigation);
-		html.push("<table class='results'>");
-		
-		// head
-		html.push("<thead><tr>");
-		for (var i = 0; i < vars.length; i++){
-		//for (var v in vars) {
-			html.push("<th>" + vars[i] + "</th>");
-		}				
-		html.push("</tr></thead>");
-		
-		// body
-		html.push("<tbody>");
-		var lastColumns = [];
-		var evenRow = [];
-		for (var i = 0; i < bindings.length; i++){
-			var binding = bindings[i];
-			html.push("<tr>");
-			for (var j = 0; j < vars.length; j++){
-				var key = vars[j];
-				var oddRow;
-				if (typeof binding[key] == "undefined") {
-					binding[key] = {type: "undefined", value: "undefined"};
-					oddRow = evenRow[j];
-				} else if (lastColumns[j] != null && lastColumns[j] == binding[key].value) {
-					binding[key].value = "&nbsp;";
-					oddRow = evenRow[j];
-				} else {
-					lastColumns[j] = binding[key].value;
-					// Clear subsequent columns
-					for (var k=j+1; k < lastColumns.length && lastColumns[k] != null; k++) {
-						lastColumns[k] = null;
-					}
-					oddRow = !evenRow[j];
-					evenRow[j] = oddRow;
-				}
-				var cls = binding[key].type + (oddRow ? " odd" : " even");
-				if ("uri" == binding[key].type) {
-					html.push("<td class='"+cls+"'>" + getReadableURI(binding[key].value) + "</td>");
-				} else if ("literal" == binding[key].type) {
-					html.push("<td class='"+cls+"'>" + binding[key].value.replace(/\n/g, "</br>") + "</td>");
-					} else {
-					html.push("<td class='"+cls+"'>" + binding[key].value + "</td>");
-				}
-			}
-			html.push("</tr>");
-		}
-		html.push("</tbody>");
-		
-		html.push("</table><p>");
-		
-		html.push(navigation);
-		html.push("</p>");
-		$("#results").html(html.join(""));
-		
-		queryActive = true;
+	if (bindings.length == limit) {
+		navigation.push("<a href='javascript: nextPage();'>Next page</a>");
+	} else {
+		navigation.push("Next page");
 	}
-
-	var printSavedQuery = function(index, query) {
-		var div = $("#savedQueries");
-		query = query.replace(/</g, "&lt;");
-		div.html(div.html() + "\n<pre class='savedQuery'>" + query + "</pre>");	
-	}
-
-	var getReadableURI = function(uri) {
-		if (uri == "" || uri == "&nbsp;") {
-			return "";
-		} else {
-			var prefix = null;
-			for (var key in namespaces){
-				if (uri.startsWith(namespaces[key]) && uri.length > namespaces[key].length) {
-					if (prefix == null || namespaces[prefix].length < namespaces[key].length) {
-						prefix = key;
-					}  
-				}
-			}
-			if (prefix != null) {
-				return prefix + ":" + uri.substring(namespaces[prefix].length);
+    navigation = navigation.join("");
+    
+	html.push(navigation);
+	html.push("<table class='results'>");
+	
+	// head
+	html.push("<thead><tr>");
+	for (var i = 0; i < vars.length; i++){
+	//for (var v in vars) {
+		html.push("<th>" + vars[i] + "</th>");
+	}				
+	html.push("</tr></thead>");
+	
+	// body
+	html.push("<tbody>");
+	var lastColumns = [];
+	var evenRow = [];
+	for (var i = 0; i < bindings.length; i++){
+		var binding = bindings[i];
+		html.push("<tr>");
+		for (var j = 0; j < vars.length; j++){
+			var key = vars[j];
+			var oddRow;
+			if (typeof binding[key] == "undefined") {
+				binding[key] = {type: "undefined", value: "undefined"};
+				oddRow = evenRow[j];
+			} else if (lastColumns[j] != null && lastColumns[j] == binding[key].value) {
+				binding[key].value = "&nbsp;";
+				oddRow = evenRow[j];
 			} else {
-				return "&lt;" + uri + ">";
+				lastColumns[j] = binding[key].value;
+				// Clear subsequent columns
+				for (var k=j+1; k < lastColumns.length && lastColumns[k] != null; k++) {
+					lastColumns[k] = null;
+				}
+				oddRow = !evenRow[j];
+				evenRow[j] = oddRow;
+			}
+			var cls = binding[key].type + (oddRow ? " odd" : " even");
+			if ("uri" == binding[key].type) {
+				html.push("<td class='"+cls+"'>" + getReadableURI(binding[key].value) + "</td>");
+			} else if ("literal" == binding[key].type) {
+				html.push("<td class='"+cls+"'>" + binding[key].value.replace(/\n/g, "</br>") + "</td>");
+				} else {
+				html.push("<td class='"+cls+"'>" + binding[key].value + "</td>");
 			}
 		}
+		html.push("</tr>");
 	}
+	html.push("</tbody>");
+	
+	html.push("</table><p>");
+	
+	html.push(navigation);
+	html.push("</p>");
+	$("#results").html(html.join(""));
+	
+	queryActive = true;
+}
 
-	var openResults = function() {
-		var win = window.open('', null, 'left=20,top=20,width=500,height=500,toolbar=no,resizable=yes,menubar=no,scrollbars=yes');
-		win.document.write("<html><head><title>Results</title><link rel='stylesheet' type='text/css' href='styles/styles.css'></head><body><table class='results'>" +
-				$("#results table.results").html()
-				+ "</table></body></html>");
-	    win.document.close();
-		win.focus();
+function printSavedQuery(index, query) {
+	var div = $("#savedQueries");
+	query = query.replace(/</g, "&lt;");
+	div.html(div.html() + "\n<pre class='savedQuery'>" + query + "</pre>");	
+}
+
+function getReadableURI(uri) {
+	if (uri == "" || uri == "&nbsp;") {
+		return "";
+	} else {
+		var prefix = null;
+		for (var key in namespaces){
+			if (uri.startsWith(namespaces[key]) && uri.length > namespaces[key].length) {
+				if (prefix == null || namespaces[prefix].length < namespaces[key].length) {
+					prefix = key;
+				}  
+			}
+		}
+		if (prefix != null) {
+			return prefix + ":" + uri.substring(namespaces[prefix].length);
+		} else {
+			return "&lt;" + uri + ">";
+		}
 	}
+}
+
+function openResults() {
+	var win = window.open('', null, 'left=20,top=20,width=500,height=500,toolbar=no,resizable=yes,menubar=no,scrollbars=yes');
+	win.document.write("<html><head><title>Results</title><link rel='stylesheet' type='text/css' href='styles/styles.css'></head><body><table class='results'>" +
+			$("#results table.results").html()
+			+ "</table></body></html>");
+    win.document.close();
+	win.focus();
+}
+
+$(document).ready(function(){
 	
 	$(".savedQuery").live("click",function() {
 		var query = $(this).text();

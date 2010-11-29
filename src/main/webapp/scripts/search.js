@@ -3,56 +3,54 @@ String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)}
 
 jQuery.ajaxSettings.traditional = true;
 
-$(document).ready(function(){
+var restrictions = [];
+var allFacets = {};
+var allValues = {};
 
-	var restrictions = [];
+function getFacetName(facetId) {
+	return allFacets[facetId].name;
+}
 
-	var allFacets = {};
+function getValueName(valueId) {
+	return allValues[valueId].name;
+}
+
+function getFacetId(facetValue) {
+	return allValues[facetValue].facet.id;
+}
+
+function printFacet(facet, template) {
+	template.push("<div class='facet' id='", toID(facet.id), "' data-id='", facet.id, "'><h3 class='facetTitle'>", facet.name, "</h3>");
+	allFacets[facet.id] = facet;
 	
-	var allValues = {};
-	
-	var getFacetName = function(facetId) {
-		return allFacets[facetId].name;
-	}
-	
-	var getValueName = function(valueId) {
-		return allValues[valueId].name;
-	}
-	
-	var getFacetId = function(facetValue) {
-		return allValues[facetValue].facet.id;
-	}
-	
-	var printFacet = function(facet, template) {
-		template.push("<div class='facet' id='", toID(facet.id), "' data-id='", facet.id, "'><h3 class='facetTitle'>", facet.name, "</h3>");
-		allFacets[facet.id] = facet;
-		
-		var values = facet.values;
-		for (var i=0; i < values.length; i++) {
-			var value = values[i];
-			value.facet = facet;
-			template.push("<div class='facetValue' id='", toID(value.id), "' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name);
-			if (value.description) {
-				template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id,"'/>");
-			}
-			template.push("</div>");
-			allValues[value.id] = value;
+	var values = facet.values;
+	for (var i=0; i < values.length; i++) {
+		var value = values[i];
+		value.facet = facet;
+		template.push("<div class='facetValue' id='", toID(value.id), "' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name);
+		if (value.description) {
+			template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id,"'/>");
 		}
 		template.push("</div>");
+		allValues[value.id] = value;
 	}
-	
-	var fromID = function(id) {
-		if (id.startsWith("restriction_")) {
-			id = id.substring(12);
-		} else if (id.startsWith("itemValue_")) {
-			id = id.substring(10);
-		}
-		return id.replace('-', ':');
+	template.push("</div>");
+}
+
+function fromID(id) {
+	if (id.startsWith("restriction_")) {
+		id = id.substring(12);
+	} else if (id.startsWith("itemValue_")) {
+		id = id.substring(10);
 	}
-	
-	var toID = function(prefixed) {
-		return prefixed.replace(':', '-');
-	}
+	return id.replace('-', ':');
+}
+
+function toID(prefixed) {
+	return prefixed.replace(':', '-');
+}
+
+$(document).ready(function(){
 	
 	$.ajax({
 		url: "facets", 
