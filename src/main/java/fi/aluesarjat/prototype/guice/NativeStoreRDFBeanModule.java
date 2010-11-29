@@ -31,23 +31,10 @@ public class NativeStoreRDFBeanModule extends RDFBeanRepositoryModule{
         dataDir.mkdir();
 
         NativeRepository repository = new NativeRepository(dataDir, false);
-        repository.setSources(new RDFSource[]{
-            getAreaDescriptions(properties),
-            new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
-            new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#")});
+        repository.setSources(ModuleUtils.getSources(properties.getProperty("baseURI")));
         repository.setIndexes("spoc,posc,cspo,opsc");
         repository.initialize();
         return repository;
-    }
-
-    private RDFSource getAreaDescriptions(Properties properties){
-        try {
-            String str = IOUtils.toString(RDFBeanRepositoryModule.class.getResourceAsStream("/alue.ttl"), "ISO-8859-1");
-            String normalized = str.replace("http://localhost:8080/rdf/", properties.getProperty("baseURI"));
-            return new RDFSource(new ByteArrayInputStream(normalized.getBytes("UTF-8")), Format.TURTLE, normalized + "dimensions/Alue");
-        } catch (IOException e) {
-            throw new RepositoryException(e);
-        }
     }
 
 }

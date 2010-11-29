@@ -23,6 +23,7 @@ public class VirtuosoRDFBeanModule extends RDFBeanRepositoryModule{
         dataDir.mkdir();
         VirtuosoSesameRepository repository = new VirtuosoSesameRepository(dataDir, "localhost:1111", "dba", "dba");
         repository.setOntology(EmptyOntology.DEFAULT);
+        repository.setSources(ModuleUtils.getSources(properties.getProperty("baseURI")));
         repository.initialize();
         return repository;
     }

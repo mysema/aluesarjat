@@ -21,6 +21,7 @@ import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.META;
+import com.mysema.stat.SKOS;
 import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.PCAxisParser;
 import com.mysema.stat.scovo.DC;
@@ -71,6 +72,7 @@ public class DataService {
         namespaces.put(DC.NS, "dc");
         namespaces.put(DCTERMS.NS, "dcterms");
         namespaces.put(STAT.NS, "stat");
+        namespaces.put(SKOS.NS, "skos");
         namespaces.put(baseURI + RDFDatasetHandler.DIMENSION_NS, "dimension");
         namespaces.put(baseURI + RDFDatasetHandler.DATASET_CONTEXT_BASE, "dataset");
         namespaceHandler.addNamespaces(namespaces);
