@@ -1,0 +1,74 @@
+# Dimension Types
+SELECT ?dimensionName ?dimensionURI 
+WHERE { 
+?dimensionURI rdfs:subClassOf scv:Dimension ; 
+    dc:title ?dimensionName . 
+}
+
+# Dimensions
+SELECT ?dimension ?dimensionValue ?dimensionValueName
+WHERE { 
+?dimension rdfs:subClassOf scv:Dimension .
+?dimensionValue rdf:type ?dimension ;
+    dc:title ?dimensionValueName .
+}
+
+# Areas
+SELECT ?areaName ?areaURI 
+WHERE { 
+?areaURI rdf:type dimension:Alue ;
+    dc:title ?areaName . 
+}
+
+# Datasets
+SELECT ?dataset
+WHERE { 
+?d rdf:type scv:Dataset ; dc:title ?dataset .
+}
+
+# Datasets with dimension types
+SELECT distinct ?datasetName ?dataset ?dimensionType
+WHERE { 
+?dataset rdf:type scv:Dataset ; 
+  dc:title ?datasetName ;
+  stat:datasetDimension [ rdf:type ?dimensionType ] .
+}
+
+# Datasets with timestamps
+SELECT ?name ?dataset ?created ?modified
+WHERE { 
+?dataset rdf:type scv:Dataset ; 
+  dc:title ?name ; 
+  dcterms:created ?created .
+OPTIONAL { ?dataset dcterms:modified ?modified . }
+}
+
+# Statistics of Kallio in 2000
+SELECT ?dataset ?item ?value ?dimension
+WHERE {
+?item scv:dimension alue:_091_301_Kallion_peruspiiri ;
+    scv:dimension vuosi:_2009 ;
+    scv:dataset ?dataset ;
+    scv:dimension ?dimension ;
+    rdf:value ?value .
+}
+order by ?value
+
+# Alueet, joilla enemmän nuoria kuin vanhoja
+SELECT distinct ?area ?young ?old
+WHERE { 
+[ scv:dimension ikäryhmä:_0-6-vuotiaat ;
+  scv:dimension vuosi:_2009 ;
+  scv:dataset ?dataset ; 
+  scv:dimension ?area ;
+  rdf:value ?young ].
+[ scv:dimension ikäryhmä:_7-12-vuotiaat ;
+  scv:dimension vuosi:_2009 ;
+  scv:dataset ?dataset ; 
+  scv:dimension ?area ;
+  rdf:value ?old ] .
+?area rdf:type dimension:Alue .
+FILTER ( ?young > ?old
+  && ( ?dataset = dataset:A02S_HKI_Vakiluku1962 
+    || ?dataset = dataset:B02S_ESP_Vakiluku1975 ) ).
+} 

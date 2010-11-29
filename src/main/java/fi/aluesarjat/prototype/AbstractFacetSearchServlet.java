@@ -21,7 +21,7 @@ import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.scovo.SCV;
 
 public abstract class AbstractFacetSearchServlet extends HttpServlet {
-    
+
     private static final Logger log = LoggerFactory.getLogger(AbstractFacetSearchServlet.class);
 
     private static final long serialVersionUID = 1L;
@@ -71,39 +71,39 @@ public abstract class AbstractFacetSearchServlet extends HttpServlet {
         // Create dimension
         JSONObject dimension = new JSONObject();
         dimension.put("id", getPrefixed((UID) row.get("dimension"), namespaces));
-        
+
         // Literal metadata
         LIT lit = (LIT) row.get("dimensionName");
         if (lit != null) {
             dimension.put("name", lit.getValue());
         }
-        
+
         lit = (LIT) row.get("dimensionDescription");
         if (lit != null) {
             dimension.put("description", lit.getValue());
         }
-        
+
         lit = (LIT) row.get("units");
         if (lit != null) {
             dimension.put("units", lit.getValue());
         }
-        
+
         if (!dimensionType.containsKey("values")) {
             dimensionType.put("values", new JSONArray());
         }
         dimensionType.accumulate("values", dimension);
     }
-    
+
     protected String getPrefixed(UID uri, Map<String, String> namespaces) {
         String prefix = namespaces.get(uri.getNamespace());
         if (prefix == null) {
-            throw new IllegalArgumentException("Unknown namespace: " + uri);
+            throw new IllegalArgumentException("Unknown namespace: " + uri.getNamespace());
         }
         return prefix + ":" + uri.getLocalName();
     }
 
     protected Map<String,String> getNamespaces(RDFConnection conn) {
-        SPARQLQuery query = conn.createQuery(QueryLanguage.SPARQL, 
+        SPARQLQuery query = conn.createQuery(QueryLanguage.SPARQL,
                 "SELECT ?ns ?prefix\n" +
                 "WHERE {\n" +
                 "?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix .\n" +

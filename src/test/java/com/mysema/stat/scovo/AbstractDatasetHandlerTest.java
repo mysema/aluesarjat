@@ -51,10 +51,15 @@ public abstract class AbstractDatasetHandlerTest {
         RDFConnection connection = repository.openConnection();
         try{
             // exists queries
+            long start = System.currentTimeMillis();
             assertTrue(connection.exists(null, SCV.dataset, null, null, false));
+            System.err.println((System.currentTimeMillis()-start) + "ms for ?s scv:data ?o");
             assertTrue(connection.exists(null, SCV.dimension, null, null, false));
+            System.err.println((System.currentTimeMillis()-start) + "ms for ?s scv:dimension ?o");
             assertTrue(connection.exists(null, RDF.type, SCV.Dataset, null, false));
+            System.err.println((System.currentTimeMillis()-start) + "ms for ?s rdf:type ?o");
             assertTrue(connection.exists(null, META.nsPrefix, null, null, false));
+            System.err.println((System.currentTimeMillis()-start) + "ms for ?s meta:nsPrefix ?o");
 
             // SPARQL queries
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "select ?ns ?prefix  where { ?ns <"+META.nsPrefix.getId()+"> ?prefix }");

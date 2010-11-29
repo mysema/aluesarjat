@@ -1,6 +1,8 @@
 package fi.aluesarjat.prototype.guice;
 
 import org.guiceyfruit.jsr250.Jsr250Module;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -16,11 +18,18 @@ import fi.aluesarjat.prototype.SearchServlet;
 
 public class CustomServletModule extends ServletModule{
 
+    private static final Logger log = LoggerFactory.getLogger(CustomServletModule.class);
+
     @Override
     protected void configureServlets() {
-        install(new NativeStoreRDFBeanModule());
-//        install(new VirtuosoRDFBeanModule());
-//        install(new BigDataRDFBeanModule());
+        String store = System.getProperty("rdfbean.store");
+        if ("virtuoso".equals(store)){
+            log.info("Using Virtuoso backend");
+            install(new VirtuosoRDFBeanModule());
+        }else{
+            log.info("Using NativeStore backend");
+            install(new NativeStoreRDFBeanModule());
+        }
         install(new Jsr250Module());
         bind(DataService.class).asEagerSingleton();
 

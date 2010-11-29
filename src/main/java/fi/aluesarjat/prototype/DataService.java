@@ -31,6 +31,8 @@ import com.mysema.stat.scovo.SCV;
 
 public class DataService {
 
+    public enum Mode { PARALLEL, THREADED, NONTHREADED }
+
     private static final Logger logger = LoggerFactory.getLogger(DataService.class);
 
     private final String baseURI;
@@ -41,7 +43,7 @@ public class DataService {
 
     private final NamespaceHandler namespaceHandler;
 
-    private final boolean parallel;
+    private final Mode mode;
 
     private List<String> datasets;
 
@@ -50,13 +52,13 @@ public class DataService {
             Repository repository,
             NamespaceHandler namespaceHandler,
             @Named("baseURI") String baseURI,
-            @Named("import.parallel") String parallel,
+            @Named("import.mode") String mode,
             @Named("forceReload") String forceReload){
         this.repository = repository;
         this.namespaceHandler = namespaceHandler;
         this.baseURI = baseURI;
         this.forceReload = Boolean.valueOf(forceReload);
-        this.parallel = Boolean.valueOf(parallel);
+        this.mode = Mode.valueOf(mode);
     }
 
     @PostConstruct
@@ -79,9 +81,9 @@ public class DataService {
             datasets = IOUtils.readLines(getStream("/data/datasets"));
         }
 
-        for (String d : datasets) {
-            final String datasetDef = d.trim();
-            if (parallel){
+        if (mode == Mode.PARALLEL) {
+            for (String d : datasets) {
+                final String datasetDef = d.trim();
                 Thread thread = new Thread() {
                     @Override
                     public void run() {
@@ -90,10 +92,26 @@ public class DataService {
                 };
                 thread.setDaemon(true);
                 thread.start();
-            }else{
-                importData(datasetDef, forceReload);
+            }
+
+        } else if (mode == Mode.THREADED) {
+            Thread thread = new Thread(){
+                @Override
+                public void run() {
+                    for (String d : datasets) {
+                        importData(d.trim(), forceReload);
+                    }
+                }
+            };
+            thread.setDaemon(true);
+            thread.start();
+
+        } else {
+            for (String d : datasets) {
+                importData(d.trim(), forceReload);
             }
         }
+
     }
 
     private void importData(String datasetDef, boolean reload) {
