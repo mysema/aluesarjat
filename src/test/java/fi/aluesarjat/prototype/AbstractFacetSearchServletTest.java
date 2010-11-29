@@ -11,11 +11,10 @@ import org.junit.BeforeClass;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import com.mysema.rdfbean.model.io.Format;
-import com.mysema.rdfbean.model.io.RDFSource;
 import com.mysema.rdfbean.sesame.MemoryRepository;
 import com.mysema.stat.scovo.NamespaceHandler;
-import com.mysema.stat.scovo.SCV;
+
+import fi.aluesarjat.prototype.guice.ModuleUtils;
 
 public abstract class AbstractFacetSearchServletTest {
 
@@ -27,15 +26,13 @@ public abstract class AbstractFacetSearchServletTest {
 
     @BeforeClass
     public static void setUpClass() throws ServletException, IOException{
+        String baseURI = "http://localhost:8080/rdf/";
         repository = new MemoryRepository();
-        repository.setSources(new RDFSource[]{
-                new RDFSource("classpath:/alue.ttl", Format.TURTLE, "http://localhost:8080/rdf/dimensions/Alue"),
-                new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
-                new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#")});
+        repository.setSources(ModuleUtils.getSources(baseURI));
         repository.initialize();
 
         NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
-        DataService dataService = new DataService(repository, namespaceHandler, "http://localhost:8080/rdf/", DataService.Mode.NONTHREADED.name(), "true");
+        DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED.name(), "true");
         dataService.setDatasets(Collections.singletonList("A01HKIS_Vaestotulot \".\""));
         dataService.initialize();
     }

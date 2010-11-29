@@ -12,10 +12,11 @@ import com.mysema.stat.scovo.XMLID;
 
 public class ConvertHKIAreaHierarchy {
 
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         try {
             List<String> lines = IOUtils.readLines(getStream("/HKI-Aluehierarkia.csv"), "UTF-8");
-            
+
             System.out.println(
                     "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
                     "@prefix dc: <http://purl.org/dc/elements/1.1/> .\n" +
@@ -34,7 +35,7 @@ public class ConvertHKIAreaHierarchy {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        
+
     }
 
     private static InputStream getStream(String name) {

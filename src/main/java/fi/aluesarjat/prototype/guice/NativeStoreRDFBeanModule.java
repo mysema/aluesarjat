@@ -1,22 +1,14 @@
 package fi.aluesarjat.prototype.guice;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.io.IOUtils;
-
 import com.mysema.rdfbean.guice.Config;
 import com.mysema.rdfbean.guice.RDFBeanRepositoryModule;
 import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.model.RepositoryException;
-import com.mysema.rdfbean.model.io.Format;
-import com.mysema.rdfbean.model.io.RDFSource;
 import com.mysema.rdfbean.sesame.NativeRepository;
-import com.mysema.stat.scovo.SCV;
 
 public class NativeStoreRDFBeanModule extends RDFBeanRepositoryModule{
 

@@ -7,12 +7,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.rdfbean.model.io.Format;
-import com.mysema.rdfbean.model.io.RDFSource;
 import com.mysema.rdfbean.sesame.MemoryRepository;
 import com.mysema.rdfbean.sesame.SesameRepository;
 import com.mysema.stat.META;
 import com.mysema.stat.STAT;
+
+import fi.aluesarjat.prototype.guice.ModuleUtils;
 
 
 public class NamespaceHandlerTest {
@@ -24,10 +24,7 @@ public class NamespaceHandlerTest {
     @Before
     public void setUp(){
         repository = new MemoryRepository();
-        repository.setSources(new RDFSource[]{
-                new RDFSource("classpath:/alue.ttl", Format.TURTLE, "http://localhost:8080/rdf/dimensions/Alue"),
-                new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
-                new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#")});
+        repository.setSources(ModuleUtils.getSources(baseURI));
         repository.initialize();
     }
 
