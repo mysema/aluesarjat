@@ -54,15 +54,6 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                     "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
                     "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, null);
 
-//            SPARQLQueryBuilder qry = new SPARQLQueryBuilder(namespaces);
-//            qry.select("?dimensionType ?dimensionTypeName ?dimension ?dimensionDescription ?dimensionName")
-//               .where("?dimensionType", RDFS.subClassOf, SCV.Dimension)
-//               .where("?dimensionType", DC.title, "?dimensionTypeName")
-//               .where("?dimension", RDF.type, "?dimensionType")
-//               .where("?dimension", DC.title, "?dimensionName")
-//               .optional("?dimension", DC.description, "?dimensionDescription")
-//               .orderBy("?dimensionName");
-
             // DATASETS
             addFacets(conn, "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
                     "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
@@ -73,17 +64,6 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                     "?dimension rdf:type scv:Dataset ; dc:title ?dimensionName ; stat:units ?units .\n" +
                     "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
                     "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, Collections.singletonMap("dimensionType", (NODE) SCV.Dataset));
-
-//            SPARQLQueryBuilder qry = new SPARQLQueryBuilder(namespaces);
-//            qry.select("?dimension ?dimensionName ?dimensionType ?dimensionDescription ?units")
-//               .where("?dimension", RDF.type, "?dimensionDescription")
-//               .where("?dimension", DC.title, "?dimensionName")
-//               .where("?dimension", STAT.units, "?units")
-//               .optional("?dimension", DC.description, "?dimensionDescription")
-//               .filter("?dimensionType = scv:DataSet")
-//               .orderBy("?dimensionName")
-//               .ns(SCV.NS);
-
 
             JSONObject result = new JSONObject();
             result.put("facets", dimensionTypes.values());
