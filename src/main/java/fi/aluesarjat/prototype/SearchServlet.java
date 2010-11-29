@@ -214,7 +214,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     .append(sparqlNamespaces)
                     .append("SELECT distinct ?dimensionType ?dimension\nWHERE {\n")
                     .append(where)
-//                    .append("?item scv:dimension ?dimension . OPTIONAL { ?dimension rdf:type ?dimensionType }.\n}");
+//                    .append("?item scv:dimension ?dimension . OPTIONAL { ?dimension rdf:type ?dimensionType } .\n}");
                     .append("?item scv:dimension ?dimension . ?dimension rdf:type ?dimensionType .\n}");
 
                     addFacets(conn, sparql.toString(), namespaces, facets, null);

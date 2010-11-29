@@ -34,6 +34,7 @@ public class SearchServletTest extends AbstractFacetSearchServletTest{
         assertNull(obj.get("items"));
     }
 
+
     @Test
     public void By_Region_Dataset_and_Year_FacetsOnly() throws ServletException, IOException{
         request.addParameter("value", "alue:_091_603_Laajasalon_peruspiiri");
@@ -51,9 +52,9 @@ public class SearchServletTest extends AbstractFacetSearchServletTest{
 
     @Test
     public void By_Region_Dataset_and_Year() throws ServletException, IOException{
+        request.addParameter("value", "vuosi:_2001");
         request.addParameter("value", "alue:_091_603_Laajasalon_peruspiiri");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
-        request.addParameter("value", "vuosi:_2001");
         request.addParameter("include", "items");
         request.addParameter("include", "facets");
         servlet.service(request, response);
