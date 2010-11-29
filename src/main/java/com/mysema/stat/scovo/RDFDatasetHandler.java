@@ -88,15 +88,6 @@ public class RDFDatasetHandler implements DatasetHandler {
         Assert.assertThat(baseURI.endsWith("/"), "baseURI doesn't end with /", null, null);
     }
 
-    private String print(UID t) {
-        String uri = t.getId();
-        return uri.startsWith(baseURI) ? uri.substring(baseURI.length()) : uri;
-    }
-
-    private boolean exists(UID id, UID context) {
-        return conn.exists(id, null, null, context, false);
-    }
-
     private void add(ID subject, UID predicate, DateTime dateTime, UID context) {
         add(subject, predicate, new LIT(DATE_TIME_CONVERTER.toString(dateTime), XSD.dateTime), context);
     }
@@ -150,29 +141,21 @@ public class RDFDatasetHandler implements DatasetHandler {
             UID dimensionContext = new UID(dimensionBase, encodeID(type.getName()));
             String dimensionNs = dimensionContext.getId() + "#";
 
-            if (!exists(t, domainContext)) {
-                add(t, RDF.type, RDFS.Class, domainContext);
-                add(t, RDF.type, OWL.Class, domainContext);
-                add(t, RDFS.subClassOf, SCV.Dimension, domainContext);
-                add(t, DC.title, type.getName(), domainContext);
+            add(t, RDF.type, RDFS.Class, domainContext);
+            add(t, RDF.type, OWL.Class, domainContext);
+            add(t, RDFS.subClassOf, SCV.Dimension, domainContext);
+            add(t, DC.title, type.getName(), domainContext);
 
-                // Namespace for dimension instances
-                namespaces.put(dimensionNs, dimensionContext.getLocalName().toLowerCase(Locale.ENGLISH));
-            } else {
-                logger.info("Referring to existing DimensionType: " + print(t));
-            }
+            // Namespace for dimension instances
+            namespaces.put(dimensionNs, dimensionContext.getLocalName().toLowerCase(Locale.ENGLISH));
 
             // INSTANCES: Dimensions
             for (Dimension dimension : type.getDimensions()) {
                 UID d = new UID(dimensionNs, encodeID(dimension.getName()));
                 dimensions.put(dimension, d);
 
-                if (!exists(d, dimensionContext)) {
-                    add(d, RDF.type, t, dimensionContext);
-                    add(d, DC.title, dimension.getName(), dimensionContext);
-                } else {
-                    logger.info("Referring to existing Dimension: " + print(d) + " of type " + print(t));
-                }
+                add(d, RDF.type, t, dimensionContext);
+                add(d, DC.title, dimension.getName(), dimensionContext);
 
                 add(datasetUID, STAT.datasetDimension, d, datasetsContext);
 
