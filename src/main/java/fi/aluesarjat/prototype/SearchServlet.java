@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.rdfbean.model.*;
 import com.mysema.stat.scovo.SCV;
 
@@ -78,6 +79,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
 
         int limit = Math.min(getInt(request, "limit", 200), 1000);
         int offset = getInt(request, "offset", 0);
+        boolean hasMoreResults = false;
 
         RDFConnection conn = repository.openConnection();
         CloseableIterator<Map<String,NODE>> iter = null;
@@ -176,7 +178,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     .append("SELECT ?item ?dataset ?value\nWHERE {\n")
                     .append(where)
                     .append("?item scv:dataset ?dataset ; rdf:value ?value .\n}\nLIMIT ")
-                    .append(limit)
+                    .append(limit + 1)
                     .append("\nOFFSET ")
                     .append(offset);
 
@@ -184,12 +186,15 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                         log.info(sparql.toString());
                     }
                     query = conn.createQuery(QueryLanguage.SPARQL, sparql.toString());
-                    iter = query.getTuples();
-                    while (iter.hasNext()) {
-                        row = iter.next();
-                        UID id = (UID) row.get("item");
-                        UID dataset = (UID) row.get("dataset");
-                        LIT value = (LIT) row.get("value");
+                    List<Map<String,NODE>> tuplesList = IteratorAdapter.asList(query.getTuples());
+                    if (tuplesList.size() > limit){
+                        hasMoreResults = true;
+                        tuplesList = tuplesList.subList(0, limit);
+                    }
+                    for (Map<String,NODE> tuples : tuplesList){
+                        UID id = (UID) tuples.get("item");
+                        UID dataset = (UID) tuples.get("dataset");
+                        LIT value = (LIT) tuples.get("value");
 
                         JSONObject json = new JSONObject();
                         json.put("value", value.getValue());
@@ -203,7 +208,6 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                         stmts.close();
                         items.add(json);
                     }
-                    iter.close();
                 }
 
                 // AVAILABLE DIMENSIONS
@@ -214,7 +218,6 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     .append(sparqlNamespaces)
                     .append("SELECT distinct ?dimensionType ?dimension\nWHERE {\n")
                     .append(where)
-//                    .append("?item scv:dimension ?dimension . OPTIONAL { ?dimension rdf:type ?dimensionType } .\n}");
                     .append("?item scv:dimension ?dimension . ?dimension rdf:type ?dimensionType .\n}");
 
                     addFacets(conn, sparql.toString(), namespaces, facets, null);
@@ -237,6 +240,9 @@ public class SearchServlet extends AbstractFacetSearchServlet {
             }
             if (facets != null && includes.contains("facets")) {
                 result.put("facets", facets.values());
+            }
+            if (hasMoreResults){
+                result.put("hasMoreResults", true);
             }
             Writer out = response.getWriter();
             result.write(out);
