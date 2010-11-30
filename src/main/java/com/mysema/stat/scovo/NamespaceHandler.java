@@ -70,17 +70,13 @@ public class NamespaceHandler {
                 }
 
             }
+            iter.close();
             tx.commit();
-
 
         } catch(Exception e){
             tx.rollback();
             throw new RuntimeException(e);
-
         } finally {
-            if (iter != null) {
-                iter.close();
-            }
             conn.close();
         }
     }

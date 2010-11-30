@@ -51,8 +51,6 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     private RDFConnection conn;
 
-    private RDFBeanTransaction tx;
-
     private final Repository repository;
 
     private final NamespaceHandler namespaceHandler;
@@ -164,16 +162,19 @@ public class RDFDatasetHandler implements DatasetHandler {
             }
         }
         flush();
-        tx.commit();
 
         namespaceHandler.addNamespaces(namespaces);
-
-        tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
     }
 
     private void flush() {
-        conn.update(Collections.<STMT>emptySet(), statements);
-        statements.clear();
+        RDFBeanTransaction tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
+        try {
+            conn.update(Collections.<STMT>emptySet(), statements);
+            statements.clear();
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        } 
     }
 
     @Override
@@ -212,8 +213,6 @@ public class RDFDatasetHandler implements DatasetHandler {
 
                 if (++itemCount % batchSize == 0) {
                     flush();
-                    tx.commit();
-                    tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
                     logger.info(dataset.getName() + ": loaded " + itemCount + " items");
                 }
             } catch (NoSuchAlgorithmException e) {
@@ -242,7 +241,6 @@ public class RDFDatasetHandler implements DatasetHandler {
     @Override
     public void begin() {
         conn = repository.openConnection();
-        tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
         statements = new LinkedHashSet<STMT>();
         dimensions = new HashMap<Dimension, UID>();
         datasets = new ArrayList<UID>();
@@ -250,9 +248,6 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     @Override
     public void rollback() {
-        if (tx != null){
-            tx.rollback();
-        }
         if (conn != null){
             conn.close();
         }
@@ -260,9 +255,6 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     @Override
     public void commit() {
-        if (tx != null){
-            tx.commit();
-        }
         if (conn != null){
             DateTime now = new DateTime();
             UID datasetsContext = datasetsContext(baseURI);
