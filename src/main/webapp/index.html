@@ -6,7 +6,12 @@
 	<script type="text/javascript" src="scripts/search.js"></script>	
 </head>
 <body>
+	<div style="float:right;">
+		<a id="help" href="#">Help</a>
+	</div>	
+	
 	<h1>Aluesarjat</h1>
+	<div style="clear:both;"></div>
 
     <a href="sparql.html">SPARQL</a>
     <div id="popup" style="display: none;"></div>
@@ -30,5 +35,12 @@
 		    <option value="1000">1000</option>
 	  	</select>
 	</div>
+	
+	<div id="helptext" style="display:none;">
+		<p>Select at least three facets from the left side and see matching items on the right side.</p> 
+		<p>Facets with bold are selected and can be unselected by clicking on them.</p>
+		<p>Click on the info icons on the facets to see facet descriptions.</p>		
+	</div>
+	
 </body>
 </html>

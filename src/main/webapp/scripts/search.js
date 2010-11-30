@@ -245,6 +245,12 @@ $(document).ready(function(){
 		return false;
 	});
 	
+	$("#help").click(function(){
+		var popup = $("#popup");
+		popup.html("<h3>Help</h3>" + $("#helptext").html());
+		popup.show();
+	});
+	
 	$("#popup").click(function(event){
 		$(this).hide();
 		return false;
