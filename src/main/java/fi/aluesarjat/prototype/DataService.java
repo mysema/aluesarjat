@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.mysema.rdfbean.Namespaces;
-import com.mysema.rdfbean.model.RDF;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.UID;
@@ -138,7 +137,7 @@ public class DataService {
                 RDFConnection conn = repository.openConnection();
                 try {
                     // TODO: reload -> first delete existing triples
-                    load = !conn.exists(uid, RDF.type, SCV.Dataset, datasetsContext, false);
+                    load = !conn.exists(uid, DCTERMS.modified, null, datasetsContext, false);
                 } finally {
                     conn.close();
                 }
