@@ -132,6 +132,7 @@ function executeQuery() {
 						$(this).hide();
 					}
 				});
+				
 				$(".facet").each(function () {
 					if ($(this).find(".visible").length > 0) {
 						$(this).show();
@@ -200,7 +201,11 @@ function executeQuery() {
 				} else {
 					template.push("Next page");
 				}
-			}			
+				
+				$("#sizes").show();
+			}else{
+				$("#sizes").hide();
+			}
 			
 			$("#results").html(template.join(""));
 			
@@ -247,6 +252,7 @@ $(document).ready(function(){
 	
 	$(".facetValue").live("click",function(event) {
 		var id = $(event.target).data("id");
+		offset = 0;
 		
 		var i = restrictions.indexOf(id);
 		if (i < 0) {
@@ -263,6 +269,12 @@ $(document).ready(function(){
 		} else {
 			executeQuery();
 		}
+	});
+	
+	// Change page size
+	$("#pageSize").change(function() {
+		limit = new Number($(this).val());
+		executeQuery();
 	});
 
 });
