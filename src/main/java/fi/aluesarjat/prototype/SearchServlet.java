@@ -86,9 +86,6 @@ public class SearchServlet extends AbstractFacetSearchServlet {
         CloseableIterator<STMT> stmts = null;
         try {
             int restrictionCount = datasets.size() + dimensions.size();
-            if (restrictionCount == 0) {
-                throw new IllegalArgumentException("No restrictions (value) specified");
-            }
             List<JSONObject> items = null;
             Map<UID,JSONObject> facets = null;
             StringBuilder sparql;

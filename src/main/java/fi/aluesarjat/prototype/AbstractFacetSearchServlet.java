@@ -88,6 +88,13 @@ public abstract class AbstractFacetSearchServlet extends HttpServlet {
             dimension.put("units", lit.getValue());
         }
 
+        UID uid = (UID) row.get("parent");
+        if (uid != null) {
+            JSONObject parent = new JSONObject();
+            parent.put("id", getPrefixed(uid, namespaces));
+            dimension.put("parent", parent);
+        }
+
         if (!dimensionType.containsKey("values")) {
             dimensionType.put("values", new JSONArray());
         }

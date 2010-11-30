@@ -47,11 +47,13 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
                     "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
                     "PREFIX scv: <http://purl.org/NET/scovo#>\n" +
-                    "SELECT ?dimensionType ?dimensionTypeName ?dimension ?dimensionDescription ?dimensionName\n"+
+                    "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n" +
+                    "SELECT ?dimensionType ?dimensionTypeName ?dimension ?dimensionDescription ?dimensionName ?parent\n"+
                     "WHERE {\n"+
                     "?dimensionType rdfs:subClassOf scv:Dimension ; dc:title ?dimensionTypeName .\n"+
                     "?dimension rdf:type ?dimensionType ; dc:title ?dimensionName .\n"+
                     "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
+                    "OPTIONAL { ?dimension skos:broader ?parent } ." +
                     "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, null);
 
             // DATASETS
