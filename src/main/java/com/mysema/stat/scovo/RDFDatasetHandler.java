@@ -67,9 +67,7 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     private int skippedCount = 0;
 
-    private Set<String> ignoredValues = new HashSet<String>(Arrays.asList(
-            "\".\""
-    ));
+    private Set<String> ignoredValues = Collections.singleton("\".\"");
 
     static {
         for (int i=0; i <= 1000; i++) {
@@ -174,7 +172,8 @@ public class RDFDatasetHandler implements DatasetHandler {
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
-        } 
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

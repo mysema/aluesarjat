@@ -1,6 +1,7 @@
 package com.mysema.stat.scovo;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.Ignore;
 
@@ -19,6 +20,16 @@ public class VirtuosoDatasetHandlerTest extends AbstractDatasetHandlerTest {
         VirtuosoSesameRepository repository = new VirtuosoSesameRepository(dataDir, "localhost:1111", "dba", "dba");
         repository.setOntology(EmptyOntology.DEFAULT);
         return repository;
+    }
+
+    public static void main(String[] args) throws IOException{
+        VirtuosoDatasetHandlerTest test = new VirtuosoDatasetHandlerTest();
+        test.setUp();
+        try{
+            test.Parse_and_Query();
+        }finally{
+            test.tearDown();
+        }
     }
 
 }
