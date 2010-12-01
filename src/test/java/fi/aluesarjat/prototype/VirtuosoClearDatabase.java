@@ -26,6 +26,7 @@ public class VirtuosoClearDatabase {
             ModelResult results = conn.match(null, null, null, false);
             while (results.hasNext()){
                 Statement stmt = results.next();
+                System.err.println(stmt);
                 conn.remove(stmt, stmt.getContext());
             }
             results.close();
