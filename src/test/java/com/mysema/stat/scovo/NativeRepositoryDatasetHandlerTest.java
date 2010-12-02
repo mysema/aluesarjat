@@ -14,7 +14,9 @@ public class NativeRepositoryDatasetHandlerTest extends AbstractDatasetHandlerTe
     protected SesameRepository createRepository() {
         try {
             File dataDir = new File("target/native");
-            FileUtils.cleanDirectory(dataDir);
+            if (dataDir.exists()){
+                FileUtils.cleanDirectory(dataDir);
+            }
             return new NativeRepository(dataDir, false);
         } catch (IOException e) {
             throw new RuntimeException(e);
