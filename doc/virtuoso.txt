@@ -3,3 +3,7 @@ START
 cd /usr/local/virtuoso-opensource/var/lib/virtuoso/db
 virtuoso-t -f &
  
+ 
+FIX FOR OPEN FILES LIMIT ISSUES
+
+http://knol.google.com/k/fred-grott/open-file-limits-settings-on-ubuntu/166jfml0mowlh/3# 

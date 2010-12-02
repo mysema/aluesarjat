@@ -23,13 +23,20 @@ public class VirtuosoClearDatabase {
             conn.removeMatch((Resource)null, (URI)null, (Value)null, (Resource)null);
 
             // remove the rest
-            ModelResult results = conn.match(null, null, null, false);
-            while (results.hasNext()){
-                Statement stmt = results.next();
-                System.err.println(stmt);
-                conn.remove(stmt, stmt.getContext());
-            }
-            results.close();
+            conn.begin();
+            try{
+                ModelResult results = conn.match(null, null, null, false);
+                while (results.hasNext()){
+                    Statement stmt = results.next();
+                    System.err.println(stmt);
+                    conn.remove(stmt, stmt.getContext());
+                }
+                results.close();    
+                conn.commit();
+            }catch(Exception e){
+                conn.rollback();
+                throw new RuntimeException(e);
+            }            
 
         }finally{
             conn.close();
