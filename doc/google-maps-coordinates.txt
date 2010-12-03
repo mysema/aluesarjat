@@ -1,0 +1,12 @@
+
+Google Maps uses EPSG-3785
+
+Conversion of coordinates :
+http://stackoverflow.com/questions/7661/java-code-for-wgs84-to-google-map-position-and-back
+
+Polygon drawing for Google Maps :
+http://code.google.com/apis/maps/documentation/javascript/overlays.html#Polygons
+
+Geographic data in RDF :
+http://www.w3.org/2003/01/geo/
+http://esw.w3.org/GeoRDF

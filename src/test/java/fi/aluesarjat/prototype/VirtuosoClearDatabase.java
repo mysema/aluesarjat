@@ -18,7 +18,6 @@ public class VirtuosoClearDatabase {
         repository.initialize();
         RepositoryConnection conn = repository.getConnection();
         try{
-
             conn.removeMatch((Resource)null, (URI)null, (Value)null);
             conn.removeMatch((Resource)null, (URI)null, (Value)null, (Resource)null);
 
