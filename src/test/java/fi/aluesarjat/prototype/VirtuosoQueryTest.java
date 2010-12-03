@@ -1,5 +1,6 @@
 package fi.aluesarjat.prototype;
 
+import org.junit.Ignore;
 import org.openrdf.model.vocabulary.RDFS;
 import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.TupleQuery;
@@ -10,6 +11,7 @@ import org.openrdf.store.StoreException;
 
 import virtuoso.sesame3.driver.VirtuosoRepository;
 
+@Ignore
 public class VirtuosoQueryTest {
     
     public static void main(String[] args) throws StoreException{
