@@ -4,16 +4,34 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
-import org.mortbay.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.rdfbean.model.*;
+import com.mysema.rdfbean.model.ID;
+import com.mysema.rdfbean.model.LIT;
+import com.mysema.rdfbean.model.NODE;
+import com.mysema.rdfbean.model.RDF;
+import com.mysema.rdfbean.model.RDFBeanTransaction;
+import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.RDFS;
+import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.model.UID;
+import com.mysema.rdfbean.model.XSD;
 import com.mysema.rdfbean.owl.OWL;
 import com.mysema.rdfbean.xsd.DateTimeConverter;
 import com.mysema.stat.STAT;
@@ -154,7 +172,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                 
                 addDimensionType(type, datasetsContext, datasetUID, domainContext, unitDimension, namespaces);
             } else {
-                Log.warn("Dataset " + dataset.getName() + " has no unit!");
+                logger.warn("Dataset " + dataset.getName() + " has no unit!");
             }
         }
 
