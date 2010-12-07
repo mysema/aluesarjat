@@ -27,4 +27,13 @@ public class FacetsServletTest extends AbstractFacetSearchServletTest{
         System.err.println(response.getContentAsString());
         assertTrue(response.getContentAsString().contains("Etel\u00E4inen suurpiiri"));
     }
+    
+    @Test
+    public void JSONP_Is_Supported() throws ServletException, IOException{
+        request.setParameter("jsonp", "handleResponse");
+        servlet.service(request, response);        
+        String res = response.getContentAsString();
+        assertTrue(res.startsWith("handleResponse("));
+        assertTrue(res.endsWith(")"));
+    }
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
@@ -31,6 +32,7 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
 
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse)res;
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -70,7 +72,14 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
             JSONObject result = new JSONObject();
             result.put("facets", dimensionTypes.values());
             Writer out = response.getWriter();
-            result.write(out);
+            String jsonpCallback = request.getParameter("jsonp");
+            if (jsonpCallback != null){
+                out.write(jsonpCallback + "(");
+                result.write(out);
+                out.write(")");
+            }else{
+                result.write(out);    
+            }            
             out.flush();
         } finally {
             conn.close();

@@ -25,7 +25,16 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
-import com.mysema.rdfbean.model.*;
+import com.mysema.rdfbean.model.ID;
+import com.mysema.rdfbean.model.LIT;
+import com.mysema.rdfbean.model.NODE;
+import com.mysema.rdfbean.model.QueryLanguage;
+import com.mysema.rdfbean.model.RDF;
+import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.SPARQLQuery;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.scovo.SCV;
 
 public class SearchServlet extends AbstractFacetSearchServlet {
@@ -242,7 +251,14 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 result.put("hasMoreResults", true);
             }
             Writer out = response.getWriter();
-            result.write(out);
+            String jsonpCallback = request.getParameter("jsonp");
+            if (jsonpCallback != null){
+                out.write(jsonpCallback + "(");
+                result.write(out);
+                out.write(")");
+            }else{
+                result.write(out);    
+            }
             out.flush();
         } finally {
             if (stmts != null) {

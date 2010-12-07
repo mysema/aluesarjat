@@ -3,6 +3,7 @@ package fi.aluesarjat.prototype;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -21,6 +22,15 @@ public class SearchServletTest extends AbstractFacetSearchServletTest{
     public void setUp(){
         super.setUp();
         servlet = new SearchServlet(repository);
+    }
+    
+    @Test
+    public void JSONP_Is_Supported() throws ServletException, IOException{
+        request.setParameter("jsonp", "handleResponse");
+        servlet.service(request, response);        
+        String res = response.getContentAsString();
+        assertTrue(res.startsWith("handleResponse("));
+        assertTrue(res.endsWith(")"));
     }
 
     @Test
