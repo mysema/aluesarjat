@@ -63,9 +63,9 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                     "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
                     "PREFIX scv: <http://purl.org/NET/scovo#>\n" +
                     "PREFIX stat: <http://data.mysema.com/schemas/stat#>\n" +
-                    "SELECT ?dimension ?dimensionName ?dimensionDescription ?units\n" +
+                    "SELECT ?dimension ?dimensionName ?dimensionDescription\n" +
                     "WHERE {\n" +
-                    "?dimension rdf:type scv:Dataset ; dc:title ?dimensionName ; stat:units ?units .\n" +
+                    "?dimension rdf:type scv:Dataset ; dc:title ?dimensionName .\n" +
                     "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
                     "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, Collections.singletonMap("dimensionType", (NODE) SCV.Dataset));
 

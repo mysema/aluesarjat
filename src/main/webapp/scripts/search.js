@@ -81,6 +81,7 @@ function executeQuery() {
 
 			template.push("<table class='items'><thead>");
 			
+			// RESTRICTIONS
 			var restrictionFacets = {};
 			for (var i=0; i < restrictions.length; i++) {
 				var restriction = allValues[restrictions[i]];
@@ -98,14 +99,14 @@ function executeQuery() {
 			
 			var columns = [];
 			
-			// FILTER FACETS
+			// FACETS
 			if (data.facets) {
 				var facets = data.facets;
 				var visibleValues = {};
 				for (var i=0; i < facets.length; i++) {
 					var facet = facets[i];
 					
-					if (data.items && !restrictionFacets[facet.id]) {
+					if (data.items && !restrictionFacets[facet.id] && facet.id != "dimension:Yksikkö") {
 						columns.push(facet.id);
 						template.push("<th>", getFacetName(facet.id), "</th>");
 					}
@@ -142,7 +143,7 @@ function executeQuery() {
 				});
 			}
 			
-			// SHOW ITEMS
+			// ITEMS
 			if (data.items) {
 				template.push("<th>Tilastoarvo</th><th>Yksikk&ouml;</th></tr></thead>");
 				var items = data.items;
@@ -153,32 +154,38 @@ function executeQuery() {
 				for (var i=0; i < items.length; i++) {
 					var item = items[i];
 					var values = item.values;
-					var columnValues = [];
-					var units = null;
 					template.push("<tr class='itemRow ", (i % 2 == 0 ? "odd" : "even"),"'>")
+
+					var columnValues = []; // [value 1 ... value N, value, unit]
+					columnValues[columns.length] = "<td><div class='itemValue'> = " + item.value + "</div></td>";
+
 					for (var j=0; j < values.length; j++) {
 						var value = allValues[values[j]];
-						var colIndex = columns.indexOf(value.facet.id);
+						var facet = value.facet;
+						var colIndex;
+						var extraClass = "";
+						
+						if (facet.id == "dimension:Yksikkö") {
+							colIndex = columns.length + 1;
+							if (restrictionFacets[facet.id]) {
+								extraClass = " selectedValue";
+							}
+						} else {
+							colIndex = columns.indexOf(facet.id);
+						}
 						if (colIndex >= 0) {
 							var columnTemplate = [];
-							if (previousValues[j] && value.id == previousValues[j].id) {
-								 columnTemplate.push("<td><div class='facetValueDuplicate' data-id='", value.id, "'>", value.name);
-							} else {
-								columnTemplate.push("<td><div class='facetValue' data-id='", value.id, "'>", value.name);
-							}
-							if (restriction.description) {
-								columnTemplate.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id, "'/>");
+							columnTemplate.push("<td><div class='facetValue", extraClass, "' data-id='", value.id, "'>", value.name);
+							
+							if (value.description) {
+								columnTemplate.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id, "'/>");
 							}
 							columnTemplate.push("</div></td>");
 							columnValues[colIndex] = columnTemplate.join("");
 						}
-						if (value.units) {
-							units = value.units;
-						}
 					}
 					template.push(columnValues.join(""));
-					template.push("<td><div class='itemValue'> = ", item.value, "</div></td><td>", units, "</td>");
-					template.push("</div>");
+					template.push("</tr>");
 					previousValues = values;
 				}
 				template.push("</tbody>");

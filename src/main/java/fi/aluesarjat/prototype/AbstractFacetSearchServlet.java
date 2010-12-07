@@ -83,11 +83,6 @@ public abstract class AbstractFacetSearchServlet extends HttpServlet {
             dimension.put("description", lit.getValue());
         }
 
-        lit = (LIT) row.get("units");
-        if (lit != null) {
-            dimension.put("units", lit.getValue());
-        }
-
         UID uid = (UID) row.get("parent");
         if (uid != null) {
             JSONObject parent = new JSONObject();

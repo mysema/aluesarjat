@@ -8,6 +8,7 @@ import java.util.*;
 
 import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
+import org.mortbay.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,8 @@ import com.mysema.stat.pcaxis.DimensionType;
 import com.mysema.stat.pcaxis.Item;
 
 public class RDFDatasetHandler implements DatasetHandler {
+
+    private static final String UNITS_LOCAL_NAME = "Yksikk\u00F6";
 
     private static final Logger logger = LoggerFactory.getLogger(RDFDatasetHandler.class);
 
@@ -112,7 +115,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     public void addDataset(Dataset dataset) {
         UID datasetsContext = datasetsContext(baseURI);
         UID datasetUID = datasetUID(baseURI, dataset.getName());
-
+        
         datasets.add(datasetUID);
         add(datasetUID, RDF.type, SCV.Dataset, datasetsContext);
         if (dataset.getTitle() != null) {
@@ -121,47 +124,71 @@ public class RDFDatasetHandler implements DatasetHandler {
         if (dataset.getDescription() != null) {
             add(datasetUID, DC.description, dataset.getDescription(), datasetsContext);
         }
-        if (dataset.getUnits() != null) {
-            add(datasetUID, STAT.units, dataset.getUnits(), datasetsContext);
-        }
 
         add(datasetUID, DCTERMS.created, new DateTime(), datasetsContext);
 
         UID domainContext = new UID(baseURI,  DIMENSIONS);
         String dimensionBase = baseURI + DIMENSION_NS;
+        UID unitDimension = new UID(dimensionBase, encodeID(UNITS_LOCAL_NAME));
+        boolean unitFound = false;
 
         Map<String,String> namespaces = new HashMap<String,String>();
         // SCHEMA: DimensionTypes
         for (DimensionType type : dataset.getDimensionTypes()) {
-            UID t = new UID(dimensionBase, encodeID(type.getName()));
-            UID dimensionContext = new UID(dimensionBase, encodeID(type.getName()));
-            String dimensionNs = dimensionContext.getId() + "#";
+            UID dimensionUID = new UID(dimensionBase, encodeID(type.getName()));
+            unitFound = unitFound || dimensionUID.equals(unitDimension);
+            
+            addDimensionType(type, datasetsContext, datasetUID, domainContext,
+                    dimensionUID, namespaces);
+        }
 
-            add(t, RDF.type, RDFS.Class, domainContext);
-            add(t, RDF.type, OWL.Class, domainContext);
-            add(t, RDFS.subClassOf, SCV.Dimension, domainContext);
-            add(t, DC.title, type.getName(), domainContext);
-
-            // Namespace for dimension instances
-            namespaces.put(dimensionNs, dimensionContext.getLocalName().toLowerCase(Locale.ENGLISH));
-
-            // INSTANCES: Dimensions
-            for (Dimension dimension : type.getDimensions()) {
-                UID d = new UID(dimensionNs, encodeID(dimension.getName()));
-                dimensions.put(dimension, d);
-
-                add(d, RDF.type, t, dimensionContext);
-                add(d, DC.title, dimension.getName(), dimensionContext);
-
-                add(datasetUID, STAT.datasetDimension, d, datasetsContext);
-
-                // TODO: hierarchy?
-                // TODO: subProperty of scv:dimension?
+        // Units
+        if (!unitFound) {
+            // Create dynamic dimension type and value from Dataset's UNITS property
+            if (dataset.getUnits() != null) {
+                String units = dataset.getUnits();
+                DimensionType type = new DimensionType(UNITS_LOCAL_NAME);
+                type.addDimension(units.substring(0, 1).toUpperCase() + units.substring(1)); // henkilö -> Henkilö
+                
+                dataset.addDimensionType(type);
+                
+                addDimensionType(type, datasetsContext, datasetUID, domainContext, unitDimension, namespaces);
+            } else {
+                Log.warn("Dataset " + dataset.getName() + " has no unit!");
             }
         }
+
         flush();
 
         namespaceHandler.addNamespaces(namespaces);
+    }
+
+    private void addDimensionType(DimensionType type, UID datasetsContext,
+            UID datasetUID, UID domainContext, UID dimensionUID,
+            Map<String, String> namespaces) {
+        String dimensionNs = dimensionUID.getId() + "#";
+
+        add(dimensionUID, RDF.type, RDFS.Class, domainContext);
+        add(dimensionUID, RDF.type, OWL.Class, domainContext);
+        add(dimensionUID, RDFS.subClassOf, SCV.Dimension, domainContext);
+        add(dimensionUID, DC.title, type.getName(), domainContext);
+
+        // Namespace for dimension instances
+        namespaces.put(dimensionNs, dimensionUID.getLocalName().toLowerCase(Locale.ENGLISH));
+
+        // INSTANCES: Dimensions
+        for (Dimension dimension : type.getDimensions()) {
+            UID d = new UID(dimensionNs, encodeID(dimension.getName()));
+            dimensions.put(dimension, d);
+
+            add(d, RDF.type, dimensionUID, dimensionUID);
+            add(d, DC.title, dimension.getName(), dimensionUID);
+
+            add(datasetUID, STAT.datasetDimension, d, datasetsContext);
+
+            // TODO: hierarchy?
+            // TODO: subProperty of scv:dimension?
+        }
     }
 
     private void flush() {

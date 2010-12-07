@@ -135,4 +135,7 @@ public class Dataset {
         return dimensionTypes.get(dimensionIndex);
     }
 
+    public void addDimensionType(DimensionType dimensionType) {
+        dimensionTypes.add(dimensionType);
+    }
 }

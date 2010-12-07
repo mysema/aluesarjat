@@ -8,7 +8,7 @@ public final class STAT {
     
     public static final UID datasetDimension = uid("datasetDimension");
     
-    public static final UID units = uid("units");
+//    public static final UID units = uid("units");
 
     private static UID uid(String ln) {
         return new UID(NS, ln);
