@@ -1,6 +1,5 @@
 String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)}
 
-var qry = {}
 var namespaces = {};
 var savedQueries; 
 var lastClick = null;
@@ -8,6 +7,34 @@ var limit = 200;
 var offset = 0;
 var queryActive = false;
 var queryStartTime;
+
+function getRequestParameters() {
+	var parameters = {};
+	if (window.location.search.length > 1) {
+		var query = window.location.search.substring(1);
+		var vars = query.split("&");
+		for (var i=0; i<vars.length; i++) {
+			var pair = vars[i].split("=");
+			// First entry with this name
+			if (typeof parameters[pair[0]] === "undefined") {
+				parameters[pair[0]] = [ decodeURIComponent(pair[1]) ];
+			} 
+			// If second or later entry with this name
+			else {
+				parameters[pair[0]].push( decodeURIComponent(pair[1]) );
+			}
+		} 
+	}
+	return parameters;
+}
+
+function getBookmarkLink() {
+	var href = window.location.href;
+	href = href.substring(0, href.length - window.location.search.length);
+	href += "?limit=" + limit + "&offset=" + offset + "&query=" + encodeURIComponent($("#query").val());
+	
+	return href;
+}
 
 function executeQuery () {
 	$("#results").html("<img src='images/ajax-loader.gif' alt='Loading results'/>");
@@ -221,17 +248,10 @@ $(document).ready(function(){
 			}
 			
 			$("#namespaces").html(defaultNamespaces.join(""));
+			
+			init();
 		}
 	});
-
-	// Example query
-	$("#query").val(
-			"SELECT ?dimensionName ?dimensionURI\n" +
-			"WHERE {\n" +
-			"?dimensionURI rdfs:subClassOf scv:Dimension ;\n" + 
-			"    dc:title ?dimensionName .\n" + 
-			"}"
-	);
 	
 	// SPARQL query handling
 	$("#formsubmit").click(function() {
@@ -259,6 +279,28 @@ $(document).ready(function(){
 		}
 	});
 	
-	
 });
 
+function init() {
+	var parameters = getRequestParameters();
+	if (parameters.limit) {
+		limit = new Number(parameters.limit[0]);
+		$("#pageSize").val(parameters.limit[0]);
+	}
+	if (parameters.offset) {
+		offset = new Number(parameters.offset[0]);
+	}
+	if (parameters.query) {
+		$("#query").val(parameters.query[0]);
+		executeQuery();
+	} else {
+		// Example query
+		$("#query").val(
+				"SELECT ?dimensionName ?dimensionURI\n" +
+				"WHERE {\n" +
+				"?dimensionURI rdfs:subClassOf scv:Dimension ;\n" + 
+				"    dc:title ?dimensionName .\n" + 
+				"}"
+		);
+	}
+}

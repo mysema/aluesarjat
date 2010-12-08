@@ -9,6 +9,36 @@ var allValues = {};
 var limit = 50;
 var offset = 0;
 
+function getRequestParameters() {
+	var parameters = {};
+	if (window.location.search.length > 1) {
+		var query = window.location.search.substring(1);
+		var vars = query.split("&");
+		for (var i=0; i<vars.length; i++) {
+			var pair = vars[i].split("=");
+			// First entry with this name
+			if (typeof parameters[pair[0]] === "undefined") {
+				parameters[pair[0]] = [ decodeURIComponent(pair[1]) ];
+			} 
+			// If second or later entry with this name
+			else {
+				parameters[pair[0]].push( decodeURIComponent(pair[1]) );
+			}
+		} 
+	}
+	return parameters;
+}
+
+function getBookmarkLink() {
+	var href = window.location.href;
+	href = href.substring(0, href.length - window.location.search.length);
+	href += "?limit=" + limit + "&offset=" + offset;
+	for (var i=0; i < restrictions.length; i++) {
+		href += "&value=" + encodeURIComponent(restrictions[i]);
+	}
+	return href;
+}
+
 function getFacetName(facetId) {
 	return allFacets[facetId].name;
 }
@@ -221,7 +251,18 @@ function executeQuery() {
 }
 
 $(document).ready(function(){
-	
+
+	var parameters = getRequestParameters();
+	if (parameters.value) {
+		restrictions = parameters.value;
+	}
+	if (parameters.limit) {
+		limit = new Number(parameters.limit[0]);
+	}
+	if (parameters.offset) {
+		offset = new Number(parameters.offset[0]);
+	}
+
 	$.ajax({
 		url: "facets", 
 		datatype: "json", 
@@ -290,6 +331,9 @@ $(document).ready(function(){
 		executeQuery();
 	});
 
+	if (restrictions.length) {
+		executeQuery();
+	}
 });
 
 
