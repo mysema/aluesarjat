@@ -16,7 +16,7 @@ public class ModuleUtils {
         return new RDFSource[]{
                 getAreaDescriptions(baseURI),
                 new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
-                new RDFSource("classpath:/hki-area-hierarchy.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
+                new RDFSource("classpath:/area-hierarchy.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
                 new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#")};
     }
 

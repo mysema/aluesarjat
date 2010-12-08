@@ -10,12 +10,12 @@ import org.apache.commons.io.IOUtils;
 
 import com.mysema.stat.scovo.XMLID;
 
-public class ConvertHKIAreaHierarchy {
+public class ConvertAreaHierarchy {
 
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         try {
-            List<String> lines = IOUtils.readLines(getStream("/HKI-Aluehierarkia.csv"), "UTF-8");
+            List<String> lines = IOUtils.readLines(getStream("/Aluehierarkia.csv"), "UTF-8");
 
             System.out.println(
                     "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
@@ -39,7 +39,7 @@ public class ConvertHKIAreaHierarchy {
     }
 
     private static InputStream getStream(String name) {
-        return ConvertHKIAreaHierarchy.class.getResourceAsStream(name);
+        return ConvertAreaHierarchy.class.getResourceAsStream(name);
     }
 
 }
