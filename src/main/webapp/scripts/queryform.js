@@ -273,6 +273,7 @@ $(document).ready(function(){
 	
 	// Change page size
 	$("#pageSize").change(function() {
+		offset = 0;
 		limit = new Number($(this).val());
 		if (queryActive) {
 			executeQuery();

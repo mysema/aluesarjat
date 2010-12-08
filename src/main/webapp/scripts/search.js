@@ -278,6 +278,10 @@ $(document).ready(function(){
 			}
 			
 			$("#facets").html(template.join(""));
+
+			if (restrictions.length) {
+				executeQuery();
+			}
 		}
 	});
 
@@ -327,13 +331,11 @@ $(document).ready(function(){
 	
 	// Change page size
 	$("#pageSize").change(function() {
+		offset = 0;
 		limit = new Number($(this).val());
 		executeQuery();
 	});
 
-	if (restrictions.length) {
-		executeQuery();
-	}
 });
 
 
