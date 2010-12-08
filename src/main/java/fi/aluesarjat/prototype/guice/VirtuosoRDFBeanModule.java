@@ -8,7 +8,7 @@ import java.util.Properties;
 import com.mysema.rdfbean.guice.Config;
 import com.mysema.rdfbean.guice.RDFBeanRepositoryModule;
 import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.ontology.EmptyOntology;
+import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
 
 public class VirtuosoRDFBeanModule extends RDFBeanRepositoryModule{
 
@@ -21,8 +21,8 @@ public class VirtuosoRDFBeanModule extends RDFBeanRepositoryModule{
     public Repository createRepository(@Config Properties properties){
         File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-virtuoso");
         dataDir.mkdir();
-        VirtuosoSesameRepository repository = new VirtuosoSesameRepository(dataDir, "localhost:1111", "dba", "dba");
-        repository.setOntology(EmptyOntology.DEFAULT);
+        VirtuosoRepository repository = new VirtuosoRepository("localhost:1111", "dba", "dba");
+//        repository.setOntology(EmptyOntology.DEFAULT);
         repository.setSources(ModuleUtils.getSources(properties.getProperty("baseURI")));
         repository.initialize();
         return repository;

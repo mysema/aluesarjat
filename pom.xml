@@ -15,7 +15,7 @@
 		<!-- versions of dependencies -->
 		<jetty.version>6.1.0-SNAPSHOT</jetty.version>
 		<spring.version>2.5.5</spring.version>
-		<rdfbean.version>1.4.6</rdfbean.version>
+		<rdfbean.version>1.4.6-SNAPSHOT</rdfbean.version>
 	</properties>
 
 	<dependencies>
@@ -24,6 +24,11 @@
 			<artifactId>rdfbean-sesame</artifactId>
 			<version>${rdfbean.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.mysema.rdf</groupId>
+			<artifactId>rdfbean-virtuoso</artifactId>
+			<version>${rdfbean.version}</version>
+		</dependency>		
 		<dependency>
 			<groupId>com.mysema.rdf</groupId>
 			<artifactId>rdfbean-guice</artifactId>
@@ -76,7 +81,8 @@
 	      <version>2.5</version>
 	      <scope>provided</scope>
 	    </dependency>			
-				
+		
+		<!-- 		
 		<dependency>
 		  <groupId>com.openlinksw</groupId>
 		  <artifactId>virtuoso-sesame</artifactId>
@@ -87,14 +93,7 @@
 		  <artifactId>virtjdbc4</artifactId>
 		  <version>1.0</version>
 		</dependency>		
-		
-		<!-- 
-		<dependency>
-	      <groupId>com.bigdata</groupId>
-	      <artifactId>bigdata</artifactId>
-	      <version>0.82b</version>
-    	</dependency>   
-		-->
+		-->	
 			
 		<!-- tests -->
 		

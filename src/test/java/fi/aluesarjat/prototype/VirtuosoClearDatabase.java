@@ -1,45 +1,39 @@
 package fi.aluesarjat.prototype;
 
-import org.openrdf.model.Resource;
-import org.openrdf.model.Statement;
-import org.openrdf.model.URI;
-import org.openrdf.model.Value;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.result.ModelResult;
+import java.util.Collections;
+
 import org.openrdf.store.StoreException;
 
-import virtuoso.sesame3.driver.VirtuosoRepository;
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
 
 public class VirtuosoClearDatabase {
 
     public static void main(String[] args) throws StoreException{
         Repository repository = new VirtuosoRepository("localhost:1111", "dba", "dba");
         repository.initialize();
-        RepositoryConnection conn = repository.getConnection();
+        RDFConnection conn = repository.openConnection();
         try{
-            conn.removeMatch((Resource)null, (URI)null, (Value)null);
-            conn.removeMatch((Resource)null, (URI)null, (Value)null, (Resource)null);
+            conn.remove(null, null, null, null);
 
             // remove the rest
-            conn.begin();
+            CloseableIterator<STMT> results = conn.findStatements(null, null, null, null, false);
             try{
-                ModelResult results = conn.match(null, null, null, false);
                 while (results.hasNext()){
-                    Statement stmt = results.next();
+                    STMT stmt = results.next();
                     System.err.println(stmt);
-                    conn.remove(stmt, stmt.getContext());
-                }
-                results.close();    
-                conn.commit();
-            }catch(Exception e){
-                conn.rollback();
-                throw new RuntimeException(e);
-            }            
+                    conn.update(Collections.singleton(stmt), null);
+                }    
+            }finally{
+                results.close();
+            }             
 
         }finally{
             conn.close();
-            repository.shutDown();
+            repository.close();
         }
     }
 
