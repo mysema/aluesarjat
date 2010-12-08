@@ -285,7 +285,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     @Override
     public void begin() {
         conn = repository.openConnection();
-        statements = new LinkedHashSet<STMT>();
+        statements = new LinkedHashSet<STMT>(batchSize * 10);
         dimensions = new HashMap<Dimension, UID>();
         datasets = new ArrayList<UID>();
     }

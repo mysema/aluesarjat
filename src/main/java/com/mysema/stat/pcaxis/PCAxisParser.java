@@ -41,6 +41,10 @@ public class PCAxisParser {
 
     private static final CharSet RPAR = CharSet.getInstance(")");
 
+    private static final CharSet BOOLEAN_START = CharSet.getInstance("YN");
+    
+    private static final CharSet BOOLEAN_CHARS = CharSet.getInstance("YESNO");
+    
     private final DatasetHandler handler;
 
     private PushbackReader in;
@@ -144,6 +148,9 @@ public class PCAxisParser {
             value = collectWhileIn(NUMBER, DOT);
         } else if (in(SCOL)) {
             return null;
+        } else if (in(BOOLEAN_START)){
+            pushback();
+            value = collectWhileIn(BOOLEAN_CHARS);
         } else {
             throw new IOException("Expected string or number found " + location());
         }
