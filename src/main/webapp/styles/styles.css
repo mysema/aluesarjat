@@ -116,6 +116,10 @@ th.restriction {
 	margin-left: 10px;
 }
 
+input.quicksearch {
+    display: block;
+}
+
 #popup {
 	position: fixed;
 	top: 15%;

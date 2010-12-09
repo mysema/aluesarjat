@@ -10,5 +10,7 @@ public final class DC {
     
     public static final UID description = new UID(NS, "description");
     
+    public static final UID identifier = new UID(NS, "identifier");
+    
     private DC() {}
 }

@@ -1,6 +1,7 @@
 package com.mysema.stat.scovo;
 
 import java.io.UnsupportedEncodingException;
+import java.math.MathContext;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
@@ -51,6 +54,9 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     private static final int TX_ISOLATION = Connection.TRANSACTION_READ_COMMITTED;
 
+    private static final Pattern AREA_NAME_PATTERN = Pattern.compile("[\\d\\s]+(.*)");
+
+    
     // E.g. http://www.aluesarjat.fi/rdf/
     private final String baseURI;
 
@@ -200,12 +206,27 @@ public class RDFDatasetHandler implements DatasetHandler {
             dimensions.put(dimension, d);
 
             add(d, RDF.type, dimensionUID, dimensionUID);
-            add(d, DC.title, dimension.getName(), dimensionUID);
+            add(d, DC.identifier, dimension.getName(), dimensionUID);
+            
+            if ("Alue".equals(type.getName())) {
+                add(d, DC.title, getAreaName(dimension.getName()), dimensionUID);
+            } else {
+                add(d, DC.title, dimension.getName(), dimensionUID);
+            }
 
             add(datasetUID, STAT.datasetDimension, d, datasetsContext);
 
             // TODO: hierarchy?
             // TODO: subProperty of scv:dimension?
+        }
+    }
+
+    private String getAreaName(String name) {
+        Matcher m = AREA_NAME_PATTERN.matcher(name);
+        if (m.find()) {
+            return m.group(1);
+        } else {
+            return name;
         }
     }
 

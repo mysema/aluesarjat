@@ -56,10 +56,15 @@ function printFacet(facet, template) {
 	allFacets[facet.id] = facet;
 	
 	var values = facet.values;
+	
+	if (values.length >= 20) {
+		template.push("<input class='quicksearch' type='text' data-id='", facet.id, "'/>");
+	}
+	
 	for (var i=0; i < values.length; i++) {
 		var value = values[i];
 		value.facet = facet;
-		template.push("<div class='facetValue' id='", toID(value.id), "' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name);
+		template.push("<div class='facetValue visible' id='", toID(value.id), "' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name);
 		if (value.description) {
 			template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id,"'/>");
 		}
@@ -165,6 +170,7 @@ function executeQuery() {
 				});
 				
 				$(".facet").each(function () {
+					// Hide empty facets
 					if ($(this).find(".visible").length > 0) {
 						$(this).show();
 					} else {
@@ -297,6 +303,26 @@ $(document).ready(function(){
 		return false;
 	});
 	
+	$("input.quicksearch").live("keyup",function(event) {
+		var id = $(event.target).data("id");
+		var text = $(event.target).val();
+		$("#" + toID(id) + " .facetValue").each(function() {
+			var value = $(this);
+			if (value.hasClass("visible")) {
+				if (text.length == 0) {
+					value.show();
+				} 
+				// starts with or has a word starting with given text
+				else if (new RegExp("^" + text + "|[ -\\(\\)\\.\\+/]" + text, "i").test(value.text())) {
+					value.show();
+				} 
+				else if (!value.hasClass("selectedValue")) {
+					value.hide();
+				}
+			}
+		});
+	});
+	
 	$("#help").click(function(){
 		var popup = $("#popup");
 		popup.html("<h3>Help</h3>" + $("#helptext").html());
@@ -318,10 +344,11 @@ $(document).ready(function(){
 		} else {
 			restrictions.splice(i,1);
 		}
-
+		
 		if (restrictions.length == 0) {
 			$(".facet").show();
-			$(".facetValue").show();
+			// TODO: Apply quicksearch
+			$(".facetValue").show().addClass("visible");
 			$(".selectedValue").removeClass("selectedValue");
 			$("#results").html("");
 		} else {
