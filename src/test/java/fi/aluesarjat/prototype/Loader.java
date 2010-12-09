@@ -12,6 +12,7 @@ import java.util.Stack;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
@@ -21,6 +22,7 @@ import com.mysema.stat.scovo.RDFDatasetHandler;
 
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
+@Ignore
 public class Loader {
     
     private VirtuosoRepository repository;

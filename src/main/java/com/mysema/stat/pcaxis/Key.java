@@ -1,18 +1,20 @@
 package com.mysema.stat.pcaxis;
 
+import java.util.List;
+
 
 public class Key {
 
     private final String name;
     
-    private final String specifier;
+    private final List<String> specifiers;
     
     public Key(String name) {
         this(name, null);
     }
-    public Key(String name, String specifier) {
+    public Key(String name, List<String> specifier) {
         this.name = name;
-        this.specifier = specifier;
+        this.specifiers = specifier;
     }
     
     public boolean equals(Object o) {
@@ -21,10 +23,10 @@ public class Key {
         } else if (o instanceof Key) {
             Key other = (Key) o;
             if (this.name.equals(other.name)) {
-                if (this.specifier == null) {
-                    return other.specifier == null;
+                if (this.specifiers == null) {
+                    return other.specifiers == null;
                 } else {
-                    return this.specifier.equals(other.specifier);
+                    return this.specifiers.equals(other.specifiers);
                 }
             } else {
                 return false;
@@ -38,19 +40,19 @@ public class Key {
         return name;
     }
 
-    public String getSpecifier() {
-        return specifier;
+    public List<String> getSpecifiers() {
+        return specifiers;
     }
 
     public int hashCode() {
-        return 31*name.hashCode() + (specifier==null ? 0 : specifier.hashCode());
+        return 31*name.hashCode() + (specifiers==null ? 0 : specifiers.hashCode());
     }
     
     public String toString() {
-        if (specifier == null) {
+        if (specifiers == null) {
             return name;
         } else {
-            return name + "(\"" + specifier + "\")";
+            return name + "(\"" + specifiers + "\")";
         }
     }
 }

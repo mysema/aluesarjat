@@ -68,7 +68,7 @@ public class Dataset {
         }
 
         else if ("VALUES".equals(key.getName())) {
-            DimensionType type = findDimensionType(key.getSpecifier());
+            DimensionType type = findDimensionType(toString(key.getSpecifiers().get(0)));
             for (String value : values) {
                 type.addDimension(toString(value));
             }

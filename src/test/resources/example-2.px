@@ -9,6 +9,7 @@ UNITS="";
 SOURCE="Helsingin kaupungin tietokeskus";
 STUB="Alue","Talotyyppi","Hallintaperuste","Rahoitusmuoto";
 HEADING="Huoneistotyyppi","Yksikkö","Vuosi";
+PRECISION("Huoneistotyyppi","Yksikkö","Vuosi")=0;
 VALUES("Alue")="091 10 Kruununhaka","091 20 Kluuvi","091 80 Katajanokka","091 30 Kaartinkaupunki",
 "091 50 Punavuori","091 60 Eira","091 70 Ullanlinna","091 90 Kaivopuisto","091 204 Munkkisaari","091 520 Suomenlinna",
 "091 531 Länsisaaret","091 40 Kamppi","091 130 Etu-Töölö","091 201 Ruoholahti","091 202 Lapinlahti",

@@ -97,7 +97,7 @@ public class PCAxisParser {
                     handler.commit();
                     return dataset;
                 } else {
-                    List<String> values = values();
+                    List<String> values = values(SCOL);
                     dataset.set(key, values);
                 }
                 skipWhitespace();
@@ -120,7 +120,7 @@ public class PCAxisParser {
             dimensionValues[dimensionIndex] = dimensionValue;
 
             if (dimensionIndex + 1 == dimensionTypes.size()) {
-                String value = value();
+                String value = value(SCOL);
                 if (value == null) {
                     throw new EOFException();
                 }
@@ -135,7 +135,7 @@ public class PCAxisParser {
         return new ArrayList<Dimension>(Arrays.asList(dimensionValues));
     }
 
-    private String value() throws IOException {
+    private String value(CharSet end) throws IOException {
         skipWhitespace();
         nextChar();
         String value;
@@ -146,24 +146,26 @@ public class PCAxisParser {
         } else if (in(NUMBER)) {
             pushback(); // pushback latest number
             value = collectWhileIn(NUMBER, DOT);
-        } else if (in(SCOL)) {
-            return null;
         } else if (in(BOOLEAN_START)){
             pushback();
             value = collectWhileIn(BOOLEAN_CHARS);
+        } 
+        // End of values
+        else if (in(end)) {
+            return null;
         } else {
             throw new IOException("Expected string or number found " + location());
         }
         return value.intern();
     }
 
-    private List<String> values() throws IOException {
+    private List<String> values(CharSet end) throws IOException {
         List<String> values = new ArrayList<String>();
-        String value = value();
+        String value = value(end);
         do {
             values.add(value);
             skipWhileIn(WS, COMMA);
-            value = value();
+            value = value(end);
         } while (value != null);
         return values;
     }
@@ -177,11 +179,10 @@ public class PCAxisParser {
     private Key header() throws IOException {
         skipWhitespace();
         String name = collectWhileIn(KEY);
-        String spec = null;
+        List<String> spec = null;
 
-        if (skipWhileIn(LPAR, QUOTE)) {
-            spec = collectWhileNotIn(QUOTE);
-            skipWhileIn(QUOTE, RPAR);
+        if (skipWhileIn(LPAR)) {
+            spec = values(RPAR);
         }
 
         return new Key(name, spec);
