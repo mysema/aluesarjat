@@ -16,9 +16,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
+import com.mysema.stat.pcaxis.NullHandler;
 import com.mysema.stat.pcaxis.PCAxisParser;
 import com.mysema.stat.scovo.NamespaceHandler;
-import com.mysema.stat.scovo.RDFDatasetHandler;
 
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
@@ -78,8 +78,8 @@ public class Loader {
        
         // load data
         NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
-        RDFDatasetHandler handler = new RDFDatasetHandler(repository, namespaceHandler, baseURI);
-        PCAxisParser parser = new PCAxisParser(handler);
+//        RDFDatasetHandler handler = new RDFDatasetHandler(repository, namespaceHandler, baseURI);
+        PCAxisParser parser = new PCAxisParser(new NullHandler());
         for (File file : files){
             String datasetName = file.getName().substring(0, file.getName().length()-3);
             InputStream fileIn = new FileInputStream(file);

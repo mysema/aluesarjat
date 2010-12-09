@@ -24,6 +24,8 @@ public class PCAxisParser {
     private static final CharSet KEY = CharSet.getInstance("A-Z-");
 
     private static final CharSet EQ = CharSet.getInstance("=");
+    
+    private static final CharSet MINUS = CharSet.getInstance("-");
 
     private static final CharSet SCOL = CharSet.getInstance(";");
 
@@ -146,6 +148,8 @@ public class PCAxisParser {
         } else if (in(NUMBER)) {
             pushback(); // pushback latest number
             value = collectWhileIn(NUMBER, DOT);
+        } else if (in(MINUS)) {
+            value = "-"+collectWhileIn(NUMBER, DOT);
         } else if (in(BOOLEAN_START)){
             pushback();
             value = collectWhileIn(BOOLEAN_CHARS);
