@@ -1,7 +1,6 @@
 package com.mysema.stat.scovo;
 
 import java.io.UnsupportedEncodingException;
-import java.math.MathContext;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -231,11 +230,17 @@ public class RDFDatasetHandler implements DatasetHandler {
     }
 
     private void flush() {
+        long start = System.currentTimeMillis();
+        int size = statements.size();
         RDFBeanTransaction tx = conn.beginTransaction(false, TX_TIMEOUT, TX_ISOLATION);
         try {
             conn.update(Collections.<STMT>emptySet(), statements);
             statements.clear();
             tx.commit();
+            if (logger.isInfoEnabled()){
+                long duration = (System.currentTimeMillis() - start) / 1000;
+                logger.info("Flushed " + size + " statements in " + duration + " secs"); 
+            }
         } catch (Exception e) {
             tx.rollback();
             throw new RuntimeException(e);
