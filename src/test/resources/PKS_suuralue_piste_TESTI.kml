@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<name>Aluejaot</name>
+		<open>1</open>
+		<Style id="Style1">
+			<IconStyle>
+				<color>ff0000ff</color>
+				<scale>0.208332346653543</scale>
+				<Icon>
+					<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+				</Icon>
+			</IconStyle>
+		</Style>
+		<Schema name="" id="Schema1">
+			<SimpleField type="xsd:string" name="KOKOTUN">
+</SimpleField>
+			<SimpleField type="xsd:string" name="KUNTA">
+</SimpleField>
+			<SimpleField type="xsd:string" name="SUUR">
+</SimpleField>
+			<SimpleField type="xsd:string" name="Nimi">
+</SimpleField>
+			<SimpleField type="xsd:string" name="NIMI_ISO">
+</SimpleField>
+			<SimpleField type="xsd:int" name="Mtryhm">
+</SimpleField>
+			<SimpleField type="xsd:int" name="ID1">
+</SimpleField>
+		</Schema>
+		<Folder>
+			<name>pks_suuralue_piste</name>
+			<Placemark>
+				<name>Suur-Leppävaara</name>
+				<styleUrl>#Style1</styleUrl>
+				<ExtendedData>
+					<SchemaData schemaUrl="#Schema1">
+						<SimpleData name="KOKOTUN">0491000000</SimpleData>
+						<SimpleData name="KUNTA">049</SimpleData>
+						<SimpleData name="SUUR">1</SimpleData>
+						<SimpleData name="Nimi">Suur-Leppävaara</SimpleData>
+						<SimpleData name="NIMI_ISO">SUUR-LEPPÄVAARA</SimpleData>
+						<SimpleData name="Mtryhm">50</SimpleData>
+						<SimpleData name="ID1">13</SimpleData>
+					</SchemaData>
+				</ExtendedData>
+				<Point>
+					<coordinates>24.771251752057,60.2331426011288,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Läntinen</name>
+				<styleUrl>#Style1</styleUrl>
+				<ExtendedData>
+					<SchemaData schemaUrl="#Schema1">
+						<SimpleData name="KOKOTUN">0912000000</SimpleData>
+						<SimpleData name="KUNTA">091</SimpleData>
+						<SimpleData name="SUUR">2</SimpleData>
+						<SimpleData name="Nimi">Läntinen</SimpleData>
+						<SimpleData name="NIMI_ISO">LÄNTINEN</SimpleData>
+						<SimpleData name="Mtryhm">50</SimpleData>
+						<SimpleData name="ID1">18</SimpleData>
+					</SchemaData>
+				</ExtendedData>
+				<Point>
+					<coordinates>24.8811454532407,60.2189033295239,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Myyrmäki</name>
+				<styleUrl>#Style1</styleUrl>
+				<ExtendedData>
+					<SchemaData schemaUrl="#Schema1">
+						<SimpleData name="KOKOTUN">0921000000</SimpleData>
+						<SimpleData name="KUNTA">092</SimpleData>
+						<SimpleData name="SUUR">1</SimpleData>
+						<SimpleData name="Nimi">Myyrmäki</SimpleData>
+						<SimpleData name="NIMI_ISO">MYYRMÄKI</SimpleData>
+						<SimpleData name="Mtryhm">50</SimpleData>
+						<SimpleData name="ID1">7</SimpleData>
+					</SchemaData>
+				</ExtendedData>
+				<Point>
+					<coordinates>24.8268110915511,60.2834542648927,0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+	</Document>
+</kml>
