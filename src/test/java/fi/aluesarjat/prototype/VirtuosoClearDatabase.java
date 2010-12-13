@@ -24,7 +24,6 @@ public class VirtuosoClearDatabase {
             try{
                 while (results.hasNext()){
                     STMT stmt = results.next();
-                    System.err.println(stmt);
                     conn.update(Collections.singleton(stmt), null);
                 }    
             }finally{
