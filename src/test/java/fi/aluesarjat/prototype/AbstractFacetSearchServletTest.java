@@ -33,7 +33,7 @@ public abstract class AbstractFacetSearchServletTest {
 
         NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
         DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED.name(), "true");
-        dataService.setDatasets(Collections.singletonList("A01HKIS_Vaestotulot \".\""));
+        dataService.setDatasets(Collections.singletonList("classpath:/data/A01HKIS_Vaestotulot.px \".\""));
         dataService.initialize();
     }
 

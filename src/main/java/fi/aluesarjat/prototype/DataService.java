@@ -1,5 +1,6 @@
 package fi.aluesarjat.prototype;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -115,14 +116,17 @@ public class DataService {
 
     }
 
-    private void importData(String datasetDef, boolean reload) {
+    public void importData(String datasetDef, boolean reload) {
         try {
             RDFDatasetHandler handler = new RDFDatasetHandler(repository, namespaceHandler, baseURI);
             PCAxisParser parser = new PCAxisParser(handler);
 
             if (StringUtils.isNotBlank(datasetDef)) {
                 String[] values = datasetDef.split("\\s+");
-                String datasetName = values[0];
+                String[] protAndPath = values[0].split(":");
+                String protocol = protAndPath[0];
+                String path = protAndPath[1];
+                String datasetName = path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'));
                 String[] ignoredValues;
                 if (values.length > 1) {
                     ignoredValues = new String[values.length - 1];
@@ -145,7 +149,14 @@ public class DataService {
                     handler.setIgnoredValues(ignoredValues);
                     logger.info("Loading " + datasetName + "...");
                     long time = System.currentTimeMillis();
-                    InputStream in = getStream("/data/" + datasetName + ".px");
+                    InputStream in;
+                    if ("classpath".equals(protocol)){
+                        in = getStream(path);
+                    } else if ("file".equals(protocol)){
+                        in = new FileInputStream(path);  
+                    } else {
+                        throw new IllegalArgumentException("Unknown protocol " + protocol);
+                    }
                     try {
                         parser.parse(datasetName, in);
                     } finally {
