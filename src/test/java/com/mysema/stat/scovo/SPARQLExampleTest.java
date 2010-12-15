@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.Namespaces;
+import com.mysema.rdfbean.model.DC;
+import com.mysema.rdfbean.model.DCTERMS;
 import com.mysema.rdfbean.model.NODE;
 import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDF;

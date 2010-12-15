@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.rdfbean.model.DC;
+import com.mysema.rdfbean.model.DCTERMS;
 import com.mysema.rdfbean.model.LIT;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.UID;
