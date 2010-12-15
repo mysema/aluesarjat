@@ -1,8 +1,12 @@
 package fi.aluesarjat.prototype;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
+
+import com.mysema.stat.scovo.XMLID;
 
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.Document;
@@ -19,6 +23,10 @@ public class KMLTest {
 
     @Test
     public void test() throws IOException{
+        System.out.println("@prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .");
+        System.out.println("@prefix geo: <http://www.w3.org/2003/01/geo/> .");
+        System.out.println();
+        
         Kml kml = Kml.unmarshal(getClass().getResourceAsStream("/PKS_suuralue_TESTI.kml"));
         if (kml.getFeature() instanceof Document){
             Document document = (Document)kml.getFeature();
@@ -36,19 +44,29 @@ public class KMLTest {
     }
     
     private void handlePlacemark(Placemark placemark){        
-        // data
+        Map<String,String> values = new HashMap<String,String>();        
         for (SchemaData schemaData : placemark.getExtendedData().getSchemaData()){
             for (SimpleData simpleData : schemaData.getSimpleData()){
-                System.out.println(simpleData.getName() + " " + simpleData.getValue());
+                values.put(simpleData.getName(), simpleData.getValue());
             }
         }
         
+        StringBuilder polygons = new StringBuilder();
         // geometry
         Polygon polygon = (Polygon)placemark.getGeometry();
         LinearRing ring = polygon.getOuterBoundaryIs().getLinearRing();
         for (Coordinate coordinate : ring.getCoordinates()){
-            System.out.println(coordinate.getLatitude() + " " + coordinate.getLongitude());
+            if (polygons.length() > 0){
+                polygons.append(" ");
+            }
+            polygons.append(coordinate.getLatitude()).append(",").append(coordinate.getLongitude());
         }
+        
+        String kunta = values.get("KUNTA");
+        String suur = values.get("SUUR");
+        String nimi = values.get("Nimi");
+        String code = kunta + " " + suur + " " + nimi;        
+        System.out.println("alue:" + XMLID.toXMLID(code) + " geo:polygon \"" + polygons + "\" .");
     }
     
 }

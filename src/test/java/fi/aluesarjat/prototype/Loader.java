@@ -46,12 +46,13 @@ public class Loader {
                     unhandled.addAll(Arrays.asList(file.listFiles()));    
                 }                
             }else if (file.getName().endsWith(".px")){
-                datasets.add(file.toURI().toURL().toString());
+                datasets.add(file.toURI().toURL().toString() + " \".\"");
             }
         }
 
         // initialize repository
         repository = new VirtuosoRepository(host+":"+port, user, pass);
+        repository.setBulkLoadDir(new File(System.getProperty("java.io.tmpdir")));
         repository.setSources(ModuleUtils.getSources(baseURI));
         repository.initialize();
         

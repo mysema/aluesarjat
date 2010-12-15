@@ -17,9 +17,10 @@ public class ModuleUtils {
                 getAreaDescriptions(baseURI),
                 new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
                 new RDFSource("classpath:/area-hierarchy.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
+                new RDFSource("classpath:/area-coordinates.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
                 new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#")};
     }
-
+    
     private static RDFSource getAreaDescriptions(String baseURI){
         try {
             String str = IOUtils.toString(ModuleUtils.class.getResourceAsStream("/alue.ttl"), "ISO-8859-1");

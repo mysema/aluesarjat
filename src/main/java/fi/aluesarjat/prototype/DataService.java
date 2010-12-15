@@ -1,8 +1,8 @@
 package fi.aluesarjat.prototype;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,10 +152,8 @@ public class DataService {
                     InputStream in;
                     if ("classpath".equals(protocol)){
                         in = getStream(path);
-                    } else if ("file".equals(protocol)){
-                        in = new FileInputStream(path);  
                     } else {
-                        throw new IllegalArgumentException("Unknown protocol " + protocol);
+                        in = new URL(values[0]).openStream();  
                     }
                     try {
                         parser.parse(datasetName, in);

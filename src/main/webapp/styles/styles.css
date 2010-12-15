@@ -133,3 +133,8 @@ input.quicksearch {
 	z-index: 9002;
 	overflow: auto;
 }
+
+#map {
+	width: 600px;
+	height: 400px;
+}
