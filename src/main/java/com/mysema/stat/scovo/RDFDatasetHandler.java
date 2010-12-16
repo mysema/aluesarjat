@@ -56,9 +56,7 @@ public class RDFDatasetHandler implements DatasetHandler {
     private static final int TX_ISOLATION = Connection.TRANSACTION_READ_COMMITTED;
 
     private static final Pattern AREA_NAME_PATTERN = Pattern.compile("[\\d\\s]+(.*)");
-
-    
-    // E.g. http://www.aluesarjat.fi/rdf/
+   
     private final String baseURI;
 
     public static final String DIMENSIONS = "dimensions";
