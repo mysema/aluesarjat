@@ -51,8 +51,7 @@ public class Loader {
         }
 
         // initialize repository
-        repository = new VirtuosoRepository(host+":"+port, user, pass);
-        repository.setBulkLoadDir(new File(System.getProperty("java.io.tmpdir")));
+        repository = new VirtuosoRepository(host+":"+port, user, pass, baseURI);
         repository.setSources(ModuleUtils.getSources(baseURI));
         repository.initialize();
         

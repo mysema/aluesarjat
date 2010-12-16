@@ -278,7 +278,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                     addProperty(SCV.dimension, dimensions.get(dimension), properties, md);
                 }
                 // ADD TRIPLES
-                UID id = new UID("item:", new String(Hex.encodeHex(md.digest())));
+                UID id = new UID("item:", XMLID.toXMLID(new String(Hex.encodeHex(md.digest()))));
                 for (NODE[] property : properties) {
                     add(id, (UID) property[0], property[1], datasetContext);
                 }
