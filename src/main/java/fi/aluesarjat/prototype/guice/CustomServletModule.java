@@ -26,6 +26,9 @@ public class CustomServletModule extends ServletModule{
         if ("virtuoso".equals(store)){
             log.info("Using Virtuoso backend");
             install(new VirtuosoRDFBeanModule());
+        }else if ("memory".equals(store)){
+            log.info("Using Memory backend");
+            install(new MemoryStoreRDFBeanModule());
         }else{
             log.info("Using NativeStore backend");
             install(new NativeStoreRDFBeanModule());

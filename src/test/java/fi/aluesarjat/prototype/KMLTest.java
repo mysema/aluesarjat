@@ -51,6 +51,11 @@ public class KMLTest {
             }
         }
         
+        double min_lat = Double.MAX_VALUE;
+        double max_lat = 0.0;
+        double min_long = Double.MAX_VALUE;
+        double max_long = 0.0;
+        
         StringBuilder polygons = new StringBuilder();
         // geometry
         Polygon polygon = (Polygon)placemark.getGeometry();
@@ -60,12 +65,20 @@ public class KMLTest {
                 polygons.append(" ");
             }
             polygons.append(coordinate.getLatitude()).append(",").append(coordinate.getLongitude());
+            min_lat = Math.min(min_lat, coordinate.getLatitude());
+            max_lat = Math.max(max_lat, coordinate.getLatitude());
+            min_long = Math.min(min_long, coordinate.getLongitude());
+            max_long = Math.max(max_long, coordinate.getLongitude());
         }
+        
+        double center_lat = min_lat + (max_lat - min_lat ) / 2;
+        double center_long = min_long + (max_long - min_long) / 2;
         
         String kunta = values.get("KUNTA");
         String suur = values.get("SUUR");
         String nimi = values.get("Nimi");
         String code = kunta + " " + suur + " " + nimi;        
+        System.out.println("alue:" + XMLID.toXMLID(code) + " geo:center \"" + center_lat+","+center_long + "\" .");
         System.out.println("alue:" + XMLID.toXMLID(code) + " geo:polygon \"" + polygons + "\" .");
     }
     
