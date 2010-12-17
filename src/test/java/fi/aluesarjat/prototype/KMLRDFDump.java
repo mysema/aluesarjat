@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.mysema.stat.scovo.XMLID;
 
@@ -76,11 +77,14 @@ public class KMLRDFDump {
 
         String kunta = values.get("KUNTA");
         String suur = values.get("SUUR");
+        String tila = values.get("TILA");
         String pien = values.get("PIEN");
         String nimi = values.get("Nimi");
         String code = null;
-        if (pien != null){
+        if (!StringUtils.isEmpty(pien)){
             code = XMLID.toXMLID(kunta + " " + pien + " " + nimi);
+        }else if (!StringUtils.isEmpty(tila)){
+            code = XMLID.toXMLID(kunta + " " + tila + " " + nimi);
         }else{
             code = XMLID.toXMLID(kunta + " " + suur + " " + nimi);
         }
@@ -101,7 +105,7 @@ public class KMLRDFDump {
         // center point
         }else if (placemark.getGeometry() instanceof Point){
             Coordinate coordinate = ((Point)placemark.getGeometry()).getCoordinates().get(0);
-            writer.append("alue:"+code+" geo:center \""+coordinate.getLatitude()+","+coordinate.getLongitude()+ "\" . \n");
+            writer.append("alue:"+code+" geo:where \""+coordinate.getLatitude()+","+coordinate.getLongitude()+ "\" . \n");
             
         }else{
             System.err.println(code + " has geometry of type " + placemark.getGeometry().getClass().getSimpleName());

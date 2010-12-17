@@ -49,7 +49,7 @@ $(document).ready(function(){
         
     // get polygons via SPARQL    
 	var query = ["SELECT * WHERE { ?area <http://www.w3.org/2003/01/geo/polygon> ?polygon " ,
-				" ; <http://www.w3.org/2003/01/geo/center> ?center ",
+				" ; <http://www.w3.org/2003/01/geo/where> ?center ",
 				" ; <http://purl.org/dc/elements/1.1/title> ?title }"].join("");
 	$.ajax({
 		url: "sparql", 
