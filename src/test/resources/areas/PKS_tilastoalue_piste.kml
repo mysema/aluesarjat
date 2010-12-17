@@ -1,0 +1,2412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+<name>Aluejaot</name>
+<open>1</open>
+<Style id="Style1">
+<IconStyle>
+<color>ff800000</color>
+<scale>0.208332346653543</scale>
+<Icon>
+<href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+</Icon>
+</IconStyle>
+</Style>
+<Schema name="" id="Schema1">
+<SimpleField type="xsd:string" name="KOKOTUN">
+</SimpleField>
+<SimpleField type="xsd:string" name="KUNTA">
+</SimpleField>
+<SimpleField type="xsd:string" name="SUUR">
+</SimpleField>
+<SimpleField type="xsd:string" name="TILA">
+</SimpleField>
+<SimpleField type="xsd:string" name="Nimi">
+</SimpleField>
+<SimpleField type="xsd:string" name="NIMI_ISO">
+</SimpleField>
+<SimpleField type="xsd:int" name="Mtryhm">
+</SimpleField>
+<SimpleField type="xsd:int" name="ID1">
+</SimpleField>
+</Schema>
+<Folder>
+<name>pks_tilastoalue_piste</name>
+<Placemark>
+<name>Kurttila-Vanttila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0495052000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">52</SimpleData>
+<SimpleData name="Nimi">Kurttila-Vanttila</SimpleData>
+<SimpleData name="NIMI_ISO">KURTTILA-VANTTILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">17</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.600136570044,60.1808548137395,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Saunalahti</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0494042000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">42</SimpleData>
+<SimpleData name="Nimi">Saunalahti</SimpleData>
+<SimpleData name="NIMI_ISO">SAUNALAHTI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">18</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.6235715796185,60.1682811081694,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kanta-Espoonlahti</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0494041000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">41</SimpleData>
+<SimpleData name="Nimi">Kanta-Espoonlahti</SimpleData>
+<SimpleData name="NIMI_ISO">KANTA-ESPOONLAHTI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">19</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.6577047573913,60.1371072095975,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kaitaa</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0494044000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">44</SimpleData>
+<SimpleData name="Nimi">Kaitaa</SimpleData>
+<SimpleData name="NIMI_ISO">KAITAA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">28</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.6963413607318,60.1482194681391,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Nöykkiö-Latokaski</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0494043000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">43</SimpleData>
+<SimpleData name="Nimi">Nöykkiö-Latokaski</SimpleData>
+<SimpleData name="NIMI_ISO">NÖYKKIÖ-LATOKASKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">22</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.6752921672944,60.1717288956804,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Matinkylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0493031000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">31</SimpleData>
+<SimpleData name="Nimi">Matinkylä</SimpleData>
+<SimpleData name="NIMI_ISO">MATINKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">29</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.791730829666,60.1331821386771,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Olari</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0493032000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">32</SimpleData>
+<SimpleData name="Nimi">Olari</SimpleData>
+<SimpleData name="NIMI_ISO">OLARI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">23</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.727347412164,60.17248616927,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Henttaa</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0493033000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">33</SimpleData>
+<SimpleData name="Nimi">Henttaa</SimpleData>
+<SimpleData name="NIMI_ISO">HENTTAA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">21</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7267010866514,60.1904906269978,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Mankkaa</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0492024000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">24</SimpleData>
+<SimpleData name="Nimi">Mankkaa</SimpleData>
+<SimpleData name="NIMI_ISO">MANKKAA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">24</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7593969797063,60.1939909930649,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kanta-Tapiola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0492021000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">21</SimpleData>
+<SimpleData name="Nimi">Kanta-Tapiola</SimpleData>
+<SimpleData name="NIMI_ISO">KANTA-TAPIOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">26</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.790853230226,60.1828503739407,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Haukilahti-Westend</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0492023000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">23</SimpleData>
+<SimpleData name="Nimi">Haukilahti-Westend</SimpleData>
+<SimpleData name="NIMI_ISO">HAUKILAHTI-WESTEND</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">27</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8057115922723,60.1553007595181,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Otaniemi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0492022000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">22</SimpleData>
+<SimpleData name="Nimi">Otaniemi</SimpleData>
+<SimpleData name="NIMI_ISO">OTANIEMI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">6</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8293318663163,60.1822896640297,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Lauttasaari</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0911105000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">105</SimpleData>
+<SimpleData name="Nimi">Lauttasaari</SimpleData>
+<SimpleData name="NIMI_ISO">LAUTTASAARI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">93</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8690679127684,60.156646962495,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Munkkiniemi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0912202000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">202</SimpleData>
+<SimpleData name="Nimi">Munkkiniemi</SimpleData>
+<SimpleData name="NIMI_ISO">MUNKKINIEMI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">101</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8632637182178,60.1924994244253,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kanta-Kauklahti</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0495051000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">51</SimpleData>
+<SimpleData name="Nimi">Kanta-Kauklahti</SimpleData>
+<SimpleData name="NIMI_ISO">KANTA-KAUKLAHTI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">15</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.5671400001316,60.2063523610176,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Muurala-Gumböle</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0496062000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">62</SimpleData>
+<SimpleData name="Nimi">Muurala-Gumböle</SimpleData>
+<SimpleData name="NIMI_ISO">MUURALA-GUMBÖLE</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">16</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.6237844535069,60.2120042739694,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Nuuksio-Nupuri</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0496064000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">64</SimpleData>
+<SimpleData name="Nimi">Nuuksio-Nupuri</SimpleData>
+<SimpleData name="NIMI_ISO">NUUKSIO-NUPURI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">8</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.5682057861525,60.2709800228425,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kanta-Espoo</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0496061000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">61</SimpleData>
+<SimpleData name="Nimi">Kanta-Espoo</SimpleData>
+<SimpleData name="NIMI_ISO">KANTA-ESPOO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">20</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.6764795671272,60.1993684247221,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name></name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">2351002000</SimpleData>
+<SimpleData name="KUNTA">235</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">02</SimpleData>
+<SimpleData name="Nimi"></SimpleData>
+<SimpleData name="NIMI_ISO"></SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">3</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.700227950836,60.2129363010216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name></name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">2351003000</SimpleData>
+<SimpleData name="KUNTA">235</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">03</SimpleData>
+<SimpleData name="Nimi"></SimpleData>
+<SimpleData name="NIMI_ISO"></SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">2</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7087847618709,60.2192416334026,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Bemböle</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0496063000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">63</SimpleData>
+<SimpleData name="Nimi">Bemböle</SimpleData>
+<SimpleData name="NIMI_ISO">BEMBÖLE</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">10</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.6758988457812,60.2440173052004,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vanhakartano-Röylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0497071000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">71</SimpleData>
+<SimpleData name="Nimi">Vanhakartano-Röylä</SimpleData>
+<SimpleData name="NIMI_ISO">VANHAKARTANO-RÖYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">9</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7006296646734,60.2780327585232,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kalajärvi-Lakisto</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0497072000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">72</SimpleData>
+<SimpleData name="Nimi">Kalajärvi-Lakisto</SimpleData>
+<SimpleData name="NIMI_ISO">KALAJÄRVI-LAKISTO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">7</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.671827118033,60.3254077429702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name></name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">2351001000</SimpleData>
+<SimpleData name="KUNTA">235</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">01</SimpleData>
+<SimpleData name="Nimi"></SimpleData>
+<SimpleData name="NIMI_ISO"></SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">4</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7294048762221,60.2077666068915,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name></name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">2351004000</SimpleData>
+<SimpleData name="KUNTA">235</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">04</SimpleData>
+<SimpleData name="Nimi"></SimpleData>
+<SimpleData name="NIMI_ISO"></SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">1</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7373773761156,60.2180060653368,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Sepänkylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0491016000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">16</SimpleData>
+<SimpleData name="Nimi">Sepänkylä</SimpleData>
+<SimpleData name="NIMI_ISO">SEPÄNKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">5</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7443316027661,60.2094270381668,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Viherlaakso-Lippajärvi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0491015000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">15</SimpleData>
+<SimpleData name="Nimi">Viherlaakso-Lippajärvi</SimpleData>
+<SimpleData name="NIMI_ISO">VIHERLAAKSO-LIPPAJÄRVI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">14</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7271696896743,60.2286957720907,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kilo-Karakallio</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0491013000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">13</SimpleData>
+<SimpleData name="Nimi">Kilo-Karakallio</SimpleData>
+<SimpleData name="NIMI_ISO">KILO-KARAKALLIO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">13</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7748497327082,60.2255241984626,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Laaksolahti</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0491014000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">14</SimpleData>
+<SimpleData name="Nimi">Laaksolahti</SimpleData>
+<SimpleData name="NIMI_ISO">LAAKSOLAHTI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">11</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7603698943825,60.2483045320551,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Linnainen</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921010000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">10</SimpleData>
+<SimpleData name="Nimi">Linnainen</SimpleData>
+<SimpleData name="NIMI_ISO">LINNAINEN</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">78</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7823738061273,60.2579683553974,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Hämeenkylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921012000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">12</SimpleData>
+<SimpleData name="Nimi">Hämeenkylä</SimpleData>
+<SimpleData name="NIMI_ISO">HÄMEENKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">77</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.796670449541,60.2642222357518,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Askisto</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921020000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">20</SimpleData>
+<SimpleData name="Nimi">Askisto</SimpleData>
+<SimpleData name="NIMI_ISO">ASKISTO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">66</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7787613789365,60.2844600509415,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Laajalahti</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0492025000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">25</SimpleData>
+<SimpleData name="Nimi">Laajalahti</SimpleData>
+<SimpleData name="NIMI_ISO">LAAJALAHTI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">25</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8092289234166,60.2002838138339,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kanta-Leppävaara</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0491011000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">11</SimpleData>
+<SimpleData name="Nimi">Kanta-Leppävaara</SimpleData>
+<SimpleData name="NIMI_ISO">KANTA-LEPPÄVAARA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">12</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8168716518019,60.2299224051546,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Pitäjänmäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0912204000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">204</SimpleData>
+<SimpleData name="Nimi">Pitäjänmäki</SimpleData>
+<SimpleData name="NIMI_ISO">PITÄJÄNMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">99</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8556376846442,60.2300036464381,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Hämevaara</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921011000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">11</SimpleData>
+<SimpleData name="Nimi">Hämevaara</SimpleData>
+<SimpleData name="NIMI_ISO">HÄMEVAARA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">83</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.809362333992,60.2503973632621,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vapaala</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921013000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">13</SimpleData>
+<SimpleData name="Nimi">Vapaala</SimpleData>
+<SimpleData name="NIMI_ISO">VAPAALA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">79</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8245073968511,60.2610347509289,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Varisto</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921014000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">14</SimpleData>
+<SimpleData name="Nimi">Varisto</SimpleData>
+<SimpleData name="NIMI_ISO">VARISTO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">72</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8181544743588,60.274031827702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Myyrmäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921015000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">15</SimpleData>
+<SimpleData name="Nimi">Myyrmäki</SimpleData>
+<SimpleData name="NIMI_ISO">MYYRMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">75</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8496744044456,60.2636400877822,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kaarela</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0912205000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">205</SimpleData>
+<SimpleData name="Nimi">Kaarela</SimpleData>
+<SimpleData name="NIMI_ISO">KAARELA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">98</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.873122847338,60.2518210725409,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kaivoksela</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921016000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">16</SimpleData>
+<SimpleData name="Nimi">Kaivoksela</SimpleData>
+<SimpleData name="NIMI_ISO">KAIVOKSELA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">76</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8734074211377,60.2631729780884,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Martinlaakso</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921017000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">17</SimpleData>
+<SimpleData name="Nimi">Martinlaakso</SimpleData>
+<SimpleData name="NIMI_ISO">MARTINLAAKSO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">68</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8502034135365,60.2822408072974,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vantaanlaakso</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921018000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">18</SimpleData>
+<SimpleData name="Nimi">Vantaanlaakso</SimpleData>
+<SimpleData name="NIMI_ISO">VANTAANLAAKSO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">67</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8750162612275,60.284389766162,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Petikko</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0921026000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">26</SimpleData>
+<SimpleData name="Nimi">Petikko</SimpleData>
+<SimpleData name="NIMI_ISO">PETIKKO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">54</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7940569411428,60.3002555223804,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Keimola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922022000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">22</SimpleData>
+<SimpleData name="Nimi">Keimola</SimpleData>
+<SimpleData name="NIMI_ISO">KEIMOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">44</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7976576388102,60.3267340267099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vestra</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922030000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">30</SimpleData>
+<SimpleData name="Nimi">Vestra</SimpleData>
+<SimpleData name="NIMI_ISO">VESTRA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">41</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7650310116686,60.3420329821255,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Suvisaaristo</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0494045000</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">45</SimpleData>
+<SimpleData name="Nimi">Suvisaaristo</SimpleData>
+<SimpleData name="NIMI_ISO">SUVISAARISTO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">30</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7924101114935,60.0191738770381,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Myllymäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922025000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">25</SimpleData>
+<SimpleData name="Nimi">Myllymäki</SimpleData>
+<SimpleData name="NIMI_ISO">MYLLYMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">59</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8368096308039,60.2963383257379,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Piispankylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922021000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">21</SimpleData>
+<SimpleData name="Nimi">Piispankylä</SimpleData>
+<SimpleData name="NIMI_ISO">PIISPANKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">55</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8611999546628,60.3066139742299,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kivistö</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922023000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">23</SimpleData>
+<SimpleData name="Nimi">Kivistö</SimpleData>
+<SimpleData name="NIMI_ISO">KIVISTÖ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">88</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8427827298462,60.3279973332909,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Luhtaanmäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922031000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">31</SimpleData>
+<SimpleData name="Nimi">Luhtaanmäki</SimpleData>
+<SimpleData name="NIMI_ISO">LUHTAANMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">33</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8031369766728,60.3630589422565,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Riipilä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922032000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">32</SimpleData>
+<SimpleData name="Nimi">Riipilä</SimpleData>
+<SimpleData name="NIMI_ISO">RIIPILÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">31</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8451319727732,60.3780976856281,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Seutula</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922033000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">33</SimpleData>
+<SimpleData name="Nimi">Seutula</SimpleData>
+<SimpleData name="NIMI_ISO">SEUTULA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">35</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8655904528791,60.3562735020083,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ullanlinna</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0911102000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">102</SimpleData>
+<SimpleData name="Nimi">Ullanlinna</SimpleData>
+<SimpleData name="NIMI_ISO">ULLANLINNA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">106</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8903989498533,60.0978505475872,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Reijola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0912201000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">201</SimpleData>
+<SimpleData name="Nimi">Reijola</SimpleData>
+<SimpleData name="NIMI_ISO">REIJOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">102</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9013095697478,60.1902066877034,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kampinmalmi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0911103000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">103</SimpleData>
+<SimpleData name="Nimi">Kampinmalmi</SimpleData>
+<SimpleData name="NIMI_ISO">KAMPINMALMI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">105</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9184590356789,60.1641817089103,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Taka-Töölö</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0911104000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">104</SimpleData>
+<SimpleData name="Nimi">Taka-Töölö</SimpleData>
+<SimpleData name="NIMI_ISO">TAKA-TÖÖLÖ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">94</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9193280709157,60.1844014272446,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Alppiharju</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0913302000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">302</SimpleData>
+<SimpleData name="Nimi">Alppiharju</SimpleData>
+<SimpleData name="NIMI_ISO">ALPPIHARJU</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">115</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9415186417778,60.1904692091573,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vironniemi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0911101000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">1</SimpleData>
+<SimpleData name="TILA">101</SimpleData>
+<SimpleData name="Nimi">Vironniemi</SimpleData>
+<SimpleData name="NIMI_ISO">VIRONNIEMI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">113</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9568730120411,60.1713106860125,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kallio</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0913301000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">301</SimpleData>
+<SimpleData name="Nimi">Kallio</SimpleData>
+<SimpleData name="NIMI_ISO">KALLIO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">114</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9697026201127,60.1866314891634,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vallila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0913303000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">303</SimpleData>
+<SimpleData name="Nimi">Vallila</SimpleData>
+<SimpleData name="NIMI_ISO">VALLILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">116</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9575700038507,60.1950376158109,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kulosaari</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0916601000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">601</SimpleData>
+<SimpleData name="Nimi">Kulosaari</SimpleData>
+<SimpleData name="NIMI_ISO">KULOSAARI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">112</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0051685752664,60.1867284111475,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Laajasalo</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0916603000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">603</SimpleData>
+<SimpleData name="Nimi">Laajasalo</SimpleData>
+<SimpleData name="NIMI_ISO">LAAJASALO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">107</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.073394330381,60.0615534532053,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Haaga</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0912203000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">203</SimpleData>
+<SimpleData name="Nimi">Haaga</SimpleData>
+<SimpleData name="NIMI_ISO">HAAGA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">100</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8979251207451,60.218467268081,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Pasila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0913304000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">304</SimpleData>
+<SimpleData name="Nimi">Pasila</SimpleData>
+<SimpleData name="NIMI_ISO">PASILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">103</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9298822724368,60.2056903580105,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Maunula</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0914401000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">401</SimpleData>
+<SimpleData name="Nimi">Maunula</SimpleData>
+<SimpleData name="NIMI_ISO">MAUNULA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">104</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.924858040655,60.2279726874482,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Länsi-Pakila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0914402000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">402</SimpleData>
+<SimpleData name="Nimi">Länsi-Pakila</SimpleData>
+<SimpleData name="NIMI_ISO">LÄNSI-PAKILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">92</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.929911348036,60.2417615839986,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ylästö</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0923040000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">40</SimpleData>
+<SimpleData name="Nimi">Ylästö</SimpleData>
+<SimpleData name="NIMI_ISO">YLÄSTÖ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">65</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9152235037945,60.2833600343089,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Tuomarinkylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0914403000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">403</SimpleData>
+<SimpleData name="Nimi">Tuomarinkylä</SimpleData>
+<SimpleData name="NIMI_ISO">TUOMARINKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">120</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9330621371836,60.2616731917137,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vanhakaupunki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0913305000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">305</SimpleData>
+<SimpleData name="Nimi">Vanhakaupunki</SimpleData>
+<SimpleData name="NIMI_ISO">VANHAKAUPUNKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">117</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.961307024835,60.2111318878614,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Oulunkylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0914404000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">404</SimpleData>
+<SimpleData name="Nimi">Oulunkylä</SimpleData>
+<SimpleData name="NIMI_ISO">OULUNKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">119</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9660014855406,60.2306433279143,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Pukinmäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0915502000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">502</SimpleData>
+<SimpleData name="Nimi">Pukinmäki</SimpleData>
+<SimpleData name="NIMI_ISO">PUKINMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">95</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9834461053908,60.2427139209685,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Latokartano</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0915501000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">501</SimpleData>
+<SimpleData name="Nimi">Latokartano</SimpleData>
+<SimpleData name="NIMI_ISO">LATOKARTANO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">118</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0112616017907,60.2198821311894,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Itä-Pakila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0914405000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">405</SimpleData>
+<SimpleData name="Nimi">Itä-Pakila</SimpleData>
+<SimpleData name="NIMI_ISO">ITÄ-PAKILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">121</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9627379933276,60.2518587319086,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Tammisto</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0923050000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">50</SimpleData>
+<SimpleData name="Nimi">Tammisto</SimpleData>
+<SimpleData name="NIMI_ISO">TAMMISTO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">90</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9664072723059,60.273328076857,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Pakkala</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0923051000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">51</SimpleData>
+<SimpleData name="Nimi">Pakkala</SimpleData>
+<SimpleData name="NIMI_ISO">PAKKALA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">91</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9580933459425,60.2869232061634,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Helsingin Pitäjän Kirkonkylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924069000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">69</SimpleData>
+<SimpleData name="Nimi">Helsingin Pitäjän Kirkonkylä</SimpleData>
+<SimpleData name="NIMI_ISO">HELSINGIN PITÄJÄN KIRKONKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">71</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9885131294498,60.2829650903025,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Malmi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0915503000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">503</SimpleData>
+<SimpleData name="Nimi">Malmi</SimpleData>
+<SimpleData name="NIMI_ISO">MALMI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">122</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0289906784898,60.2501846509741,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Suutarila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0915504000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">504</SimpleData>
+<SimpleData name="Nimi">Suutarila</SimpleData>
+<SimpleData name="NIMI_ISO">SUUTARILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">123</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.999654280462,60.2756211480618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Viinikkala</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0923041000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">41</SimpleData>
+<SimpleData name="Nimi">Viinikkala</SimpleData>
+<SimpleData name="NIMI_ISO">VIINIKKALA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">50</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8877016643051,60.3115426163181,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Lapinkylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922024000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">24</SimpleData>
+<SimpleData name="Nimi">Lapinkylä</SimpleData>
+<SimpleData name="NIMI_ISO">LAPINKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">89</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.8785345791718,60.3295818159294,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Lentokenttä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0923053000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">53</SimpleData>
+<SimpleData name="Nimi">Lentokenttä</SimpleData>
+<SimpleData name="NIMI_ISO">LENTOKENTTÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">49</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9517301597271,60.3204710951612,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kiila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0922034000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">2</SimpleData>
+<SimpleData name="TILA">34</SimpleData>
+<SimpleData name="Nimi">Kiila</SimpleData>
+<SimpleData name="NIMI_ISO">KIILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">32</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.900910063038,60.3559517102342,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Veromies</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0923052000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">3</SimpleData>
+<SimpleData name="TILA">52</SimpleData>
+<SimpleData name="Nimi">Veromies</SimpleData>
+<SimpleData name="NIMI_ISO">VEROMIES</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">62</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9636156040948,60.3011865304693,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Koivuhaka</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924068000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">68</SimpleData>
+<SimpleData name="Nimi">Koivuhaka</SimpleData>
+<SimpleData name="NIMI_ISO">KOIVUHAKA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">60</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9996967068558,60.2967666689422,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Viertola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924063000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">63</SimpleData>
+<SimpleData name="Nimi">Viertola</SimpleData>
+<SimpleData name="NIMI_ISO">VIERTOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">61</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0240430721134,60.2948902170656,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Simonkylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924065000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">65</SimpleData>
+<SimpleData name="Nimi">Simonkylä</SimpleData>
+<SimpleData name="NIMI_ISO">SIMONKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">57</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0252938115638,60.3098860483661,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ruskeasanta</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924067000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">67</SimpleData>
+<SimpleData name="Nimi">Ruskeasanta</SimpleData>
+<SimpleData name="NIMI_ISO">RUSKEASANTA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">53</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0046610747656,60.3145544221072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ilola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0925071000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">71</SimpleData>
+<SimpleData name="Nimi">Ilola</SimpleData>
+<SimpleData name="NIMI_ISO">ILOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">47</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0157136613429,60.3291148068765,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Herttoniemi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0916602000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">602</SimpleData>
+<SimpleData name="Nimi">Herttoniemi</SimpleData>
+<SimpleData name="NIMI_ISO">HERTTONIEMI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">111</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0439788036549,60.2012096415407,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Myllypuro</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0917702000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">702</SimpleData>
+<SimpleData name="Nimi">Myllypuro</SimpleData>
+<SimpleData name="NIMI_ISO">MYLLYPURO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">97</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0630366692848,60.2203965263629,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vartiokylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0917701000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">701</SimpleData>
+<SimpleData name="Nimi">Vartiokylä</SimpleData>
+<SimpleData name="NIMI_ISO">VARTIOKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">110</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0927570477215,60.2100399948961,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Mellunkylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0917703000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">703</SimpleData>
+<SimpleData name="Nimi">Mellunkylä</SimpleData>
+<SimpleData name="NIMI_ISO">MELLUNKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">109</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0886552065626,60.2360815888391,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Puistola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0915505000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">505</SimpleData>
+<SimpleData name="Nimi">Puistola</SimpleData>
+<SimpleData name="NIMI_ISO">PUISTOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">124</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0479254197082,60.27006875769,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kuninkaala</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924064000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">64</SimpleData>
+<SimpleData name="Nimi">Kuninkaala</SimpleData>
+<SimpleData name="NIMI_ISO">KUNINKAALA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">69</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0674120766125,60.281991316254,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Jakomäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0915506000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">506</SimpleData>
+<SimpleData name="Nimi">Jakomäki</SimpleData>
+<SimpleData name="NIMI_ISO">JAKOMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">96</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0790349018938,60.2611735638185,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Rajakylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0927095000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">95</SimpleData>
+<SimpleData name="Nimi">Rajakylä</SimpleData>
+<SimpleData name="NIMI_ISO">RAJAKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">82</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0959544378967,60.2486717512342,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vaarala</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0927093000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">93</SimpleData>
+<SimpleData name="Nimi">Vaarala</SimpleData>
+<SimpleData name="NIMI_ISO">VAARALA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">74</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1009181625521,60.2649427946802,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Hakunila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0927094000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">94</SimpleData>
+<SimpleData name="Nimi">Hakunila</SimpleData>
+<SimpleData name="NIMI_ISO">HAKUNILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">70</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1093251181684,60.2784809290786,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vuosaari</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0917704000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">704</SimpleData>
+<SimpleData name="Nimi">Vuosaari</SimpleData>
+<SimpleData name="NIMI_ISO">VUOSAARI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">108</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1614889213515,60.203099637374,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Länsimäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0927091000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">91</SimpleData>
+<SimpleData name="Nimi">Länsimäki</SimpleData>
+<SimpleData name="NIMI_ISO">LÄNSIMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">81</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1233285453005,60.2474117342256,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Länsisalmi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0927090000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">90</SimpleData>
+<SimpleData name="Nimi">Länsisalmi</SimpleData>
+<SimpleData name="NIMI_ISO">LÄNSISALMI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">80</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1441499980097,60.2530105159016,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ojanko</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0927092000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">92</SimpleData>
+<SimpleData name="Nimi">Ojanko</SimpleData>
+<SimpleData name="NIMI_ISO">OJANKO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">73</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1238169800065,60.2679015812601,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Östersundom</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0918801000</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="SUUR">8</SimpleData>
+<SimpleData name="TILA">801</SimpleData>
+<SimpleData name="Nimi">Östersundom</SimpleData>
+<SimpleData name="NIMI_ISO">ÖSTERSUNDOM</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">125</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1872255234561,60.2623854881067,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Tikkurila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924061000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">61</SimpleData>
+<SimpleData name="Nimi">Tikkurila</SimpleData>
+<SimpleData name="NIMI_ISO">TIKKURILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">63</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0378875053466,60.2920313279717,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Hiekkaharju</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924060000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">60</SimpleData>
+<SimpleData name="Nimi">Hiekkaharju</SimpleData>
+<SimpleData name="NIMI_ISO">HIEKKAHARJU</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">85</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0421812958068,60.3079868448715,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Jokiniemi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924062000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">62</SimpleData>
+<SimpleData name="Nimi">Jokiniemi</SimpleData>
+<SimpleData name="NIMI_ISO">JOKINIEMI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">84</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0594328947632,60.2999166997133,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Koivukylä</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0925070000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">70</SimpleData>
+<SimpleData name="Nimi">Koivukylä</SimpleData>
+<SimpleData name="NIMI_ISO">KOIVUKYLÄ</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">51</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0401555611766,60.3208784922653,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Havukoski</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0925074000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">74</SimpleData>
+<SimpleData name="Nimi">Havukoski</SimpleData>
+<SimpleData name="NIMI_ISO">HAVUKOSKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">52</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0700826208189,60.3148452806342,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Hakkila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0924066000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">4</SimpleData>
+<SimpleData name="TILA">66</SimpleData>
+<SimpleData name="Nimi">Hakkila</SimpleData>
+<SimpleData name="NIMI_ISO">HAKKILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">58</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0821718343196,60.2980193116167,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Rekola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0925073000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">73</SimpleData>
+<SimpleData name="Nimi">Rekola</SimpleData>
+<SimpleData name="NIMI_ISO">REKOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">48</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0781770153713,60.3287241298003,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Päiväkumpu</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0925075000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">75</SimpleData>
+<SimpleData name="Nimi">Päiväkumpu</SimpleData>
+<SimpleData name="NIMI_ISO">PÄIVÄKUMPU</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">86</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0993871466517,60.3204694347773,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Asola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0925072000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">5</SimpleData>
+<SimpleData name="TILA">72</SimpleData>
+<SimpleData name="Nimi">Asola</SimpleData>
+<SimpleData name="NIMI_ISO">ASOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">46</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0531343271437,60.3338786285452,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Korso</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0926081000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">81</SimpleData>
+<SimpleData name="Nimi">Korso</SimpleData>
+<SimpleData name="NIMI_ISO">KORSO</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">39</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0644614605541,60.3518388127709,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vierumäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0926087000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">87</SimpleData>
+<SimpleData name="Nimi">Vierumäki</SimpleData>
+<SimpleData name="NIMI_ISO">VIERUMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">36</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0418628769668,60.3600398796201,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vallinoja</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0926088000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">88</SimpleData>
+<SimpleData name="Nimi">Vallinoja</SimpleData>
+<SimpleData name="NIMI_ISO">VALLINOJA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">34</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0642224732448,60.3660357650582,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Matari</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0926080000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">80</SimpleData>
+<SimpleData name="Nimi">Matari</SimpleData>
+<SimpleData name="NIMI_ISO">MATARI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">43</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0832822492485,60.3393316505505,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Mikkola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0926082000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">82</SimpleData>
+<SimpleData name="Nimi">Mikkola</SimpleData>
+<SimpleData name="NIMI_ISO">MIKKOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">45</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1013125613437,60.3403102678325,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Metsola</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0926083000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">83</SimpleData>
+<SimpleData name="Nimi">Metsola</SimpleData>
+<SimpleData name="NIMI_ISO">METSOLA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">42</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0942434366069,60.3519277807738,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Leppäkorpi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0926084000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">84</SimpleData>
+<SimpleData name="Nimi">Leppäkorpi</SimpleData>
+<SimpleData name="NIMI_ISO">LEPPÄKORPI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">37</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.0979419838029,60.3594932608256,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Itä-Hakkila</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0927096000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">96</SimpleData>
+<SimpleData name="Nimi">Itä-Hakkila</SimpleData>
+<SimpleData name="NIMI_ISO">ITÄ-HAKKILA</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">64</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1106595297565,60.2908250365741,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kuninkaanmäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0927097000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">97</SimpleData>
+<SimpleData name="Nimi">Kuninkaanmäki</SimpleData>
+<SimpleData name="NIMI_ISO">KUNINKAANMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">87</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1186222798447,60.3127487102727,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Sotunki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0927098000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">7</SimpleData>
+<SimpleData name="TILA">98</SimpleData>
+<SimpleData name="Nimi">Sotunki</SimpleData>
+<SimpleData name="NIMI_ISO">SOTUNKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">56</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1581161267263,60.2945711974977,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Jokivarsi</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0926085000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">85</SimpleData>
+<SimpleData name="Nimi">Jokivarsi</SimpleData>
+<SimpleData name="NIMI_ISO">JOKIVARSI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">38</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1177515120134,60.3496706160053,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Nikinmäki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="KOKOTUN">0926086000</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="SUUR">6</SimpleData>
+<SimpleData name="TILA">86</SimpleData>
+<SimpleData name="Nimi">Nikinmäki</SimpleData>
+<SimpleData name="NIMI_ISO">NIKINMÄKI</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+<SimpleData name="ID1">40</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>25.1299806194293,60.3474627360399,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Document>
+</kml>

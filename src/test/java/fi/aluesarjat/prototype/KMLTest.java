@@ -27,6 +27,8 @@ public class KMLTest {
         System.out.println("@prefix geo: <http://www.w3.org/2003/01/geo/> .");
         System.out.println();
         
+        
+        
         Kml kml = Kml.unmarshal(getClass().getResourceAsStream("/PKS_suuralue_TESTI.kml"));
         if (kml.getFeature() instanceof Document){
             Document document = (Document)kml.getFeature();
