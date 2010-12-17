@@ -86,10 +86,13 @@ public class KMLRDFDump {
         String nimi = values.get("Nimi");
         String code = null;
         if (!StringUtils.isEmpty(pien)){
+            // pienialue
             code = XMLID.toXMLID(kunta + " " + pien + " " + nimi);
         }else if (!StringUtils.isEmpty(tila)){
+            // ?!?
             code = XMLID.toXMLID(kunta + " " + tila + " " + nimi);
         }else{
+            // suuralue
             code = XMLID.toXMLID(kunta + " " + suur + " " + nimi);
         }
         
