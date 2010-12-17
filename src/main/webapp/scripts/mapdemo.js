@@ -20,11 +20,11 @@ function addPolygon(binding) {
        labelContent: title,
        labelClass: "label",
      });
-     
-     google.maps.event.addListener(marker, 'click', function(){
+    
+    google.maps.event.addListener(marker, 'click', function(){
 		$("#info").html(area);
 	});
-		
+	     	
 	var polygon = new google.maps.Polygon({
 	   paths: coords,
 	   strokeColor: "#000000",
@@ -34,7 +34,7 @@ function addPolygon(binding) {
 	   fillOpacity: 0.35
 	 });
 	
-	polygon.setMap(map);
+	polygon.setMap(map);	
 }
 
 $(document).ready(function(){	
@@ -46,6 +46,10 @@ $(document).ready(function(){
     };
     
     map = new google.maps.Map(document.getElementById("map"), myOptions);
+        
+	google.maps.event.addListener(map, 'zoom_changed', function(){
+		// TODO : manipulate visibility of areas
+	});
         
     // get polygons via SPARQL    
 	var query = ["SELECT * WHERE { ?area <http://www.w3.org/2003/01/geo/polygon> ?polygon " ,

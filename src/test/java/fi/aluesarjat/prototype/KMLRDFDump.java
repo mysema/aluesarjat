@@ -28,6 +28,10 @@ import de.micromata.opengis.kml.v_2_2_0.SimpleData;
 
 public class KMLRDFDump {
     
+    // TODO : dump boundaries as well ?!?
+    
+    // TODO : dump area level ?!? (suur, pieni etc)
+    
     public static void main(String[] args) throws IOException{
         StringWriter writer = new StringWriter();
         
