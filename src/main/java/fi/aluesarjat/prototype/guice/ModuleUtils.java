@@ -14,10 +14,12 @@ public class ModuleUtils {
 
     public static RDFSource[] getSources(String baseURI) {
         return new RDFSource[]{
-                getAreaDescriptions(baseURI),
                 new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
+                getAreaDescriptions(baseURI),
                 new RDFSource("classpath:/area-hierarchy.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
-                new RDFSource("classpath:/area-coordinates.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
+                new RDFSource("classpath:/area-types.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
+                new RDFSource("classpath:/area-centers.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
+                new RDFSource("classpath:/area-polygons.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
                 new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#")};
     }
     
