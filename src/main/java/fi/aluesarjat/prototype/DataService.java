@@ -19,6 +19,7 @@ import com.google.inject.name.Named;
 import com.mysema.rdfbean.Namespaces;
 import com.mysema.rdfbean.model.DC;
 import com.mysema.rdfbean.model.DCTERMS;
+import com.mysema.rdfbean.model.GEO;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.UID;
@@ -67,6 +68,7 @@ public class DataService {
         logger.info("adding namespaces");
 
         Map<String,String> namespaces = new HashMap<String,String>(Namespaces.DEFAULT);
+        namespaces.put(GEO.NS, "geo");
         namespaces.put(SCV.NS, "scv");
         namespaces.put(META.NS, "meta");
         namespaces.put(DC.NS, "dc");

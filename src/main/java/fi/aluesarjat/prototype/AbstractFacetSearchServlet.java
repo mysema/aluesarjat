@@ -1,9 +1,6 @@
 package fi.aluesarjat.prototype;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.http.HttpServlet;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -20,7 +17,7 @@ import com.mysema.rdfbean.model.SPARQLQuery;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.scovo.SCV;
 
-public abstract class AbstractFacetSearchServlet extends HttpServlet {
+public abstract class AbstractFacetSearchServlet extends AbstractSPARQLServlet {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractFacetSearchServlet.class);
 
@@ -96,45 +93,6 @@ public abstract class AbstractFacetSearchServlet extends HttpServlet {
         dimensionType.accumulate("values", dimension);
     }
 
-    protected String getPrefixed(UID uri, Map<String, String> namespaces) {
-        String prefix = namespaces.get(uri.getNamespace());
-        if (prefix == null) {
-            throw new IllegalArgumentException("Unknown namespace: " + uri.getNamespace());
-        }
-        return prefix + ":" + uri.getLocalName();
-    }
 
-    protected Map<String,String> getNamespaces(RDFConnection conn) {
-        SPARQLQuery query = conn.createQuery(QueryLanguage.SPARQL,
-                "SELECT ?ns ?prefix\n" +
-                "WHERE {\n" +
-                "?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix .\n" +
-                "}"
-        );
-        // Order by descending string length of NS -> when applying namespaces to output longest match comes first
-        CloseableIterator<Map<String,NODE>> iter = query.getTuples();
-        Map<String,String> namespaces = new HashMap<String, String>(32);
-        try {
-            while (iter.hasNext()) {
-                Map<String, NODE> entry = iter.next();
-                namespaces.put(((UID) entry.get("ns")).getId(), ((LIT) entry.get("prefix")).getValue());
-            }
-        } finally {
-            iter.close();
-        }
-        return namespaces;
-    }
-
-    protected StringBuilder getSPARQLNamespaces(Map<String, String> namespaces) {
-        StringBuilder sparqlNamespaces = new StringBuilder();
-        for (Map.Entry<String, String> entry : namespaces.entrySet()) {
-            sparqlNamespaces.append("PREFIX ");
-            sparqlNamespaces.append(entry.getValue());
-            sparqlNamespaces.append(": <");
-            sparqlNamespaces.append(entry.getKey());
-            sparqlNamespaces.append(">\n");
-        }
-        return sparqlNamespaces;
-    }
 
 }

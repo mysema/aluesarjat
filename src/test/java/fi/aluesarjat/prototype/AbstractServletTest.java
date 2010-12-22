@@ -16,7 +16,7 @@ import com.mysema.stat.scovo.NamespaceHandler;
 
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
-public abstract class AbstractFacetSearchServletTest {
+public abstract class AbstractServletTest {
 
     protected static MemoryRepository repository;
 

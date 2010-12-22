@@ -14,7 +14,7 @@ import net.sf.json.JSONObject;
 
 import org.junit.Test;
 
-public class SearchServletTest extends AbstractFacetSearchServletTest{
+public class SearchServletTest extends AbstractServletTest{
 
     private SearchServlet servlet;
 

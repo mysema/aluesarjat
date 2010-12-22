@@ -1,17 +1,18 @@
 var map = null;
 
 function addPolygon(binding) {
-	var area = binding["area"].value;
-	var title = binding["title"].value;
+	var area = binding["area"];
+	var title = binding["title"];
+	var centerPoint = binding["center"].split(",");
 	
 	var coords = new Array();
-	var points = binding["polygon"].value.split(" ");
+	var points = binding["polygon"].split(" ");
 	for (var i = 0; i < points.length; i++){
 		var point = points[i].split(",");
 		coords.push(new google.maps.LatLng(parseFloat(point[0]), parseFloat(point[1])));
 	}
 	
-	var centerPoint = binding["center"].value.split(",");
+	 /*
 	var marker = new MarkerWithLabel({
        position: new google.maps.LatLng(parseFloat(centerPoint[0]), parseFloat(centerPoint[1])),
        map: map,
@@ -20,6 +21,14 @@ function addPolygon(binding) {
        labelContent: title,
        labelClass: "label",
      });
+     */
+    
+     var marker = new google.maps.Marker({
+       position: new google.maps.LatLng(parseFloat(centerPoint[0]), parseFloat(centerPoint[1])),
+       map: map,
+       title: title,
+     });
+     
     
     google.maps.event.addListener(marker, 'click', function(){
 		$("#info").html(area);
@@ -31,7 +40,7 @@ function addPolygon(binding) {
 	   strokeOpacity: 0.8,
 	   strokeWeight: 1,
 	   fillColor: "#FFC0C0",
-	   fillOpacity: 0.35
+	   fillOpacity: 0.1
 	 });
 	
 	polygon.setMap(map);	
@@ -51,25 +60,13 @@ $(document).ready(function(){
 		// TODO : manipulate visibility of areas
 	});
         
-    // get polygons via SPARQL    
-	var query = ["SELECT * WHERE { ?area <http://www.w3.org/2003/01/geo/polygon> ?polygon " ,
-				" ; <http://www.w3.org/2003/01/geo/where> ?center ",
-				" ; <http://purl.org/dc/elements/1.1/title> ?title }"].join("");
 	$.ajax({
-		url: "sparql", 
-		data: { "query": query}, 
+		url: "areas", 
 		datatype: "json", 
-		beforeSend : function (xhr) {
-    		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-		},
-		error: function(xhr, textStatus, errorThrown){
-			$("#errors").html(xhr.responseText);
-		},
 		success: function(data){
-			var bindings = data.results.bindings;
-			var length = bindings.length;
+			var length = data.length;
 			for (var i = 0; i < length; i++){
-				addPolygon(bindings[i]);				
+				addPolygon(data[i]);
 			}			
 		}
 	});

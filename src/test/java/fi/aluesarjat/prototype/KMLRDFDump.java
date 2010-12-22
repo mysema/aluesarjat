@@ -32,14 +32,14 @@ public class KMLRDFDump {
     // TODO : dump boundaries as well ?!?
     
     public static void main(String[] args) throws IOException{
-        StringWriter types = new StringWriter();
+        StringWriter levels = new StringWriter();
         StringWriter centers = new StringWriter();
         StringWriter polygons = new StringWriter();
 
-        types.append("@prefix rdf: <" + RDF.NS + "> . \n");
-        types.append("@prefix dimension: <http://localhost:8080/rdf/dimensions/> .\n");
-        types.append("@prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .\n");
-        types.append("\n");
+        levels.append("@prefix rdf: <" + RDF.NS + "> . \n");
+        levels.append("@prefix dimension: <http://localhost:8080/rdf/dimensions/> .\n");
+        levels.append("@prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .\n");
+        levels.append("\n");
         
         centers.append("@prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .\n");
         centers.append("@prefix geo: <http://www.w3.org/2003/01/geo/> .\n");
@@ -64,7 +64,7 @@ public class KMLRDFDump {
                             Folder folder = (Folder)documentFeature;
                             for (Feature folderFeature : folder.getFeature()){
                                 if (folderFeature instanceof Placemark){
-                                    handlePlacemark(centers, polygons, types, (Placemark)folderFeature);                            
+                                    handlePlacemark(centers, polygons, levels, (Placemark)folderFeature);                            
                                 }
                             }
                         }
@@ -76,9 +76,9 @@ public class KMLRDFDump {
                 
         }   
         
-        // types
-        File target = new File("src/main/resources/area-types.ttl");
-        FileUtils.writeStringToFile(target, types.toString(), "UTF-8");
+        // levels
+        File target = new File("src/main/resources/area-levels.ttl");
+        FileUtils.writeStringToFile(target, levels.toString(), "UTF-8");
 
         // centers
         target = new File("src/main/resources/area-centers.ttl");
@@ -90,7 +90,7 @@ public class KMLRDFDump {
     }
 
     
-    private static void handlePlacemark(Writer centers, Writer polygons, Writer types, Placemark placemark) throws IOException{        
+    private static void handlePlacemark(Writer centers, Writer polygons, Writer levels, Placemark placemark) throws IOException{        
         Map<String,String> values = new HashMap<String,String>();        
         for (SchemaData schemaData : placemark.getExtendedData().getSchemaData()){
             for (SimpleData simpleData : schemaData.getSimpleData()){
@@ -104,19 +104,19 @@ public class KMLRDFDump {
         String pien = values.get("PIEN");
         String nimi = values.get("Nimi");
         String code = null;
-        String type = null;
+        String level = null;
         if (!StringUtils.isEmpty(pien)){
             // pienialue
             code = XMLID.toXMLID(kunta + " " + pien + " " + nimi);
-            type = "dimension:PienAlue";
+            level = "1";
         }else if (!StringUtils.isEmpty(tila)){
             // ?!?
             code = XMLID.toXMLID(kunta + " " + tila + " " + nimi);
-            type = "dimension:TilastAlue";
+            level = "2";
         }else{
             // suuralue
             code = XMLID.toXMLID(kunta + " " + suur + " " + nimi);
-            type = "dimension:SuurAlue";
+            level = "3";
         }
         
         // polygon
@@ -135,7 +135,7 @@ public class KMLRDFDump {
         // center point
         }else if (placemark.getGeometry() instanceof Point){
             Coordinate coordinate = ((Point)placemark.getGeometry()).getCoordinates().get(0);
-            types.append("alue:" + code + " rdf:type " + type + " . \n");
+            levels.append("alue:" + code + " alue:level " + level + " . \n");
             centers.append("alue:"+code+" geo:where \""+coordinate.getLatitude()+","+coordinate.getLongitude()+ "\" . \n");
             
         }else{

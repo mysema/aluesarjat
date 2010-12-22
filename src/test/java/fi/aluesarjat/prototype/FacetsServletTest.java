@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 
 import org.junit.Test;
 
-public class FacetsServletTest extends AbstractFacetSearchServletTest{
+public class FacetsServletTest extends AbstractServletTest{
 
     private FacetsServlet servlet;
 

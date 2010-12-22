@@ -11,6 +11,7 @@ import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.sparql.SPARQLServlet;
 import com.mysema.stat.scovo.NamespaceHandler;
 
+import fi.aluesarjat.prototype.AreasServlet;
 import fi.aluesarjat.prototype.ContextAccessServlet;
 import fi.aluesarjat.prototype.DataService;
 import fi.aluesarjat.prototype.FacetsServlet;
@@ -36,6 +37,7 @@ public class CustomServletModule extends ServletModule{
         install(new Jsr250Module());
         bind(DataService.class).asEagerSingleton();
 
+        serve("/areas").with(AreasServlet.class);
         serve("/sparql").with(SPARQLServlet.class);
         serve("/search").with(SearchServlet.class);
         serve("/facets").with(FacetsServlet.class);
@@ -50,6 +52,12 @@ public class CustomServletModule extends ServletModule{
         return new NamespaceHandler(repository);
     }
 
+    @Provides
+    @Singleton
+    public AreasServlet createAreasServlet(Repository repository){
+        return new AreasServlet(repository);
+    }
+    
     @Provides
     @Singleton
     public SPARQLServlet createSPARQLServlet(Repository repository){
