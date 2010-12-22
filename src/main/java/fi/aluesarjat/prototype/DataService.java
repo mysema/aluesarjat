@@ -63,6 +63,7 @@ public class DataService {
         this.mode = Mode.valueOf(mode);
     }
 
+    @SuppressWarnings("unchecked")
     @PostConstruct
     public void initialize() throws IOException{
         logger.info("adding namespaces");
