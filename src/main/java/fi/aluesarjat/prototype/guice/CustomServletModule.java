@@ -54,8 +54,8 @@ public class CustomServletModule extends ServletModule{
 
     @Provides
     @Singleton
-    public AreasServlet createAreasServlet(Repository repository){
-        return new AreasServlet(repository);
+    public AreasServlet createAreasServlet(){
+        return new AreasServlet();
     }
     
     @Provides

@@ -1,50 +1,6 @@
 var map = null;
-
-function addPolygon(binding) {
-	var area = binding["area"];
-	var title = binding["title"];
-	var centerPoint = binding["center"].split(",");
-	
-	var coords = new Array();
-	var points = binding["polygon"].split(" ");
-	for (var i = 0; i < points.length; i++){
-		var point = points[i].split(",");
-		coords.push(new google.maps.LatLng(parseFloat(point[0]), parseFloat(point[1])));
-	}
-	
-	 /*
-	var marker = new MarkerWithLabel({
-       position: new google.maps.LatLng(parseFloat(centerPoint[0]), parseFloat(centerPoint[1])),
-       map: map,
-       icon: title,
-       labelAnchor: new google.maps.Point(22, 0),       
-       labelContent: title,
-       labelClass: "label",
-     });
-     */
-    
-     var marker = new google.maps.Marker({
-       position: new google.maps.LatLng(parseFloat(centerPoint[0]), parseFloat(centerPoint[1])),
-       map: map,
-       title: title,
-     });
-     
-    
-    google.maps.event.addListener(marker, 'click', function(){
-		$("#info").html(area);
-	});
-	     	
-	var polygon = new google.maps.Polygon({
-	   paths: coords,
-	   strokeColor: "#000000",
-	   strokeOpacity: 0.8,
-	   strokeWeight: 1,
-	   fillColor: "#FFC0C0",
-	   fillOpacity: 0.1
-	 });
-	
-	polygon.setMap(map);	
-}
+var marker = null;
+var overfeature = null;
 
 $(document).ready(function(){	
     var latlng = new google.maps.LatLng(60.2082651196077, 24.797472695835);
@@ -59,15 +15,55 @@ $(document).ready(function(){
 	google.maps.event.addListener(map, 'zoom_changed', function(){
 		// TODO : manipulate visibility of areas
 	});
-        
+	
 	$.ajax({
 		url: "areas", 
 		datatype: "json", 
-		success: function(data){
-			var length = data.length;
+		success: function(geo){
+			var length = geo.features.length;
 			for (var i = 0; i < length; i++){
-				addPolygon(data[i]);
-			}			
+				var feature = geo.features[i];
+				feature.strokeColor = "#000000";
+				feature.strokeOpacity = 0.8;
+				feature.strokeWeight = 1;
+				feature.strokeWidth = 1;
+				feature.fillColor = "#FFC0C0";
+				feature.fillOpacity = 0.1;
+			}		
+			
+			var gonzo = new PolyGonzo.PgOverlay({
+				map: map,
+				geo: geo,
+				events: {
+				mousemove: function( event, where ) {
+						var feature = where && where.feature;
+						if( feature ) {
+							if (feature != overfeature){
+								overfeature = feature
+								var centroid = feature.properties.center;
+								var latlng = new google.maps.LatLng( centroid[1], centroid[0] );
+								if (marker != null){
+									marker.setMap(null);
+								}
+								marker = new google.maps.Marker( { 
+									position: latlng, 
+									map: map, 
+									title: feature.properties.name } );
+							}							
+						}else{
+							marker.setMap(null);
+						}
+					},
+					
+					click: function( event, where ) {
+						var feature = where && where.feature;
+						if (feature){
+							$("#info").html(feature.properties.name);
+						}
+					}				
+				}
+			});
+			gonzo.setMap(map);
 		}
 	});
 });

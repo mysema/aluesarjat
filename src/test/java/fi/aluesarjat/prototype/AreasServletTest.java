@@ -15,7 +15,7 @@ public class AreasServletTest extends AbstractServletTest{
     @Override
     public void setUp(){
         super.setUp();
-        servlet = new AreasServlet(repository);
+        servlet = new AreasServlet();
     }
 
     @Test
