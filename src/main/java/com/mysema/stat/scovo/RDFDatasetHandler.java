@@ -268,7 +268,7 @@ public class RDFDatasetHandler implements DatasetHandler {
                 if (value.startsWith("\"")) {
                     addProperty(RDF.value, value.substring(1, value.length() - 1), properties, md);
                 } else {
-                    addProperty(RDF.value, value, properties, md);
+                    addDecimal(RDF.value, value, properties, md);
                 }
                 addProperty(SCV.dataset, datasetContext, properties, md);
 
@@ -292,6 +292,14 @@ public class RDFDatasetHandler implements DatasetHandler {
             }
 
         }
+    }
+    
+    private void addDecimal(UID predicate, String object, List<NODE[]> properties, MessageDigest md) throws UnsupportedEncodingException {
+        LIT value = DECIMAL_CACHE.get(object);
+        if (value == null){
+            value = new LIT(object, XSD.decimalType);
+        }
+        addProperty(predicate, value, properties, md);
     }
 
     private void addProperty(UID predicate, String object, List<NODE[]> properties, MessageDigest md) throws UnsupportedEncodingException {

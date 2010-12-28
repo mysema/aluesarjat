@@ -14,6 +14,7 @@ import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDF;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.SPARQLQuery;
+import com.mysema.rdfbean.model.XSD;
 import com.mysema.rdfbean.sesame.SesameRepository;
 import com.mysema.stat.META;
 import com.mysema.stat.pcaxis.PCAxisParser;
@@ -60,6 +61,10 @@ public abstract class AbstractDatasetHandlerTest {
 
             // SPARQL queries
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "select ?ns ?prefix  where { ?ns <"+META.nsPrefix.getId()+"> ?prefix }");
+            assertFalse(IteratorAdapter.asList(query.getTuples()).isEmpty());
+            
+            String prefixes = "PREFIX rdf: <" +RDF.NS + ">\nPREFIX xsd: <" +XSD.NS + ">\n"; 
+            query = connection.createQuery(QueryLanguage.SPARQL, prefixes + "select * where { ?item rdf:value ?value . FILTER( datatype(?value) = xsd:decimal ) . }");
             assertFalse(IteratorAdapter.asList(query.getTuples()).isEmpty());
         }finally{
             connection.close();

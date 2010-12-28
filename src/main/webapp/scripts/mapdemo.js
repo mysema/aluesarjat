@@ -16,6 +16,8 @@ $(document).ready(function(){
 		// TODO : manipulate visibility of areas
 	});
 	
+	// TODO : multiple overlays for different zoom layers
+	
 	$.ajax({
 		url: "areas", 
 		datatype: "json", 
@@ -24,7 +26,7 @@ $(document).ready(function(){
 			for (var i = 0; i < length; i++){
 				var feature = geo.features[i];
 				feature.strokeColor = "#000000";
-				feature.strokeOpacity = 0.8;
+				feature.strokeOpacity = 0.5;
 				feature.strokeWeight = 1;
 				feature.strokeWidth = 1;
 				feature.fillColor = "#FFC0C0";

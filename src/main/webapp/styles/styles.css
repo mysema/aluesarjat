@@ -155,3 +155,14 @@ input.quicksearch {
 	font-family: "sans";
 	margin-left: -22px;
 }
+
+.table {
+	display: none;
+	margin: 0.5em;
+}
+
+.table td, .table th {
+	border: 1px solid #8B8378;
+    padding:0.2ex 0.5em;    
+    text-align: left;
+}
