@@ -77,11 +77,11 @@ public class KMLRDFDump {
         }   
         
         // levels
-        File target = new File("src/main/resources/area-levels.ttl");
-        FileUtils.writeStringToFile(target, levels.toString(), "UTF-8");
+//        File target = new File("src/main/resources/area-levels.ttl");
+//        FileUtils.writeStringToFile(target, levels.toString(), "UTF-8");
 
         // centers
-        target = new File("src/main/resources/area-centers.ttl");
+        File target = new File("src/main/resources/area-centers.ttl");
         FileUtils.writeStringToFile(target, centers.toString(), "UTF-8");
         
         // coordinates
