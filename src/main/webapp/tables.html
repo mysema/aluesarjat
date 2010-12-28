@@ -27,8 +27,8 @@ SELECT ?ik ?v sum(?val)
 WHERE { 
  ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi .
  FILTER (
-  ?v = vuosi:_2000 OR ?v = vuosi:_2008 OR 
-  ?v = vuosi:_2009 OR ?v = vuosi:_2010
+  ?v = vuosi:_2000 || ?v = vuosi:_2008 || 
+  ?v = vuosi:_2009 || ?v = vuosi:_2010
  )
  ?i scv:dimension yksikkö:Henkilöä .
  ?i scv:dimension ?ik . ?ik rdf:type dimension:Ikäryhmä .
@@ -47,8 +47,8 @@ WHERE {
  ?i scv:dataset dataset:A03S_HKI_Vakiluku_aidinkieli .
  ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi .
  FILTER (
-  ?v = vuosi:_2000 OR ?v = vuosi:_2008 OR 
-  ?v = vuosi:_2009 OR ?v = vuosi:_2010
+  ?v = vuosi:_2000 || ?v = vuosi:_2008 || 
+  ?v = vuosi:_2009 || ?v = vuosi:_2010
  )
  ?i scv:dimension yksikkö:Henkilö .
  ?i scv:dimension ?k . ?k rdf:type dimension:Äidinkieli .

@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,11 +35,15 @@ public class KMLGeoJSONDump {
     
     private final Map<String,String> names = new HashMap<String,String>();
     
-    private final Map<String,Object> levels = new HashMap<String,Object>();
+    private final Set<String> level1 = new HashSet<String>();
+    
+    private final Set<String> level2 = new HashSet<String>();
+    
+    private final Set<String> level3 = new HashSet<String>();
     
     private final Map<String,Coordinate> centers = new HashMap<String,Coordinate>();
     
-    private final Map<String,Object> polygons = new HashMap<String,Object>();
+    private final Map<String,List<Coordinate>> polygons = new HashMap<String,List<Coordinate>>();
     
     public static void main(String[] args) throws IOException{
         new KMLGeoJSONDump().handle();                
@@ -70,36 +77,43 @@ public class KMLGeoJSONDump {
                 
         }   
         
-        JSONObject root = new JSONObject();
-        root.put("type","FeatureCollection");        
-        JSONArray features = new JSONArray();
-        for (Map.Entry<String,Object> entry : polygons.entrySet()){
-            JSONObject feature = new JSONObject();
-            feature.put("type", "Feature");
-            JSONObject geometry = new JSONObject();
-            geometry.put("type","MultiPolygon");
-            JSONArray coordinates = new JSONArray();
-            List<Coordinate> value = (List<Coordinate>) entry.getValue();
-            for (Coordinate coordinate : value){
-                coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
-            }
-            geometry.put("coordinates", toJSONArray(toJSONArray(coordinates))); // TODO : get rid of wrapping
-            feature.put("geometry", geometry);
-            
-            JSONObject properties = new JSONObject();
-            properties.put("code", entry.getKey());
-            
-            Coordinate centerPoint = centers.get(entry.getKey());
-            properties.put("center", toJSONArray(centerPoint.getLongitude(), centerPoint.getLatitude()));
-            properties.put("name", names.get(entry.getKey()));
-            feature.put("properties", properties);
-            
-            features.add(feature);                        
-        }        
-        root.put("features",features);
-        String str = root.toString();
-        File out = new File("src/main/resources/areas.json");
-        FileUtils.writeStringToFile(out, str, "UTF-8");
+        int counter = 1;
+        for (Set<String> codes : Arrays.asList(level1, level2, level3)){
+            JSONObject root = new JSONObject();
+            root.put("type","FeatureCollection");        
+            JSONArray features = new JSONArray();
+            for (String code : codes){
+                JSONObject feature = new JSONObject();
+                feature.put("type", "Feature");
+                JSONObject geometry = new JSONObject();
+                geometry.put("type","MultiPolygon");
+                JSONArray coordinates = new JSONArray();
+                List<Coordinate> value = polygons.get(code);
+                if (value == null){
+                    continue;
+                }
+                for (Coordinate coordinate : value){
+                    coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
+                }
+                geometry.put("coordinates", toJSONArray(toJSONArray(coordinates))); // TODO : get rid of wrapping
+                feature.put("geometry", geometry);
+                
+                JSONObject properties = new JSONObject();
+                properties.put("code", code);
+                
+                Coordinate centerPoint = centers.get(code);
+                properties.put("center", toJSONArray(centerPoint.getLongitude(), centerPoint.getLatitude()));
+                properties.put("name", names.get(code));
+                feature.put("properties", properties);
+                
+                features.add(feature);                        
+            }        
+            root.put("features",features);
+            String str = root.toString();
+            File out = new File("src/main/resources/area"+(counter++)+".json");
+            FileUtils.writeStringToFile(out, str, "UTF-8");
+        }
+        
     }
 
     private void handlePlacemark(Placemark placemark) throws IOException{        
@@ -116,32 +130,30 @@ public class KMLGeoJSONDump {
         String pien = values.get("PIEN");
         String nimi = values.get("Nimi");
         String code = null;
-        String level = null;
         if (!StringUtils.isEmpty(pien)){
             // pienialue
             code = XMLID.toXMLID(kunta + " " + pien + " " + nimi);
-            level = "1";
+            level1.add(code);
         }else if (!StringUtils.isEmpty(tila)){
             // ?!?
             code = XMLID.toXMLID(kunta + " " + tila + " " + nimi);
-            level = "2";
+            level2.add(code);
         }else{
             // suuralue
             code = XMLID.toXMLID(kunta + " " + suur + " " + nimi);
-            level = "3";
-        }
+            level3.add(code);
+        }        
         names.put(code, nimi);
         
         // polygon
         if (placemark.getGeometry() instanceof Polygon){                    
             Polygon polygon = (Polygon)placemark.getGeometry();
-            LinearRing ring = polygon.getOuterBoundaryIs().getLinearRing();
+            LinearRing ring = polygon.getOuterBoundaryIs().getLinearRing();            
             polygons.put(code, ring.getCoordinates());
             
         // center point
         }else if (placemark.getGeometry() instanceof Point){
             Coordinate coordinate = ((Point)placemark.getGeometry()).getCoordinates().get(0);
-            levels.put(code, level);
             centers.put(code, coordinate);
             
         }else{

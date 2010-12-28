@@ -154,6 +154,10 @@ input.quicksearch {
 	font-size: 80%;
 	font-family: "sans";
 	margin-left: -22px;
+	display:block;
+	border: solid 1px black;
+	padding: 1px;
+	background: white;
 }
 
 .table {
