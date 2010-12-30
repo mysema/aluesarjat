@@ -1,7 +1,13 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dimension: <http://localhost:8080/rdf/dimensions> .
 @prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+alue:Pääakaupunkiseutu rdf:type dimension:Alue .
+alue:_091_Helsinki skos:broader alue:Pääakaupunkiseutu .
+alue:_092_Vantaa skos:broader alue:Pääakaupunkiseutu .
+alue:_049_Espoo skos:broader alue:Pääakaupunkiseutu .
 
 alue:_091_1_Eteläinen_suurpiiri skos:broader alue:_091_Helsinki .
 alue:_091_101_Vironniemen_peruspiiri skos:broader alue:_091_1_Eteläinen_suurpiiri .

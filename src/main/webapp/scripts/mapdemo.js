@@ -4,6 +4,7 @@ var marker = null;
 var gonzo1, gonzo2, gongo3;
 
 var searchGonzo; // TODO
+var comments = {};
 
 $(document).ready(function(){	
     var latlng = new google.maps.LatLng(60.1662735988013, 24.93207843548);
@@ -33,6 +34,19 @@ $(document).ready(function(){
 			gonzo3.setMap(null);
 			$("#info").html("1 "+ zoom);
 		}
+	});
+	
+	// get DBpedia comments
+	initNamespaces("sparql", function(){
+		var query = prefixes + "SELECT ?area ?comment WHERE { ?area owl:sameAs ?area2 . ?area2 rdfs:comment ?comment }";
+		querySparql("sparql", query, function(data){
+			var bindings = data.results.bindings;
+			for (var i = 0; i < bindings.length; i++){
+				var binding = bindings[i];
+				var area = getReadableURI(binding["area"].value); 
+				comments[area.substring(area.indexOf(":")+1)] = binding["comment"].value;
+			}
+		});
 	});
 	
 	$.ajax({
@@ -112,7 +126,12 @@ function mouseOverFeature(event, where) {
 function clickOnFeature(event, where) {
 	var feature = where && where.feature;
 	if (feature){
-		$("#info").html(feature.properties.name);
+		var content = [];
+		content.push("<h4>"+feature.properties.name+"</h4>");
+		if (comments[feature.properties.code]){
+			content.push("<p>"+comments[feature.properties.code]+"</p>");
+		}
+		$("#info").html(content.join(""));
 	}
 	
 }

@@ -17,10 +17,11 @@ public class ModuleUtils {
                 new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
                 getAreaDescriptions(baseURI),
                 new RDFSource("classpath:/area-hierarchy.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
-                new RDFSource("classpath:/area-levels.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
                 new RDFSource("classpath:/area-centers.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
                 new RDFSource("classpath:/area-polygons.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
-                new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#")};
+                new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#"),
+                new RDFSource("classpath:/ext/dbpedia-comments.ttl", Format.TURTLE, "http://dbpedia.org"),
+                new RDFSource("classpath:/ext/dbpedia-links.ttl", Format.TURTLE, "http://dbpedia.org")};
     }
     
     private static RDFSource getAreaDescriptions(String baseURI){

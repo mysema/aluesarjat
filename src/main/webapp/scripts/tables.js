@@ -1,60 +1,6 @@
-String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)}
-
-var prefixes = null;
-var namespaces = {};
-
 $(document).ready(function(){	
-	// get namespaces from SPARQL endpoint
-	var query = "SELECT ?ns ?prefix WHERE { ?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix }";
-	sparqlQuery(query, function(data){
-		var defaultNamespaces = [];
-		var bindings = data.results.bindings;
-		for (var i = 0; i < bindings.length; i++){
-			var binding = bindings[i];
-			namespaces[binding["prefix"].value] = binding["ns"].value;
-			defaultNamespaces.push("PREFIX ", binding["prefix"].value, ": <", binding["ns"].value, ">\n");
-		}			
-		prefixes = defaultNamespaces.join("");			
-		init();
-	});
-		
+	initNamespaces("sparql", init);		
 });
-
-function getReadableURI(uri) {
-	if (uri == "" || uri == "&nbsp;") {
-		return "";
-	} else {
-		var prefix = null;
-		for (var key in namespaces){
-			if (uri.startsWith(namespaces[key]) && uri.length > namespaces[key].length) {
-				if (prefix == null || namespaces[prefix].length < namespaces[key].length) {
-					prefix = key;
-				}  
-			}
-		}
-		if (prefix != null) {
-			return prefix + ":" + uri.substring(namespaces[prefix].length);
-		} else {
-			return "&lt;" + uri + ">";
-		}
-	}
-}
-
-
-function sparqlQuery(query, success){
-	$.ajax({
-		url: "sparql", 
-		data: { "query": query}, 
-		datatype: "json", 
-		beforeSend : function (xhr) {
-    		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-		},
-		error: function(xhr, textStatus, errorThrown){
-			$("#results").html(xhr.responseText);
-		},
-		success: success
-	});
-}
 
 
 function init() {
@@ -62,7 +8,7 @@ function init() {
 		var element = $(this);
 		var content = element.html();
 		if (content.length > 0){
-			sparqlQuery(prefixes + content, function(data){
+			querySparql("sparql", prefixes + content, function(data){
 				var vars = data.head.vars;
 				var bindings = data.results.bindings;
 				
@@ -90,8 +36,7 @@ function init() {
 				}	
 				table.push("</table>");
 				element.html(table.join(""));
-				element.show();
-				
+				element.show();				
 			});
 		}	
 	});

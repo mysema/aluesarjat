@@ -150,6 +150,10 @@ input.quicksearch {
 	border: 1px solid black;
 }
 
+#info h4 {
+	margin: 0.2em;
+}
+
 .label {
 	font-size: 80%;
 	font-family: "sans";
