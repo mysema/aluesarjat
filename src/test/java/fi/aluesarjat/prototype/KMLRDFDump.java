@@ -131,6 +131,7 @@ public class KMLRDFDump {
         return this;
     }
     
+    @SuppressWarnings("unchecked")
     private void dumpGEOJSON() throws IOException{
         int counter = 1;
         for (Set<String> codes : Arrays.asList(level1, level2, level3)){
