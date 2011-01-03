@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.rdfbean.model.DC;
+import com.mysema.rdfbean.model.Operation;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.sesame.MemoryRepository;
@@ -35,13 +36,14 @@ public class DumpData {
             parser.parse("B02S_ESP_Vakiluku1975", getResourceAsStream("/data/B02S_ESP_Vakiluku1975.px"));
             parser.parse("C02S_VAN_Vakiluku1971", getResourceAsStream("/data/C02S_VAN_Vakiluku1971.px"));
             
-            RDFConnection connection = repository.openConnection();
-            try{
-                Set<STMT> stmts = new HashSet<STMT>(IteratorAdapter.asList(connection.findStatements(null, DC.title, null, null, false)));            
-                RDFUtil.dump(stmts, new File("src/test/resources/area-titles.ttl"));    
-            }finally{
-                connection.close();    
-            }    
+            repository.execute(new Operation<Void>(){
+                @Override
+                public Void execute(RDFConnection connection) throws IOException {
+                    Set<STMT> stmts = new HashSet<STMT>(IteratorAdapter.asList(connection.findStatements(null, DC.title, null, null, false)));            
+                    RDFUtil.dump(stmts, new File("src/test/resources/area-titles.ttl"));
+                    return null;
+                }                
+            });
             
         }finally{            
             repository.close();

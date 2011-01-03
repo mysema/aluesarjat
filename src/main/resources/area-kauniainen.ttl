@@ -4,7 +4,7 @@
 @prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
-alue:_235_1_Kauniainen rdf:type dimension:Alue ; skos:broader alue:Pääakaupunkiseutu ; dc:title "Kauniainen 1" .
+alue:_235_1_Kauniainen rdf:type dimension:Alue ; skos:broader alue:Pääakaupunkiseutu ; dc:title "Kauniainen" .
 alue:_235_01 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 01" .
 alue:_235_02 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 02" .
 alue:_235_03 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 03" .

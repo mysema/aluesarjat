@@ -22,6 +22,7 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.rdfbean.model.DC;
 import com.mysema.rdfbean.model.GEO;
 import com.mysema.rdfbean.model.LIT;
+import com.mysema.rdfbean.model.Operation;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
@@ -76,28 +77,28 @@ public class KMLRDFDump {
         repository.load(Format.TURTLE, getClass().getResourceAsStream("/area-kauniainen.ttl"), null, false);
         
         try{
-            RDFConnection conn = repository.openConnection();
-            List<STMT> stmts = null;
-            try{
-                stmts = IteratorAdapter.asList(conn.findStatements(null, null, null, null, false));
-                if (stmts.isEmpty()){
-                    throw new IllegalStateException("Got no areas");
-                }
-                for (STMT stmt : stmts){
-                    if (stmt.getPredicate().equals(DC.identifier)){
-                        areas.put(stmt.getObject().getValue(), stmt.getSubject().asURI());                        
-                    }else{
-                        areaTitles.put(stmt.getSubject().asURI().ln(), stmt.getObject().getValue());
+            repository.execute(new Operation<Void>(){
+                @Override
+                public Void execute(RDFConnection connection) throws IOException {
+                    List<STMT> stmts = IteratorAdapter.asList(connection.findStatements(null, null, null, null, false));
+                    if (stmts.isEmpty()){
+                        throw new IllegalStateException("Got no areas");
                     }
-                    
+                    for (STMT stmt : stmts){
+                        if (stmt.getPredicate().equals(DC.identifier)){
+                            areas.put(stmt.getObject().getValue(), stmt.getSubject().asURI());                        
+                        }else{
+                            areaTitles.put(stmt.getSubject().asURI().ln(), stmt.getObject().getValue());
+                        }                        
+                    }
+                    return null;
                 }
-            }finally{
-                conn.close();
-            }    
+                
+            });
+            
         }finally{
             repository.close();
-        }
-        
+        }        
         return this;
     }
     

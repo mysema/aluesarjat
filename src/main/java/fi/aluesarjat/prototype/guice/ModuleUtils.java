@@ -34,7 +34,7 @@ public class ModuleUtils {
     
     private static RDFSource transform(RDFSource source, String baseURI) {
         try {
-            String encoding = source.equals(Format.NTRIPLES) ? "US-ASCII" : "UTF-8";
+            String encoding = source.getFormat().equals(Format.NTRIPLES) ? "US-ASCII" : "UTF-8";
             String str = IOUtils.toString(source.openStream(), encoding);
             String normalized = str.replace("http://localhost:8080/rdf/", baseURI);
             return new RDFSource(new ByteArrayInputStream(normalized.getBytes(encoding)), source.getFormat(), source.getContext());

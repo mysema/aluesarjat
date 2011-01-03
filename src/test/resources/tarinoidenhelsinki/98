@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"  ?>
+<rdf:RDF
+  xmlns:geonames="http://www.geonames.org/ontology#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#" 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dctype="http://purl.org/dc/dcmitype/">
+  
+   <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/place/98/">
+     <dcterms:modified>2010-09-17T10:26:19+0200</dcterms:modified>   </rdf:Description>
+
+
+   <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/98/">
+   <dcterms:title>Kurkimäki</dcterms:title>
+   <rdfs:label>Kurkimäki</rdfs:label>
+      <owl:sameAs rdf:resource="http://sws.geonames.org/847515/" />
+      </dcterms:Location>
+
+    <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/5129/"><dcterms:modified>2010-09-17T10:26:19+0200</dcterms:modified><dcterms:source rdf:resource="http://www.helmet.fi/record=b1743607~S9*fin" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/5129/"><dcterms:title >Albumit auki Kontulaan</dcterms:title><rdfs:label >Albumit auki Kontulaan</rdfs:label><dcterms:author>Markkanen, Airi</dcterms:author><dcterms:type xml:lang="fi">tietokirjallisuus</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/98/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/99/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/100/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/7451/" /></dctype:Text><rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/5911/"><dcterms:modified>2010-09-17T10:09:01+0200</dcterms:modified><dcterms:source rdf:resource="http://igs.kirjastot.fi/fi-FI/iGS/kysymykset/kysymys.aspx?ID=796F73C6-C8A5-4802-8458-86ACD19E2DF3" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/5911/"><dcterms:title >Albumit auki</dcterms:title><rdfs:label >Albumit auki</rdfs:label><dcterms:alternative>Mistä löydän Kontulan valokuva-albumin, jota esiteltiin Lipposelle hänen maakuntavierailullaan?</dcterms:alternative><dcterms:type xml:lang="fi">kysymys</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/100/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/101/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/99/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/98/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/97/" /></dctype:Text>                                                  
+
+</rdf:RDF>

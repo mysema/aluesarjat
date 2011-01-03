@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"  ?>
+<rdf:RDF
+  xmlns:geonames="http://www.geonames.org/ontology#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#" 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dctype="http://purl.org/dc/dcmitype/">
+  
+   <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/place/77/">
+     <dcterms:modified>2010-09-17T10:26:49+0200</dcterms:modified>   </rdf:Description>
+
+
+   <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/77/">
+   <dcterms:title>Pihlajisto</dcterms:title>
+   <rdfs:label>Pihlajisto</rdfs:label>
+      <owl:sameAs rdf:resource="http://sws.geonames.org/847436/" />
+      </dcterms:Location>
+
+    <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/5015/"><dcterms:modified>2010-09-17T10:26:49+0200</dcterms:modified><dcterms:source rdf:resource="http://www.helmet.fi/record=b1143964~S9*fin" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/5015/"><dcterms:title >Elämää lähiössä</dcterms:title><rdfs:label >Elämää lähiössä</rdfs:label><dcterms:author>Astikainen, Riitta</dcterms:author><dcterms:type xml:lang="fi">tietokirjallisuus</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/58/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/100/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/71/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/76/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/77/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/79/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/91/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/93/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/97/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/101/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/102/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/7/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/55/" /></dctype:Text><rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/7656/"><dcterms:modified>2010-09-17T10:25:15+0200</dcterms:modified><dcterms:source rdf:resource="http://www.helmet.fi/record=b1896892~S9*fin" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/7656/"><dcterms:title >Kaupunkielämää lähiöissä</dcterms:title><rdfs:label >Kaupunkielämää lähiöissä</rdfs:label><dcterms:author>Korhonen-Wälmä, Ulla</dcterms:author><dcterms:type xml:lang="fi">tietokirjallisuus</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/91/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/71/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/99/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/100/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/97/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/77/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/76/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6959/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/68/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/101/" /></dctype:Text><rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/4902/"><dcterms:modified>2010-09-17T10:23:46+0200</dcterms:modified><dcterms:source rdf:resource="http://www.helmet.fi/record=b1582445~S9*fin" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/4902/"><dcterms:title >Pihlajamäki - näköalalähiö</dcterms:title><rdfs:label >Pihlajamäki - näköalalähiö</rdfs:label><dcterms:author>Welin, Ulla</dcterms:author><dcterms:type xml:lang="fi">tietokirjallisuus</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/76/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/77/" /></dctype:Text>                                                  
+
+</rdf:RDF>

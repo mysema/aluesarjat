@@ -1,13 +1,6 @@
 @prefix ns1: <http://localhost:8080/rdf/dimensions/Alue#> .
 @prefix ns2: <http://purl.org/dc/elements/1.1/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix ns4: <http://localhost:8080/rdf/dimensions/Vuosi#> .
-@prefix ns5: <http://localhost:8080/rdf/dimensions/> .
-@prefix ns6: <http://localhost:8080/rdf/dimensions/Tuloluokka#> .
-@prefix ns7: <http://localhost:8080/rdf/dimensions/Ik\u00E4ryhm\u00E4#> .
-@prefix ns8: <http://localhost:8080/rdf/datasets#> .
-@prefix ns9: <http://localhost:8080/rdf/dimensions/Yksikk\u00F6#> .
-@prefix ns10: <http://vocab.deri.ie/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
 ns1:_091_503_Malmin_peruspiiri ns2:title "Malmin peruspiiri"^^xsd:string .
@@ -19,7 +12,6 @@ ns1:_091_250_Käpylä ns2:title "Käpylä"^^xsd:string .
 ns1:_049_4_Suur-Espoonlahti ns2:title "Suur-Espoonlahti"^^xsd:string .
 ns1:_049_725_Velskola ns2:title "Velskola"^^xsd:string .
 ns1:_091_404_Oulunkylän_peruspiiri ns2:title "Oulunkylän peruspiiri"^^xsd:string .
-ns4:_1991 ns2:title "1991"^^xsd:string .
 ns1:_091_301_Vanha_Munkkiniemi ns2:title "Vanha Munkkiniemi"^^xsd:string .
 ns1:_092_85_Jokivarsi ns2:title "Jokivarsi"^^xsd:string .
 ns1:_049_16_Sepänkylä ns2:title "Sepänkylä"^^xsd:string .
@@ -30,11 +22,8 @@ ns1:_091_702_Myllypuron_peruspiiri ns2:title "Myllypuron peruspiiri"^^xsd:string
 ns1:_091_303_Lehtisaari ns2:title "Lehtisaari"^^xsd:string .
 ns1:_091_504_Suutarilan_peruspiiri ns2:title "Suutarilan peruspiiri"^^xsd:string .
 ns1:_091_303_Vallilan_peruspiiri ns2:title "Vallilan peruspiiri"^^xsd:string .
-ns4:_1987 ns2:title "1987"^^xsd:string .
 ns1:_049_641_Kolmperä ns2:title "Kolmperä"^^xsd:string .
 ns1:_049_15_Viherlaakso-Lippajärvi ns2:title "Viherlaakso-Lippajärvi"^^xsd:string .
-ns4:_1983 ns2:title "1983"^^xsd:string .
-ns4:_2006 ns2:title "2006"^^xsd:string .
 ns1:_091_391_Tapaninvainio ns2:title "Tapaninvainio"^^xsd:string .
 ns1:_091_102_Ullanlinnan_peruspiiri ns2:title "Ullanlinnan peruspiiri"^^xsd:string .
 ns1:_049_61_Kanta-Espoo ns2:title "Kanta-Espoo"^^xsd:string .
@@ -56,15 +45,12 @@ ns1:_092_93_Vaarala ns2:title "Vaarala"^^xsd:string .
 ns1:_049_31_Matinkylä ns2:title "Matinkylä"^^xsd:string .
 ns1:_091_351_Paloheinä ns2:title "Paloheinä"^^xsd:string .
 ns1:_091_362_Latokartano ns2:title "Latokartano"^^xsd:string .
-ns4:_1989 ns2:title "1989"^^xsd:string .
 ns1:_091_541_Keski-Vuosaari ns2:title "Keski-Vuosaari"^^xsd:string .
 ns1:_049_451_Suvisaari ns2:title "Suvisaari"^^xsd:string .
 ns1:_091_472_Vesala ns2:title "Vesala"^^xsd:string .
 ns1:_092_80_Matari ns2:title "Matari"^^xsd:string .
 ns1:_091_331_Kannelmäki ns2:title "Kannelmäki"^^xsd:string .
 ns1:_049_724_Lakisto ns2:title "Lakisto"^^xsd:string .
-ns4:_2005 ns2:title "2005"^^xsd:string .
-ns5:Alue ns2:title "Alue"^^xsd:string .
 ns1:_049_122_Pohjois-Laajalahti_14vanha15 ns2:title "Pohjois-Laajalahti (vanha)"^^xsd:string .
 ns1:_049_635_Kunnarla ns2:title "Kunnarla"^^xsd:string .
 ns1:_091_550_Östersundom ns2:title "Östersundom"^^xsd:string .
@@ -84,12 +70,10 @@ ns1:_049_415_Soukanniemi ns2:title "Soukanniemi"^^xsd:string .
 ns1:_091_420_Kulosaari ns2:title "Kulosaari"^^xsd:string .
 ns1:_091_414_Jakomäki ns2:title "Jakomäki"^^xsd:string .
 ns1:_092_16_Kaivoksela ns2:title "Kaivoksela"^^xsd:string .
-ns4:_2009 ns2:title "2009"^^xsd:string .
 ns1:_091_384_Tattariharju ns2:title "Tattariharju"^^xsd:string .
 ns1:_049_14_Laaksolahti ns2:title "Laaksolahti"^^xsd:string .
 ns1:_092_40_Ylästö ns2:title "Ylästö"^^xsd:string .
 ns1:_091_202_Munkkiniemen_peruspiiri ns2:title "Munkkiniemen peruspiiri"^^xsd:string .
-ns4:_1978 ns2:title "1978"^^xsd:string .
 ns1:_049_323_Kuitinmäki ns2:title "Kuitinmäki"^^xsd:string .
 ns1:_049_21_Kanta-Tapiola ns2:title "Kanta-Tapiola"^^xsd:string .
 ns1:_049_313_Matinlahti ns2:title "Matinlahti"^^xsd:string .
@@ -97,8 +81,6 @@ ns1:_092_61_Tikkurila ns2:title "Tikkurila"^^xsd:string .
 ns1:_091_291_Etelä-Haaga ns2:title "Etelä-Haaga"^^xsd:string .
 ns1:_091_171_Länsi-Pasila ns2:title "Länsi-Pasila"^^xsd:string .
 ns1:_092_41_Viinikkala ns2:title "Viinikkala"^^xsd:string .
-ns6:Tulot_yhteensä ns2:title "Tulot yhteensä"^^xsd:string .
-ns7:_13-15-vuotiaat ns2:title "13-15-vuotiaat"^^xsd:string .
 ns1:_091_997_Esikaupungit ns2:title "Esikaupungit"^^xsd:string .
 ns1:_092_75_Päiväkumpu ns2:title "Päiväkumpu"^^xsd:string .
 ns1:_091_520_Suomenlinna ns2:title "Suomenlinna"^^xsd:string .
@@ -106,7 +88,6 @@ ns1:_092_88_Vallinoja ns2:title "Vallinoja"^^xsd:string .
 ns1:_092_86_Nikinmäki ns2:title "Nikinmäki"^^xsd:string .
 ns1:_092_31_Luhtaanmäki ns2:title "Luhtaanmäki"^^xsd:string .
 ns1:_092_97_Kuninkaanmäki ns2:title "Kuninkaanmäki"^^xsd:string .
-ns4:_2002 ns2:title "2002"^^xsd:string .
 ns1:_091_433_Herttoniemen_teollisuusalue ns2:title "Herttoniemen teollisuusalue"^^xsd:string .
 ns1:_091_381_Ylä-Malmi ns2:title "Ylä-Malmi"^^xsd:string .
 ns1:_091_452_Puotila ns2:title "Puotila"^^xsd:string .
@@ -127,11 +108,9 @@ ns1:_091_364_Viikinmäki ns2:title "Viikinmäki"^^xsd:string .
 ns1:_091_30_Kaartinkaupunki ns2:title "Kaartinkaupunki"^^xsd:string .
 ns1:_092_82_Mikkola ns2:title "Mikkola"^^xsd:string .
 ns1:_091_580_Karhusaari ns2:title "Karhusaari"^^xsd:string .
-ns7:_7-12-vuotiaat ns2:title "7-12-vuotiaat"^^xsd:string .
 ns1:_049_316_Miessaari ns2:title "Miessaari"^^xsd:string .
 ns1:_091_543_Uutela ns2:title "Uutela"^^xsd:string .
 ns1:_092_63_Viertola ns2:title "Viertola"^^xsd:string .
-ns4:_1976 ns2:title "1976"^^xsd:string .
 ns1:_091_342_Itä-Pakila ns2:title "Itä-Pakila"^^xsd:string .
 ns1:_091_201_Reijolan_peruspiiri ns2:title "Reijolan peruspiiri"^^xsd:string .
 ns1:_049_621_Muurala ns2:title "Muurala"^^xsd:string .
@@ -142,14 +121,11 @@ ns1:_091_549_Mustavuori ns2:title "Mustavuori"^^xsd:string .
 ns1:_091_90_Kaivopuisto ns2:title "Kaivopuisto"^^xsd:string .
 ns1:_091_172_Pohjois-Pasila ns2:title "Pohjois-Pasila"^^xsd:string .
 ns1:_091_190_Mustikkamaa-Korkeasaari ns2:title "Mustikkamaa-Korkeasaari"^^xsd:string .
-ns7:_75-84-vuotiaat ns2:title "75-84-vuotiaat"^^xsd:string .
 ns1:_049_632_Järvenperä ns2:title "Järvenperä"^^xsd:string .
 ns1:_092_2_Kivistön_suuralue ns2:title "Kivistön suuralue"^^xsd:string .
 ns1:_049_512_Espoonkartano ns2:title "Espoonkartano"^^xsd:string .
 ns1:_091_500_Villinki ns2:title "Villinki"^^xsd:string .
 ns1:_049_432_Eestinmalmi ns2:title "Eestinmalmi"^^xsd:string .
-ns4:_1988 ns2:title "1988"^^xsd:string .
-ns4:_1973 ns2:title "1973"^^xsd:string .
 ns1:_091_352_Torpparinmäki ns2:title "Torpparinmäki"^^xsd:string .
 ns1:_091_100_Sörnäinen ns2:title "Sörnäinen"^^xsd:string .
 ns1:_049_321_Friisilä ns2:title "Friisilä"^^xsd:string .
@@ -162,16 +138,12 @@ ns1:_049_442_Hannus ns2:title "Hannus"^^xsd:string .
 ns1:_092_60_Hiekkaharju ns2:title "Hiekkaharju"^^xsd:string .
 ns1:_049_713_Vanhakartano ns2:title "Vanhakartano"^^xsd:string .
 ns1:_049_116_Uusmäki ns2:title "Uusmäki"^^xsd:string .
-ns6:Keskitulo ns2:title "Keskitulo"^^xsd:string .
 ns1:_049_51_Kanta-Kauklahti ns2:title "Kanta-Kauklahti"^^xsd:string .
 ns1:_049_118_Perkkaa ns2:title "Perkkaa"^^xsd:string .
 ns1:_092_83_Metsola ns2:title "Metsola"^^xsd:string .
-ns4:_1971 ns2:title "1971"^^xsd:string .
 ns1:_091_454_Myllypuro ns2:title "Myllypuro"^^xsd:string .
-ns4:_1974 ns2:title "1974"^^xsd:string .
 ns1:_049_45_Suvisaaristo ns2:title "Suvisaaristo"^^xsd:string .
 ns1:_091_111_Siltasaari ns2:title "Siltasaari"^^xsd:string .
-ns7:_7517-vuotiaat ns2:title "75+-vuotiaat"^^xsd:string .
 ns1:_092_71_Ilola ns2:title "Ilola"^^xsd:string .
 ns1:_092_94_Hakunila ns2:title "Hakunila"^^xsd:string .
 ns1:_091_282_Maunula ns2:title "Maunula"^^xsd:string .
@@ -185,15 +157,10 @@ ns1:_091_333_Malminkartano ns2:title "Malminkartano"^^xsd:string .
 ns1:_091_140_Taka-Töölö ns2:title "Taka-Töölö"^^xsd:string .
 ns1:_091_385_Malmin_lentokenttä ns2:title "Malmin lentokenttä"^^xsd:string .
 ns1:_049_215_Pohjois-Tapiola ns2:title "Pohjois-Tapiola"^^xsd:string .
-ns4:_1980 ns2:title "1980"^^xsd:string .
 ns1:_049_214_Niittykumpu ns2:title "Niittykumpu"^^xsd:string .
-ns5:Yksikkö ns2:title "Yksikkö"^^xsd:string .
 ns1:_049_42_Saunalahti ns2:title "Saunalahti"^^xsd:string .
-ns4:_2003 ns2:title "2003"^^xsd:string .
 ns1:_091_403_Töyrynummi ns2:title "Töyrynummi"^^xsd:string .
-ns7:_30-39-vuotiaat ns2:title "30-39-vuotiaat"^^xsd:string .
 ns1:_092_3_Aviapoliksen_suuralue ns2:title "Aviapoliksen suuralue"^^xsd:string .
-ns4:_1981 ns2:title "1981"^^xsd:string .
 ns1:_091_310_Lauttasaari ns2:title "Lauttasaari"^^xsd:string .
 ns1:_092_17_Martinlaakso ns2:title "Martinlaakso"^^xsd:string .
 ns1:_092_50_Tammisto ns2:title "Tammisto"^^xsd:string .
@@ -202,48 +169,38 @@ ns1:_091_301_Kallion_peruspiiri ns2:title "Kallion peruspiiri"^^xsd:string .
 ns1:_049_633_Högnäs ns2:title "Högnäs"^^xsd:string .
 ns1:_049_62_Muurala-Gumböle ns2:title "Muurala-Gumböle"^^xsd:string .
 ns1:_049_115_Lintulaakso ns2:title "Lintulaakso"^^xsd:string .
-ns7:_8517-vuotiaat ns2:title "85+-vuotiaat"^^xsd:string .
 ns1:_092_11_Hämevaara ns2:title "Hämevaara"^^xsd:string .
 ns1:_091_465_Pitäjänmäen_teollisuusalue ns2:title "Pitäjänmäen teollisuusalue"^^xsd:string .
 ns1:_049_643_Siikajärvi ns2:title "Siikajärvi"^^xsd:string .
 ns1:_092_25_Myllymäki ns2:title "Myllymäki"^^xsd:string .
 ns1:_091_306_Talinranta ns2:title "Talinranta"^^xsd:string .
 ns1:_049_443_Hannusjärvi ns2:title "Hannusjärvi"^^xsd:string .
-ns4:_2001 ns2:title "2001"^^xsd:string .
 ns1:_049_133_Karakallio ns2:title "Karakallio"^^xsd:string .
 ns1:_091_205_Kaarelan_peruspiiri ns2:title "Kaarelan peruspiiri"^^xsd:string .
 ns1:_091_160_Ruskeasuo ns2:title "Ruskeasuo"^^xsd:string .
 ns1:_091_492_Jollas ns2:title "Jollas"^^xsd:string .
 ns1:_091_302_Alppiharjun_peruspiiri ns2:title "Alppiharjun peruspiiri"^^xsd:string .
-ns4:_1986 ns2:title "1986"^^xsd:string .
 ns1:_091_412_Heikinlaakso ns2:title "Heikinlaakso"^^xsd:string .
-ns4:_1999 ns2:title "1999"^^xsd:string .
 ns1:_091_332_Maununneva ns2:title "Maununneva"^^xsd:string .
 ns1:_049_143_Jupperi ns2:title "Jupperi"^^xsd:string .
 ns1:_049_423_Saunaniemi ns2:title "Saunaniemi"^^xsd:string .
-ns4:_2004 ns2:title "2004"^^xsd:string .
 ns1:_091_548_Niinisaari ns2:title "Niinisaari"^^xsd:string .
 ns1:_092_33_Seutula ns2:title "Seutula"^^xsd:string .
 ns1:_091_2_Läntinen_suurpiiri ns2:title "Läntinen suurpiiri"^^xsd:string .
 ns1:_049_634_Karhusuo ns2:title "Karhusuo"^^xsd:string .
-ns4:_1998 ns2:title "1998"^^xsd:string .
 ns1:_091_294_Lassila ns2:title "Lassila"^^xsd:string .
 ns1:_091_231_Toukola ns2:title "Toukola"^^xsd:string .
 ns1:_091_304_Pasilan_peruspiiri ns2:title "Pasilan peruspiiri"^^xsd:string .
 ns1:_049_121_Ruukinranta_14vanha15 ns2:title "Ruukinranta (vanha)"^^xsd:string .
-ns4:_1979 ns2:title "1979"^^xsd:string .
 ns1:_049_522_Vanttila ns2:title "Vanttila"^^xsd:string .
-ns8:B02S_ESP_Vakiluku1975 ns2:title "Espoon väkiluku ikäryhmittäin 1. tammikuuta"^^xsd:string .
 ns1:_049_315_Nuottaniemi ns2:title "Nuottaniemi"^^xsd:string .
 ns1:_091_570_Talosaari ns2:title "Talosaari"^^xsd:string .
 ns1:_049_211_Tapiolan_keskus ns2:title "Tapiolan keskus"^^xsd:string .
 ns1:_091_386_Pihlajisto ns2:title "Pihlajisto"^^xsd:string .
 ns1:_049_222_Otaniemi ns2:title "Otaniemi"^^xsd:string .
 ns1:_091_286_Maunulanpuisto ns2:title "Maunulanpuisto"^^xsd:string .
-ns7:_16-19-vuotiaat ns2:title "16-19-vuotiaat"^^xsd:string .
 ns1:_049_52_Kurttila-Vanttila ns2:title "Kurttila-Vanttila"^^xsd:string .
 ns1:_049_642_Vanha-Nuuksio-Nupuri ns2:title "Vanha-Nuuksio-Nupuri"^^xsd:string .
-ns4:_1975 ns2:title "1975"^^xsd:string .
 ns1:_091_411_Puistola ns2:title "Puistola"^^xsd:string .
 ns1:_092_68_Koivuhaka ns2:title "Koivuhaka"^^xsd:string .
 ns1:_091_201_Ruoholahti ns2:title "Ruoholahti"^^xsd:string .
@@ -255,7 +212,6 @@ ns1:_049_434_Nöykkiönlaakso ns2:title "Nöykkiönlaakso"^^xsd:string .
 ns1:_049_433_Malminmäki ns2:title "Malminmäki"^^xsd:string .
 ns1:_091_491_Yliskylä ns2:title "Yliskylä"^^xsd:string .
 ns1:_049_412_Soukanmäki ns2:title "Soukanmäki"^^xsd:string .
-ns4:_1997 ns2:title "1997"^^xsd:string .
 ns1:_049_414_Laurinlahti ns2:title "Laurinlahti"^^xsd:string .
 ns1:_091_8_Östersundomin_suurpiiri ns2:title "Östersundomin suurpiiri"^^xsd:string .
 ns1:_049_511_Kauklahti ns2:title "Kauklahti"^^xsd:string .
@@ -268,7 +224,6 @@ ns1:_091_531_Länsisaaret ns2:title "Länsisaaret"^^xsd:string .
 ns1:_091_403_Tuomarinkylän_peruspiiri ns2:title "Tuomarinkylän peruspiiri"^^xsd:string .
 ns1:_091_601_Kulosaaren_peruspiiri ns2:title "Kulosaaren peruspiiri"^^xsd:string .
 ns1:_091_495_Hevossalmi ns2:title "Hevossalmi"^^xsd:string .
-ns4:_1993 ns2:title "1993"^^xsd:string .
 ns1:_049_63_Bemböle ns2:title "Bemböle"^^xsd:string .
 ns1:_049_113_Mäkkylä ns2:title "Mäkkylä"^^xsd:string .
 ns1:_092_95_Rajakylä ns2:title "Rajakylä"^^xsd:string .
@@ -287,9 +242,6 @@ ns1:_091_70_Ullanlinna ns2:title "Ullanlinna"^^xsd:string .
 ns1:_049_714_Perusmäki ns2:title "Perusmäki"^^xsd:string .
 ns1:_091_113_Torkkelinmäki ns2:title "Torkkelinmäki"^^xsd:string .
 ns1:_091_203_Jätkäsaari ns2:title "Jätkäsaari"^^xsd:string .
-ns4:_1990 ns2:title "1990"^^xsd:string .
-ns4:_1972 ns2:title "1972"^^xsd:string .
-ns9:Henkilö ns2:title "Henkilö"^^xsd:string .
 ns1:_049_241_Vanha-Mankkaa ns2:title "Vanha-Mankkaa"^^xsd:string .
 ns1:_091_440_Tammisalo ns2:title "Tammisalo"^^xsd:string .
 ns1:_049_141_Veininlaakso ns2:title "Veininlaakso"^^xsd:string .
@@ -297,7 +249,6 @@ ns1:_091_130_Etu-Töölö ns2:title "Etu-Töölö"^^xsd:string .
 ns1:_092_7_Hakunilan_suuralue ns2:title "Hakunilan suuralue"^^xsd:string .
 ns1:_049_332_Suurpelto ns2:title "Suurpelto"^^xsd:string .
 ns1:_049_22_Otaniemi ns2:title "Otaniemi"^^xsd:string .
-ns7:_0-6-vuotiaat ns2:title "0-6-vuotiaat"^^xsd:string .
 ns1:_091_363_Viikin_tiedepuisto ns2:title "Viikin tiedepuisto"^^xsd:string .
 ns1:_091_464_Marttila ns2:title "Marttila"^^xsd:string .
 ns1:_049_32_Olari ns2:title "Olari"^^xsd:string .
@@ -315,23 +266,18 @@ ns1:_049_212_Länsikorkee ns2:title "Länsikorkee"^^xsd:string .
 ns1:_091_401_Maunulan_peruspiiri ns2:title "Maunulan peruspiiri"^^xsd:string .
 ns1:_049_614_Kuurinniitty ns2:title "Kuurinniitty"^^xsd:string .
 ns1:_091_80_Katajanokka ns2:title "Katajanokka"^^xsd:string .
-ns4:_1985 ns2:title "1985"^^xsd:string .
-ns7:_6517-vuotiaat ns2:title "65+-vuotiaat"^^xsd:string .
 ns1:_049_131_Nuijala ns2:title "Nuijala"^^xsd:string .
 ns1:_049_25_Laajalahti ns2:title "Laajalahti"^^xsd:string .
 ns1:_049_644_Nuuksionpää ns2:title "Nuuksionpää"^^xsd:string .
 ns1:_091_451_Vartioharju ns2:title "Vartioharju"^^xsd:string .
-ns7:_50-64-vuotiaat ns2:title "50-64-vuotiaat"^^xsd:string .
 ns1:_091_283_Metsälä ns2:title "Metsälä"^^xsd:string .
 ns1:_049_645_Ämmässuo ns2:title "Ämmässuo"^^xsd:string .
 ns1:_092_13_Vapaala ns2:title "Vapaala"^^xsd:string .
 ns1:_091_292_Kivihaka ns2:title "Kivihaka"^^xsd:string .
-ns7:_20-29-vuotiaat ns2:title "20-29-vuotiaat"^^xsd:string .
 ns1:_049_715_Niipperi ns2:title "Niipperi"^^xsd:string .
 ns1:_091_3_Keskinen_suurpiiri ns2:title "Keskinen suurpiiri"^^xsd:string .
 ns1:_091_287_Veräjälaakso ns2:title "Veräjälaakso"^^xsd:string .
 ns1:_092_34_Kiila ns2:title "Kiila"^^xsd:string .
-ns4:_1992 ns2:title "1992"^^xsd:string .
 ns1:_091_431_Länsi-Herttoniemi ns2:title "Länsi-Herttoniemi"^^xsd:string .
 ns1:_091_457_Itäkeskus ns2:title "Itäkeskus"^^xsd:string .
 ns1:_091_801_Östersundomin_peruspiiri ns2:title "Östersundomin peruspiiri"^^xsd:string .
@@ -339,37 +285,27 @@ ns1:_092_10_Linnainen ns2:title "Linnainen"^^xsd:string .
 ns1:_091_293_Pohjois-Haaga ns2:title "Pohjois-Haaga"^^xsd:string .
 ns1:_092_Vantaa ns2:title "Vantaa"^^xsd:string .
 ns1:_049_24_Mankkaa ns2:title "Mankkaa"^^xsd:string .
-ns8:A01HKIS_Vaestotulot ns2:title "Helsingin 15 vuotta täyttänyt väestö sukupuolen ja valtionveronalaisten tulojen (euroa) mukaan 31.joulukuuta"^^xsd:string .
-ns4:_2000 ns2:title "2000"^^xsd:string .
 ns1:_091_405_Itä-Pakilan_peruspiiri ns2:title "Itä-Pakilan peruspiiri"^^xsd:string .
 ns1:_049_721_Kalajärvi ns2:title "Kalajärvi"^^xsd:string .
 ns1:_091_999_Muut ns2:title "Muut"^^xsd:string .
 ns1:_091_704_Vuosaaren_peruspiiri ns2:title "Vuosaaren peruspiiri"^^xsd:string .
-ns4:_2007 ns2:title "2007"^^xsd:string .
 ns1:_091_105_Lauttasaaren_peruspiiri ns2:title "Lauttasaaren peruspiiri"^^xsd:string .
 ns1:_091_10_Kruununhaka ns2:title "Kruununhaka"^^xsd:string .
-ns4:_2008 ns2:title "2008"^^xsd:string .
 ns1:_092_90_Länsisalmi ns2:title "Länsisalmi"^^xsd:string .
 ns1:_092_24_Lapinkylä ns2:title "Lapinkylä"^^xsd:string .
 ns1:_091_546_Aurinkolahti ns2:title "Aurinkolahti"^^xsd:string .
 ns1:_091_493_Tullisaari ns2:title "Tullisaari"^^xsd:string .
 ns1:_092_99_Muut ns2:title "Muut"^^xsd:string .
-ns4:_1982 ns2:title "1982"^^xsd:string .
-ns4:_1977 ns2:title "1977"^^xsd:string .
-ns7:Väestö_yhteensä ns2:title "Väestö yhteensä"^^xsd:string .
 ns1:_091_471_Kontula ns2:title "Kontula"^^xsd:string .
 ns1:_091_506_Jakomäen_peruspiiri ns2:title "Jakomäen peruspiiri"^^xsd:string .
 ns1:_049_Espoo ns2:title "Espoo"^^xsd:string .
-ns7:_40-49-vuotiaat ns2:title "40-49-vuotiaat"^^xsd:string .
 ns1:_091_602_Herttoniemen_peruspiiri ns2:title "Herttoniemen peruspiiri"^^xsd:string .
 ns1:_092_98_Sotunki ns2:title "Sotunki"^^xsd:string .
 ns1:_091_4_Pohjoinen_suurpiiri ns2:title "Pohjoinen suurpiiri"^^xsd:string .
 ns1:_092_51_Pakkala ns2:title "Pakkala"^^xsd:string .
 ns1:_049_11_Kanta-Leppävaara ns2:title "Kanta-Leppävaara"^^xsd:string .
 ns1:_049_6_Vanha-Espoo ns2:title "Vanha-Espoo"^^xsd:string .
-ns9:Henkilö_ja_euro ns2:title "Henkilö ja euro"^^xsd:string .
 ns1:_092_20_Askisto ns2:title "Askisto"^^xsd:string .
-ns7:_65-74-vuotiaat ns2:title "65-74-vuotiaat"^^xsd:string .
 ns1:_091_281_Pirkkola ns2:title "Pirkkola"^^xsd:string .
 ns1:_049_23_Haukilahti-Westend ns2:title "Haukilahti-Westend"^^xsd:string .
 ns1:_091_502_Pukinmäen_peruspiiri ns2:title "Pukinmäen peruspiiri"^^xsd:string .
@@ -378,7 +314,6 @@ ns1:_049_71_Vanhakartano-Röylä ns2:title "Vanhakartano-Röylä"^^xsd:string .
 ns1:_092_70_Koivukylä ns2:title "Koivukylä"^^xsd:string .
 ns1:_092_12_Hämeenkylä ns2:title "Hämeenkylä"^^xsd:string .
 ns1:_091_1_Eteläinen_suurpiiri ns2:title "Eteläinen suurpiiri"^^xsd:string .
-ns5:Ikäryhmä ns2:title "Ikäryhmä"^^xsd:string .
 ns1:_049_411_Espoonlahden_keskus ns2:title "Espoonlahden keskus"^^xsd:string .
 ns1:_091_20_Kluuvi ns2:title "Kluuvi"^^xsd:string .
 ns1:_092_87_Vierumäki ns2:title "Vierumäki"^^xsd:string .
@@ -398,7 +333,6 @@ ns1:_091_542_Nordsjön_kartano ns2:title "Nordsjön kartano"^^xsd:string .
 ns1:_091_998_Kantakaupunki ns2:title "Kantakaupunki"^^xsd:string .
 ns1:_049_12_Laajalahti_14vanha15 ns2:title "Laajalahti (vanha)"^^xsd:string .
 ns1:_049_331_Henttaa ns2:title "Henttaa"^^xsd:string .
-ns10:scovo ns2:title "The Statistical Core Vocabulary (SCOVO)"^^rdf:text .
 ns1:_092_52_Veromies ns2:title "Veromies"^^xsd:string .
 ns1:_091_402_Tapulikaupunki ns2:title "Tapulikaupunki"^^xsd:string .
 ns1:_049_722_Luukki ns2:title "Luukki"^^xsd:string .
@@ -415,17 +349,14 @@ ns1:_092_91_Länsimäki ns2:title "Länsimäki"^^xsd:string .
 ns1:_092_67_Ruskeasanta ns2:title "Ruskeasanta"^^xsd:string .
 ns1:_049_152_Lippajärvi ns2:title "Lippajärvi"^^xsd:string .
 ns1:_049_622_Gumböle ns2:title "Gumböle"^^xsd:string .
-ns4:_1995 ns2:title "1995"^^xsd:string .
 ns1:_091_40_Kamppi ns2:title "Kamppi"^^xsd:string .
 ns1:_091_101_Vironniemen_peruspiiri ns2:title "Vironniemen peruspiiri"^^xsd:string .
 ns1:_049_41_Kanta-Espoonlahti ns2:title "Kanta-Espoonlahti"^^xsd:string .
-ns6:_15-vuotta_täyttäneet_yhteensä ns2:title "15-vuotta täyttäneet yhteensä"^^xsd:string .
 ns1:_091_112_Linjat ns2:title "Linjat"^^xsd:string .
 ns1:_049_151_Viherlaakso ns2:title "Viherlaakso"^^xsd:string .
 ns1:_049_142_Lähderanta ns2:title "Lähderanta"^^xsd:string .
 ns1:_091_510_Santahamina ns2:title "Santahamina"^^xsd:string .
 ns1:_092_62_Jokiniemi ns2:title "Jokiniemi"^^xsd:string .
-ns4:_2010 ns2:title "2010"^^xsd:string .
 ns1:_049_252_Pohjois-Laajalahti ns2:title "Pohjois-Laajalahti"^^xsd:string .
 ns1:_092_22_Keimola ns2:title "Keimola"^^xsd:string .
 ns1:_049_44_Kaitaa ns2:title "Kaitaa"^^xsd:string .
@@ -433,27 +364,21 @@ ns1:_049_117_Lintumetsä ns2:title "Lintumetsä"^^xsd:string .
 ns1:_091_220_Vallila ns2:title "Vallila"^^xsd:string .
 ns1:_091_494_Tahvonlahti ns2:title "Tahvonlahti"^^xsd:string .
 ns1:_049_712_Puotinen ns2:title "Puotinen"^^xsd:string .
-ns5:Vuosi ns2:title "Vuosi"^^xsd:string .
 ns1:_091_701_Vartiokylän_peruspiiri ns2:title "Vartiokylän peruspiiri"^^xsd:string .
 ns1:_049_421_Kattilalaakso ns2:title "Kattilalaakso"^^xsd:string .
 ns1:_049_33_Henttaa-Suurpelto ns2:title "Henttaa-Suurpelto"^^xsd:string .
 ns1:_092_18_Vantaanlaakso ns2:title "Vantaanlaakso"^^xsd:string .
 ns1:_091_103_Kampinmalmin_peruspiiri ns2:title "Kampinmalmin peruspiiri"^^xsd:string .
-ns4:_1984 ns2:title "1984"^^xsd:string .
 ns1:_091_544_Meri-Rastila ns2:title "Meri-Rastila"^^xsd:string .
 ns1:_049_232_Haukilahti ns2:title "Haukilahti"^^xsd:string .
 ns1:_091_401_Siltamäki ns2:title "Siltamäki"^^xsd:string .
 ns1:_049_132_Kuninkainen ns2:title "Kuninkainen"^^xsd:string .
-ns5:Tuloluokka ns2:title "Tuloluokka"^^xsd:string .
 ns1:_091_392_Tapanila ns2:title "Tapanila"^^xsd:string .
 ns1:_091_121_Harju ns2:title "Harju"^^xsd:string .
 ns1:_091_7_Itäinen_suurpiiri ns2:title "Itäinen suurpiiri"^^xsd:string .
-ns4:_1994 ns2:title "1994"^^xsd:string .
 ns1:_092_4_Tikkurilan_suuralue ns2:title "Tikkurilan suuralue"^^xsd:string .
 ns1:_091_361_Viikinranta ns2:title "Viikinranta"^^xsd:string .
 ns1:_091_335_Kuninkaantammi ns2:title "Kuninkaantammi"^^xsd:string .
 ns1:_091_174_Keski-Pasila ns2:title "Keski-Pasila"^^xsd:string .
-ns8:C02S_VAN_Vakiluku1971 ns2:title "Vantaan väkiluku ikäryhmittäin 1.tammikuuta"^^xsd:string .
 ns1:_092_5_Koivukylän_suuralue ns2:title "Koivukylän suuralue"^^xsd:string .
 ns1:_092_53_Lentokenttä ns2:title "Lentokenttä"^^xsd:string .
-ns4:_1996 ns2:title "1996"^^xsd:string .

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"  ?>
+<rdf:RDF
+  xmlns:geonames="http://www.geonames.org/ontology#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#" 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dctype="http://purl.org/dc/dcmitype/">
+  
+   <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/place/87/">
+     <dcterms:modified>2010-09-17T10:07:45+0200</dcterms:modified>   </rdf:Description>
+
+
+   <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/87/">
+   <dcterms:title>Vartiosaari</dcterms:title>
+   <rdfs:label>Vartiosaari</rdfs:label>
+      </dcterms:Location>
+
+  <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/9121/"><foaf:page>http://www.tarinoidenhelsinki.fi/node/9121</foaf:page><dcterms:isPartOf rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/87/"/><dcterms:modified>2010-05-28T10:33:08+0200</dcterms:modified><dcterms:spatial rdf:datatype="http://dublincore.org/documents/dcmi-terms/#Point">east=25.1052481579083; north=60.1751321674337; projection=WGS84;</dcterms:spatial><dcterms:type xml:lang="fi">muu paikka</dcterms:type><dcterms:title xml:lang="fi">Kotiluoto</dcterms:title><rdfs:label xml:lang="fi">Kotiluoto</rdfs:label></dcterms:Location>  <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/5549/"><dcterms:modified>2010-09-17T10:07:45+0200</dcterms:modified><dcterms:source rdf:resource="http://igs.kirjastot.fi/fi-FI/iGS/kysymykset/kysymys.aspx?ID=AE6D7CC2-BD09-4778-B486-F18A3F5A77B9" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/5549/"><dcterms:title >Kotiluodon huvila ja Lars Sonck</dcterms:title><rdfs:label >Kotiluodon huvila ja Lars Sonck</rdfs:label><dcterms:alternative>Mitkä olivat Lars Sonckin vaiheet 1910-20 luvuilla? Entä mikä on hänen Kotiluodon saarella sijaitsevan huvilansa syntyhistoria? Entä huvilan myöhemmät vaiheet?</dcterms:alternative><dcterms:type xml:lang="fi">kysymys</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/9121/" /></dctype:Text>                                                  
+
+</rdf:RDF>

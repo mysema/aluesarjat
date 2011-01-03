@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"  ?>
+<rdf:RDF
+  xmlns:geonames="http://www.geonames.org/ontology#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#" 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dctype="http://purl.org/dc/dcmitype/">
+  
+   <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/place/73/">
+     <dcterms:modified>2010-09-17T10:24:01+0200</dcterms:modified>   </rdf:Description>
+
+
+   <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/73/">
+   <dcterms:title>Tapaninvainio</dcterms:title>
+   <rdfs:label>Tapaninvainio</rdfs:label>
+      </dcterms:Location>
+
+  <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/9201/"><foaf:page>http://www.tarinoidenhelsinki.fi/node/9201</foaf:page><dcterms:isPartOf rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/73/"/><dcterms:modified>2010-06-04T13:04:01+0200</dcterms:modified><dcterms:spatial rdf:datatype="http://dublincore.org/documents/dcmi-terms/#Point">east=24.9839982669408; north=60.2585259863194; projection=WGS84;</dcterms:spatial><dcterms:type xml:lang="fi">katu</dcterms:type><dcterms:title xml:lang="fi">Uimarannantie</dcterms:title><rdfs:label xml:lang="fi">Uimarannantie</rdfs:label></dcterms:Location><dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/6960/"><foaf:page>http://www.tarinoidenhelsinki.fi/node/6960</foaf:page><dcterms:isPartOf rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/73/"/><dcterms:modified>2010-01-19T14:03:22+0200</dcterms:modified><dcterms:spatial rdf:datatype="http://dublincore.org/documents/dcmi-terms/#Point">east=25.0002000608728; north=60.2637202817277; projection=WGS84;</dcterms:spatial><dcterms:type xml:lang="fi">kaupunginosa</dcterms:type><dcterms:title xml:lang="fi">Tapaninkylä</dcterms:title><rdfs:label xml:lang="fi">Tapaninkylä</rdfs:label></dcterms:Location>  <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/6955/"><dcterms:modified>2010-09-17T10:24:01+0200</dcterms:modified><dcterms:source rdf:resource="http://www.helmet.fi/record=b1070232~S9*fin" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/6955/"><dcterms:title >Narinkka 1982</dcterms:title><rdfs:label >Narinkka 1982</rdfs:label><dcterms:alternative>Helsingin kaupunginmuseon vuosikirja 1982</dcterms:alternative><dcterms:type xml:lang="fi">tietokirjallisuus</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6956/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6957/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6958/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/74/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6959/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6960/" /></dctype:Text><rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/6331/"><dcterms:modified>2010-09-17T10:17:56+0200</dcterms:modified><dcterms:source rdf:resource="http://igs.kirjastot.fi/fi-FI/iGS/kysymykset/kysymys.aspx?ID=2A398025-71EA-4233-B785-0C2B046276A5" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/6331/"><dcterms:title >Kapteenskan kasarmi</dcterms:title><rdfs:label >Kapteenskan kasarmi</rdfs:label><dcterms:alternative>Olen kuullut, että osoitteessa Uimarannantie 10 on ollut 1930-luvulla &quot;kasarmiksi&quot; kutsuttu asuinrakennus joka paloi. Tuolloin alue kuului Helsingin maalaiskuntaan. Mistä voisi saada tarkempaa tietoa palon ajankohdasta?</dcterms:alternative><dcterms:type xml:lang="fi">kysymys</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/9201/" /></dctype:Text>                                                  
+
+</rdf:RDF>

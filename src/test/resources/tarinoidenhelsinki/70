@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"  ?>
+<rdf:RDF
+  xmlns:geonames="http://www.geonames.org/ontology#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#" 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dctype="http://purl.org/dc/dcmitype/">
+  
+   <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/place/70/">
+     <dcterms:modified>2010-09-17T10:28:09+0200</dcterms:modified>   </rdf:Description>
+
+
+   <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/70/">
+   <dcterms:title>Tattarisuo</dcterms:title>
+   <rdfs:label>Tattarisuo</rdfs:label>
+      </dcterms:Location>
+
+  <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/9357/"><foaf:page>http://www.tarinoidenhelsinki.fi/node/9357</foaf:page><dcterms:isPartOf rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/70/"/><dcterms:modified>2010-08-04T08:37:21+0200</dcterms:modified><dcterms:spatial rdf:datatype="http://dublincore.org/documents/dcmi-terms/#Point">east=25.0583270963646; north=60.2587541928439; projection=WGS84;</dcterms:spatial><dcterms:type xml:lang="fi">rakennus</dcterms:type><dcterms:title xml:lang="fi">Akkutie 2</dcterms:title><rdfs:label xml:lang="fi">Akkutie 2</rdfs:label></dcterms:Location><dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/8776/"><foaf:page>http://www.tarinoidenhelsinki.fi/node/8776</foaf:page><dcterms:isPartOf rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/70/"/><dcterms:modified>2010-03-02T14:12:22+0200</dcterms:modified><dcterms:spatial rdf:datatype="http://dublincore.org/documents/dcmi-terms/#Point">east=25.0658919640853; north=60.2621834410325; projection=WGS84;</dcterms:spatial><dcterms:type xml:lang="fi">kaupunginosa</dcterms:type><dcterms:title xml:lang="fi">Alppikylä</dcterms:title><rdfs:label xml:lang="fi">Alppikylä</rdfs:label></dcterms:Location>  <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/8775/"><dcterms:modified>2010-09-17T10:28:09+0200</dcterms:modified><dcterms:source rdf:resource="http://www.helmet.fi/record=b1901744~S9*fin" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/8775/"><dcterms:title >Käheä-ääninen tyttö</dcterms:title><rdfs:label >Käheä-ääninen tyttö</rdfs:label><dcterms:alternative>Kaalengo tsaj</dcterms:alternative><dcterms:author>Tanner, Riikka</dcterms:author><dcterms:type xml:lang="fi">tietokirjallisuus</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8779/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6673/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/74/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8776/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8777/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6443/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8778/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/7165/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6869/" /></dctype:Text><rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/5601/"><dcterms:modified>2010-09-17T10:08:05+0200</dcterms:modified><dcterms:source rdf:resource="http://igs.kirjastot.fi/fi-FI/iGS/kysymykset/kysymys.aspx?ID=9EC78EA4-569E-49FB-B057-C32C44C8F577" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/5601/"><dcterms:title >Sepän pajoja Helsingissä?</dcterms:title><rdfs:label >Sepän pajoja Helsingissä?</rdfs:label><dcterms:alternative>Löytyykö Fallkullan tilalta tai muualta kaupungin alueelta kaupungin omistuksessa olevaa sepän pajaa?</dcterms:alternative><dcterms:type xml:lang="fi">kysymys</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/9357/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8846/" /></dctype:Text>                                                  
+
+</rdf:RDF>

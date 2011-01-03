@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"  ?>
+<rdf:RDF
+  xmlns:geonames="http://www.geonames.org/ontology#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#" 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dctype="http://purl.org/dc/dcmitype/">
+  
+   <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/place/6/">
+     <dcterms:modified>2010-09-17T10:07:55+0200</dcterms:modified>   </rdf:Description>
+
+
+   <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/6/">
+   <dcterms:title>Lassila</dcterms:title>
+   <rdfs:label>Lassila</rdfs:label>
+      <owl:sameAs rdf:resource="http://sws.geonames.org/847429/" />
+      </dcterms:Location>
+
+  <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/6638/"><foaf:page>http://www.tarinoidenhelsinki.fi/node/6638</foaf:page><dcterms:isPartOf rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6/"/><dcterms:modified>2010-02-02T17:13:40+0200</dcterms:modified><dcterms:spatial rdf:datatype="http://dublincore.org/documents/dcmi-terms/#Point">east=24.8819177223591; north=60.2314474052197; projection=WGS84;</dcterms:spatial><dcterms:type xml:lang="fi">katu</dcterms:type><dcterms:title xml:lang="fi">Luotikuja</dcterms:title><rdfs:label xml:lang="fi">Luotikuja</rdfs:label></dcterms:Location>  <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/5570/"><dcterms:modified>2010-09-17T10:07:55+0200</dcterms:modified><dcterms:source rdf:resource="http://igs.kirjastot.fi/fi-FI/iGS/kysymykset/kysymys.aspx?ID=9995CBA0-7329-4CB5-957A-FC6B9F98AD20" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/5570/"><dcterms:title >Pisimmät kadut</dcterms:title><rdfs:label >Pisimmät kadut</rdfs:label><dcterms:alternative>Mitkä ovat Helsingin pisimmät kadut?</dcterms:alternative><dcterms:type xml:lang="fi">kysymys</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/9228/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6351/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/6638/" /></dctype:Text>                                                  
+
+</rdf:RDF>

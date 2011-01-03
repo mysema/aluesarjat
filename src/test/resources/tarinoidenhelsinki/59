@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"  ?>
+<rdf:RDF
+  xmlns:geonames="http://www.geonames.org/ontology#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#" 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dctype="http://purl.org/dc/dcmitype/">
+  
+   <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/place/59/">
+     <dcterms:modified>2010-09-17T10:26:15+0200</dcterms:modified>   </rdf:Description>
+
+
+   <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/59/">
+   <dcterms:title>Metsälä</dcterms:title>
+   <rdfs:label>Metsälä</rdfs:label>
+      <owl:sameAs rdf:resource="http://sws.geonames.org/843421/" />
+      </dcterms:Location>
+
+  <dcterms:Location rdf:about="http://www.tarinoidenhelsinki.fi/resource/place/8484/"><foaf:page>http://www.tarinoidenhelsinki.fi/node/8484</foaf:page><dcterms:isPartOf rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/59/"/><dcterms:modified>2010-01-20T13:21:28+0200</dcterms:modified><dcterms:spatial rdf:datatype="http://dublincore.org/documents/dcmi-terms/#Point">east=24.9380556315087; north=60.2234819745363; projection=WGS84;</dcterms:spatial><dcterms:type xml:lang="fi">rakennus</dcterms:type><dcterms:title xml:lang="fi">Käpylän VPK</dcterms:title><rdfs:label xml:lang="fi">Käpylän VPK</rdfs:label></dcterms:Location>  <rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/4995/"><dcterms:modified>2010-09-17T10:26:15+0200</dcterms:modified><dcterms:source rdf:resource="http://www.helmet.fi/record=b1062171~S9*fin" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/4995/"><dcterms:title >Maunula</dcterms:title><rdfs:label >Maunula</rdfs:label><dcterms:alternative>Kaupunginosa keskuspuiston kainalossa</dcterms:alternative><dcterms:type xml:lang="fi">tietokirjallisuus</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/58/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/57/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8008/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8009/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8010/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8011/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8012/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8013/" /><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/59/" /></dctype:Text><rdf:Description rdf:about="http://www.tarinoidenhelsinki.fi/data/story/6254/"><dcterms:modified>2010-09-17T10:17:11+0200</dcterms:modified><dcterms:source rdf:resource="http://igs.kirjastot.fi/fi-FI/iGS/kysymykset/kysymys.aspx?ID=D4284F73-99DB-4581-BAE5-147A74E072B9" /></rdf:Description><dctype:Text rdf:about="http://www.tarinoidenhelsinki.fi/resource/story/6254/"><dcterms:title >Käpylän Lemmenlaakso</dcterms:title><rdfs:label >Käpylän Lemmenlaakso</rdfs:label><dcterms:alternative>Muistelen joskus lukeneeni ja jonkun jopa kertoneenkin, että Helsingissä olisi ollut sotien jälkeen sellainen tanssilava kuin Käpylän Lemmenlaakso. Jos pitää paikkansa, missä se sijaitsi ja milloin se purettiin?</dcterms:alternative><dcterms:type xml:lang="fi">kysymys</dcterms:type><dcterms:spatial rdf:resource="http://www.tarinoidenhelsinki.fi/resource/place/8484/" /></dctype:Text>                                                  
+
+</rdf:RDF>
