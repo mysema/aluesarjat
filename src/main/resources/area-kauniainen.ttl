@@ -1,0 +1,26 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dimension: <http://localhost:8080/rdf/dimensions/> .
+@prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+alue:_235_1_Kauniainen rdf:type dimension:Alue ; skos:broader alue:Pääakaupunkiseutu ; dc:title "Kauniainen 1" .
+alue:_235_01 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 01" .
+alue:_235_02 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 02" .
+alue:_235_03 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 03" .
+alue:_235_04 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 04" .
+alue:_235_05 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 05" .
+alue:_235_06 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 06" .
+alue:_235_07 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 07" .
+alue:_235_08 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 08" .
+alue:_235_09 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 09" .
+
+alue:_235_001 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 001" .
+alue:_235_002 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 002" .
+alue:_235_003 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 003" .
+alue:_235_004 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 004" .
+alue:_235_005 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 005" .
+alue:_235_006 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 006" .
+alue:_235_007 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 007" .
+alue:_235_008 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 008" .
+alue:_235_009 rdf:type dimension:Alue ; skos:broader alue:_235_1_Kauniainen ; dc:title "Kauniainen 009" .

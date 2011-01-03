@@ -1,8 +1,10 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
-@prefix dimension: <http://localhost:8080/rdf/dimensions> .
+@prefix dimension: <http://localhost:8080/rdf/dimensions/> .
 @prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+alue:_091_533_Aluemeri rdf:type dimension:Alue .
 
 alue:Pääakaupunkiseutu rdf:type dimension:Alue .
 alue:_091_Helsinki skos:broader alue:Pääakaupunkiseutu .

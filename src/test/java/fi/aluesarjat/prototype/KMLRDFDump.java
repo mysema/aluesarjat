@@ -4,16 +4,29 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.rdfbean.model.RDF;
-import com.mysema.stat.scovo.XMLID;
+import com.mysema.commons.lang.Assert;
+import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.rdfbean.model.DC;
+import com.mysema.rdfbean.model.GEO;
+import com.mysema.rdfbean.model.LIT;
+import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.model.UID;
+import com.mysema.rdfbean.model.io.Format;
+import com.mysema.rdfbean.sesame.MemoryRepository;
 
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.Document;
@@ -29,26 +42,66 @@ import de.micromata.opengis.kml.v_2_2_0.SimpleData;
 
 public class KMLRDFDump {
     
-    // TODO : dump boundaries as well ?!?
+//    private static final String ALUE_NS = "http://localhost:8080/rdf/dimensions/Alue#";
+    
+    private final Set<STMT> centerStmts = new HashSet<STMT>();
+    
+    private final Set<STMT> polygonStmts = new HashSet<STMT>();
+    
+    private final Map<String, UID> areas = new HashMap<String, UID>();
+    
+    private final Map<String,String> areaTitles = new HashMap<String,String>();
+    
+    private final Set<String> level1 = new HashSet<String>();
+    
+    private final Set<String> level2 = new HashSet<String>();
+    
+    private final Set<String> level3 = new HashSet<String>();
+    
+    private final Map<String,Coordinate> centers = new HashMap<String,Coordinate>();
+    
+    private final Map<String,List<Coordinate>> polygons = new HashMap<String,List<Coordinate>>();
     
     public static void main(String[] args) throws IOException{
-        StringWriter levels = new StringWriter();
-        StringWriter centers = new StringWriter();
-        StringWriter polygons = new StringWriter();
-
-        levels.append("@prefix rdf: <" + RDF.NS + "> . \n");
-        levels.append("@prefix dimension: <http://localhost:8080/rdf/dimensions/> .\n");
-        levels.append("@prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .\n");
-        levels.append("\n");
+        new KMLRDFDump().init().handle().dumpRDF().dumpGEOJSON();
+    }
+    
+    public KMLRDFDump init(){
+        areaTitles.put("_091_533_Aluemeri", "Aluemeri");
         
-        centers.append("@prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .\n");
-        centers.append("@prefix geo: <http://www.w3.org/2003/01/geo/> .\n");
-        centers.append("\n");
+        MemoryRepository repository = new MemoryRepository();        
+        repository.initialize();
+        repository.load(Format.TURTLE, getClass().getResourceAsStream("/area-ids.ttl"), null, false);
+        repository.load(Format.TURTLE, getClass().getResourceAsStream("/area-titles.ttl"), null, false);
+        repository.load(Format.TURTLE, getClass().getResourceAsStream("/area-kauniainen.ttl"), null, false);
         
-        polygons.append("@prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .\n");
-        polygons.append("@prefix geo: <http://www.w3.org/2003/01/geo/> .\n");
-        polygons.append("\n");
+        try{
+            RDFConnection conn = repository.openConnection();
+            List<STMT> stmts = null;
+            try{
+                stmts = IteratorAdapter.asList(conn.findStatements(null, null, null, null, false));
+                if (stmts.isEmpty()){
+                    throw new IllegalStateException("Got no areas");
+                }
+                for (STMT stmt : stmts){
+                    if (stmt.getPredicate().equals(DC.identifier)){
+                        areas.put(stmt.getObject().getValue(), stmt.getSubject().asURI());                        
+                    }else{
+                        areaTitles.put(stmt.getSubject().asURI().ln(), stmt.getObject().getValue());
+                    }
+                    
+                }
+            }finally{
+                conn.close();
+            }    
+        }finally{
+            repository.close();
+        }
         
+        return this;
+    }
+    
+    private KMLRDFDump handle() throws IOException {
         File areas = new File("src/test/resources/areas");
         for (File file : areas.listFiles()){
             if (!file.getName().endsWith(".kml")){
@@ -64,7 +117,7 @@ public class KMLRDFDump {
                             Folder folder = (Folder)documentFeature;
                             for (Feature folderFeature : folder.getFeature()){
                                 if (folderFeature instanceof Placemark){
-                                    handlePlacemark(centers, polygons, levels, (Placemark)folderFeature);                            
+                                    handlePlacemark((Placemark)folderFeature);                            
                                 }
                             }
                         }
@@ -72,25 +125,61 @@ public class KMLRDFDump {
                 }    
             }finally{
                 is.close();
-            }
-                
+            }                
         }   
-        
-        // levels
-//        File target = new File("src/main/resources/area-levels.ttl");
-//        FileUtils.writeStringToFile(target, levels.toString(), "UTF-8");
+        return this;
+    }
+    
+    private void dumpGEOJSON() throws IOException{
+        int counter = 1;
+        for (Set<String> codes : Arrays.asList(level1, level2, level3)){
+            JSONObject root = new JSONObject();
+            root.put("type","FeatureCollection");        
+            JSONArray features = new JSONArray();
+            for (String code : codes){
+                JSONObject feature = new JSONObject();
+                feature.put("type", "Feature");
+                JSONObject geometry = new JSONObject();
+                geometry.put("type","MultiPolygon");
+                JSONArray coordinates = new JSONArray();
+                List<Coordinate> value = polygons.get(code);
+                if (value == null){
+                    continue;
+                }
+                for (Coordinate coordinate : value){
+                    coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
+                }
+                geometry.put("coordinates", toJSONArray(toJSONArray(coordinates))); // TODO : get rid of wrapping
+                feature.put("geometry", geometry);
+                
+                JSONObject properties = new JSONObject();
+                properties.put("code", code);
+                
+                Coordinate centerPoint = centers.get(code);
+                properties.put("center", toJSONArray(centerPoint.getLongitude(), centerPoint.getLatitude()));
+                properties.put("name", Assert.notNull(areaTitles.get(code),"Got no title for " + code));
+                feature.put("properties", properties);
+                
+                features.add(feature);                        
+            }        
+            root.put("features",features);
+            String str = root.toString();
+            File out = new File("src/main/resources/area"+(counter++)+".json");
+            FileUtils.writeStringToFile(out, str, "UTF-8");
+        }
+    }
+    
+    private KMLRDFDump dumpRDF() throws IOException{
 
         // centers
-        File target = new File("src/main/resources/area-centers.ttl");
-        FileUtils.writeStringToFile(target, centers.toString(), "UTF-8");
+        RDFUtil.dump(centerStmts, new File("src/main/resources/area-centers.ttl"));
         
         // coordinates
-        target = new File("src/main/resources/area-polygons.ttl");
-        FileUtils.writeStringToFile(target, polygons.toString(), "UTF-8");
+        RDFUtil.dump(polygonStmts, new File("src/main/resources/area-polygons.ttl"));
+        return this;
     }
 
-    
-    private static void handlePlacemark(Writer centers, Writer polygons, Writer levels, Placemark placemark) throws IOException{        
+    private void handlePlacemark(Placemark placemark) throws IOException{        
         Map<String,String> values = new HashMap<String,String>();        
         for (SchemaData schemaData : placemark.getExtendedData().getSchemaData()){
             for (SimpleData simpleData : schemaData.getSimpleData()){
@@ -98,26 +187,24 @@ public class KMLRDFDump {
             }
         }
 
-        String kunta = values.get("KUNTA");
-        String suur = values.get("SUUR");
         String tila = values.get("TILA");
         String pien = values.get("PIEN");
-        String nimi = values.get("Nimi");
-        String code = null;
-        String level = null;
-        if (!StringUtils.isEmpty(pien)){
-            // pienialue
-            code = XMLID.toXMLID(kunta + " " + pien + " " + nimi);
-            level = "1";
+        Set<String> level;
+        if (pien != null){
+            level = level1;
         }else if (!StringUtils.isEmpty(tila)){
-            // ?!?
-            code = XMLID.toXMLID(kunta + " " + tila + " " + nimi);
-            level = "2";
+            level = level2;
         }else{
-            // suuralue
-            code = XMLID.toXMLID(kunta + " " + suur + " " + nimi);
-            level = "3";
+            level = level3;
         }
+        
+        UID area = areas.get(values.get("KOKOTUN"));
+        if (area == null){
+            System.err.println("Got no area for " + values.get("KOKOTUN"));
+            return;
+        }
+        String code = area.ln();
+        level.add(code);
         
         // polygon
         if (placemark.getGeometry() instanceof Polygon){            
@@ -131,13 +218,14 @@ public class KMLRDFDump {
                 p.append(coordinate.getLatitude()).append(",").append(coordinate.getLongitude());
             }       
             
-            polygons.append("alue:"+code+" geo:polygon \""+p+ "\" . \n");
+            polygonStmts.add(new STMT(area, GEO.polygon, new LIT(p.toString())));
+            polygons.put(code, ring.getCoordinates());
             
         // center point
         }else if (placemark.getGeometry() instanceof Point){
             Coordinate coordinate = ((Point)placemark.getGeometry()).getCoordinates().get(0);
-            levels.append("alue:" + code + " alue:level " + level + " . \n");
-            centers.append("alue:"+code+" geo:where \""+coordinate.getLatitude()+","+coordinate.getLongitude()+ "\" . \n");
+            centerStmts.add(new STMT(area, GEO.where, new LIT(coordinate.getLatitude()+","+coordinate.getLongitude())));
+            centers.put(code, coordinate);
             
         }else{
             System.err.println(code + " has geometry of type " + placemark.getGeometry().getClass().getSimpleName());
@@ -146,4 +234,11 @@ public class KMLRDFDump {
 
     }
     
+    private static JSONArray toJSONArray(Object... objects){
+        JSONArray array = new JSONArray();
+        for (Object o : objects){
+            array.add(o);
+        }
+        return array;
+    }
 }

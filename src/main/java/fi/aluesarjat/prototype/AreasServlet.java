@@ -1,6 +1,7 @@
 package fi.aluesarjat.prototype;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -14,6 +15,19 @@ public class AreasServlet extends AbstractSPARQLServlet{
 
     private static final long serialVersionUID = -1216436366722412316L;
     
+    private final String areas, areas1, areas2, areas3;
+    
+    public AreasServlet() {
+        try {
+            areas = IOUtils.toString(getResourceAsStream("/areas.json"),"UTF-8");
+            areas1 = IOUtils.toString(getResourceAsStream("/area1.json"),"UTF-8");
+            areas2 = IOUtils.toString(getResourceAsStream("/area2.json"),"UTF-8");
+            areas3 = IOUtils.toString(getResourceAsStream("/area3.json"),"UTF-8");
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }        
+    }
+    
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
@@ -23,16 +37,20 @@ public class AreasServlet extends AbstractSPARQLServlet{
         response.setDateHeader("Last-Modified", System.currentTimeMillis());
         
         String level = request.getParameter("level");
-        String resource = "/areas.json";
+        String content = areas;
         if ("1".equals(level)){
-            resource = "/area1.json";
+            content = areas1;
         }else if ("2".equals(level)){
-            resource = "/area2.json";
+            content = areas2;
         }else if ("3".equals(level)){
-            resource = "/area3.json";
+            content = areas3;
         }
-        IOUtils.copy(getClass().getResourceAsStream(resource), response.getOutputStream());
+        response.getWriter().append(content);
         
+    }
+    
+    private InputStream getResourceAsStream(String resource){
+        return AreasServlet.class.getResourceAsStream(resource);
     }
 
 }
