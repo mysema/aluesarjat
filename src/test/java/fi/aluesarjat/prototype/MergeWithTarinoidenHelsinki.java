@@ -1,10 +1,13 @@
 package fi.aluesarjat.prototype;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.rdfbean.model.DC;
@@ -15,6 +18,7 @@ import com.mysema.rdfbean.model.RDFS;
 import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.model.io.RDFSource;
+import com.mysema.rdfbean.owl.OWL;
 import com.mysema.rdfbean.sesame.MemoryRepository;
 
 public class MergeWithTarinoidenHelsinki {
@@ -32,6 +36,7 @@ public class MergeWithTarinoidenHelsinki {
                 public Void execute(RDFConnection connection) throws IOException {
                     Map<String, ID> areaTitles = new HashMap<String, ID>();
                     Map<String, ID> tarinaTitles = new HashMap<String, ID>();
+                    Set<STMT> links = new HashSet<STMT>();
                     List<STMT> stmts = new ArrayList<STMT>();
                     stmts.addAll(IteratorAdapter.asList(connection.findStatements(null, DC.title, null, null, false)));
                     stmts.addAll(IteratorAdapter.asList(connection.findStatements(null, RDFS.label, null, null, false)));
@@ -47,10 +52,13 @@ public class MergeWithTarinoidenHelsinki {
                         ID area = getByPrefix(areaTitles, entry.getKey());
                         if (area != null){
                             System.out.println(entry.getKey() + " -> " + area);
+                            links.add(new STMT(area, OWL.sameAs, entry.getValue()));
                         }else{
                             System.err.println(entry.getKey() + " -> " + entry.getValue());
                         }
                     }
+                    
+                    RDFUtil.dump(links, new File("src/main/resources/ext/tarinoidenhelsinki-links.ttl"));
                     
                     return null;
                 }                

@@ -10,7 +10,9 @@ import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.model.io.RDFSource;
 import com.mysema.stat.scovo.SCV;
 
-public class ModuleUtils {
+public final class ModuleUtils {
+    
+    private static final String DEFAULT_BASE_URI = "http://localhost:8080/rdf/";
 
     public static RDFSource[] getSources(String baseURI) {
         RDFSource[] sources = new RDFSource[]{
@@ -22,9 +24,12 @@ public class ModuleUtils {
             new RDFSource("classpath:/area-polygons.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
             new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#"),
             new RDFSource("classpath:/ext/dbpedia-comments.ttl", Format.TURTLE, "http://dbpedia.org"),
-            new RDFSource("classpath:/ext/dbpedia-links.ttl", Format.TURTLE, "http://dbpedia.org")};
+            new RDFSource("classpath:/ext/dbpedia-links.ttl", Format.TURTLE, "http://dbpedia.org"),
+            new RDFSource("classpath:/ext/tarinoidenhelsinki.ttl", Format.TURTLE, "http://www.tarinoidenhelsinki.fi"),
+            new RDFSource("classpath:/ext/tarinoidenhelsinki-links.ttl", Format.TURTLE, "http://www.tarinoidenhelsinki.fi")
+            };
         
-        if (!baseURI.equals("http://localhost:8080/rdf/")){
+        if (!baseURI.equals(DEFAULT_BASE_URI)){
             for (int i = 0; i < sources.length; i++){
                 sources[i] = transform(sources[i], baseURI);
             }
@@ -36,11 +41,13 @@ public class ModuleUtils {
         try {
             String encoding = source.getFormat().equals(Format.NTRIPLES) ? "US-ASCII" : "UTF-8";
             String str = IOUtils.toString(source.openStream(), encoding);
-            String normalized = str.replace("http://localhost:8080/rdf/", baseURI);
+            String normalized = str.replace(DEFAULT_BASE_URI, baseURI);
             return new RDFSource(new ByteArrayInputStream(normalized.getBytes(encoding)), source.getFormat(), source.getContext());
         } catch (IOException e) {
             throw new RepositoryException(e);
         }
     }
+    
+    private ModuleUtils(){}
 
 }
