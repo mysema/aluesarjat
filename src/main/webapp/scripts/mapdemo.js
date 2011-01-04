@@ -3,18 +3,36 @@ var overfeature = null;
 var marker = null;
 var gonzo1, gonzo2, gongo3;
 
-var searchGonzo; // TODO
+var activeGonzo = null;
+
+var geoOverlay = {
+		type: "FeatureCollection",
+		properties: { },
+		features: [ {
+			strokeColor: "#000000",
+			strokeOpacity: 0.8,
+			strokeWeight: 2,
+			strokeWidth: 2,
+			fillColor: "#FFC0C0",
+			fillOpacity: 0.2,
+		    type: "Feature",
+		    properties: {},
+		    geometry: {type:"MultiPolygon", coordinates:[]}
+		} ]
+	};
+
+var searchGonzo = null; 
 var comments = {};
 
 $(document).ready(function(){	
     var latlng = new google.maps.LatLng(60.1662735988013, 24.93207843548);
-    var myOptions = {
-      zoom: 11,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
     
-    map = new google.maps.Map(document.getElementById("map"), myOptions);
+    map = new google.maps.Map(
+    		document.getElementById("map"), 
+    		{ zoom: 11,
+    		  center: latlng,
+    		  mapTypeId: google.maps.MapTypeId.ROADMAP
+    		});
         
 	google.maps.event.addListener(map, 'zoom_changed', function(){
 		var zoom = map.getZoom();
@@ -22,17 +40,17 @@ $(document).ready(function(){
 			gonzo1.setMap(null);
 			gonzo2.setMap(null);
 			gonzo3.setMap(map);
-			$("#info").html("3 " + zoom );
+			activeGonzo = gonzo3;
 		}else if (zoom < 13){
 			gonzo1.setMap(null);
 			gonzo2.setMap(map);
 			gonzo3.setMap(null);
-			$("#info").html("2 "+ zoom);
+			activeGonzo = gonzo2;
 		}else{
 			gonzo1.setMap(map);
 			gonzo2.setMap(null);
 			gonzo3.setMap(null);
-			$("#info").html("1 "+ zoom);
+			activeGonzo = gonzo1;
 		}
 	});
 	
@@ -68,6 +86,7 @@ $(document).ready(function(){
 		success: function(geo){	
 			gonzo3 = createOverlay(geo);
 			gonzo3.setMap(map);
+			activeGonoz = gonzo3;
 		}
 	});
 });
@@ -100,15 +119,14 @@ function mouseOverFeature(event, where) {
 			overfeature = feature
 			var centroid = feature.properties.center;
 			var latlng = new google.maps.LatLng( centroid[1], centroid[0] );
-			if (marker != null){
-				marker.setMap(null);
-			}
-			/*
-			marker = new google.maps.Marker( { 
+			if (marker) marker.setMap(null);
+			//if (searchGonzo) searchGonzo.setMap(null);
+			
+			/*marker = new google.maps.Marker( { 
 				position: latlng, 
 				map: map, 
-				title: feature.properties.name } );
-			*/
+				title: feature.properties.name } );*/
+			
 			marker = new MarkerWithLabel({
 			    position: latlng,
 			    map: map,
@@ -117,9 +135,26 @@ function mouseOverFeature(event, where) {
 			    labelContent: feature.properties.name,
 			    labelClass: "label",
 			});
+			
+			// set coordinates to that of selected feature
+			geoOverlay.features[0].properties = feature.properties;
+			geoOverlay.features[0].geometry = feature.geometry;
+			
+			if (!searchGonzo){
+				searchGonzo = new PolyGonzo.PgOverlay({ 
+					map: map, 
+					geo: geoOverlay, 
+					events: {  
+						mousemove: mouseOverFeature,
+						click: clickOnFeature
+					} 
+				});
+			}
+			searchGonzo.setMap(map);
 		}							
 	}else{
-		marker.setMap(null);
+		if (marker) marker.setMap(null);
+		if (searchGonzo) searchGonzo.setMap(null);
 	}
 }	
 
