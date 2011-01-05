@@ -14,9 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.NODE;
+import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.SPARQLQuery;
 import com.mysema.rdfbean.model.UID;
 
 public class AreaDataServlet extends AbstractSPARQLServlet{
@@ -58,20 +61,31 @@ public class AreaDataServlet extends AbstractSPARQLServlet{
             
             // väkiluku
             StringBuilder query = getSPARQLNamespaces(namespaces);
-            query.append(String.format(QUERY_TEMPLATE, "ikäryhmä:Väestö_yhteensä , vuosi:_2009"));
-            NODE node = getSingleResult(connection, query.toString(), bindings);
-            if (node != null){
-                JSONObject entry = new JSONObject();
-                entry.put("value", node.getValue());
-                entry.put("label", "Väkiluku");    
-                result.add(entry);
+            query.append("SELECT ?ik ?val \nWHERE {\n");
+            query.append("?item scv:dimension ?area , ?ir , vuosi:_2009 ;\n");
+            query.append("rdf:value ?val . \n");
+            query.append("?ik rdf:type dimension:Ikäryhmä . \n");
+            query.append("}");
+            SPARQLQuery sparqlQuery = connection.createQuery(QueryLanguage.SPARQL, query.toString());
+            sparqlQuery.setBinding("area", bindings.values().iterator().next());
+            CloseableIterator<Map<String,NODE>> sparqlResult = sparqlQuery.getTuples();
+            try{
+                while (sparqlResult.hasNext()){
+                    Map<String,NODE> tuples = sparqlResult.next();
+                    JSONObject entry = new JSONObject();
+                    entry.put("value", tuples.get("ik").getValue());
+                    entry.put("label", tuples.get("val").getValue());
+                    result.add(entry);
+                }
+            }finally{
+                sparqlResult.close();
             }
             
             // asuntotuotanto (lukumäärä)
             query = getSPARQLNamespaces(namespaces);
             query.append(String.format(QUERY_TEMPLATE, "yksikkö:Asuntojen_lukumäärä , hallintaperuste:Asunnot_yhteensä , " +
             		"rahoitusmuoto:Yhteensä , vuosi:_2009, talotyyppi:Yhteensä, huoneistotyyppi:Yhteensä"));
-            node = getSingleResult(connection, query.toString(), bindings);
+            NODE node = getSingleResult(connection, query.toString(), bindings);
             if (node != null){
                 JSONObject entry = new JSONObject();
                 entry.put("value", node.getValue());

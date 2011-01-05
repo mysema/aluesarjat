@@ -132,7 +132,7 @@ function mouseOverFeature(event, where) {
 			marker = new MarkerWithLabel({
 			    position: latlng,
 			    map: map,
-			    icon: "x",
+			    icon: null,
 			    labelAnchor: new google.maps.Point(22, 0),       
 			    labelContent: feature.properties.name,
 			    labelClass: "label",
