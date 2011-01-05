@@ -6,12 +6,13 @@ import java.io.InputStream;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
-public class AreasServlet extends AbstractSPARQLServlet{
+public class AreasServlet extends HttpServlet{
 
     private static final long serialVersionUID = -1216436366722412316L;
     
@@ -46,6 +47,7 @@ public class AreasServlet extends AbstractSPARQLServlet{
             content = areas3;
         }
         response.getWriter().append(content);
+        response.getWriter().flush();
         
     }
     

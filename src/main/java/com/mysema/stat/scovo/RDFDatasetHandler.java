@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.converters.DateTimeConverter;
 import com.mysema.rdfbean.model.DC;
 import com.mysema.rdfbean.model.DCTERMS;
 import com.mysema.rdfbean.model.ID;
@@ -37,7 +38,6 @@ import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.rdfbean.model.XSD;
 import com.mysema.rdfbean.owl.OWL;
-import com.mysema.rdfbean.xsd.DateTimeConverter;
 import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.Dataset;
 import com.mysema.stat.pcaxis.DatasetHandler;

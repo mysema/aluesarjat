@@ -22,7 +22,10 @@ var geoOverlay = {
 	};
 
 var searchGonzo = null; 
+
+// area data
 var comments = {};
+var statistics = {};
 
 $(document).ready(function(){	
     var latlng = new google.maps.LatLng(60.1662735988013, 24.93207843548);
@@ -120,7 +123,6 @@ function mouseOverFeature(event, where) {
 			var centroid = feature.properties.center;
 			var latlng = new google.maps.LatLng( centroid[1], centroid[0] );
 			if (marker) marker.setMap(null);
-			//if (searchGonzo) searchGonzo.setMap(null);
 			
 			/*marker = new google.maps.Marker( { 
 				position: latlng, 
@@ -161,12 +163,33 @@ function mouseOverFeature(event, where) {
 function clickOnFeature(event, where) {
 	var feature = where && where.feature;
 	if (feature){
-		var content = [];
-		content.push("<h4>"+feature.properties.name+"</h4>");
-		if (comments[feature.properties.code]){
-			content.push("<p>"+comments[feature.properties.code]+"</p>");
+		var code = feature.properties.code;
+		if (!statistics[code]){
+			$.ajax({
+				url: "areadata", data: {area: code}, datatype: "json", 
+				success: function(data){	
+					statistics[code] = data;
+					updateInfo(feature, data);
+				}
+			});
+		}else{
+			updateInfo(feature, statistics[code]);
 		}
-		$("#info").html(content.join(""));
+	}	
+}
+
+function updateInfo(feature, areaData){
+	var content = [];
+	content.push("<h4>"+feature.properties.name+"</h4>");
+	if (areaData){
+		var length = areaData.length;
+		for (var i = 0; i < length; i++){
+			var entry = areaData[i];
+			content.push("<p>"+ entry.label + " : " + entry.value + "</p>");
+		}
 	}
-	
+	if (comments[feature.properties.code]){
+		content.push("<p>"+comments[feature.properties.code]+"</p>");
+	}
+	$("#info").html(content.join(""));
 }
