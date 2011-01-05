@@ -61,10 +61,9 @@ public class AreaDataServlet extends AbstractSPARQLServlet{
             
             // väkiluku
             StringBuilder query = getSPARQLNamespaces(namespaces);
-            query.append("SELECT ?ik ?val \nWHERE {\n");
-            query.append("?item scv:dimension ?area , ?ir , vuosi:_2009 ;\n");
-            query.append("rdf:value ?val . \n");
-            query.append("?ik rdf:type dimension:Ikäryhmä . \n");
+            query.append("SELECT ?ikl ?val \nWHERE {\n");
+            query.append("?item scv:dimension vuosi:_2009 , ?area , ?ir ; rdf:value ?val . \n");
+            query.append("?ik rdf:type dimension:Ikäryhmä . ?ik dc:title ?ikl \n");
             query.append("}");
             SPARQLQuery sparqlQuery = connection.createQuery(QueryLanguage.SPARQL, query.toString());
             sparqlQuery.setBinding("area", bindings.values().iterator().next());
@@ -73,8 +72,8 @@ public class AreaDataServlet extends AbstractSPARQLServlet{
                 while (sparqlResult.hasNext()){
                     Map<String,NODE> tuples = sparqlResult.next();
                     JSONObject entry = new JSONObject();
-                    entry.put("value", tuples.get("ik").getValue());
-                    entry.put("label", tuples.get("val").getValue());
+                    entry.put("label", tuples.get("ikl").getValue());
+                    entry.put("value", tuples.get("val").getValue());
                     result.add(entry);
                 }
             }finally{
@@ -88,8 +87,8 @@ public class AreaDataServlet extends AbstractSPARQLServlet{
             NODE node = getSingleResult(connection, query.toString(), bindings);
             if (node != null){
                 JSONObject entry = new JSONObject();
-                entry.put("value", node.getValue());
                 entry.put("label", "Asuntotuotanto (lkm)");
+                entry.put("value", node.getValue());                
                 result.add(entry);
             }       
             
@@ -99,9 +98,10 @@ public class AreaDataServlet extends AbstractSPARQLServlet{
                         "rahoitusmuoto:Yhteensä , vuosi:_2009, talotyyppi:Yhteensä, huoneistotyyppi:Yhteensä"));
             node = getSingleResult(connection, query.toString(), bindings);
             if (node != null){
-                JSONObject entry = new JSONObject();
-                entry.put("value", node.getValue());
+                JSONObject entry = new JSONObject();                
                 entry.put("label", "Asuntotuotanto (pinta-ala)");
+                entry.put("value", node.getValue());
+                result.add(entry);
             }   
             
             Writer out = response.getWriter();

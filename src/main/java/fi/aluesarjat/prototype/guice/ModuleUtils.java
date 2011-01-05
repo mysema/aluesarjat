@@ -15,13 +15,14 @@ public final class ModuleUtils {
     private static final String DEFAULT_BASE_URI = "http://localhost:8080/rdf/";
 
     public static RDFSource[] getSources(String baseURI) {
+        String alueContext = baseURI + "dimensions/Alue";
         RDFSource[] sources = new RDFSource[]{
             new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
-            new RDFSource("classpath:/alue.ttl", Format.TURTLE, baseURI + "dimension/Alue"),
-            new RDFSource("classpath:/area-hierarchy.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
-            new RDFSource("classpath:/area-kauniainen.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
-            new RDFSource("classpath:/area-centers.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
-            new RDFSource("classpath:/area-polygons.ttl", Format.TURTLE, baseURI + "dimensions/Alue"),
+            new RDFSource("classpath:/alue.ttl", Format.TURTLE, alueContext),
+            new RDFSource("classpath:/area-hierarchy.ttl", Format.TURTLE, alueContext),
+            new RDFSource("classpath:/area-kauniainen.ttl", Format.TURTLE, alueContext),
+            new RDFSource("classpath:/area-centers.ttl", Format.TURTLE, alueContext),
+            new RDFSource("classpath:/area-polygons.ttl", Format.TURTLE, alueContext),
             new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#"),
             new RDFSource("classpath:/ext/dbpedia-comments.ttl", Format.TURTLE, "http://dbpedia.org"),
             new RDFSource("classpath:/ext/dbpedia-links.ttl", Format.TURTLE, "http://dbpedia.org"),
