@@ -6,12 +6,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServlet;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.rdfbean.model.LIT;
 import com.mysema.rdfbean.model.NODE;
 import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.SPARQLQuery;
+import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
+import com.mysema.stat.META;
 
 public abstract class AbstractSPARQLServlet extends HttpServlet {
     
@@ -26,22 +27,15 @@ public abstract class AbstractSPARQLServlet extends HttpServlet {
     }
 
     protected Map<String,String> getNamespaces(RDFConnection conn) {
-        SPARQLQuery query = conn.createQuery(QueryLanguage.SPARQL,
-                "SELECT ?ns ?prefix\n" +
-                "WHERE {\n" +
-                "?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix .\n" +
-                "}"
-        );
-        // Order by descending string length of NS -> when applying namespaces to output longest match comes first
-        CloseableIterator<Map<String,NODE>> iter = query.getTuples();
+        CloseableIterator<STMT> stmts = conn.findStatements(null, META.nsPrefix, null, null, false);
         Map<String,String> namespaces = new HashMap<String, String>(32);
-        try {
-            while (iter.hasNext()) {
-                Map<String, NODE> entry = iter.next();
-                namespaces.put(((UID) entry.get("ns")).getId(), ((LIT) entry.get("prefix")).getValue());
-            }
-        } finally {
-            iter.close();
+        try{
+            while (stmts.hasNext()){
+                STMT stmt = stmts.next();
+                namespaces.put(stmt.getSubject().getId(), stmt.getObject().getValue());
+            }            
+        }finally{
+            stmts.close();
         }
         return namespaces;
     }

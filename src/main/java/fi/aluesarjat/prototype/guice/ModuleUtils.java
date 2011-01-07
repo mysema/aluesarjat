@@ -12,7 +12,7 @@ import com.mysema.stat.scovo.SCV;
 
 public final class ModuleUtils {
     
-    private static final String DEFAULT_BASE_URI = "http://localhost:8080/rdf/";
+    public static final String DEFAULT_BASE_URI = "http://localhost:8080/rdf/";
 
     public static RDFSource[] getSources(String baseURI) {
         String alueContext = baseURI + "dimensions/Alue";
