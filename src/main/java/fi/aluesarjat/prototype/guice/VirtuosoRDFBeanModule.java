@@ -22,9 +22,15 @@ public class VirtuosoRDFBeanModule extends RDFBeanRepositoryModule{
         File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-virtuoso");
         dataDir.mkdir();
         String baseURI = properties.getProperty("baseURI");
-        VirtuosoRepository repository = new VirtuosoRepository("localhost:1111", "dba", "dba", baseURI);
+        final VirtuosoRepository repository = new VirtuosoRepository("localhost:1111", "dba", "dba", baseURI);
         repository.setSources(ModuleUtils.getSources(baseURI));
         repository.initialize();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                repository.close();
+            }
+        });
         return repository;
     }
 

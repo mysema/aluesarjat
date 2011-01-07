@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.NODE;
 import com.mysema.rdfbean.model.QueryLanguage;
@@ -23,6 +26,8 @@ import com.mysema.rdfbean.model.SPARQLQuery;
 import com.mysema.rdfbean.model.UID;
 
 public class AreaDataServlet extends AbstractSPARQLServlet{
+    
+    private static final Logger log = LoggerFactory.getLogger(AbstractFacetSearchServlet.class);
 
     private static final long serialVersionUID = 1307767271709547227L;
     
@@ -62,9 +67,12 @@ public class AreaDataServlet extends AbstractSPARQLServlet{
             // väkiluku
             StringBuilder query = getSPARQLNamespaces(namespaces);
             query.append("SELECT ?ikl ?val \nWHERE {\n");
-            query.append("?item scv:dimension vuosi:_2009 , ?area , ?ir ; rdf:value ?val . \n");
+            query.append("?item scv:dimension vuosi:_2009 , ?area , ?ik ; rdf:value ?val . \n");
             query.append("?ik rdf:type dimension:Ikäryhmä . ?ik dc:title ?ikl \n");
             query.append("}");
+            if (log.isInfoEnabled()){
+                log.info(query.toString());    
+            }            
             SPARQLQuery sparqlQuery = connection.createQuery(QueryLanguage.SPARQL, query.toString());
             sparqlQuery.setBinding("area", bindings.values().iterator().next());
             CloseableIterator<Map<String,NODE>> sparqlResult = sparqlQuery.getTuples();

@@ -22,10 +22,16 @@ public class NativeStoreRDFBeanModule extends RDFBeanRepositoryModule{
         File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-data");
         dataDir.mkdir();
 
-        NativeRepository repository = new NativeRepository(dataDir, false);
+        final NativeRepository repository = new NativeRepository(dataDir, false);
         repository.setSources(ModuleUtils.getSources(properties.getProperty("baseURI")));
         repository.setIndexes("spoc,posc,cspo,opsc");
         repository.initialize();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                repository.close();
+            }
+        });
         return repository;
     }
 

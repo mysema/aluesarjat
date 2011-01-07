@@ -1,5 +1,6 @@
 var map = null;
-var overfeature = null;
+var overArea = null;
+var clickedArea = null;
 var marker = null;
 var gonzo1, gonzo2, gongo3;
 
@@ -25,19 +26,25 @@ var searchGonzo = null;
 
 // area data
 var comments = {};
+var dbpediateComments = {};
 var statistics = {};
 
 $(document).ready(function(){	
     var latlng = new google.maps.LatLng(60.1662735988013, 24.93207843548);
     
+    // create map
     map = new google.maps.Map(
     		document.getElementById("map"), 
     		{ zoom: 11,
     		  center: latlng,
     		  mapTypeId: google.maps.MapTypeId.ROADMAP
     		});
-        
+    
+    // switch overlay on zoom
 	google.maps.event.addListener(map, 'zoom_changed', function(){
+		if (searchGonzo){
+			searchGonzo.setMap(null);
+		}
 		var zoom = map.getZoom();
 		if (zoom < 11){
 			gonzo1.setMap(null);
@@ -57,9 +64,25 @@ $(document).ready(function(){
 		}
 	});
 	
-	// get DBpedia comments
+	// init tabs
+	//$(".tab_content").hide(); //Hide all content
+	//$("ul.tabs li:first").addClass("active").show(); //Activate first tab
+	//$(".tab_content:first").show(); //Show first tab content
+
+	//On Click Event
+	$("ul.tabs li").live("click", function() {
+		$("ul.tabs li").removeClass("active"); //Remove any "active" class
+		$(this).addClass("active"); //Add "active" class to selected tab
+		$(".tab_content").hide(); //Hide all tab content
+
+		var activeTab = $(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
+		$(activeTab).fadeIn(); //Fade in the active ID content
+		return false;
+	});
+	
+	// get comments
 	initNamespaces("sparql", function(){
-		var query = prefixes + "SELECT ?area ?comment WHERE { ?area owl:sameAs ?area2 . ?area2 rdfs:comment ?comment }";
+		var query = prefixes + "SELECT ?area ?comment WHERE { ?area rdf:type dimension:Alue ; rdfs:comment ?comment . }";
 		querySparql("sparql", query, function(data){
 			var bindings = data.results.bindings;
 			for (var i = 0; i < bindings.length; i++){
@@ -69,7 +92,20 @@ $(document).ready(function(){
 			}
 		});
 	});
+	// get DBpedia comments
+	initNamespaces("sparql", function(){
+		var query = prefixes + "SELECT ?area ?comment WHERE { ?area owl:sameAs ?area2 . ?area2 rdfs:comment ?comment }";
+		querySparql("sparql", query, function(data){
+			var bindings = data.results.bindings;
+			for (var i = 0; i < bindings.length; i++){
+				var binding = bindings[i];
+				var area = getReadableURI(binding["area"].value); 
+				dbpediateComments[area.substring(area.indexOf(":")+1)] = binding["comment"].value;
+			}
+		});
+	});
 	
+	// get level 1 polygons
 	$.ajax({
 		url: "areas", data: {level: "1"}, datatype: "json", 
 		success: function(geo){
@@ -77,6 +113,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	// get level 2 polygons
 	$.ajax({
 		url: "areas", data: {level: "2"}, datatype: "json", 
 		success: function(geo){
@@ -84,6 +121,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	// get level 3 polygons
 	$.ajax({
 		url: "areas", data: {level: "3"}, datatype: "json", 
 		success: function(geo){	
@@ -118,8 +156,8 @@ function createOverlay(geo){
 function mouseOverFeature(event, where) {
 	var feature = where && where.feature;
 	if( feature ) {
-		if (feature != overfeature){
-			overfeature = feature
+		if (feature.properties.code != overArea){
+			overArea = feature.properties.code;
 			var centroid = feature.properties.center;
 			var latlng = new google.maps.LatLng( centroid[1], centroid[0] );
 			if (marker) marker.setMap(null);
@@ -136,6 +174,10 @@ function mouseOverFeature(event, where) {
 			    labelAnchor: new google.maps.Point(22, 0),       
 			    labelContent: feature.properties.name,
 			    labelClass: "label",
+			});
+			
+			google.maps.event.addListener(marker, 'click', function(){
+				clickOnFeature(null, {feature: feature});
 			});
 			
 			// set coordinates to that of selected feature
@@ -163,33 +205,72 @@ function mouseOverFeature(event, where) {
 function clickOnFeature(event, where) {
 	var feature = where && where.feature;
 	if (feature){
-		var code = feature.properties.code;
+		var props = feature.properties;
+		var code = props.code;
+		clickedArea = code;
 		if (!statistics[code]){
+			// initial display
+			updateInfo(props, null);
 			$.ajax({
-				url: "areadata", data: {area: code}, datatype: "json", 
-				success: function(data){	
+				url: "areadata", 
+				data: {area: code}, 
+				datatype: "json", 
+				success: function(data){
 					statistics[code] = data;
-					updateInfo(feature, data);
+					if (code == clickedArea){
+						updateInfo(props, data);	
+					}						
 				}
 			});
 		}else{
-			updateInfo(feature, statistics[code]);
-		}
+			updateInfo(props, statistics[code]);
+		}		
 	}	
 }
 
-function updateInfo(feature, areaData){
+function updateInfo(props, areaData){
 	var content = [];
-	content.push("<h4>"+feature.properties.name+"</h4>");
+	content.push("<h4>"+props.name+"</h4>");
+	
+	// tabs 
+	content.push("<ul class='tabs'>");
+	content.push("<li class='active'><a href='#tab1'>Kuvaus</a></li>");
+	if (dbpediateComments[props.code]){
+		content.push("<li><a href='#tab2'>DBpedia</a></li>");
+	}
 	if (areaData){
+		content.push("<li><a href='#tab3'>Tilastot</a></li>");	
+	}		
+	content.push("</ul>");
+	
+	// tab container
+	content.push("<div class='tab_container'>");
+	content.push("<div id='tab1' class='tab_content'>");
+	if (comments[props.code]){
+		content.push(comments[props.code]);
+	}else{
+		content.push("Ei kuvausta");
+	}
+	content.push("</div>");
+	
+	if (dbpediateComments[props.code]){
+		content.push("<div id='tab2' class='tab_content' style='display:none'>");
+		content.push(dbpediateComments[props.code]);
+		content.push("</div>");
+	}	
+	
+	if (areaData){
+		content.push("<div id='tab3' class='tab_content' style='display:none;'>");
+		content.push("<table>");
 		var length = areaData.length;
 		for (var i = 0; i < length; i++){
 			var entry = areaData[i];
-			content.push("<p>"+ entry.label + " : " + entry.value + "</p>");
+			content.push("<tr><th>"+ entry.label + "</th><td>" + entry.value + "</td></tr>");
 		}
+		content.push("</table>");
+		content.push("</div>");
 	}
-	if (comments[feature.properties.code]){
-		content.push("<p>"+comments[feature.properties.code]+"</p>");
-	}
+	content.push("</div>");
+		
 	$("#info").html(content.join(""));
 }

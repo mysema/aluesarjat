@@ -18,9 +18,15 @@ public class MemoryStoreRDFBeanModule extends RDFBeanRepositoryModule{
 
     @Override
     public Repository createRepository(@Config Properties properties) {
-        MemoryRepository repository = new MemoryRepository();
+        final MemoryRepository repository = new MemoryRepository();
         repository.setSources(ModuleUtils.getSources(properties.getProperty("baseURI")));
         repository.initialize();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                repository.close();
+            }
+        });
         return repository;
     }
 
