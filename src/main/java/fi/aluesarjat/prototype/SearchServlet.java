@@ -123,13 +123,17 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     }
 
                     stmts = conn.findStatements(getUID(dimensions.get(i), namespaces), RDF.type, null, null, false);
-                    if (stmts.hasNext()) {
-                        STMT stmt = stmts.next();
-                        filter.append("?dimensionType != <");
-                        filter.append(((UID) stmt.getObject()).getId());
-                        filter.append(">\n");
+                    try{
+                        if (stmts.hasNext()) {
+                            STMT stmt = stmts.next();
+                            filter.append("?dimensionType != <");
+                            filter.append(((UID) stmt.getObject()).getId());
+                            filter.append(">\n");
+                        }    
+                    }finally{
+                        stmts.close();    
                     }
-                    stmts.close();
+                    
                 }
 
                 StringBuilder where = whereDimensions(dimensions, "?dataset", "stat:datasetDimension");
@@ -152,19 +156,23 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 }
                 query = conn.createQuery(QueryLanguage.SPARQL, sparql.toString());
                 iter = query.getTuples();
-                while (iter.hasNext()) {
-                    row = iter.next();
-                    addFacet(row, namespaces, facets);
-
-                    UID dataset = (UID) row.get("dataset");
-                    if (distinctDataset.add(dataset)) {
-                        row = new HashMap<String, NODE>();
-                        row.put("dimension", dataset);
-                        row.put("dimensionType", SCV.Dataset);
+                try{
+                    while (iter.hasNext()) {
+                        row = iter.next();
                         addFacet(row, namespaces, facets);
-                    }
+
+                        UID dataset = (UID) row.get("dataset");
+                        if (distinctDataset.add(dataset)) {
+                            row = new HashMap<String, NODE>();
+                            row.put("dimension", dataset);
+                            row.put("dimensionType", SCV.Dataset);
+                            addFacet(row, namespaces, facets);
+                        }
+                    }    
+                }finally{
+                    iter.close();
                 }
-                iter.close();
+                
             }
             // Find items and exact non-empty facet values
             else {
@@ -207,11 +215,14 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                         json.accumulate("values", getPrefixed(dataset, namespaces));
 
                         stmts = conn.findStatements(id, SCV.dimension, null, dataset, false);
-                        while (stmts.hasNext()) {
-                            STMT stmt = stmts.next();
-                            json.accumulate("values", getPrefixed((UID) stmt.getObject(), namespaces));
+                        try{
+                            while (stmts.hasNext()) {
+                                STMT stmt = stmts.next();
+                                json.accumulate("values", getPrefixed((UID) stmt.getObject(), namespaces));
+                            }    
+                        }finally{
+                            stmts.close();
                         }
-                        stmts.close();
                         items.add(json);
                     }
                 }
