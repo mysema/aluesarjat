@@ -6,19 +6,15 @@ public final class SCV {
     
     public static final String NS = "http://purl.org/NET/scovo#";
     
-    public static final UID Dataset = uid("Dataset");
+    public static final UID Dataset = new UID(NS, "Dataset");
 
-    public static final UID Dimension = uid("Dimension");
+    public static final UID Dimension = new UID(NS, "Dimension");
 
-    public static final UID dimension = uid("dimension");
+    public static final UID dimension = new UID(NS, "dimension");
 
-    public static final UID Item = uid("Item");
+    public static final UID Item = new UID(NS, "Item");
 
-    public static final UID dataset = uid("dataset");
-
-    private static UID uid(String ln) {
-        return new UID(NS, ln);
-    }
+    public static final UID dataset = new UID(NS, "dataset");
     
     private SCV() {}
 
