@@ -23,6 +23,8 @@ import fi.aluesarjat.prototype.guice.ModuleUtils;
 
 public class TabularResults {
     
+    // TODO : aggregation via skos:broader relation
+    
     interface RowCallback {
         
         void handle(Map<String,NODE> row);
@@ -66,7 +68,8 @@ public class TabularResults {
 
     @Test
     public void Table1(){
-        // Taulukko 1. Väkiluku ikäryhmittäin 1. tammikuuta ja ennuste
+        String id = "Taulukko 1. Väkiluku ikäryhmittäin 1. tammikuuta ja ennuste";
+        
         StringBuilder query = new StringBuilder(prefixes);
         query.append("SELECT ?ik ?v ?val \n");
         query.append("WHERE { \n");
@@ -79,13 +82,13 @@ public class TabularResults {
         query.append("} \n");
         query.append("ORDER BY ?ik ?v \n");
 
-        query(query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback(){
             @Override
             public void handle(Map<String, NODE> row) {
                 String ik = row.get("ik").asURI().getLocalName();
                 String v = row.get("v").asURI().getLocalName();
                 String val = row.get("val").getValue();
-                System.out.println(leftPad(ik, 15) + leftPad(v, 15) + leftPad(val, 15));
+                System.out.println(leftPad(ik, 20) + leftPad(v, 10) + leftPad(val, 10));
             }            
         });
     }
@@ -93,7 +96,8 @@ public class TabularResults {
 
     @Test
     public void Table2(){
-        // Taulukko 2. Väkiluku äidinkielen mukaan 1. tammikuuta
+        String id = "Taulukko 2. Väkiluku äidinkielen mukaan 1. tammikuuta";
+        
         StringBuilder query = new StringBuilder(prefixes);
         query.append("SELECT ?k ?v ?val \n");
         query.append("WHERE { \n");
@@ -106,54 +110,185 @@ public class TabularResults {
         query.append("} \n");
         query.append("ORDER BY ?k ?v");
         
-        query(query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback(){
             @Override
             public void handle(Map<String, NODE> row) {
                 String k = row.get("k").asURI().getLocalName();
                 String v = row.get("v").asURI().getLocalName();
                 String val = row.get("val").getValue();
-                System.out.println(leftPad(k, 15) + leftPad(v, 15) + leftPad(val, 15));                
+                System.out.println(leftPad(k, 20) + leftPad(v, 10) + leftPad(val, 10));                
             }            
         });
     }
     
     @Test
     public void Table3(){
-        // Taulukko 3. Väestönmuutokset
-
+        String id = "Taulukko 3. Väestönmuutokset";
+        
+        StringBuilder query = new StringBuilder(prefixes);
+        query.append("SELECT ?k ?v ?val \n");
+        query.append("WHERE { \n");
+        query.append(" ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . \n");
+        query.append(" FILTER ( ?v = vuosi:_2000 || ?v = vuosi:_2008 || ?v = vuosi:_2009 || ?v = vuosi:_2010 ) \n");
+        query.append(" ?i scv:dimension yksikkö:Henkilö , ikä:Väestö_yhteensä . \n");
+        query.append(" ?i scv:dimension ?k . ?k rdf:type dimension:Muuttosuunta . \n");
+        query.append(" ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
+        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
+        query.append("} \n");
+        query.append("ORDER BY ?k ?v");
+        
+        query(id, query.toString(), new RowCallback(){
+            @Override
+            public void handle(Map<String, NODE> row) {
+                String k = row.get("k").asURI().getLocalName();
+                String v = row.get("v").asURI().getLocalName();
+                String val = row.get("val").getValue();
+                System.out.println(leftPad(k, 20) + leftPad(v, 10) + leftPad(val, 10));                
+            }            
+        });
     }
     
     @Test
     public void Table4(){
-        // Taulukko 4. Asuntokanta hallintaperusteen ja huoneistotyypin mukaan 31.12.2009 (viimeinen vuosi)
-
+        // TODO : aggregate
+        
+        String id = "Taulukko 4. Asuntokanta hallintaperusteen ja huoneistotyypin mukaan 31.12.2009 (viimeinen vuosi)";
+        
+        StringBuilder query = new StringBuilder(prefixes);
+        query.append("SELECT ?ha ?hu ?val \n");
+        query.append("WHERE { \n");
+        query.append(" ?i scv:dimension vuosi:_2008 , yksikkö:Asunto_ja_neliömetri . \n");
+        query.append(" ?i scv:dimension ?ha . ?ha rdf:type dimension:Hallintaperuste . \n");
+        query.append(" ?i scv:dimension ?hu . ?hu rdf:type dimension:Huoneistotyyppi . \n");
+        query.append(" ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
+        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
+        query.append("} \n");
+        query.append("ORDER BY ?ha ?hu");
+        
+        query(id, query.toString(), new RowCallback(){
+            @Override
+            public void handle(Map<String, NODE> row) {
+                String ha = row.get("ha").asURI().getLocalName();
+                String hu = row.get("hu").asURI().getLocalName();
+                String val = row.get("val").getValue();
+                System.out.println(leftPad(ha, 30) + leftPad(hu, 30) + leftPad(val, 10));                
+            }            
+        });
+        
     }
     
     @Test
     public void Table5(){
-        // Taulukko 5. Rakennukset 31.12.2008 (viimeinen vuosi)
-
+        String id = "Taulukko 5. Rakennukset 31.12.2008 (viimeinen vuosi)";
+        
+        StringBuilder query = new StringBuilder(prefixes);
+        query.append("SELECT ?kt ?yk ?val \n");
+        query.append("WHERE { \n");
+        query.append(" ?i scv:dimension vuosi:_2008 , valmistumisvuosi:Yhteensä . \n");
+        query.append(" ?i scv:dimension ?kt . ?kt rdf:type dimension:Käyttötarkoitus_ja_kerrosluku . \n");
+        query.append(" ?i scv:dimension ?yk . ?yk rdf:type dimension:Yksikkö . \n");
+        query.append(" ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
+        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
+        query.append("} \n");
+        query.append("ORDER BY ?kt ?yk");
+        
+        query(id, query.toString(), new RowCallback(){
+            @Override
+            public void handle(Map<String, NODE> row) {
+                String kt = row.get("kt").asURI().getLocalName();
+                String yk = row.get("yk").asURI().getLocalName();
+                String val = row.get("val").getValue();
+                System.out.println(leftPad(kt, 40) + leftPad(yk, 30) + leftPad(val, 10));                
+            }            
+        });
     }
     
     @Test
     public void Table6(){
-        // Taulukko 6. Asuntotuotanto (kolme viimeistä vuotta)
+        // TODO : aggregate
+        
+        String id = "Taulukko 6. Asuntotuotanto (kolme viimeistä vuotta)";
+        
+        StringBuilder query = new StringBuilder(prefixes);
+        query.append("SELECT ?k ?v ?val \n");
+        query.append("WHERE { \n");
+        query.append(" GRAPH dataset:A01HKI_Astuot_hper_rahoitus_talotyyppi {");
+        query.append("  ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
+        query.append("  ?i scv:dimension yksikkö:Asuntojen_lukumäärä , hallintaperuste:Asunnot_yhteensä , rahoitusmuoto:Yhteensä , talotyyppi:Yhteensä . \n");
+        query.append("  ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . \n");
+        query.append("  FILTER ( ?v = vuosi:_2007 || ?v = vuosi:_2008 || ?v = vuosi:_2009 ) \n");        
+        query.append("  ?i scv:dimension ?k . ?k rdf:type dimension:Huoneistotyyppi . \n");
+        query.append("  ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
+        query.append(" } \n");
+        query.append("} \n");
+        query.append("ORDER BY ?k ?v");
+        
+        query(id, query.toString(), new RowCallback(){
+            @Override
+            public void handle(Map<String, NODE> row) {
+                String k = row.get("k").asURI().getLocalName();
+                String v = row.get("v").asURI().getLocalName();
+                String val = row.get("val").getValue();
+                System.out.println(leftPad(k, 30) + leftPad(v, 10) + leftPad(val, 10));                
+            }            
+        });
    
     }
     
     @Test
     public void Table7_1(){
-//        Taulukko 7. Väestön keskitulo, euroa, vuonna 2008 (viimeinen vuosi)
-
+        String id = "Taulukko 7. Väestön keskitulo, euroa, vuonna 2008 (viimeinen vuosi)";
+        
+        StringBuilder query = new StringBuilder(prefixes);
+        query.append("SELECT ?val \n");
+        query.append("WHERE { \n");
+        query.append(" ?i scv:dimension vuosi:_2008 , tuloluokka:Keskitulo , yksikkö:Henkilö_ja_euro . \n");
+        query.append(" ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
+        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
+        query.append("} \n");
+        
+        query(id, query.toString(), new RowCallback(){
+            @Override
+            public void handle(Map<String, NODE> row) {
+                String val = row.get("val").getValue();
+                System.out.println(leftPad(val, 10));                
+            }            
+        });
     }
     
     @Test
     public void Table7_2(){
-        // Taulukko 7. Työpaikat toimialan mukaan (kolme viimeistä vuotta)
-
+        // TODO : aggregate
+        
+        String id = "Taulukko 7. Työpaikat toimialan mukaan (kolme viimeistä vuotta)";
+        
+        StringBuilder query = new StringBuilder(prefixes);
+        query.append("SELECT ?t ?v ?val \n");
+        query.append("WHERE { \n");
+        query.append(" ?i scv:dimension yksikkö:Henkilö . \n");
+        query.append(" ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . \n");
+        query.append(" FILTER ( ?v = vuosi:_2005 || ?v = vuosi:_2006 || ?v = vuosi:_2007 ) \n");        
+        query.append(" ?i scv:dimension ?t . ?t rdf:type dimension:Toimiala . \n");
+        query.append(" ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
+        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
+        query.append("} \n");
+        query.append("ORDER BY ?t ?v");
+        
+        query(id, query.toString(), new RowCallback(){
+            @Override
+            public void handle(Map<String, NODE> row) {
+                String t = row.get("t").asURI().getLocalName();
+                String v = row.get("v").asURI().getLocalName();
+                String val = row.get("val").getValue();
+                System.out.println(leftPad(t, 70) + leftPad(v, 10) + leftPad(val, 10));                
+            }            
+        });
     }
     
-    private void query(String queryString, RowCallback callback) {
+    private void query(String id, String queryString, RowCallback callback) {
+        System.err.println(id);
+        System.out.println();
+        
 //        System.out.println(queryString);
         RDFConnection connection = repository.openConnection();
         try{
