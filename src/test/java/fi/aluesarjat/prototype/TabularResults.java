@@ -3,6 +3,7 @@ package fi.aluesarjat.prototype;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,6 +21,11 @@ import com.mysema.stat.META;
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
 public class TabularResults {
+    
+    interface RowCallback {
+        
+        void handle(Map<String,NODE> row);
+    }
     
     private static VirtuosoRepository repository;
     
@@ -61,20 +67,30 @@ public class TabularResults {
     public void Table1(){
         // Taulukko 1. Väkiluku ikäryhmittäin 1. tammikuuta ja ennuste
         StringBuilder query = new StringBuilder(prefixes);
-        query.append("SELECT ?ik ?v sum(?val) \n");
+        query.append("SELECT ?ik ?v ?val \n");
         query.append("WHERE { \n");
         query.append(" ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . \n");
         query.append(" FILTER ( ?v = vuosi:_2000 || ?v = vuosi:_2008 || ?v = vuosi:_2009 || ?v = vuosi:_2010 ) \n");
         query.append(" ?i scv:dimension yksikkö:Henkilöä . \n");
         query.append(" ?i scv:dimension ?ik . ?ik rdf:type dimension:Ikäryhmä . \n");
-        query.append(" ?i scv:dimension ?a . ?a rdf:type dimension:Alue . \n");
-        query.append(" ?a skos:broader ?broader . FILTER ( ?broader != alue:Pääkaupunkiseutu ) \n");
-        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:decimal ) \n");
+        query.append(" ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
+        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
         query.append("} \n");
-        query.append("GROUP BY ?v ?ik \n");
         query.append("ORDER BY ?ik ?v \n");
 
-        query(query.toString());
+        query(query.toString(), new RowCallback(){
+            @Override
+            public void handle(Map<String, NODE> row) {
+                String ik = row.get("ik").asURI().getLocalName();
+                String v = row.get("v").asURI().getLocalName();
+                String val = row.get("val").getValue();
+                System.out.println(
+                        StringUtils.leftPad(ik, 15) + 
+                        StringUtils.leftPad(v, 15) +
+                        StringUtils.leftPad(val, 15)
+                        );
+            }            
+        });
     }
     
 
@@ -82,21 +98,30 @@ public class TabularResults {
     public void Table2(){
         // Taulukko 2. Väkiluku äidinkielen mukaan 1. tammikuuta
         StringBuilder query = new StringBuilder(prefixes);
-        query.append("SELECT ?k ?v sum(?val) \n");
+        query.append("SELECT ?k ?v ?val \n");
         query.append("WHERE { \n");
-        query.append(" ?i scv:dataset dataset:A03S_HKI_Vakiluku_aidinkieli . \n");
         query.append(" ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . \n");
         query.append(" FILTER ( ?v = vuosi:_2000 || ?v = vuosi:_2008 || ?v = vuosi:_2009 || ?v = vuosi:_2010 ) \n");
         query.append(" ?i scv:dimension yksikkö:Henkilö . \n");
         query.append(" ?i scv:dimension ?k . ?k rdf:type dimension:Äidinkieli . \n");
-        query.append(" ?i scv:dimension ?a . ?a rdf:type dimension:Alue . \n");
-        query.append(" ?a skos:broader ?broader . FILTER ( ?broader != alue:Pääkaupunkiseutu ) \n");
-        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:decimal ) \n");
+        query.append(" ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
+        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
         query.append("} \n");
-        query.append("GROUP BY ?v ?k\n");
         query.append("ORDER BY ?k ?v");
         
-        query(query.toString());
+        query(query.toString(), new RowCallback(){
+            @Override
+            public void handle(Map<String, NODE> row) {
+                String k = row.get("k").asURI().getLocalName();
+                String v = row.get("v").asURI().getLocalName();
+                String val = row.get("val").getValue();
+                System.out.println(
+                        StringUtils.leftPad(k, 15) + 
+                        StringUtils.leftPad(v, 15) +
+                        StringUtils.leftPad(val, 15)
+                        );                
+            }            
+        });
     }
     
     @Test
@@ -135,7 +160,7 @@ public class TabularResults {
 
     }
     
-    private void query(String queryString) {
+    private void query(String queryString, RowCallback callback) {
 //        System.out.println(queryString);
         RDFConnection connection = repository.openConnection();
         try{
@@ -143,8 +168,7 @@ public class TabularResults {
             CloseableIterator<Map<String, NODE>> tuplesResult = query.getTuples();
             try{
                 while (tuplesResult.hasNext()){
-                    Map<String, NODE> tuples = tuplesResult.next();
-                    System.out.println(tuples);
+                    callback.handle(tuplesResult.next());
                 }
                 System.out.println();
             }finally{
