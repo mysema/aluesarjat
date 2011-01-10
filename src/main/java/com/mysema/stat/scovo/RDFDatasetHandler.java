@@ -87,7 +87,7 @@ public class RDFDatasetHandler implements DatasetHandler {
 
     private List<UID> datasets;
 
-    private final int batchSize = 2000;
+    private static final int batchSize = 2000;
 
     private int itemCount = 0;
 
@@ -171,7 +171,7 @@ public class RDFDatasetHandler implements DatasetHandler {
             if (dataset.getUnits() != null) {
                 String units = dataset.getUnits();
                 DimensionType type = new DimensionType(UNITS_LOCAL_NAME);
-                type.addDimension(units.substring(0, 1).toUpperCase() + units.substring(1)); // henkilö -> Henkilö
+                type.addDimension(units.substring(0, 1).toUpperCase(Locale.ENGLISH) + units.substring(1)); // henkilö -> Henkilö
                 
                 dataset.addDimensionType(type);
                 
