@@ -1,9 +1,10 @@
 package fi.aluesarjat.prototype;
 
+import static org.apache.commons.lang.StringUtils.leftPad;
+
 import java.io.IOException;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -84,11 +85,7 @@ public class TabularResults {
                 String ik = row.get("ik").asURI().getLocalName();
                 String v = row.get("v").asURI().getLocalName();
                 String val = row.get("val").getValue();
-                System.out.println(
-                        StringUtils.leftPad(ik, 15) + 
-                        StringUtils.leftPad(v, 15) +
-                        StringUtils.leftPad(val, 15)
-                        );
+                System.out.println(leftPad(ik, 15) + leftPad(v, 15) + leftPad(val, 15));
             }            
         });
     }
@@ -115,11 +112,7 @@ public class TabularResults {
                 String k = row.get("k").asURI().getLocalName();
                 String v = row.get("v").asURI().getLocalName();
                 String val = row.get("val").getValue();
-                System.out.println(
-                        StringUtils.leftPad(k, 15) + 
-                        StringUtils.leftPad(v, 15) +
-                        StringUtils.leftPad(val, 15)
-                        );                
+                System.out.println(leftPad(k, 15) + leftPad(v, 15) + leftPad(val, 15));                
             }            
         });
     }
