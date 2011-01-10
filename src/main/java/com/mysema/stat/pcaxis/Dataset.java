@@ -39,42 +39,28 @@ public class Dataset {
     public void set(Key key, List<String> values) {
         if (CONTENTS.equals(key)) {
             title = toString(values);
-        }
-
-        else if (NOTE.equals(key)) {
+        } else if (NOTE.equals(key)) {
             description = toString(values);
-        }
-
-        else if (SOURCE.equals(key)) {
+        } else if (SOURCE.equals(key)) {
             publisher = toString(values);
-        }
-
-        else if (UNITS.equals(key)) {
+        } else if (UNITS.equals(key)) {
             units = toString(values);
-        }
-
-        else if (STUB.equals(key)) {
+        } else if (STUB.equals(key)) {
             // Append at start of dimensions
             for (int i=0; i < values.size(); i++) {
                 dimensionTypes.add(i, new DimensionType(toString(values.get(i))));
             }
-        }
-
-        else if (HEADING.equals(key)) {
+        } else if (HEADING.equals(key)) {
             // Append to dimensions
             for (String value : values) {
                 dimensionTypes.add(new DimensionType(toString(value)));
             }
-        }
-
-        else if ("VALUES".equals(key.getName())) {
+        } else if ("VALUES".equals(key.getName())) {
             DimensionType type = findDimensionType(toString(key.getSpecifiers().get(0)));
             for (String value : values) {
                 type.addDimension(toString(value));
             }
-        }
-
-        else if (DATA.equals(key)) {
+        } else if (DATA.equals(key)) {
             throw new IllegalArgumentException("DATA cannot be added directly to Dataset");
         }
     }
