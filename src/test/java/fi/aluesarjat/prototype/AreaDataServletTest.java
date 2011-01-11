@@ -6,41 +6,45 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+
+import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
+
+import fi.aluesarjat.prototype.guice.ModuleUtils;
 
 @Ignore
-public class AreaDataServletTest extends AbstractServletTest{
+public class AreaDataServletTest {
     
-    // Väkiluku    
-//    value   alue:_091_1_Eteläinen_suurpiiri
-//    value   dataset:A02S_HKI_Vakiluku1962
-//    value   ikäryhmä:Väestö_yhteensä
-//    value   vuosi:_2009
+    protected static VirtuosoRepository repository;
 
-    // Asuntotuotanto (lukumäärä)
-//    value   alue:_091_1_Eteläinen_suurpiiri
-//    value   yksikkö:Asuntojen_lukumäärä
-//    value   hallintaperuste:Asunnot_yhteensä
-//    value   rahoitusmuoto:Yhteensä
-//    value   talotyyppi:Yhteensä
-//    value   huoneistotyyppi:Yhteensä
-//    value   vuosi:_2009
+    protected MockHttpServletRequest request;
+
+    protected MockHttpServletResponse response;
     
-    // Asuntotuotanto (pinta-ala m2)
-//    value   alue:_091_1_Eteläinen_suurpiiri
-//    value   yksikkö:Asuntojen_pinta-ala_m2
-//    value   hallintaperuste:Asunnot_yhteensä
-//    value   rahoitusmuoto:Yhteensä
-//    value   talotyyppi:Yhteensä
-//    value   huoneistotyyppi:Yhteensä
-//    value   vuosi:_2009
-
     private AreaDataServlet servlet;
 
-    @Override
+    @BeforeClass
+    public static void setUpClass() throws ServletException, IOException{
+        String baseURI = ModuleUtils.DEFAULT_BASE_URI;
+        repository = new VirtuosoRepository("localhost:1111", "dba", "dba", baseURI);
+        repository.setSources(ModuleUtils.getSources(baseURI));
+    }
+
+    @AfterClass
+    public static void tearDownClass(){
+        repository.close();
+    }
+
+    @Before
     public void setUp(){
-        super.setUp();
+        request = new MockHttpServletRequest();
+        response = new MockHttpServletResponse();
         servlet = new AreaDataServlet(repository, "http://localhost:8080/rdf/");
     }
     
@@ -50,5 +54,16 @@ public class AreaDataServletTest extends AbstractServletTest{
         servlet.service(request, response);
         assertEquals("UTF-8", response.getCharacterEncoding());
         assertEquals("application/json", response.getContentType());
+    }
+    
+    public static void main(String[] args) throws ServletException, IOException{
+        setUpClass();
+        AreaDataServletTest test = new AreaDataServletTest();
+        test.setUp();
+        try{
+            test.Correct_Encoding();    
+        }finally{
+            tearDownClass();    
+        }
     }
 }
