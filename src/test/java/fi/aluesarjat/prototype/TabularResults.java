@@ -202,19 +202,21 @@ public class TabularResults {
     
     @Test
     public void Table6(){
-        // TODO : optimize
-        
         String id = "Taulukko 6. Asuntotuotanto (kolme viimeistä vuotta)";
         
         StringBuilder query = new StringBuilder(prefixes);
         query.append("SELECT ?k ?v sum(?val) \n");
         query.append("WHERE { \n");
-        query.append(" ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
-        query.append(" ?i scv:dimension yksikkö:Asuntojen_lukumäärä , hallintaperuste:Asunnot_yhteensä , rahoitusmuoto:Yhteensä , talotyyppi:Yhteensä . \n");
-        query.append(" ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . \n");
-        query.append(" FILTER ( ?v = vuosi:_2007 || ?v = vuosi:_2008 || ?v = vuosi:_2009 ) \n");        
-        query.append(" ?i scv:dimension ?k2 . ?k2 rdf:type dimension:Huoneistotyyppi ; skos:broader ?k . \n");
-        query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
+        query.append(" GRAPH dataset:A01HKI_Astuot_hper_rahoitus_talotyyppi {\n");
+        query.append("   ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . \n");
+        query.append("   ?i scv:dimension yksikkö:Asuntojen_lukumäärä , hallintaperuste:Asunnot_yhteensä , rahoitusmuoto:Yhteensä , talotyyppi:Yhteensä . \n");
+        query.append("   ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
+        query.append("   ?i scv:dimension ?v . \n");
+        query.append("   FILTER ( ?v = vuosi:_2007 || ?v = vuosi:_2008 || ?v = vuosi:_2009 ) \n");        
+        query.append("   ?i scv:dimension ?k2 \n");
+        query.append(" } \n");
+        query.append(" ?k2 rdf:type dimension:Huoneistotyyppi ; skos:broader ?k . \n");
+        query.append(" ?v rdf:type dimension:Vuosi . \n");
         query.append("} \n");
         query.append("GROUP BY ?k ?v\n");
         query.append("ORDER BY ?k ?v");
@@ -275,7 +277,7 @@ public class TabularResults {
                 String t = row.get("t").asURI().getLocalName();
                 String v = row.get("v").asURI().getLocalName();
                 String val = row.get("callret-2").getValue();
-                System.out.println(leftPad(t, 70) + leftPad(v, 10) + leftPad(val, 10));                
+                System.out.println(leftPad(t, 30) + leftPad(v, 10) + leftPad(val, 10));                
             }            
         });
     }
