@@ -1,0 +1,53 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dimension: <http://localhost:8080/rdf/dimensions/> .
+@prefix huoneistotyyppi: <http://localhost:8080/rdf/dimensions/Huoneistotyyppi#> .
+@prefix hallintaperuste: <http://localhost:8080/rdf/dimensions/Hallintaperuste#> .
+@prefix toimiala: <http://localhost:8080/rdf/dimensions/Toimiala#> . 
+
+
+huoneistotyyppi:Kaikki_asunnot skos:broader huoneistotyyppi:Yhteensä . 
+huoneistotyyppi:_1h17k skos:broader huoneistotyyppi:Yksiöt .
+huoneistotyyppi:_1h17kk1bkt skos:broader huoneistotyyppi:Yksiöt . 
+huoneistotyyppi:_2h17k skos:broader huoneistotyyppi:Kaksiot .
+huoneistotyyppi:_2h17kk1bkt skos:broader huoneistotyyppi:Kaksiot .
+huoneistotyyppi:_3h17k1bkk1bkt skos:broader huoneistotyyppi:Kolmiot .
+huoneistotyyppi:_4h17k1bkk1bkt skos:broader huoneistotyyppi:Neliöt .
+huoneistotyyppi:_5h17k1bkk1bkt skos:broader huoneistotyyppi:Suuremmat .
+huoneistotyyppi:_6h17k1bkk1bkt skos:broader huoneistotyyppi:Suuremmat .
+huoneistotyyppi:_7h17k1bkk1bkt_- skos:broader huoneistotyyppi:Suuremmat .
+
+huoneistotyyppi:Yhteensä  skos:broader huoneistotyyppi:Yhteensä .
+huoneistotyyppi:_1_h_17_k1btk  skos:broader huoneistotyyppi:Yksiöt .
+huoneistotyyppi:_1_h_17_kk1bkt skos:broader huoneistotyyppi:Yksiöt .
+huoneistotyyppi:_2_h_17_k1btk  skos:broader huoneistotyyppi:Kaksiot .
+huoneistotyyppi:_2_h_17_kk1bkt skos:broader huoneistotyyppi:Kaksiot .
+huoneistotyyppi:_3_h_17_kk1bkt1bk1btk skos:broader huoneistotyyppi:Kolmiot .
+huoneistotyyppi:_4_h_17_kk1bkt1bk1btk skos:broader huoneistotyyppi:Neliöt .
+huoneistotyyppi:_5_h_17_kk1bkt1bk1btk skos:broader huoneistotyyppi:Suuremmat .
+huoneistotyyppi:_6_h_17_kk1bkt1bk1btk_17 skos:broader huoneistotyyppi:Suuremmat .
+
+hallintaperuste:Hallintaperuste_yhteensä skos:broader hallintaperuste:Yhteensä .
+hallintaperuste:Omistaa_asunnon_osakkeet skos:broader hallintaperuste:Omistusasunnot .
+hallintaperuste:Omistaa_talon skos:broader hallintaperuste:Omistusasunnot .
+hallintaperuste:Aravavuokra-asunto skos:broader hallintaperuste:ARA-vuokra-asunnot .
+hallintaperuste:Korkotukivuokra-asunto skos:broader hallintaperuste:ARA-vuokra-asunnot .
+hallintaperuste:Asumisoikeusasunto skos:broader hallintaperuste:Asumisoikeusasunto .
+hallintaperuste:Muu_tai_tuntematon_hallintaperuste skos:broader hallintaperuste:Muut_asunnot .
+hallintaperuste:Muu_vuokra-asunto skos:broader hallintaperuste:Muu_vuokra-asunto .
+
+toimiala:C_Mineraalien_kaivu skos:broader toimiala:Tuotanto .
+toimiala:D_Teollisuus skos:broader toimiala:Tuotanto .
+toimiala:E_Sähkö-18_kaasu-_ja_vesihuolto skos:broader toimiala:Tuotanto .
+toimiala:F_Rakentaminen skos:broader toimiala:Tuotanto .
+toimiala:G_Tukku-_ja_vähittäiskauppa skos:broader toimiala:Kauppa .
+toimiala:H_Majoitus-_ja_ravitsemistoiminta skos:broader toimiala:Kauppa .
+toimiala:I_Kuljetus18_varastointi_ja_tietoliik_ skos:broader toimiala:Liikenne .
+toimiala:J_Rahoitustoiminta skos:broader toimiala:Yrityspalvelut .
+toimiala:K_Kiinteistö-_ja_tutkim_palv_1nelinkeinoelämän_palv skos:broader toimiala:Yrityspalvelut .
+toimiala:L_Julkinen_hallinto18_maanpuol__jne_ skos:broader toimiala:Yhteiskunnalliset_palvelut .
+toimiala:M_Koulutus skos:broader toimiala:Yhteiskunnalliset_palvelut .
+toimiala:N_Terveydenhuolto-_ja_sosiaalipalv_ skos:broader toimiala:Yhteiskunnalliset_palvelut .
+toimiala:O_Muut_yht_kunn__ja_henk_koht__palv_ skos:broader toimiala:Yhteiskunnalliset_palvelut .
+toimiala:Q_Kv__järjestöt_ja_ulkom__edustustot skos:broader toimiala:Yhteiskunnalliset_palvelut .

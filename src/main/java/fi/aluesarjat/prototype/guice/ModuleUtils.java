@@ -15,6 +15,7 @@ public final class ModuleUtils {
     public static final String DEFAULT_BASE_URI = "http://localhost:8080/rdf/";
 
     public static RDFSource[] getSources(String baseURI) {
+        String dimensions = baseURI + "dimensions/";
         String alueContext = baseURI + "dimensions/Alue";
         RDFSource[] sources = new RDFSource[]{
             new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
@@ -23,6 +24,7 @@ public final class ModuleUtils {
             new RDFSource("classpath:/area-kauniainen.ttl", Format.TURTLE, alueContext),
             new RDFSource("classpath:/area-centers.ttl", Format.TURTLE, alueContext),
             new RDFSource("classpath:/area-polygons.ttl", Format.TURTLE, alueContext),
+            new RDFSource("classpath:/dimensions.ttl", Format.TURTLE, dimensions),
             new RDFSource("classpath:/stat.rdf", Format.RDFXML, "http://data.mysema.com/rdf/pcaxis#"),
             new RDFSource("classpath:/ext/dbpedia-comments.ttl", Format.TURTLE, "http://dbpedia.org"),
             new RDFSource("classpath:/ext/dbpedia-links.ttl", Format.TURTLE, "http://dbpedia.org"),
