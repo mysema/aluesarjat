@@ -51,16 +51,19 @@ $(document).ready(function(){
 			gonzo2.setMap(null);
 			gonzo3.setMap(map);
 			activeGonzo = gonzo3;
+			//$("#info").html("3 " + zoom);
 		}else if (zoom < 13){
 			gonzo1.setMap(null);
 			gonzo2.setMap(map);
 			gonzo3.setMap(null);
 			activeGonzo = gonzo2;
+			//$("#info").html("2 " + zoom);
 		}else{
 			gonzo1.setMap(map);
 			gonzo2.setMap(null);
 			gonzo3.setMap(null);
 			activeGonzo = gonzo1;
+			//$("#info").html("1 " + zoom);
 		}
 	});
 	
