@@ -4,5 +4,4 @@ virtuoso.user=dba
 virtuoso.pass=dba
 
 baseURI=http://localhost:8080/rdf/
-
 data.dir=/home/tiwe/Documents/Aluesarjat_kaupunkiverkko
