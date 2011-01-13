@@ -86,7 +86,7 @@ Refresh and clean project in Eclipse.
 <dl>
 <dt>AluesarjatStart</dt><dd>With build-in Sesame native RDF repository</dd>
 <dt>AluesarjatVirtuosoStart</dt><dd>With high scalability Virtuoso RDF repository. 
-Virtuoso's connection properties are read from classpath resource <tt>aluesarjat.properties: virtuoso.host,
+Virtuoso's connection properties are read from the classpath resource <tt>aluesarjat.properties: virtuoso.host,
 virtuoso.port,
 virtuoso.user, </tt>and 
 <tt>virtuoso.pass.</tt> 
@@ -98,10 +98,10 @@ virtuoso.user, </tt>and
 
 <h2>PCAxis parser</h2>
 
-PCAxisParser is a streaming parser for PX files. It converts PX files into minimal statistical class 
+PCAxisParser is a streaming parser for PX files. It converts PX files into a minimal statistical class 
 model (see below) that consists of Dataset, DimensionType, Dimension and Item. 
 First it collects all relevant 
-metadata into Dataset instance which is given to the handler. Then it streams all DATA items 
+metadata into a Dataset instance which is given to the handler. Then it streams all DATA items 
 as Item instances to the handler. The handler has also methods for begin, rollback and commit, for 
 proper allocation and releasing of required resources (e.g. DB connection or transaction).
 
@@ -122,13 +122,13 @@ BaseURI is configured in <tt>aluesarjat.properties: baseURI</tt>.
 
 <h3>Data (RDF Resource) URIs</h3>
 
-These URI's by which given type of data is exposed as RDF are also used internally as context for
+These URIs by which given type of data is exposed as RDF are also used internally as contexts for
 corresponding RDF statements. 
 
-<p>Where as abstract RDF data model consists of subject-predicate-object 
+<p>While the RDF data model consists of subject-predicate-object 
 triples, in many practical applications one handles quadruples instead under hood with source (or context or model)
-as a fourth member. This context may be any URI but by usually it is the main namespace of triples without 
-NS/LN delimiter (e.g. trailing # or /).</p>
+as a fourth member. This context may be any URI but usually it is the main namespace of the triples without 
+namespace/local name delimiter (e.g. trailing # or /).</p>
 
 <dl>
 <dt>${baseURI}/rdf/dimensions</dt>
@@ -159,10 +159,33 @@ conciderably more difficult.
 </dd>
 </dl>
 
-<h3>Webapp URI's and Servlets</h3>
+<h3>Webapp URIs and Servlets</h3>
 
-Webapp consists of Servlets that are mapped to URL's using Guice Servlet extension. Guice is 
+Webapp consists of Servlets that are mapped to URLs using Guice Servlet extension. Guice is 
 also used for wiring application dependencies (dependency injection).
-
 </body>
+
+<h2>Web pages</h2>
+
+<h3>Faceted search</h3>
+
+<p>TODO</p>
+
+<h3>SPARQL endpoint</h3>
+
+<p>TODO</p>
+
+<h3>Map visualization</h3>
+
+<p>The Map visualization uses a GoogleMaps widget to show the area borders of the Capital Region of Helsinki. The visualization
+uses three layers of widgets to show large areas for small zoom levels, medium areas for medium zoom range and small areas for high zoom range.
+</p>
+
+<p>When crossing an area with the mouse, the background opacity of the area becomes smaller and a marker with the area title is shown at the center
+point of the area. When clicking an area related data is shown in the info widget on the right of the window. The tabs of the info widget contain
+a general description of the area, the DBpedia description of the area and a small excerpt of the area statistics. </p>
+
+<p></p>
+
+
 </html>
