@@ -25,6 +25,10 @@ public class CustomServletModule extends ServletModule{
 
     private static final Logger log = LoggerFactory.getLogger(CustomServletModule.class);
 
+    private static final int SPARQL_LIMIT = 1000;
+    
+    private static final int SPARQL_MAX_QUERY_TIME = 120;
+    
     @Override
     protected void configureServlets() {
         String store = System.getProperty("rdfbean.store");
@@ -68,11 +72,11 @@ public class CustomServletModule extends ServletModule{
     public AreaDataServlet createAreaDataServlet(Repository repository, @Config Properties properties){
         return new AreaDataServlet(repository, properties.getProperty("baseURI"));
     }    
-    
+        
     @Provides
     @Singleton
     public SPARQLServlet createSPARQLServlet(Repository repository){
-        return new SPARQLServlet(repository, 1000, 120);
+        return new SPARQLServlet(repository, SPARQL_LIMIT, SPARQL_MAX_QUERY_TIME);
     }
 
     @Provides

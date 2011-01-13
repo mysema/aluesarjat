@@ -42,7 +42,11 @@ public class SearchServlet extends AbstractFacetSearchServlet {
     private static final Logger log = LoggerFactory.getLogger(SearchServlet.class);
 
     private static final long serialVersionUID = 2149808648205848159L;
-
+    
+    private static final int SPARQL_DEFAULT_LIMIT = 200;
+    
+    private static final int SPARQL_MAX_LIMIT = 1000;
+    
     private static final String[] EMPTY = new String[0];
 
     private final Repository repository;
@@ -86,7 +90,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
         }
         Set<String> includes = getIncludes(request.getParameterValues("include"));
 
-        int limit = Math.min(getInt(request, "limit", 200), 1000);
+        int limit = Math.min(getInt(request, "limit", SPARQL_DEFAULT_LIMIT), SPARQL_MAX_LIMIT);
         int offset = getInt(request, "offset", 0);
         boolean hasMoreResults = false;
 
@@ -282,7 +286,8 @@ public class SearchServlet extends AbstractFacetSearchServlet {
         }
     }
 
-    private Set<String> getIncludes(String[] parameterValues) {
+    private Set<String> getIncludes(String[] values) {
+        String[] parameterValues = values;
         if (parameterValues == null) {
             parameterValues = new String[] {"items", "values"};
         }
