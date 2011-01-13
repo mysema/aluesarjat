@@ -14,6 +14,10 @@ public final class ModuleUtils {
     
     public static final String DEFAULT_BASE_URI = "http://localhost:8080/rdf/";
 
+    public static RDFSource[] getSources() {
+        return getSources(DEFAULT_BASE_URI);
+    }
+    
     public static RDFSource[] getSources(String baseURI) {
         String dimensions = baseURI + "dimensions/";
         String alueContext = baseURI + "dimensions/Alue";

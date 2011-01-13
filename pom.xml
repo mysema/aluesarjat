@@ -218,6 +218,12 @@
 				<extraResources>profiles/demo</extraResources>
 			</properties>
 		</profile>
+		<profile>
+			<id>hudson</id>
+			<properties>
+				<extraResources>profiles/hudson</extraResources>
+			</properties>
+		</profile>		
 	</profiles>	
 	
 </project>

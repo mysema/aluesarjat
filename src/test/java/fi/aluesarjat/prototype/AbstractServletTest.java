@@ -26,7 +26,7 @@ public abstract class AbstractServletTest {
 
     @BeforeClass
     public static void setUpClass() throws ServletException, IOException{
-        String baseURI = "http://localhost:8080/rdf/";
+        String baseURI = ModuleUtils.DEFAULT_BASE_URI;
         repository = new MemoryRepository();
         repository.setSources(ModuleUtils.getSources(baseURI));
         repository.initialize();

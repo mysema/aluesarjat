@@ -23,7 +23,7 @@ import fi.aluesarjat.prototype.guice.ModuleUtils;
 
 public class DataValidationTest {
     
-    private final String baseURI = "http://localhost:8080/rdf/";
+    private final String baseURI = ModuleUtils.DEFAULT_BASE_URI;
 
     private SesameRepository repository;
 

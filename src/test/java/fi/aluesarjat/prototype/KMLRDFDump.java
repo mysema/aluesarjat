@@ -33,8 +33,10 @@ import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Feature;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
+import de.micromata.opengis.kml.v_2_2_0.Geometry;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
 import de.micromata.opengis.kml.v_2_2_0.LinearRing;
+import de.micromata.opengis.kml.v_2_2_0.MultiGeometry;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Point;
 import de.micromata.opengis.kml.v_2_2_0.Polygon;
@@ -42,8 +44,6 @@ import de.micromata.opengis.kml.v_2_2_0.SchemaData;
 import de.micromata.opengis.kml.v_2_2_0.SimpleData;
 
 public class KMLRDFDump {
-    
-//    private static final String ALUE_NS = "http://localhost:8080/rdf/dimensions/Alue#";
     
     private final Set<STMT> centerStmts = new HashSet<STMT>();
     
@@ -62,6 +62,8 @@ public class KMLRDFDump {
     private final Map<String,Coordinate> centers = new HashMap<String,Coordinate>();
     
     private final Map<String,List<Coordinate>> polygons = new HashMap<String,List<Coordinate>>();
+    
+    private final Map<String,MultiGeometry> multiGeometries = new HashMap<String,MultiGeometry>();
     
     public static void main(String[] args) throws IOException{
         new KMLRDFDump().init().handle().dumpRDF().dumpGEOJSON();
@@ -142,16 +144,30 @@ public class KMLRDFDump {
                 JSONObject feature = new JSONObject();
                 feature.put("type", "Feature");
                 JSONObject geometry = new JSONObject();
-                geometry.put("type","MultiPolygon");
-                JSONArray coordinates = new JSONArray();
+                geometry.put("type","MultiPolygon");                
                 List<Coordinate> value = polygons.get(code);
-                if (value == null){
-                    continue;
-                }
-                for (Coordinate coordinate : value){
-                    coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
-                }
-                geometry.put("coordinates", toJSONArray(toJSONArray(coordinates))); // TODO : get rid of wrapping
+                if (value != null){
+                    JSONArray coordinates = new JSONArray();
+                    for (Coordinate coordinate : value){
+                        coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
+                    }
+                    geometry.put("coordinates", toJSONArray(toJSONArray(coordinates))); // TODO : get rid of wrapping                    
+                    
+                }else{
+                    MultiGeometry multiGeometry = multiGeometries.get(code);
+                    if (multiGeometry == null){
+                        continue;
+                    }
+                    JSONArray array = new JSONArray();
+                    for (Geometry geo : multiGeometry.getGeometry()){
+                        JSONArray coordinates = new JSONArray();
+                        for (Coordinate coordinate : ((Polygon)geo).getOuterBoundaryIs().getLinearRing().getCoordinates()){
+                            coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
+                        }
+                        array.add(coordinates);
+                    }
+                    geometry.put("coordinates", toJSONArray(array)); // TODO : get rid of wrapping
+                }   
                 feature.put("geometry", geometry);
                 
                 JSONObject properties = new JSONObject();
@@ -222,6 +238,9 @@ public class KMLRDFDump {
             
             polygonStmts.add(new STMT(area, GEO.polygon, new LIT(p.toString())));
             polygons.put(code, ring.getCoordinates());
+            
+        }else if (placemark.getGeometry() instanceof MultiGeometry){    
+            multiGeometries.put(code, (MultiGeometry)placemark.getGeometry());
             
         // center point
         }else if (placemark.getGeometry() instanceof Point){

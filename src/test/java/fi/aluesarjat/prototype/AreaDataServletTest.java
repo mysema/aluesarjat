@@ -45,7 +45,7 @@ public class AreaDataServletTest {
     public void setUp(){
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        servlet = new AreaDataServlet(repository, "http://localhost:8080/rdf/");
+        servlet = new AreaDataServlet(repository, ModuleUtils.DEFAULT_BASE_URI);
     }
     
     @Test

@@ -28,7 +28,7 @@ public abstract class AbstractDatasetHandlerTest {
     @Before
     public void setUp(){
         repository = createRepository();
-        repository.setSources(ModuleUtils.getSources("http://localhost:8080/rdf/"));
+        repository.setSources(ModuleUtils.getSources());
         repository.initialize();
     }
 

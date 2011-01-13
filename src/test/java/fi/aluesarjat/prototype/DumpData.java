@@ -22,7 +22,7 @@ import fi.aluesarjat.prototype.guice.ModuleUtils;
 public class DumpData {
     
     public static void main(String[] args) throws IOException{
-        String baseURI = "http://localhost:8080/rdf/";
+        String baseURI = ModuleUtils.DEFAULT_BASE_URI;
         SesameRepository repository = new MemoryRepository();
         
         try{

@@ -27,7 +27,7 @@ public class NamespaceHandlerTest {
 
     private SesameRepository repository;
 
-    private final String baseURI = "http://localhost:8080/rdf/";
+    private final String baseURI = ModuleUtils.DEFAULT_BASE_URI;
 
     @Before
     public void setUp(){
