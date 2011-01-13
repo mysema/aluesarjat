@@ -1,0 +1,88 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+dt {
+font-family: "courier";
+}
+</style>
+</head>
+<body>
+<h1>Aluesarjat - tilastotiedon Open Linked Data pilotti</h1>
+
+
+<h2>System requirements</h2>
+
+Versions numbers refer to ones used in development and testing. Newer versions and
+any Java compliant platform/JVM should however suffice - at least with some tweaking.
+<ul>
+    <li>Linux Ubuntu, Mac OS X 10.6</li>
+    <li>Java SE 1.6</li>
+    <li>Maven 2.2</li>
+    <li>OpenLink Virtuoso Universal Server (with RDF/SPARQL support) 6.1</li>
+</ul>
+
+<h2>Development</h2>
+
+<h3>Tools</h3>
+<ul>
+<li>Eclipse</li>
+<li>SVN</li>
+<li>SVN plugin for Eclipse</li>
+</ul>
+
+<h3>Project structure</h3>
+<dl>
+<dt>src/test/java</dt>
+<dd>Unit Tests (JUnit) and helpper applications (e.g. webapp starter and various to-RDF-conversion applications)</dd>
+
+<dt>src/test/resources</dt>
+<dd>Files needed by tests and original export files</dd>
+
+<dt>src/main/java</dt>
+<dd>Java classes of the main application: PCAxis parser, PCAxis-to-RDF converter and Webapp</dd>
+
+<dt>src/main/resources</dt>
+<dd>Webapp configuration and default data files</dd>
+
+<dt>doc</dt>
+<dd>Documents</dd>
+
+<dt>profiles</dt>
+<dd>Deployment profiles</dd>
+
+<dt>target</dt>
+<dd>Internal build work directory. Not to be modified by hand.</dd>
+</dl>
+
+<ol>
+<li>Import aluesarjat into Eclipse as general purpose project.
+</li>
+<li>
+Open console and go to project directory.
+</li>
+<li>Prepare and verify development setup by runing 
+<pre>
+mvn clean eclipse:eclipse -DdownloadSources=true install
+</pre>
+</li>
+<li>
+Refresh and clean project in Eclipse.
+</li>
+</ol>
+
+<h3>Testing and Running</h3>
+<ul>
+<li>Tests can be run individually in Eclipse using JUnit test runner</li>
+<li>All tests are run as part of Maven build life cycle (e.g. <tt>mvn test</tt> or <tt>mvn install</tt>)</li>
+<li>Webapp can be run using either 
+<dl><dt>AluesarjatStart</dt><dd>With build-in Sesame native RDF repository</dd>
+<dl><dt>AluesarjatVirtuosoStart</dt><dd>With high scalability Virtuoso RDF repository. 
+Virtuoso's connection properties are read from classpath resource <tt>aluesarjat.properties</tt>: </dd>
+</dl>
+</li>
+</ul>
+</body>
+</html>
