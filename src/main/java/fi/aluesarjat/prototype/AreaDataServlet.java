@@ -92,7 +92,7 @@ public class AreaDataServlet extends AbstractSPARQLServlet{
             SPARQLQuery sparqlQuery = connection.createQuery(QueryLanguage.SPARQL, query.toString());
             sparqlQuery.setBinding("area", bindings.get("area"));
             sparqlQuery.setBinding("g", bindings.get("g"));
-            long start = System.currentTimeMillis();
+//            long start = System.currentTimeMillis();
             CloseableIterator<Map<String,NODE>> sparqlResult = sparqlQuery.getTuples();
 //            System.err.println((System.currentTimeMillis()-start)+"ms");
             try{
