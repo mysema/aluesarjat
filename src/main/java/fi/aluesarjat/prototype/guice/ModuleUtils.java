@@ -53,4 +53,7 @@ public final class ModuleUtils {
     
     private ModuleUtils(){}
 
+    public static void main(String[] args){
+        ModuleUtils.getSources("http://localhost:8080/rdf/");
+    }
 }
