@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Aluesarjat: Simplified Operation & Maintenance Guide</title>
 <style type="text/css">
 dt {
 font-family: "courier";
@@ -10,7 +10,7 @@ font-family: "courier";
 </style>
 </head>
 <body>
-<h1>Aluesarjat - tilastotiedon Open Linked Data pilotti</h1>
+<h1>Aluesarjat: Simplified Operation & Maintenance Guide</h1>
 
 
 <h2>System requirements</h2>
@@ -31,6 +31,10 @@ any Java compliant platform/JVM should however suffice - at least with some twea
 <li>Eclipse</li>
 <li>SVN</li>
 <li>SVN plugin for Eclipse</li>
+<li>Virtuoso <i>is not</i> needed for basic development and testing, which is done using
+Sesame Native RDF repository. It requires no additional configuration and stores it's data
+in <tt>${java.io.tmpdir}/aluesarjat/data</tt>. Improper shutdown of webapp may corrupt this database.
+However all data can always be securely reloaded by deleting the database and restarting the app.</li>
 </ul>
 
 <h3>Project structure</h3>
@@ -57,6 +61,7 @@ any Java compliant platform/JVM should however suffice - at least with some twea
 <dd>Internal build work directory. Not to be modified by hand.</dd>
 </dl>
 
+<h3>Getting Started</h3>
 <ol>
 <li>Import aluesarjat into Eclipse as general purpose project.
 </li>
@@ -73,16 +78,91 @@ Refresh and clean project in Eclipse.
 </li>
 </ol>
 
-<h3>Testing and Running</h3>
+<h3>Testing and Running Webapp on localhost</h3>
 <ul>
 <li>Tests can be run individually in Eclipse using JUnit test runner</li>
 <li>All tests are run as part of Maven build life cycle (e.g. <tt>mvn test</tt> or <tt>mvn install</tt>)</li>
 <li>Webapp can be run using either 
-<dl><dt>AluesarjatStart</dt><dd>With build-in Sesame native RDF repository</dd>
-<dl><dt>AluesarjatVirtuosoStart</dt><dd>With high scalability Virtuoso RDF repository. 
-Virtuoso's connection properties are read from classpath resource <tt>aluesarjat.properties</tt>: </dd>
+<dl>
+<dt>AluesarjatStart</dt><dd>With build-in Sesame native RDF repository</dd>
+<dt>AluesarjatVirtuosoStart</dt><dd>With high scalability Virtuoso RDF repository. 
+Virtuoso's connection properties are read from classpath resource <tt>aluesarjat.properties: virtuoso.host,
+virtuoso.port,
+virtuoso.user, </tt>and 
+<tt>virtuoso.pass.</tt> 
+</dd>
 </dl>
 </li>
 </ul>
+
+
+<h2>PCAxis parser</h2>
+
+PCAxisParser is a streaming parser for PX files. It converts PX files into minimal statistical class 
+model (see below) that consists of Dataset, DimensionType, Dimension and Item. 
+First it collects all relevant 
+metadata into Dataset instance which is given to the handler. Then it streams all DATA items 
+as Item instances to the handler. The handler has also methods for begin, rollback and commit, for 
+proper allocation and releasing of required resources (e.g. DB connection or transaction).
+
+<img src="parser.png" alt="PCAxis parser"/>
+
+<p>RDFDatasetHandler converts Datasets and Items
+into Scovo based RDF that is further streamed into database in optimized batches. 
+ANTLR based parser was first tested, but it proved
+unscalable for larger PX files - even heap size of 2GB was not enough to hold the intermediate AST tree. 
+</p>
+<h2>URI Schema</h2>
+
+With RDF one URI schema is needed for resource identifiers. Another URI schema is needed for Web Application.
+In this Linked Open Data pilot we combinet these as much as possible following REST principles. 
+Thus where ever practical RDF data is accessbile using real URI's.
+All URIs share common base URI which is the URI of the application it self.
+BaseURI is configured in <tt>aluesarjat.properties: baseURI</tt>.
+
+<h3>Data (RDF Resource) URIs</h3>
+
+These URI's by which given type of data is exposed as RDF are also used internally as context for
+corresponding RDF statements. 
+
+<p>Where as abstract RDF data model consists of subject-predicate-object 
+triples, in many practical applications one handles quadruples instead under hood with source (or context or model)
+as a fourth member. This context may be any URI but by usually it is the main namespace of triples without 
+NS/LN delimiter (e.g. trailing # or /).</p>
+
+<dl>
+<dt>${baseURI}/rdf/dimensions</dt>
+<dd>Common dimension metamodel: All scovo:Dimension (sub) classes - i.e. dimension types. 
+Namespace / local name delimiter for dimension types is "/". E.g. dimensions/Alue</dd>
+
+<dt>${baseURI}/rdf/dimensions/${dimension}</dt>
+<dd>Values of given dimension. Namespace / local name delimiter for dimension values is "#". E.g. dimension/Alue#_091_Helsinki</dd>
+
+<dt>${baseURI}/rdf/datasets</dt>
+<dd>Dataset metadata. Namespace / local name delimiter for dataset URIs' is "#". E.g. datasets#A01HKI_Astuot_hper_rahoitus_talotyyppi. 
+Data items of individual datasets are internally mapped to a context denoted by dataset URI. 
+As this dataset URI is partly composed of fragment ID, items are not directly accessible as RDF.
+This limitation is by design, because the size of RDF serialization of items of even 
+a single dataset may be several Giga Bytes.</dd>
+
+<dt>item:${sha1 of item predicates} - INTERNAL</dt>
+<dd>As publishing individual items directly in either dataset wide RDF bundles nor individuals
+is not practical, Blank Node would be a natural choice for item identifiers. 
+Unfortunately there are severe limitations to querying and modifying RDF data with BNodes: BNodes cannot 
+be accessed using standard SPARQL and typically cannot be referenced from outside a database transaction.
+What's more, BNode behaviour differs from RDF database implementation to another.
+<p>As a practical approach we chose a proprietary URI scheme for data item ID's. This ID consists
+of "item:" prefix and a SHA-1 checksum of item's statements. This way we may for example reload
+data without duplicates - as long as the algorithm or data it self havent changed.
+These items are also accessible using SPARQL, without which building the webapp would have been 
+conciderably more difficult. 
+</dd>
+</dl>
+
+<h3>Webapp URI's and Servlets</h3>
+
+Webapp consists of Servlets that are mapped to URL's using Guice Servlet extension. Guice is 
+also used for wiring application dependencies (dependency injection).
+
 </body>
 </html>
