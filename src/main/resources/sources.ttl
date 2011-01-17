@@ -1,14 +1,14 @@
 @prefix meta: <http://data.mysema.com/schemas/meta#> .
 
-<classpath:/scovo.rdf> meta:format "RDFXML" ; meta:context <http://purl.org/NET/scovo#> .
-<classpath:/alue.ttl> meta:format "TURTLE" ; meta:context <http://localhost:8080/rdf/dimensions/Alue> .
-<classpath:/area-hierarchy.ttl> meta:format "TURTLE" ; meta:context <http://localhost:8080/rdf/dimensions/Alue> .
-<classpath:/area-kauniainen.ttl> meta:format "TURTLE" ; meta:context <http://localhost:8080/rdf/dimensions/Alue> .
-<classpath:/area-centers.ttl> meta:format "TURTLE" ; meta:context <http://localhost:8080/rdf/dimensions/Alue> .
-<classpath:/area-polygons.ttl> meta:format "TURTLE" ; meta:context <http://localhost:8080/rdf/dimensions/Alue> .
-<classpath:/dimensions.ttl> meta:format "TURTLE" ; meta:context <http://localhost:8080/rdf/dimensions/> .
-<classpath:/stat.rdf> meta:format "RDFXML" ; meta:context <http://data.mysema.com/rdf/pcaxis#> .
-<classpath:/ext/dbpedia-comments.ttl> meta:format "TURTLE" ; meta:context <http://dbpedia.org> .
-<classpath:/ext/dbpedia-links.ttl> meta:format "TURTLE" ; meta:context <http://dbpedia.org> .
-<classpath:/ext/tarinoidenhelsinki.ttl> meta:format "TURTLE" ; meta:context <http://www.tarinoidenhelsinki.fi> .
-<classpath:/ext/tarinoidenhelsinki-links.ttl> meta:format "TURTLE" ; meta:context <http://www.tarinoidenhelsinki.fi> .
+<classpath:/scovo.rdf> meta:context <http://purl.org/NET/scovo#> .
+<classpath:/alue.ttl> meta:context <http://localhost:8080/rdf/dimensions/Alue> .
+<classpath:/area-hierarchy.ttl> meta:context <http://localhost:8080/rdf/dimensions/Alue> .
+<classpath:/area-kauniainen.ttl> meta:context <http://localhost:8080/rdf/dimensions/Alue> .
+<classpath:/area-centers.ttl> meta:context <http://localhost:8080/rdf/dimensions/Alue> .
+<classpath:/area-polygons.ttl> meta:context <http://localhost:8080/rdf/dimensions/Alue> .
+<classpath:/dimensions.ttl> meta:context <http://localhost:8080/rdf/dimensions/> .
+<classpath:/stat.rdf> meta:context <http://data.mysema.com/rdf/pcaxis#> .
+<classpath:/ext/dbpedia-comments.ttl> meta:context <http://dbpedia.org> .
+<classpath:/ext/dbpedia-links.ttl> meta:context <http://dbpedia.org> .
+<classpath:/ext/tarinoidenhelsinki.ttl> meta:context <http://www.tarinoidenhelsinki.fi> .
+<classpath:/ext/tarinoidenhelsinki-links.ttl> meta:context <http://www.tarinoidenhelsinki.fi> .
