@@ -29,3 +29,8 @@
 	padding: 2px;
 	background: white;
 }
+
+.tab_content {
+	overflow: auto;
+	height: 320px;
+}

@@ -85,7 +85,7 @@ $(document).ready(function(){
 	
 	// get comments
 	initNamespaces("sparql", function(){
-		var query = prefixes + "SELECT ?area ?comment WHERE { ?area rdf:type dimension:Alue ; rdfs:comment ?comment . }";
+		var query = prefixes + "SELECT ?area ?comment WHERE { ?area rdf:type dimension:Alue ; dc:description ?comment . }";
 		querySparql("sparql", query, function(data){
 			var bindings = data.results.bindings;
 			for (var i = 0; i < bindings.length; i++){

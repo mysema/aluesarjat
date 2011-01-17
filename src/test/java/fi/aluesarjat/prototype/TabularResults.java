@@ -286,7 +286,7 @@ public class TabularResults {
         System.err.println(id);
         System.out.println();
         
-//        System.out.println(queryString);
+        System.out.println(queryString);
         RDFConnection connection = repository.openConnection();
         try{
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, queryString);
