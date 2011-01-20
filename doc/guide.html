@@ -27,6 +27,7 @@
     <li><a href="#sysreq">System requirements</a></li>
     <li><a href="#dev">Development</a></li>
     <li><a href="#pcaxis">PCAxis parser</a></li>
+    <li><a href="#rdfstorage">RDF storage</a></li>
     <li><a href="#urischema">URI Schema</a></li>
     <li><a href="#webapges">Web pages</a></li>
     <li><a href="#linkeddata">Linked data</a></li>
@@ -133,6 +134,17 @@ into Scovo based RDF that is further streamed into database in optimized batches
 ANTLR based parser was first tested, but it proved
 unscalable for larger PX files - even heap size of 2GB was not enough to hold the intermediate AST tree. 
 </p>
+
+<h2 id="rdfstorage">RDF storage</h2>
+
+<p><a href="http://virtuoso.openlinksw.com/">OpenLink Virtuoso</a> is the primary RDF storage system of this project. 
+As the embedded Sesame NativeStore didn't scale anymore when
+lots of datasets where added, both BigData and OpenLink Virtuoso where evaluated as scalable alternatives.</p>
+
+<p>The configuration and usage of BigData proved to be too complicated for this project and Virtuoso was chosen.</p>
+
+<p>Virtuoso is used via an external process running the database and the Java application uses it via a dedicated RDFBean module, which
+was developed in the course of this project.</p>
 
 <h2 id="urischema">URI Schema</h2>
 
@@ -266,6 +278,8 @@ alue:_091_231_Toukola owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/p
 alue:_091_293_Pohjois-Haaga owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/7/&gt; .
 alue:_091_391_Tapaninvainio owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/73/&gt; .
 </pre>
+
+<p>The same approach of creating links via owl:sameAs can be applied also to other related datasets to get the benefits of Linked data.</p>
 
 <h2 id="sparql">SPARQL query examples</h2>
 
