@@ -4,16 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Aluesarjat: Simplified Operation & Maintenance Guide</title>
 <style type="text/css">
-dt {
-font-family: "courier";
-}
+    dt {
+        font-family: "courier";
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+    h3 {
+        font-size: 1.2em;
+    }    
 </style>
 </head>
 <body>
 <h1>Aluesarjat: Simplified Operation & Maintenance Guide</h1>
 
+<h2>Contents</h2>
 
-<h2>System requirements</h2>
+<ul>
+    <li><a href="#sysreq">System requirements</a></li>
+    <li><a href="#dev">Development</a></li>
+    <li><a href="#pcaxis">PCAxis parser</a></li>
+    <li><a href="#urischema">URI Schema</a></li>
+    <li><a href="#webapges">Web pages</a></li>
+    <li><a href="#linkeddata">Linked data</a></li>
+    <li><a href="#sparql">SPARQL query examples</a></li>
+</ul>
+
+
+<h2 id="sysreq">System requirements</h2>
 
 Versions numbers refer to ones used in development and testing. Newer versions and
 any Java compliant platform/JVM should however suffice - at least with some tweaking.
@@ -24,7 +45,7 @@ any Java compliant platform/JVM should however suffice - at least with some twea
     <li>OpenLink Virtuoso Universal Server (with RDF/SPARQL support) 6.1</li>
 </ul>
 
-<h2>Development</h2>
+<h2 id="dev">Development</h2>
 
 <h3>Tools</h3>
 <ul>
@@ -96,7 +117,7 @@ virtuoso.user, </tt>and
 </ul>
 
 
-<h2>PCAxis parser</h2>
+<h2 id="pcaxis">PCAxis parser</h2>
 
 PCAxisParser is a streaming parser for PX files. It converts PX files into a minimal statistical class 
 model (see below) that consists of Dataset, DimensionType, Dimension and Item. 
@@ -112,7 +133,8 @@ into Scovo based RDF that is further streamed into database in optimized batches
 ANTLR based parser was first tested, but it proved
 unscalable for larger PX files - even heap size of 2GB was not enough to hold the intermediate AST tree. 
 </p>
-<h2>URI Schema</h2>
+
+<h2 id="urischema">URI Schema</h2>
 
 With RDF one URI schema is needed for resource identifiers. Another URI schema is needed for Web Application.
 In this Linked Open Data pilot we combinet these as much as possible following REST principles. 
@@ -165,7 +187,7 @@ Webapp consists of Servlets that are mapped to URLs using Guice Servlet extensio
 also used for wiring application dependencies (dependency injection).
 </body>
 
-<h2>Web pages</h2>
+<h2 id="webpages">Web pages</h2>
 
 <h3>Faceted search</h3>
 
@@ -194,5 +216,261 @@ a general description of the area, the DBpedia description of the area and a sma
 
 <p></p>
 
+<h2 id="linkeddata">Linked data</h2>
+
+<p>The application contains linked data from DBPedia and Tarinoiden Helsinki.</p>
+
+<p>The linking has been done by creating link triples between Area resources of the statistical data and resources of the external datasets.</p>
+
+<p>Here is an example of link data between the local areas and DBpedia resources. The owl:sameAs relation is used to state that the resources are 
+equivalent :</p>
+
+<pre>
+@prefix alue: &lt;http://localhost:8080/rdf/dimensions/Alue#&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix dbpedia: &lt;http://dbpedia.org/resource/&gt; .
+
+alue:_091_70_Ullanlinna owl:sameAs dbpedia:Ullanlinna .
+alue:_091_240_Kumpula owl:sameAs dbpedia:Kumpula .
+alue:_091_282_Maunula owl:sameAs dbpedia:Maunula .
+alue:_091_383_Pihlajamäki owl:sameAs &lt;http://dbpedia.org/resource/Pihlajam%C3%A4ki&gt; .
+alue:_091_495_Hevossalmi owl:sameAs dbpedia:Hevossalmi .
+alue:_092_34_Kiila owl:sameAs dbpedia:Kiila .
+alue:_091_111_Siltasaari owl:sameAs dbpedia:Siltasaari .
+alue:_091_210_Hermanni owl:sameAs dbpedia:Hermanni .
+</pre>
+
+<p>To get the local areas mapped to the descriptions of the DBPedia data, the following query can be used :</p>
+
+<pre>
+SELECT ?area ?comment 
+WHERE { 
+    ?area rdf:type dimension:Alue ; owl:sameAs ?area2 . 
+    ?area2 rdfs:comment ?comment 
+}
+</pre>
+
+<p>And here is an example of the linkage data between the local areas and Tarinoiden Helsinki :</p>
+
+<pre>
+@prefix alue: &lt;http://localhost:8080/rdf/dimensions/Alue#&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+
+alue:_091_702_Myllypuron_peruspiiri owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/97/&gt; .
+alue:_091_130_Etu-Töölö owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/24/&gt; .
+alue:_091_60_Eira owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/36/&gt; .
+alue:_091_333_Malminkartano owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/2/&gt; .
+alue:_091_474_Kivikko owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/99/&gt; .
+alue:_091_402_Länsi-Pakilan_peruspiiri owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/62/&gt; .
+alue:_091_231_Toukola owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/53/&gt; .
+alue:_091_293_Pohjois-Haaga owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/7/&gt; .
+alue:_091_391_Tapaninvainio owl:sameAs &lt;http://www.tarinoidenhelsinki.fi/resource/place/73/&gt; .
+</pre>
+
+<h2 id="sparql">SPARQL query examples</h2>
+
+<h3>Dimension Types</h3>
+<pre>
+SELECT ?dimensionName ?dimensionURI 
+WHERE { 
+    ?dimensionURI rdfs:subClassOf scv:Dimension ; 
+    dc:title ?dimensionName . 
+}
+</pre>
+
+<h3>Dimensions</h3>
+<pre>
+SELECT ?dimension ?dimensionValue ?dimensionValueName
+WHERE { 
+    ?dimension rdfs:subClassOf scv:Dimension .
+    ?dimensionValue rdf:type ?dimension ;
+    dc:title ?dimensionValueName .
+}
+</pre>
+
+<h3>Areas</h3>
+<pre>
+SELECT ?areaName ?areaURI 
+WHERE { 
+    ?areaURI rdf:type dimension:Alue ;
+    dc:title ?areaName . 
+}
+</pre>
+
+<h3>Datasets</h3>
+<pre>
+SELECT ?dataset
+WHERE { 
+    ?d rdf:type scv:Dataset ; dc:title ?dataset .
+}
+</pre>
+
+<h3>Datasets with dimension types</h3>
+<pre>
+SELECT distinct ?datasetName ?dataset ?dimensionType
+WHERE { 
+    ?dataset rdf:type scv:Dataset ; 
+    dc:title ?datasetName ;
+    stat:datasetDimension [ rdf:type ?dimensionType ] .
+}
+</pre>
+
+<h3>Datasets with timestamps</h3>
+<pre>
+SELECT ?name ?dataset ?created ?modified
+WHERE { 
+    ?dataset rdf:type scv:Dataset ; 
+    dc:title ?name ; 
+    dcterms:created ?created .
+    OPTIONAL { ?dataset dcterms:modified ?modified . }
+}
+</pre>
+
+<h3>Statistics of Kallio in 2000</h3>
+<pre>
+SELECT ?dataset ?item ?value ?dimension
+WHERE {
+    ?item scv:dimension alue:_091_301_Kallion_peruspiiri ;
+    scv:dimension vuosi:_2009 ;
+    scv:dataset ?dataset ;
+    scv:dimension ?dimension ;
+    rdf:value ?value .
+}
+ORDER BY ?value
+</pre>
+
+<h3>Alueet, joilla enemmän nuoria kuin vanhoja</h3>
+<pre>
+SELECT DISTINCT ?area ?young ?old
+WHERE { 
+    [ scv:dimension ikäryhmä:_0-6-vuotiaat ;
+      scv:dimension vuosi:_2009 ;
+      scv:dataset ?dataset ; 
+      scv:dimension ?area ;
+      rdf:value ?young ].
+    [ scv:dimension ikäryhmä:_7-12-vuotiaat ;
+      scv:dimension vuosi:_2009 ;
+      scv:dataset ?dataset ; 
+      scv:dimension ?area ;
+      rdf:value ?old ] .
+    ?area rdf:type dimension:Alue .
+    FILTER ( ?young > ?old
+        && ( ?dataset = dataset:A02S_HKI_Vakiluku1962 
+      || ?dataset = dataset:B02S_ESP_Vakiluku1975 ) ).
+} 
+</pre>
+
+<h3>Taulukko 1. Väkiluku ikäryhmittäin 1. tammikuuta ja ennuste</h3>
+<pre>
+SELECT ?ik ?v ?val 
+WHERE { 
+ ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . 
+ FILTER ( ?v = vuosi:_2000 || ?v = vuosi:_2008 || ?v = vuosi:_2009 || ?v = vuosi:_2010 ) 
+ ?i scv:dimension yksikkö:Henkilöä . 
+ ?i scv:dimension ?ik . ?ik rdf:type dimension:Ikäryhmä . 
+ ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+} 
+ORDER BY ?ik ?v
+</pre> 
+
+<h3>Taulukko 2. Väkiluku äidinkielen mukaan 1. tammikuuta</h3>
+<pre>
+SELECT ?k ?v ?val 
+WHERE { 
+ ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . 
+ FILTER ( ?v = vuosi:_2000 || ?v = vuosi:_2008 || ?v = vuosi:_2009 || ?v = vuosi:_2010 ) 
+ ?i scv:dimension yksikkö:Henkilö . 
+ ?i scv:dimension ?k . ?k rdf:type dimension:Äidinkieli . 
+ ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+} 
+ORDER BY ?k ?v
+</pre>
+
+<h3>Taulukko 3. Väestönmuutokset</h3>
+<pre>
+SELECT ?k ?v ?val 
+WHERE { 
+ ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . 
+ FILTER ( ?v = vuosi:_2000 || ?v = vuosi:_2008 || ?v = vuosi:_2009 || ?v = vuosi:_2010 ) 
+ ?i scv:dimension yksikkö:Henkilö , ikä:Väestö_yhteensä . 
+ ?i scv:dimension ?k . ?k rdf:type dimension:Muuttosuunta . 
+ ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+} 
+ORDER BY ?k ?v
+</pre>
+
+<h3>Taulukko 4. Asuntokanta hallintaperusteen ja huoneistotyypin mukaan 31.12.2009 (viimeinen vuosi)</h3>
+<pre>
+SELECT ?ha ?hu sum(?val) 
+WHERE { 
+ ?i scv:dimension vuosi:_2008 , yksikkö:Asunto_ja_neliömetri . 
+ ?i scv:dimension ?ha2 . ?ha2 rdf:type dimension:Hallintaperuste ; skos:broader ?ha . 
+ ?i scv:dimension ?hu2 . ?hu2 rdf:type dimension:Huoneistotyyppi ; skos:broader ?hu . 
+ ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+} 
+GROUP BY ?ha ?hu
+ORDER BY ?ha ?hu
+</pre>
+
+<h3>Taulukko 5. Rakennukset 31.12.2008 (viimeinen vuosi)</h3>
+<pre>
+SELECT ?kt ?yk ?val 
+WHERE { 
+ ?i scv:dimension vuosi:_2008 , valmistumisvuosi:Yhteensä . 
+ ?i scv:dimension ?kt . ?kt rdf:type dimension:Käyttötarkoitus_ja_kerrosluku . 
+ ?i scv:dimension ?yk . ?yk rdf:type dimension:Yksikkö . 
+ ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+} 
+ORDER BY ?kt ?yk
+</pre>
+
+<h3>Taulukko 6. Asuntotuotanto (kolme viimeistä vuotta)</h3>
+<pre>
+SELECT ?k ?v sum(?val) 
+WHERE { 
+ GRAPH dataset:A01HKI_Astuot_hper_rahoitus_talotyyppi {
+   ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+   ?i scv:dimension yksikkö:Asuntojen_lukumäärä , hallintaperuste:Asunnot_yhteensä , rahoitusmuoto:Yhteensä , talotyyppi:Yhteensä . 
+   ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+   ?i scv:dimension ?v . 
+   FILTER ( ?v = vuosi:_2007 || ?v = vuosi:_2008 || ?v = vuosi:_2009 ) 
+   ?i scv:dimension ?k2 
+ } 
+ ?k2 rdf:type dimension:Huoneistotyyppi ; skos:broader ?k . 
+ ?v rdf:type dimension:Vuosi . 
+} 
+GROUP BY ?k ?v
+ORDER BY ?k ?v
+</pre>
+
+<h3>Taulukko 7. Väestön keskitulo, euroa, vuonna 2008 (viimeinen vuosi)</h3>
+<pre>
+SELECT ?val 
+WHERE { 
+ ?i scv:dimension vuosi:_2008 , tuloluokka:Keskitulo , yksikkö:Henkilö_ja_euro . 
+ ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+} 
+</pre>
+
+<h3>Taulukko 7. Työpaikat toimialan mukaan (kolme viimeistä vuotta)</h3>
+<pre>
+SELECT ?t ?v sum(?val) 
+WHERE { 
+ ?i scv:dimension yksikkö:Henkilö . 
+ ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . 
+ FILTER ( ?v = vuosi:_2005 || ?v = vuosi:_2006 || ?v = vuosi:_2007 ) 
+ ?i scv:dimension ?t2 . ?t2 rdf:type dimension:Toimiala ; skos:broader ?t . 
+ ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+} 
+GROUP BY ?t ?v
+ORDER BY ?t ?v
+</pre>
 
 </html>
