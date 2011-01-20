@@ -220,6 +220,14 @@ function executeQuery() {
 							columnValues[colIndex] = columnTemplate.join("");
 						}
 					}
+					
+					// add missing cells
+					for (var k = 0; k < columnValues.length; k++){
+						if (!columnValues[k]){
+							columnValues[k] = "<td></td>";
+						}
+					}
+					
 					template.push(columnValues.join(""));
 					template.push("</tr>");
 					previousValues = values;
