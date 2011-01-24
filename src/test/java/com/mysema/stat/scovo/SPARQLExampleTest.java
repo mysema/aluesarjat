@@ -109,7 +109,7 @@ private Repository repository;
 
         OutputStream out = new BufferedOutputStream(new FileOutputStream("target/example.ttl"));
         try {
-            repository.export(Format.TURTLE,  namespaces, out);
+            repository.export(Format.TURTLE,  namespaces, null, out);
             out.flush();
         } finally {
             out.close();
