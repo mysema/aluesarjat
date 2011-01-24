@@ -13,6 +13,10 @@ import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.META;
 
+/**
+ * @author tiwe
+ *
+ */
 public class NamespaceHandler {
 
     private static final int TX_TIMEOUT = -1;

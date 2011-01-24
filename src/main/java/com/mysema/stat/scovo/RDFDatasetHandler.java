@@ -45,6 +45,10 @@ import com.mysema.stat.pcaxis.Dimension;
 import com.mysema.stat.pcaxis.DimensionType;
 import com.mysema.stat.pcaxis.Item;
 
+/**
+ * @author sasa
+ *
+ */
 public class RDFDatasetHandler implements DatasetHandler {
 
     private static final String UNITS_LOCAL_NAME = "Yksikk\u00F6";

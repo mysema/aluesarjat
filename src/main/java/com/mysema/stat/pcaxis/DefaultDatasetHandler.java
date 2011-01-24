@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author sasa
+ *
+ */
 public class DefaultDatasetHandler implements DatasetHandler {
 
     private final Map<Dataset, List<Item>> datasets = new HashMap<Dataset, List<Item>>();

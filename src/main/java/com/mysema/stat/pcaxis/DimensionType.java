@@ -3,6 +3,10 @@ package com.mysema.stat.pcaxis;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author sasa
+ *
+ */
 public class DimensionType {
     
     private final String name;

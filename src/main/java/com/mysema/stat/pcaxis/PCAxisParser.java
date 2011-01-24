@@ -17,6 +17,10 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
 
+/**
+ * @author sasa
+ *
+ */
 public class PCAxisParser {
 
     private static Logger logger = LoggerFactory.getLogger(PCAxisParser.class);

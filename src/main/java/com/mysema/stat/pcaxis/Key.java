@@ -3,6 +3,10 @@ package com.mysema.stat.pcaxis;
 import java.util.List;
 
 
+/**
+ * @author sasa
+ *
+ */
 public class Key {
 
     private final String name;

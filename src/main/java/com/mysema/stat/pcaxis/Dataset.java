@@ -14,6 +14,10 @@ import java.util.NoSuchElementException;
 
 import com.mysema.commons.lang.Assert;
 
+/**
+ * @author sasa
+ *
+ */
 public class Dataset {
 
     private String description;

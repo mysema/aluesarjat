@@ -1,6 +1,10 @@
 package com.mysema.stat.pcaxis;
 
 
+/**
+ * @author sasa
+ *
+ */
 public class Dimension {
 
     private final DimensionType type;

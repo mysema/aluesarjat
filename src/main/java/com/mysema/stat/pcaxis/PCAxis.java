@@ -1,6 +1,10 @@
 package com.mysema.stat.pcaxis;
 
 
+/**
+ * @author sasa
+ *
+ */
 public final class PCAxis {
 
     public static final Key DATA = new Key("DATA");

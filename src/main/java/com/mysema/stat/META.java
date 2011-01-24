@@ -2,6 +2,10 @@ package com.mysema.stat;
 
 import com.mysema.rdfbean.model.UID;
 
+/**
+ * @author sasa
+ *
+ */
 public final class META {
     
     public static final String NS = "http://data.mysema.com/schemas/meta#";

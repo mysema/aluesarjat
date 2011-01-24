@@ -2,6 +2,10 @@ package com.mysema.stat.pcaxis;
 
 import java.util.List;
 
+/**
+ * @author sasa
+ *
+ */
 public class Item {
     
     private final Dataset dataset;

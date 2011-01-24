@@ -2,6 +2,10 @@ package com.mysema.stat.scovo;
 
 import com.mysema.rdfbean.model.UID;
 
+/**
+ * @author sasa
+ *
+ */
 public final class SCV {
     
     public static final String NS = "http://purl.org/NET/scovo#";

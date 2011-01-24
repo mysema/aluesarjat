@@ -9,6 +9,10 @@ import org.apache.commons.lang.CharSet;
 
 import com.mysema.commons.lang.Assert;
 
+/**
+ * @author sasa
+ *
+ */
 public final class XMLID {
 
     private static final Pattern WHITESPACE = Pattern.compile("\\s+");
