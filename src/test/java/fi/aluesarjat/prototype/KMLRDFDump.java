@@ -236,18 +236,25 @@ public class KMLRDFDump {
                 p.append(coordinate.getLatitude()).append(",").append(coordinate.getLongitude());
             }       
             
-            polygonStmts.add(new STMT(area, GEO.polygon, new LIT(p.toString())));
-            polygons.put(code, ring.getCoordinates());
+            if (!polygons.containsKey(code)){
+                polygonStmts.add(new STMT(area, GEO.polygon, new LIT(p.toString())));
+                polygons.put(code, ring.getCoordinates());
+            }
             
-        }else if (placemark.getGeometry() instanceof MultiGeometry){    
-            multiGeometries.put(code, (MultiGeometry)placemark.getGeometry());
+            
+        }else if (placemark.getGeometry() instanceof MultiGeometry){
+            if (!multiGeometries.containsKey(code)){
+                multiGeometries.put(code, (MultiGeometry)placemark.getGeometry());    
+            }
             
         // center point
         }else if (placemark.getGeometry() instanceof Point){
-            Coordinate coordinate = ((Point)placemark.getGeometry()).getCoordinates().get(0);
-            centerStmts.add(new STMT(area, GEO.where, new LIT(coordinate.getLatitude()+","+coordinate.getLongitude())));
-            centers.put(code, coordinate);
-            
+            if (!centers.containsKey(code)){
+                Coordinate coordinate = ((Point)placemark.getGeometry()).getCoordinates().get(0);
+                centerStmts.add(new STMT(area, GEO.where, new LIT(coordinate.getLatitude()+","+coordinate.getLongitude())));
+                centers.put(code, coordinate);    
+            }
+                        
         }else{
             System.err.println(code + " has geometry of type " + placemark.getGeometry().getClass().getSimpleName());
         }
