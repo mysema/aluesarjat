@@ -82,8 +82,12 @@ public class PCAxisParser {
     }
 
     public Dataset parse(String datasetName, InputStream in) throws IOException {
+        return parse(datasetName, in, "Windows-1252");
+    }
+    
+    public Dataset parse(String datasetName, InputStream in, String charset) throws IOException {
         try {
-        this.in = new PushbackReader(new InputStreamReader(in, "Windows-1252"), 1);
+        this.in = new PushbackReader(new InputStreamReader(in, charset), 1);
         init();
         handler.begin();
             dataset = new Dataset(datasetName);

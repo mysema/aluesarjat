@@ -9,7 +9,9 @@ import static com.mysema.stat.pcaxis.PCAxis.STUB;
 import static com.mysema.stat.pcaxis.PCAxis.UNITS;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.mysema.commons.lang.Assert;
@@ -19,6 +21,8 @@ import com.mysema.commons.lang.Assert;
  *
  */
 public class Dataset {
+    
+    private final Map<Key, List<String>> data = new HashMap<Key, List<String>>();
 
     private String description;
 
@@ -41,6 +45,7 @@ public class Dataset {
     }
 
     public void set(Key key, List<String> values) {
+        data.put(key, values);
         if (CONTENTS.equals(key)) {
             title = toString(values);
         } else if (NOTE.equals(key)) {
@@ -128,4 +133,9 @@ public class Dataset {
     public void addDimensionType(DimensionType dimensionType) {
         dimensionTypes.add(dimensionType);
     }
+
+    public Map<Key, List<String>> getData() {
+        return data;
+    }
+       
 }

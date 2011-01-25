@@ -2,6 +2,7 @@ package com.mysema.stat.pcaxis;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
@@ -72,8 +73,8 @@ public class DatasetTest {
     public void Boolean_Entries() throws IOException{
         Dataset dataset = parser.parse("example-3", getClass().getResourceAsStream("/example-copyright.px"));
         assertNotNull(dataset);
+        assertTrue(dataset.getData().containsKey(new Key("COPYRIGHT")));
         
-        // TODO : do we need Copyright=yes into Dataset ?!?
     }
     
     @Test
