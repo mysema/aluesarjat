@@ -29,6 +29,7 @@
     <li><a href="#pcaxis">PCAxis parser</a></li>
     <li><a href="#rdfstorage">RDF storage</a></li>
     <li><a href="#urischema">URI Schema</a></li>
+    <li><a href="#services">Services</a></li>
     <li><a href="#webapges">Web pages</a></li>
     <li><a href="#linkeddata">Linked data</a></li>
     <li><a href="#sparql">SPARQL query examples</a></li>
@@ -198,6 +199,29 @@ conciderably more difficult.
 Webapp consists of Servlets that are mapped to URLs using Guice Servlet extension. Guice is 
 also used for wiring application dependencies (dependency injection).
 </body>
+
+<h2 id="services">Services</h2>
+
+<p>The Web pages interact with the backend through a number of services, which are presented below.</p>
+
+<h3>SPARQL endpoint</h3>
+
+<p>The SPARQL endpoint is available via /sparql and acts according to the following <a href="http://www.w3.org/TR/rdf-sparql-protocol/">SPARQL protocol</a> specification  </p>
+
+<h3>Faceted search</h3>
+
+<p>The facected search functionality is provided via /search and /facets. The /facets service provides data on all available dimension values
+in JSON form via HTTP GET /facets.</p>
+
+<p>The /search service provides the actual search functionality via HTTP GET /search. Via "value" named request parameters the result is constrained
+to items having the given dimension values, e.g. value=valmistumisvuosi:_1940-1949 to search for items having the given dimension value.</p>
+
+<p>The parameter "include" is used to declare if "items" and/or "facets" are to be returned. Use include=items and include=facets to return both.</p>
+
+<p>"limit" and "offset" can be used for paging of the results. The semantics are the same as in SQL. </p>
+
+<p>The result is an object with the optional entries "items" for matched items, "facets" for additional dimension values to be chosen and optinally
+"hasMoreResults" with the value true, if more results are available.</p>
 
 <h2 id="webpages">Web pages</h2>
 
