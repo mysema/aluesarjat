@@ -1,4 +1,4 @@
-package com.mysema.stat.scovo;
+package fi.aluesarjat.prototype;
 
 import java.io.IOException;
 import java.util.HashSet;
