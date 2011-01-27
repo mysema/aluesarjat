@@ -135,12 +135,16 @@ function handleSPARQLResult(data){
 			}
 			var cls = binding[key].type + (oddRow ? " odd" : " even");
 			if ("uri" == binding[key].type) {
-				html.push("<td class='"+cls+"'>" + getReadableURI(binding[key].value) + "</td>");
+				html.push("<td class='", cls, "'>", getReadableURI(binding[key].value));
 			} else if ("literal" == binding[key].type) {
-				html.push("<td class='"+cls+"'>" + binding[key].value.replace(/\n/g, "</br>") + "</td>");
-				} else {
-				html.push("<td class='"+cls+"'>" + binding[key].value + "</td>");
+				html.push("<td class='", cls, "'>", binding[key].value.replace(/\n/g, "</br>"));
+				if (binding[key]["xml:lang"]) {
+					html.push(" @", binding[key]["xml:lang"]);
+				}
+			} else {
+				html.push("<td class='", cls, "'>", binding[key].value);
 			}
+			html.push("</td>");
 		}
 		html.push("</tr>");
 	}
