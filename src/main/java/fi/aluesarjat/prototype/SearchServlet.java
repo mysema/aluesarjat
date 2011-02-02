@@ -266,7 +266,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 result.put("hasMoreResults", true);
             }
             Writer out = response.getWriter();
-            String jsonpCallback = request.getParameter("jsonp");
+            String jsonpCallback = request.getParameter("callback");
             if (jsonpCallback != null){
                 out.write(jsonpCallback + "(");
                 result.write(out);

@@ -72,7 +72,7 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
             JSONObject result = new JSONObject();
             result.put("facets", dimensionTypes.values());
             Writer out = response.getWriter();
-            String jsonpCallback = request.getParameter("jsonp");
+            String jsonpCallback = request.getParameter("callback");
             if (jsonpCallback != null){
                 out.write(jsonpCallback + "(");
                 result.write(out);

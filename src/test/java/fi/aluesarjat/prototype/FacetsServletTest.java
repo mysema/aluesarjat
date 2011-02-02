@@ -30,7 +30,7 @@ public class FacetsServletTest extends AbstractServletTest{
     
     @Test
     public void JSONP_Is_Supported() throws ServletException, IOException{
-        request.setParameter("jsonp", "handleResponse");
+        request.setParameter("callback", "handleResponse");
         servlet.service(request, response);        
         String res = response.getContentAsString();
         assertTrue(res.startsWith("handleResponse("));
