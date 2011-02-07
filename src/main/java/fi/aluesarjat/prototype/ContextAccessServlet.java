@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.rdfbean.model.Format;
 import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SPARQLQuery;
-import com.mysema.rdfbean.model.io.Format;
 
 /**
  * Dumps the statements of the request url's named graph to the response writer

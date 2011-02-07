@@ -11,12 +11,12 @@ import java.util.Set;
 
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.rdfbean.model.DC;
+import com.mysema.rdfbean.model.Format;
 import com.mysema.rdfbean.model.ID;
 import com.mysema.rdfbean.model.Operation;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.RDFS;
 import com.mysema.rdfbean.model.STMT;
-import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.model.io.RDFSource;
 import com.mysema.rdfbean.owl.OWL;
 import com.mysema.rdfbean.sesame.MemoryRepository;

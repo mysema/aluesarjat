@@ -13,11 +13,11 @@ import org.apache.commons.io.FileUtils;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.DC;
+import com.mysema.rdfbean.model.Format;
 import com.mysema.rdfbean.model.LIT;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
-import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.model.io.RDFSource;
 import com.mysema.rdfbean.model.io.TurtleStringWriter;
 import com.mysema.rdfbean.owl.OWL;

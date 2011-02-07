@@ -20,13 +20,13 @@ import org.apache.commons.lang.StringUtils;
 import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.rdfbean.model.DC;
+import com.mysema.rdfbean.model.Format;
 import com.mysema.rdfbean.model.GEO;
 import com.mysema.rdfbean.model.LIT;
 import com.mysema.rdfbean.model.Operation;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
-import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.sesame.MemoryRepository;
 
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;

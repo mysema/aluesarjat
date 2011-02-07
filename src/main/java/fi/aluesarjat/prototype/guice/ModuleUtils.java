@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 
+import com.mysema.rdfbean.model.Format;
 import com.mysema.rdfbean.model.RepositoryException;
-import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.model.io.RDFSource;
 import com.mysema.stat.scovo.SCV;
 

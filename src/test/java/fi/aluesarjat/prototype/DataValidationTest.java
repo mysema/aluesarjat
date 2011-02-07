@@ -9,13 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.rdfbean.model.Format;
 import com.mysema.rdfbean.model.GEO;
 import com.mysema.rdfbean.model.ID;
 import com.mysema.rdfbean.model.RDF;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
-import com.mysema.rdfbean.model.io.Format;
 import com.mysema.rdfbean.sesame.MemoryRepository;
 import com.mysema.rdfbean.sesame.SesameRepository;
 
