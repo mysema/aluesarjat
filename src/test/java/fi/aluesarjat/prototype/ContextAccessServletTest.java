@@ -30,13 +30,13 @@ import com.mysema.rdfbean.sesame.MemoryRepository;
 public class ContextAccessServletTest {
 
     private static MemoryRepository repository;
-    
+
     private ContextAccessServlet servlet;
-    
+
     private MockHttpServletRequest request;
-    
+
     private MockHttpServletResponse response;
-    
+
     @BeforeClass
     public static void setUpClass() throws ServletException{
         repository = new MemoryRepository();
@@ -52,59 +52,59 @@ public class ContextAccessServletTest {
             connection.close();
         }
     }
-    
+
     @AfterClass
     public static void tearDownClass(){
         repository.close();
     }
-    
+
     @Before
     public void setUp(){
         servlet = new ContextAccessServlet(repository);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
     }
-    
+
     @Test
     public void Get_Available_Context() throws ServletException, IOException{
-        request.setRequestURI("/rdf/test");       
+        request.setRequestURI("/rdf/test");
         servlet.service(request, response);
-        
+
         assertEquals(Format.RDFXML.getMimetype(), response.getContentType());
         assertTrue(response.getContentAsString().contains("rdf:RDF"));
         assertTrue(response.getContentAsString().contains("type"));
         assertTrue(response.getContentAsString().contains("label"));
     }
-    
+
     @Test
     public void Get_Available_Context_as_Turtle() throws ServletException, IOException{
         request.setRequestURI("/rdf/test");
         request.addHeader("Accept", Format.TURTLE.getMimetype());
         servlet.service(request, response);
-        
+
         assertEquals(Format.TURTLE.getMimetype(), response.getContentType());
         assertFalse(response.getContentAsString().contains("rdf:RDF"));
         assertTrue(response.getContentAsString().contains(" a "));
     }
-    
+
     @Test
     public void Get_Unavailable_Context() throws ServletException, IOException{
-        request.setRequestURI("/rdf/unknown");        
+        request.setRequestURI("/rdf/unknown");
         servlet.service(request, response);
-    
+
         assertEquals(Format.RDFXML.getMimetype(), response.getContentType());
         assertTrue(response.getContentAsString().contains("rdf:RDF"));
         assertFalse(response.getContentAsString().contains("type"));
         assertFalse(response.getContentAsString().contains("label"));
     }
-    
+
     @Test
     public void Get_with_Html_Accept() throws ServletException, IOException{
-        request.setRequestURI("/rdf/unknown");        
+        request.setRequestURI("/rdf/unknown");
         request.addHeader("Accept", "text/html");
         servlet.service(request, response);
-        
+
         assertEquals(Format.RDFXML.getMimetype(), response.getContentType());
     }
-    
+
 }

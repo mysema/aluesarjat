@@ -22,15 +22,15 @@ import com.mysema.rdfbean.owl.OWL;
 import com.mysema.rdfbean.sesame.MemoryRepository;
 
 public class MergeWithTarinoidenHelsinki {
-    
+
     public static void main(String[] args) throws IOException{
         MemoryRepository repository = new MemoryRepository();
         repository.setSources(
                 new RDFSource("classpath:/area-titles.ttl", Format.TURTLE, "http://localhost:8080/rdf/dimensions/Alue"),
                 new RDFSource("classpath:/ext/tarinoidenhelsinki.ttl", Format.TURTLE, "http://www.tarinoidenhelsinki.fi"));
         repository.initialize();
-        
-        try{            
+
+        try{
             repository.execute(new Operation<Void>(){
                 @Override
                 public Void execute(RDFConnection connection) throws IOException {
@@ -47,7 +47,7 @@ public class MergeWithTarinoidenHelsinki {
                             areaTitles.put(stmt.getObject().getValue(), stmt.getSubject());
                         }
                     }
-                    
+
                     for (Map.Entry<String, ID> entry : tarinaTitles.entrySet()){
                         ID area = getByPrefix(areaTitles, entry.getKey());
                         if (area != null){
@@ -57,18 +57,18 @@ public class MergeWithTarinoidenHelsinki {
                             System.err.println(entry.getKey() + " -> " + entry.getValue());
                         }
                     }
-                    
+
                     RDFUtil.dump(links, new File("src/main/resources/ext/tarinoidenhelsinki-links.ttl"));
-                    
+
                     return null;
-                }                
-            });    
-            
+                }
+            });
+
         }finally{
             repository.close();
         }
     }
-    
+
     private static ID getByPrefix(Map<String, ID> subjects, String prefix){
         prefix = prefix.toLowerCase();
         for (Map.Entry<String, ID> entry : subjects.entrySet()){
@@ -78,5 +78,5 @@ public class MergeWithTarinoidenHelsinki {
         }
         return null;
     }
-    
+
 }

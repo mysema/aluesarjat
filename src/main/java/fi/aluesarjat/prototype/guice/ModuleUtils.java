@@ -11,13 +11,13 @@ import com.mysema.rdfbean.model.io.RDFSource;
 import com.mysema.stat.scovo.SCV;
 
 public final class ModuleUtils {
-    
+
     public static final String DEFAULT_BASE_URI = "http://localhost:8080/rdf/";
 
     public static RDFSource[] getSources() {
         return getSources(DEFAULT_BASE_URI);
     }
-    
+
     public static RDFSource[] getSources(String baseURI) {
         String dimensions = baseURI + "dimensions/";
         String alueContext = baseURI + "dimensions/Alue";
@@ -35,15 +35,15 @@ public final class ModuleUtils {
             new RDFSource("classpath:/ext/tarinoidenhelsinki.ttl", Format.TURTLE, "http://www.tarinoidenhelsinki.fi"),
             new RDFSource("classpath:/ext/tarinoidenhelsinki-links.ttl", Format.TURTLE, "http://www.tarinoidenhelsinki.fi")
             };
-        
+
         if (!baseURI.equals(DEFAULT_BASE_URI)){
             for (int i = 0; i < sources.length; i++){
                 sources[i] = transform(sources[i], baseURI);
             }
-        }        
+        }
         return sources;
     }
-    
+
     private static RDFSource transform(RDFSource source, String baseURI) {
         try {
             String encoding = source.getFormat().equals(Format.NTRIPLES) ? "US-ASCII" : "UTF-8";
@@ -54,7 +54,7 @@ public final class ModuleUtils {
             throw new RepositoryException(e);
         }
     }
-    
+
     private ModuleUtils(){}
 
     public static void main(String[] args){

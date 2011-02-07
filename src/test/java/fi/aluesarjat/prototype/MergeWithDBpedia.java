@@ -24,7 +24,7 @@ import com.mysema.rdfbean.owl.OWL;
 import com.mysema.rdfbean.sesame.MemoryRepository;
 
 public class MergeWithDBpedia {
-    
+
     public static void main(String[] args) throws IOException{
         MemoryRepository repository = new MemoryRepository();
         File abstracts = new File("short_abstracts_fi.nt");
@@ -32,10 +32,10 @@ public class MergeWithDBpedia {
                 new RDFSource(new FileInputStream(abstracts), Format.NTRIPLES, "test:test1"),
                 new RDFSource("classpath:/area-titles.ttl", Format.TURTLE, "test:test2"));
         repository.initialize();
-        
+
         Locale fi = new Locale("fi");
         Set<STMT> links = new HashSet<STMT>();
-        Set<STMT> comments = new HashSet<STMT>();        
+        Set<STMT> comments = new HashSet<STMT>();
         try{
             RDFConnection conn = repository.openConnection();
             try{
@@ -51,44 +51,44 @@ public class MergeWithDBpedia {
                                 boolean linkAdded = false;
                                 while (dbpediaStmts.hasNext()){
                                     STMT dbpediaStmt = dbpediaStmts.next();
-                                    
+
                                     if (!linkAdded){
-                                        links.add(new STMT(titleStmt.getSubject(), OWL.sameAs, dbpediaStmt.getSubject()));    
+                                        links.add(new STMT(titleStmt.getSubject(), OWL.sameAs, dbpediaStmt.getSubject()));
                                         System.out.println(titleStmt.getSubject() + " owl:sameAs " + dbpediaStmt.getSubject());
-                                    }                                    
+                                    }
                                     String comment = dbpediaStmt.getObject().getValue();
                                     try{
-                                        comment = URLDecoder.decode(comment,"UTF-8");    
+                                        comment = URLDecoder.decode(comment,"UTF-8");
                                     }catch(IllegalArgumentException e){
                                         System.err.println(e.getMessage());
-                                    }                                    
+                                    }
                                     comments.add(new STMT(dbpediaSubject, dbpediaStmt.getPredicate(), new LIT(comment, fi)));
                                     comments.add(dbpediaStmt);
-                                    
-                                }    
+
+                                }
                             }else{
                                 System.err.println("Got no match for " + title);
                             }
-                            
+
                         }finally{
                             dbpediaStmts.close();
                         }
-                    }    
+                    }
                 }finally{
                     titleStmts.close();
                 }
-                
+
             }finally{
                 conn.close();
             }
-                        
+
         }finally{
             repository.close();
         }
-        
+
         // dump links
         dump(links, new File("src/main/resources/ext/dbpedia-links.ttl"));
-        
+
         // dump comments
         dump(comments, new File("src/main/resources/ext/dbpedia-comments.ttl"));
     }
@@ -100,7 +100,7 @@ public class MergeWithDBpedia {
             writer.handle(stmt);
         }
         writer.end();
-        
+
         file.createNewFile();
         FileUtils.writeStringToFile(file, writer.toString(), "UTF-8");
     }

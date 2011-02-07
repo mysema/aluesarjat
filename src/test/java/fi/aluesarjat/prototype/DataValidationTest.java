@@ -22,13 +22,13 @@ import com.mysema.rdfbean.sesame.SesameRepository;
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
 public class DataValidationTest {
-    
+
     private final String baseURI = ModuleUtils.DEFAULT_BASE_URI;
 
     private SesameRepository repository;
 
     private RDFConnection connection;
-    
+
     @Before
     public void setUp(){
         repository = new MemoryRepository();
@@ -45,9 +45,9 @@ public class DataValidationTest {
         }
         repository.close();
     }
-    
+
     @Test
-    public void Validate() throws IOException{       
+    public void Validate() throws IOException{
         connection = repository.openConnection();
         UID alueType = new UID(baseURI + "dimensions/", "Alue");
         CloseableIterator<STMT> stmts = connection.findStatements(null, RDF.type, alueType, null, false);
@@ -63,16 +63,16 @@ public class DataValidationTest {
                 }finally{
                     polygons.close();
                 }
-            }          
-            
+            }
+
         }finally{
             stmts.close();
         }
-                
+
         for (ID id : missing){
             System.err.println("No polygons for " + id);
         }
 //        assertTrue("Got "+missing.size()+" missing polygons", missing.isEmpty());
     }
-    
+
 }
