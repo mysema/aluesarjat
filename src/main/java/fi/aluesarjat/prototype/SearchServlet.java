@@ -110,8 +110,8 @@ public class SearchServlet extends AbstractFacetSearchServlet {
             StringBuilder sparqlNamespaces = getSPARQLNamespaces(namespaces);
 
             // Not enough restrictions for searching items -> find facet estimation
-            if (restrictionCount < 3) {
-                facets = new LinkedHashMap<UID,JSONObject>();
+            if (restrictionCount < 2) {
+                facets = new LinkedHashMap<UID,JSONObject>(16);
 
                 // Find available dimensions via dataset definitions
 
@@ -141,19 +141,18 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 }
 
                 StringBuilder where = whereDimensions(dimensions, "?dataset", "stat:datasetDimension");
+                
+                // DIMENSIONS
                 sparql = new StringBuilder()
                 .append(sparqlNamespaces)
-                .append("SELECT ?dataset ?dimension ?dimensionType\nWHERE {\n")
+                .append("SELECT distinct ?dimension ?dimensionType\nWHERE {\n")
                 .append(where)
                 .append("?dataset stat:datasetDimension ?dimension .\n?dimension rdf:type ?dimensionType .\n");
-
                 if (filter.length() > 0) {
                     sparql.append(filter).append(")\n}");
                 } else {
                     sparql.append("}");
                 }
-
-                Set<UID> distinctDataset = new HashSet<UID>();
 
                 if (log.isInfoEnabled()) {
                     log.info(sparql.toString());
@@ -164,15 +163,39 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     while (iter.hasNext()) {
                         row = iter.next();
                         addFacet(row, namespaces, facets);
+                    }
+                }finally{
+                    iter.close();
+                }
 
+                // DATASETS!
+                sparql = new StringBuilder()
+                .append(sparqlNamespaces)
+                .append("SELECT distinct ?dataset\nWHERE {\n")
+                .append(where)
+                .append("?dataset stat:datasetDimension ?dimension .\n?dimension rdf:type ?dimensionType .\n");
+                if (filter.length() > 0) {
+                    sparql.append(filter).append(")\n}");
+                } else {
+                    sparql.append("}");
+                }
+
+
+                if (log.isInfoEnabled()) {
+                    log.info(sparql.toString());
+                }
+                query = conn.createQuery(QueryLanguage.SPARQL, sparql.toString());
+                iter = query.getTuples();
+                try{
+                    while (iter.hasNext()) {
+                        row = iter.next();
+                        // Skip duplicate datasets
                         UID dataset = (UID) row.get("dataset");
-                        if (distinctDataset.add(dataset)) {
-                            row = new HashMap<String, NODE>();
-                            row.put("dimension", dataset);
-                            row.put("dimensionType", SCV.Dataset);
-                            addFacet(row, namespaces, facets);
-                        }
-                    }    
+                        row = new HashMap<String, NODE>();
+                        row.put("dimension", dataset);
+                        row.put("dimensionType", SCV.Dataset);
+                        addFacet(row, namespaces, facets);
+                    }
                 }finally{
                     iter.close();
                 }
@@ -233,7 +256,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
 
                 // AVAILABLE DIMENSIONS
                 if (includes.contains("facets")) {
-                    facets = new LinkedHashMap<UID,JSONObject>();
+                    facets = new LinkedHashMap<UID,JSONObject>(16);
 
                     sparql = new StringBuilder()
                     .append(sparqlNamespaces)
