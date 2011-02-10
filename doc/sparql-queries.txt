@@ -54,7 +54,7 @@ WHERE {
 }
 order by ?value
 
-# Alueet, joilla enemmän nuoria kuin vanhoja
+# Alueet, joilla enemmän lapsia (0-6-vuotiaita) kuin alakoululaisia (7-12-vuotiaita)
 SELECT distinct ?area ?young ?old
 WHERE { 
 [ scv:dimension ikäryhmä:_0-6-vuotiaat ;
