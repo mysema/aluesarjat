@@ -13,8 +13,8 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.rdfbean.model.DC;
 import com.mysema.rdfbean.model.Format;
 import com.mysema.rdfbean.model.ID;
-import com.mysema.rdfbean.model.Operation;
 import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.RDFConnectionCallback;
 import com.mysema.rdfbean.model.RDFS;
 import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.io.RDFSource;
@@ -31,7 +31,7 @@ public class MergeWithTarinoidenHelsinki {
         repository.initialize();
 
         try{
-            repository.execute(new Operation<Void>(){
+            repository.execute(new RDFConnectionCallback<Void>(){
                 @Override
                 public Void execute(RDFConnection connection) throws IOException {
                     Map<String, ID> areaTitles = new HashMap<String, ID>();

@@ -23,8 +23,8 @@ import com.mysema.rdfbean.model.DC;
 import com.mysema.rdfbean.model.Format;
 import com.mysema.rdfbean.model.GEO;
 import com.mysema.rdfbean.model.LIT;
-import com.mysema.rdfbean.model.Operation;
 import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.RDFConnectionCallback;
 import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.rdfbean.sesame.MemoryRepository;
@@ -67,7 +67,7 @@ public class KMLRDFDump {
         repository.load(Format.TURTLE, getClass().getResourceAsStream("/area-kauniainen.ttl"), null, false);
 
         try{
-            repository.execute(new Operation<Void>(){
+            repository.execute(new RDFConnectionCallback<Void>(){
                 @Override
                 public Void execute(RDFConnection connection) throws IOException {
                     List<STMT> stmts = IteratorAdapter.asList(connection.findStatements(null, null, null, null, false));
