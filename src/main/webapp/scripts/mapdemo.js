@@ -2,7 +2,7 @@ var map = null;
 var overArea = null;
 var clickedArea = null;
 var marker = null;
-var gonzo1, gonzo2, gongo3;
+var gonzo1, gonzo2, gongo3, gonzo4;
 
 var activeGonzo = null;
 
@@ -46,24 +46,34 @@ $(document).ready(function(){
 			searchGonzo.setMap(null);
 		}
 		var zoom = map.getZoom();
-		if (zoom < 11){
+		if (zoom < 10){
+			gonzo1.setMap(null);
+			gonzo2.setMap(null);
+			gonzo3.setMap(null);
+			gonzo4.setMap(map);
+			activeGonzo = gonzo4;
+			
+		}else if (zoom < 11){
 			gonzo1.setMap(null);
 			gonzo2.setMap(null);
 			gonzo3.setMap(map);
+			gonzo4.setMap(null);
 			activeGonzo = gonzo3;
-			//$("#info").html("3 " + zoom);
+
 		}else if (zoom < 13){
 			gonzo1.setMap(null);
 			gonzo2.setMap(map);
 			gonzo3.setMap(null);
+			gonzo4.setMap(null);
 			activeGonzo = gonzo2;
-			//$("#info").html("2 " + zoom);
+
 		}else{
 			gonzo1.setMap(map);
 			gonzo2.setMap(null);
 			gonzo3.setMap(null);
+			gonzo4.setMap(null);
 			activeGonzo = gonzo1;
-			//$("#info").html("1 " + zoom);
+
 		}
 	});
 	
@@ -130,9 +140,17 @@ $(document).ready(function(){
 		success: function(geo){	
 			gonzo3 = createOverlay(geo);
 			gonzo3.setMap(map);
-			activeGonoz = gonzo3;
+			activeGonzo = gonzo3;
 		}
 	});
+	
+	// get level 4 polygons
+	$.ajax({
+		url: "areas", data: {level: "4"}, datatype: "json", 
+		success: function(geo){	
+			gonzo4 = createOverlay(geo);
+		}
+	});	
 });
 
 function createOverlay(geo){

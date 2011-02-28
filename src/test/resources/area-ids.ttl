@@ -2,6 +2,11 @@
 @prefix ns2: <http://purl.org/dc/elements/1.1/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+ns1:_049_Espoo ns2:identifier "049"^^xsd:string .
+ns1:_091_Helsinki ns2:identifier "091"^^xsd:string .
+ns1:_092_Vantaa ns2:identifier "092"^^xsd:string .
+ns1:_235_Kauniainen ns2:identifier "235"^^xsd:string .
+
 ns1:_049_41_Kanta-Espoonlahti ns2:identifier "0494041000"^^xsd:string .
 ns1:_049_45_Suvisaaristo ns2:identifier "0494045000"^^xsd:string .
 ns1:_049_44_Kaitaa ns2:identifier "0494044000"^^xsd:string .

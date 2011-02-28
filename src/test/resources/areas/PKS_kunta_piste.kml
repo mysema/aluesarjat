@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+<name>Aluejaot + kuntarajat</name>
+<open>1</open>
+<Style id="Style1">
+<LineStyle>
+<color>ff4cf5fc</color>
+<width>5.33333333333333</width>
+</LineStyle>
+<PolyStyle>
+<fill>0</fill>
+</PolyStyle>
+</Style>
+<Schema name="" id="Schema1">
+<SimpleField type="xsd:string" name="Nimi">
+</SimpleField>
+<SimpleField type="xsd:string" name="Nimi_r">
+</SimpleField>
+<SimpleField type="xsd:string" name="KUNTA">
+</SimpleField>
+<SimpleField type="xsd:int" name="Mtryhm">
+</SimpleField>
+</Schema>
+<Folder>
+<name>pks_kunta</name>
+<Placemark>
+<name>Espoo</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="Nimi">Espoo</SimpleData>
+<SimpleData name="Nimi_r">Esbo</SimpleData>
+<SimpleData name="KUNTA">049</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.771251752057,60.2331426011288,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Kauniainen</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="Nimi">Kauniainen</SimpleData>
+<SimpleData name="Nimi_r">Grankulla</SimpleData>
+<SimpleData name="KUNTA">235</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.7095342052403,60.2142277217481,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Helsinki</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="Nimi">Helsinki</SimpleData>
+<SimpleData name="Nimi_r">Helsingfors</SimpleData>
+<SimpleData name="KUNTA">091</SimpleData>
+<SimpleData name="Mtryhm">100</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9566654492544,60.1994970968486,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Vantaa</name>
+<styleUrl>#Style1</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Schema1">
+<SimpleData name="Nimi">Vantaa</SimpleData>
+<SimpleData name="Nimi_r">Vanda</SimpleData>
+<SimpleData name="KUNTA">092</SimpleData>
+<SimpleData name="Mtryhm">50</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>24.9299253957691,60.3014423944488,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Document>
+</kml>

@@ -3,6 +3,11 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
+#ns1:_049_Espoo ns2:identifier "049"^^xsd:string .
+#ns1:_091_Helsinki ns2:identifier "091"^^xsd:string .
+#ns1:_092_Vantaa ns2:identifier "092"^^xsd:string .
+ns1:_235_Kauniainen ns2:title "Kauniainen"^^xsd:string .
+
 ns1:_091_503_Malmin_peruspiiri ns2:title "Malmin peruspiiri"^^xsd:string .
 ns1:_049_613_Suvela ns2:title "Suvela"^^xsd:string .
 ns1:_049_43_Nöykkiö-Latokaski ns2:title "Nöykkiö-Latokaski"^^xsd:string .
