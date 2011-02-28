@@ -42,7 +42,7 @@ public class TabularResults {
         // get prefixes
         repository.execute(new RDFConnectionCallback<Void>(){
             @Override
-            public Void execute(RDFConnection connection) throws IOException {
+            public Void doInConnection(RDFConnection connection) throws IOException {
                 CloseableIterator<STMT> stmts = connection.findStatements(null, META.nsPrefix, null, null, false);
                 StringBuilder p = new StringBuilder();
                 try{

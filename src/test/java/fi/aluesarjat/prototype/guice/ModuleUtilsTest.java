@@ -34,7 +34,7 @@ public class ModuleUtilsTest {
     public void GetSources() {
         repository.execute(new RDFConnectionCallback<Void>(){
             @Override
-            public Void execute(RDFConnection connection) throws IOException {
+            public Void doInConnection(RDFConnection connection) throws IOException {
                 assertTrue(connection.exists(null, null, new UID("http://www.aluesarjat.fi/rdf/dimensions/Alue"), null, false));
                 assertFalse(connection.exists(null, null, new UID("http://localhost:8080/rdf/dimensions/Alue"), null, false));
                 return null;

@@ -33,7 +33,7 @@ public class MergeWithTarinoidenHelsinki {
         try{
             repository.execute(new RDFConnectionCallback<Void>(){
                 @Override
-                public Void execute(RDFConnection connection) throws IOException {
+                public Void doInConnection(RDFConnection connection) throws IOException {
                     Map<String, ID> areaTitles = new HashMap<String, ID>();
                     Map<String, ID> tarinaTitles = new HashMap<String, ID>();
                     Set<STMT> links = new HashSet<STMT>();

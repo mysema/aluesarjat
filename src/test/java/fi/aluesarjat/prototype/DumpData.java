@@ -38,7 +38,7 @@ public class DumpData {
 
             repository.execute(new RDFConnectionCallback<Void>(){
                 @Override
-                public Void execute(RDFConnection connection) throws IOException {
+                public Void doInConnection(RDFConnection connection) throws IOException {
                     Set<STMT> stmts = new HashSet<STMT>(IteratorAdapter.asList(connection.findStatements(null, DC.title, null, null, false)));
                     RDFUtil.dump(stmts, new File("src/test/resources/area-titles.ttl"));
                     return null;

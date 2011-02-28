@@ -69,7 +69,7 @@ public class KMLRDFDump {
         try{
             repository.execute(new RDFConnectionCallback<Void>(){
                 @Override
-                public Void execute(RDFConnection connection) throws IOException {
+                public Void doInConnection(RDFConnection connection) throws IOException {
                     List<STMT> stmts = IteratorAdapter.asList(connection.findStatements(null, null, null, null, false));
                     if (stmts.isEmpty()){
                         throw new IllegalStateException("Got no areas");

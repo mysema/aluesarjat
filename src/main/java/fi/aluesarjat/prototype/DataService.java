@@ -22,9 +22,9 @@ import com.mysema.rdfbean.model.DCTERMS;
 import com.mysema.rdfbean.model.GEO;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.SKOS;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.META;
-import com.mysema.stat.SKOS;
 import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.PCAxisParser;
 import com.mysema.stat.scovo.NamespaceHandler;
@@ -156,7 +156,7 @@ public class DataService {
                     if ("classpath".equals(protocol)){
                         in = getStream(path);
                     } else {
-                        in = new URL(values[0]).openStream();  
+                        in = new URL(values[0]).openStream();
                     }
                     try {
                         parser.parse(datasetName, in);
