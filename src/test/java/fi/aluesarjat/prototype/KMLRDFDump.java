@@ -47,6 +47,8 @@ public class KMLRDFDump {
 
     private final Set<String> level3 = new HashSet<String>();
 
+    private final Set<String> level4 = new HashSet<String>();
+
     private final Map<String,Coordinate> centers = new HashMap<String,Coordinate>();
 
     private final Map<String,List<Coordinate>> polygons = new HashMap<String,List<Coordinate>>();
@@ -98,6 +100,7 @@ public class KMLRDFDump {
             if (!file.getName().endsWith(".kml")){
                 continue;
             }
+            System.out.println("handling " + file.getName());
             InputStream is = new FileInputStream(file);
             try{
                 Kml kml = Kml.unmarshal(is);
@@ -123,8 +126,9 @@ public class KMLRDFDump {
 
     @SuppressWarnings("unchecked")
     private void dumpGEOJSON() throws IOException{
+        System.out.println("dumping GEO JSON");
         int counter = 1;
-        for (Set<String> codes : Arrays.asList(level1, level2, level3)){
+        for (Set<String> codes : Arrays.asList(level1, level2, level3, level4)){
             JSONObject root = new JSONObject();
             root.put("type","FeatureCollection");
             JSONArray features = new JSONArray();
@@ -162,7 +166,9 @@ public class KMLRDFDump {
                 properties.put("code", code);
 
                 Coordinate centerPoint = centers.get(code);
-                properties.put("center", toJSONArray(centerPoint.getLongitude(), centerPoint.getLatitude()));
+                if (centerPoint != null){
+                    properties.put("center", toJSONArray(centerPoint.getLongitude(), centerPoint.getLatitude()));
+                }
                 properties.put("name", Assert.notNull(areaTitles.get(code),"Got no title for " + code));
                 feature.put("properties", properties);
 
@@ -176,6 +182,7 @@ public class KMLRDFDump {
     }
 
     private KMLRDFDump dumpRDF() throws IOException{
+        System.out.println("dumping RDF");
 
         // centers
         RDFUtil.dump(centerStmts, new File("src/main/resources/area-centers.ttl"));
@@ -195,16 +202,25 @@ public class KMLRDFDump {
 
         String tila = values.get("TILA");
         String pien = values.get("PIEN");
+        String suur = values.get("SUUR");
         Set<String> level;
+
+        UID area;
         if (pien != null){
             level = level1;
+            area = areas.get(values.get("KOKOTUN"));
         }else if (!StringUtils.isEmpty(tila)){
             level = level2;
-        }else{
+            area = areas.get(values.get("KOKOTUN"));
+        }else if (!StringUtils.isEmpty(suur)){
             level = level3;
+            area = areas.get(values.get("KOKOTUN"));
+        }else{
+            level = level4;
+            area = areas.get(values.get("KUNTA"));
         }
 
-        UID area = areas.get(values.get("KOKOTUN"));
+//        UID area = areas.get(values.get("KOKOTUN"));
         if (area == null){
             System.err.println("Got no area for " + values.get("KOKOTUN"));
             return;
