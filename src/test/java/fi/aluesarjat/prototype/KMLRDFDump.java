@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,13 +42,13 @@ public class KMLRDFDump {
 
     private final Map<String,String> areaTitles = new HashMap<String,String>();
 
-    private final Set<String> level1 = new HashSet<String>();
+    private final Set<String> level1 = new LinkedHashSet<String>();
 
-    private final Set<String> level2 = new HashSet<String>();
+    private final Set<String> level2 = new LinkedHashSet<String>();
 
-    private final Set<String> level3 = new HashSet<String>();
+    private final Set<String> level3 = new LinkedHashSet<String>();
 
-    private final Set<String> level4 = new HashSet<String>();
+    private final Set<String> level4 = new LinkedHashSet<String>();
 
     private final Map<String,Coordinate> centers = new HashMap<String,Coordinate>();
 
@@ -166,9 +167,7 @@ public class KMLRDFDump {
                 properties.put("code", code);
 
                 Coordinate centerPoint = centers.get(code);
-                if (centerPoint != null){
-                    properties.put("center", toJSONArray(centerPoint.getLongitude(), centerPoint.getLatitude()));
-                }
+                properties.put("center", toJSONArray(centerPoint.getLongitude(), centerPoint.getLatitude()));
                 properties.put("name", Assert.notNull(areaTitles.get(code),"Got no title for " + code));
                 feature.put("properties", properties);
 
