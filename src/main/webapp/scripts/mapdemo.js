@@ -73,7 +73,6 @@ $(document).ready(function(){
 			gonzo3.setMap(null);
 			gonzo4.setMap(null);
 			activeGonzo = gonzo1;
-
 		}
 	});
 	
@@ -177,6 +176,7 @@ function createOverlay(geo){
 function mouseOverFeature(event, where) {
 	var feature = where && where.feature;
 	if( feature ) {
+		//$("#info").html("over " + feature.properties.code);
 		if (feature.properties.code != overArea){
 			overArea = feature.properties.code;
 			var centroid = feature.properties.center;
@@ -219,13 +219,16 @@ function mouseOverFeature(event, where) {
 		}							
 	}else{
 		if (marker) marker.setMap(null);
-		if (searchGonzo) searchGonzo.setMap(null);
+		if (searchGonzo){
+			searchGonzo.setMap(null);
+		}	
 	}
 }	
 
-function clickOnFeature(event, where) {
+function clickOnFeature(event, where) {	
 	var feature = where && where.feature;
 	if (feature){
+		//$("#info").html("click " + feature.properties.code);
 		var props = feature.properties;
 		var code = props.code;
 		clickedArea = code;
