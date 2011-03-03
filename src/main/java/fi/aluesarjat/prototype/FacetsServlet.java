@@ -1,8 +1,14 @@
 package fi.aluesarjat.prototype;
 
+import static fi.aluesarjat.prototype.Constants.dimension;
+import static fi.aluesarjat.prototype.Constants.dimensionDescription;
+import static fi.aluesarjat.prototype.Constants.dimensionName;
+import static fi.aluesarjat.prototype.Constants.dimensionType;
+import static fi.aluesarjat.prototype.Constants.dimensionTypeName;
+import static fi.aluesarjat.prototype.Constants.parent;
+
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,11 +20,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import com.mysema.rdfbean.model.NODE;
+import com.mysema.rdfbean.model.Blocks;
+import com.mysema.rdfbean.model.DC;
 import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.RDFQuery;
+import com.mysema.rdfbean.model.RDFQueryImpl;
+import com.mysema.rdfbean.model.RDFS;
 import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.SKOS;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.scovo.SCV;
+
 
 public class FacetsServlet extends AbstractFacetSearchServlet {
 
@@ -45,29 +57,30 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
             Map<String,String> namespaces = getNamespaces(conn);
 
             // DIMENSIONS
-            addFacets(conn, "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-                    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-                    "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
-                    "PREFIX scv: <http://purl.org/NET/scovo#>\n" +
-                    "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n" +
-                    "SELECT ?dimensionType ?dimensionTypeName ?dimension ?dimensionDescription ?dimensionName ?parent\n"+
-                    "WHERE {\n"+
-                    "?dimensionType rdfs:subClassOf scv:Dimension ; dc:title ?dimensionTypeName .\n"+
-                    "?dimension rdf:type ?dimensionType ; dc:title ?dimensionName .\n"+
-                    "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
-                    "OPTIONAL { ?dimension skos:broader ?parent } ." +
-                    "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, null);
+            RDFQuery query = new RDFQueryImpl(conn);
+            query.where(
+                  dimensionType.has(RDFS.subClassOf, SCV.Dimension),
+                  dimensionType.has(DC.title, dimensionTypeName),
+                  dimension.a(dimensionType),
+                  dimension.has(DC.title, dimensionName),
+                  Blocks.optional(dimension.has(DC.description, dimensionDescription)),
+                  Blocks.optional(dimension.has(new UID(SKOS.NS, "broader"), parent)));
+            query.orderBy(dimensionName.asc());
+            addFacets(
+                conn, namespaces, dimensionTypes,
+                query.select(dimensionType, dimensionTypeName, dimension, dimensionName, dimensionDescription, parent));
 
             // DATASETS
-            addFacets(conn, "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-                    "PREFIX dc: <http://purl.org/dc/elements/1.1/>\n" +
-                    "PREFIX scv: <http://purl.org/NET/scovo#>\n" +
-                    "PREFIX stat: <http://data.mysema.com/schemas/stat#>\n" +
-                    "SELECT ?dimension ?dimensionName ?dimensionDescription\n" +
-                    "WHERE {\n" +
-                    "?dimension rdf:type scv:Dataset ; dc:title ?dimensionName .\n" +
-                    "OPTIONAL { ?dimension dc:description ?dimensionDescription } ." +
-                    "}\nORDER BY ?dimensionName", namespaces, dimensionTypes, Collections.singletonMap("dimensionType", (NODE) SCV.Dataset));
+            query = new RDFQueryImpl(conn);
+            query.where(
+                  dimension.a(dimensionType),
+                  dimension.has(DC.title, dimensionName),
+                  Blocks.optional(dimension.has(DC.description, dimensionDescription)));
+            query.set(dimensionType, SCV.Dataset);
+            query.orderBy(dimensionName.asc());
+            addFacets(
+                conn, namespaces, dimensionTypes,
+                query.select(dimensionType, dimension, dimensionName, dimensionDescription));
 
             JSONObject result = new JSONObject();
             result.put("facets", dimensionTypes.values());
@@ -78,8 +91,8 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                 result.write(out);
                 out.write(")");
             }else{
-                result.write(out);    
-            }            
+                result.write(out);
+            }
             out.flush();
         } finally {
             conn.close();

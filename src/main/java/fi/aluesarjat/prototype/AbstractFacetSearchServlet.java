@@ -5,46 +5,26 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.rdfbean.model.LIT;
 import com.mysema.rdfbean.model.NODE;
-import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDFConnection;
-import com.mysema.rdfbean.model.SPARQLQuery;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.scovo.SCV;
 
 public abstract class AbstractFacetSearchServlet extends AbstractSPARQLServlet {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractFacetSearchServlet.class);
-
     private static final long serialVersionUID = 1L;
 
-    protected void addFacets(RDFConnection conn, String queryString, Map<String,String> namespaces, Map<UID,JSONObject> dimensionTypes, Map<String, NODE> bindings) {
-        if (log.isInfoEnabled()) {
-            log.info(queryString);
-        }
-        SPARQLQuery query = conn.createQuery(QueryLanguage.SPARQL, queryString);
-        if (bindings != null) {
-            for (Map.Entry<String, NODE> entry : bindings.entrySet()) {
-                query.setBinding(entry.getKey(), entry.getValue());
-            }
-        }
-        CloseableIterator<Map<String,NODE>> iter = query.getTuples();
+    protected void addFacets(RDFConnection conn, Map<String,String> namespaces, Map<UID,JSONObject> dimensionTypes, CloseableIterator<Map<String,NODE>> results) {
         try {
             Map<String, NODE> row;
-            while (iter.hasNext()) {
-                row = iter.next();
-                if (bindings != null) {
-                    row.putAll(bindings);
-                }
+            while (results.hasNext()) {
+                row = results.next();
                 addFacet(row, namespaces, dimensionTypes);
             }
         } finally {
-            iter.close();
+            results.close();
         }
     }
 

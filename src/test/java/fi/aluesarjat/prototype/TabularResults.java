@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
@@ -21,6 +22,7 @@ import com.mysema.stat.META;
 
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
+@Ignore
 public class TabularResults {
 
     interface RowCallback {
