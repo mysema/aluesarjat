@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>	
+<head>
+	<title>Aluesarjat</title>
+	<link href="styles/styles.css" type="text/css" rel="stylesheet"/>
+	<script type="text/javascript" src="scripts/jquery-1.4.3.min.js"></script>	
+	<script type="text/javascript" src="scripts/search.js" charset="UTF-8"></script>	
+</head>
+<body>
+	<div style="float:right;">
+        <a id="link" href="javascript: window.location = getBookmarkLink();">Link</a>
+        -
+        <a id="help" href="#">Help</a>
+	</div>	
+	
+	<h1>Aluesarjat</h1>
+	<div style="clear:both;"></div>
+
+	<a href="index.html">Etusivu</a>
+	Fasettihaku
+    <a href="sparql.html">SPARQL</a>
+    <a href="mapdemo.html">Karttanäkymä</a>
+    <div id="popup" style="display: none;"></div>
+    <table>
+        <tbody>
+            <tr>
+            	<td id="facets"></td>
+				<td id="results"></td>
+			</tr>
+        </tbody>
+    </table>
+	
+	<div id="sizes" style="display:none;float:right;">
+	    Page size:   	  	
+	  	<select id="pageSize" display="none">
+		    <option value="20">20</option>
+		    <option value="50" selected="selected">50</option>
+		    <option value="100">100</option>
+		    <option value="200">200</option>
+		    <option value="500">500</option>
+		    <option value="1000">1000</option>
+	  	</select>
+	</div>
+	
+	<div id="helptext" style="display:none;">
+		<p>Select at least three facets from the left side and see matching items on the right side.</p> 
+		<p>Facets with bold are selected and can be unselected by clicking on them.</p>
+		<p>Click on the info icons on the facets to see facet descriptions.</p>		
+	</div>
+	
+</body>
+</html>
