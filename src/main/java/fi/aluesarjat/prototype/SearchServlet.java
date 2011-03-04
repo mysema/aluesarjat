@@ -129,10 +129,6 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     filters.add(dataset.has(STAT.datasetDimension, dimension));
                 }
 
-                if (log.isInfoEnabled()){
-                    log.info("filters : " + filters);
-                }
-
                 // DIMENSIONS
                 long start = System.currentTimeMillis();
                 iter = query
