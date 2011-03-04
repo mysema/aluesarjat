@@ -46,14 +46,14 @@ $(document).ready(function(){
 			searchGonzo.setMap(null);
 		}
 		var zoom = map.getZoom();
-		if (zoom < 11){
+		if (zoom < 10){
 			gonzo1.setMap(null);
 			gonzo2.setMap(null);
 			gonzo3.setMap(null);
 			gonzo4.setMap(map);
 			activeGonzo = gonzo4;
 			
-		}else if (zoom < 12){
+		}else if (zoom < 11){
 			gonzo1.setMap(null);
 			gonzo2.setMap(null);
 			gonzo3.setMap(map);
