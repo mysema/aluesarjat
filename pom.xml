@@ -15,7 +15,7 @@
 		<!-- versions of dependencies -->
 		<jetty.version>6.1.0-SNAPSHOT</jetty.version>
 		<spring.version>2.5.5</spring.version>
-		<rdfbean.version>1.4.17</rdfbean.version>
+		<rdfbean.version>1.4.18</rdfbean.version>
 	</properties>
 
 	<dependencies>
@@ -88,20 +88,7 @@
       	  <version>2.2.2</version>
       	  <classifier>jdk15</classifier>
     	</dependency>		    
-		
-		<!-- 		
-		<dependency>
-		  <groupId>com.openlinksw</groupId>
-		  <artifactId>virtuoso-sesame</artifactId>
-		  <version>1.1</version>
-		</dependency>
-		<dependency>
-		  <groupId>com.openlinksw</groupId>
-		  <artifactId>virtjdbc4</artifactId>
-		  <version>1.0</version>
-		</dependency>		
-		-->	
-		
+				
 	    <dependency>
 	      <groupId>com.mysema.stat</groupId>
 	      <artifactId>stat</artifactId>
@@ -204,22 +191,6 @@
 				<configuration>
 					<argLine>-Xms512m -Xmx512m</argLine>					    
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>maven-apt-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<processor>com.mysema.rdfbean.query.BeanAnnotationProcessor</processor>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
