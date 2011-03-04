@@ -72,9 +72,10 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
 
             // DATASETS
             query = new RDFQueryImpl(conn);
+            // Query datasets as a kind of dimension
             query.where(
-                  dimension.a(dimensionType),
-                  dimension.has(DC.title, dimensionName),
+                  dimension.a(dimensionType), // dimensionType = scv:Dataset 
+                  dimension.has(DC.title, dimensionName), // datasetName 
                   Blocks.optional(dimension.has(DC.description, dimensionDescription)));
             query.set(dimensionType, SCV.Dataset);
             query.orderBy(dimensionName.asc());

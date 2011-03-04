@@ -11,6 +11,7 @@ import com.mysema.rdfbean.model.NODE;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.scovo.SCV;
+import static fi.aluesarjat.prototype.Constants.*;
 
 public abstract class AbstractFacetSearchServlet extends AbstractSPARQLServlet {
 
@@ -29,7 +30,7 @@ public abstract class AbstractFacetSearchServlet extends AbstractSPARQLServlet {
     }
 
     protected void addFacet(Map<String, NODE> row, Map<String,String> namespaces, Map<UID,JSONObject> facets) {
-        UID type = (UID) row.get("dimensionType");
+        UID type = (UID) row.get(dimensionType.getName());
         JSONObject dimensionType = facets.get(type);
         if (dimensionType == null) {
             // Create dimension type
@@ -38,7 +39,7 @@ public abstract class AbstractFacetSearchServlet extends AbstractSPARQLServlet {
             if (type.equals(SCV.Dataset)) {
                 dimensionType.put("name", "Tilasto");
             } else {
-                LIT typeName = (LIT) row.get("dimensionTypeName");
+                LIT typeName = (LIT) row.get(dimensionTypeName.getName());
                 if (typeName != null) {
                     dimensionType.put("name", typeName.getValue());
                 }
@@ -46,31 +47,31 @@ public abstract class AbstractFacetSearchServlet extends AbstractSPARQLServlet {
             facets.put(type, dimensionType);
         }
         // Create dimension
-        JSONObject dimension = new JSONObject();
-        dimension.put("id", getPrefixed((UID) row.get("dimension"), namespaces));
+        JSONObject jsonDimension = new JSONObject();
+        jsonDimension.put("id", getPrefixed((UID) row.get(dimension.getName()), namespaces));
 
         // Literal metadata
-        LIT lit = (LIT) row.get("dimensionName");
+        LIT lit = (LIT) row.get(dimensionName.getName());
         if (lit != null) {
-            dimension.put("name", lit.getValue());
+            jsonDimension.put("name", lit.getValue());
         }
 
-        lit = (LIT) row.get("dimensionDescription");
+        lit = (LIT) row.get(dimensionDescription.getName());
         if (lit != null) {
-            dimension.put("description", lit.getValue());
+            jsonDimension.put("description", lit.getValue());
         }
 
-        UID uid = (UID) row.get("parent");
+        UID uid = (UID) row.get(parent.getName());
         if (uid != null) {
             JSONObject parent = new JSONObject();
             parent.put("id", getPrefixed(uid, namespaces));
-            dimension.put("parent", parent);
+            jsonDimension.put("parent", parent);
         }
 
         if (!dimensionType.containsKey("values")) {
             dimensionType.put("values", new JSONArray());
         }
-        dimensionType.accumulate("values", dimension);
+        dimensionType.accumulate("values", jsonDimension);
     }
 
 

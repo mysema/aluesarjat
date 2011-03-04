@@ -106,14 +106,16 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                 // Find available dimensions via dataset definitions
 
                 List<Predicate> filters = new ArrayList<Predicate>();
-                if (datasets.size() > 0) {
+                if (!datasets.isEmpty()) {
                     query.set(dataset, datasets.get(0));
                 }
 
                 filters.add(dataset.has(STAT.datasetDimension, dimension));
                 filters.add(dimension.a(dimensionType));
 
+                // TODO: Optimize as single in-query
                 for (UID dimension : dimensions){
+                    // Only one dimension per dimensionType is selectable -> exclude selected dimensionTypes
                     stmts = conn.findStatements(dimension, RDF.type, null, null, false);
                     try{
                         if (stmts.hasNext()) {
@@ -125,6 +127,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     }
                 }
 
+                // Required (selected) dimension
                 for (UID dimension : dimensions){
                     filters.add(dataset.has(STAT.datasetDimension, dimension));
                 }
@@ -147,29 +150,27 @@ public class SearchServlet extends AbstractFacetSearchServlet {
 
                 // DATASETS!
                 query = new RDFQueryImpl(conn);
-                if (datasets.size() > 0) {
-                    query.set(dataset, datasets.get(0));
-                }
-                start = System.currentTimeMillis();
-                iter = query
-                    .where(filters.toArray(new Predicate[filters.size()]))
-                    .distinct()
-                    .select(dataset);
-
-                try{
-                    while (iter.hasNext()) {
-                        row = iter.next();
-                        // Skip duplicate datasets
-                        UID dataset = (UID) row.get("dataset");
-                        row = new HashMap<String, NODE>();
-                        row.put("dimension", dataset);
-                        row.put("dimensionType", SCV.Dataset);
-                        addFacet(row, namespaces, facets);
+                if (datasets.isEmpty()) {
+                    start = System.currentTimeMillis();
+                    iter = query
+                        .where(filters.toArray(new Predicate[filters.size()]))
+                        .distinct()
+                        .select(dataset);
+    
+                    try{
+                        while (iter.hasNext()) {
+                            row = iter.next();
+                            UID datasetUID = (UID) row.get(dataset.getName());
+                            row = new HashMap<String, NODE>();
+                            row.put("dimension", datasetUID);
+                            row.put("dimensionType", SCV.Dataset);
+                            addFacet(row, namespaces, facets);
+                        }
+                    }finally{
+                        iter.close();
                     }
-                }finally{
-                    iter.close();
+                    logDuration("Datasets query", System.currentTimeMillis() - start);
                 }
-                logDuration("Datasets query", System.currentTimeMillis() - start);
 
             }
             // Find items and exact non-empty facet values
@@ -205,15 +206,15 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                         tuplesList = tuplesList.subList(0, limit);
                     }
                     for (Map<String,NODE> tuples : tuplesList){
-                        UID id = (UID) tuples.get("item");
-                        UID dataset = (UID) tuples.get("dataset");
-                        LIT value = (LIT) tuples.get("value");
+                        UID id = (UID) tuples.get(item.getName());
+                        UID datasetUID = (UID) tuples.get(dataset.getName());
+                        LIT valueLIT = (LIT) tuples.get(value.getName());
 
                         JSONObject json = new JSONObject();
-                        json.put("value", value.getValue());
-                        json.accumulate("values", getPrefixed(dataset, namespaces));
+                        json.put("value", valueLIT.getValue());
+                        json.accumulate("values", getPrefixed(datasetUID, namespaces));
 
-                        stmts = conn.findStatements(id, SCV.dimension, null, dataset, false);
+                        stmts = conn.findStatements(id, SCV.dimension, null, datasetUID, false);
                         try{
                             while (stmts.hasNext()) {
                                 STMT stmt = stmts.next();
