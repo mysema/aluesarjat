@@ -219,7 +219,6 @@ public class KMLRDFDump {
             area = areas.get(values.get("KUNTA"));
         }
 
-//        UID area = areas.get(values.get("KOKOTUN"));
         if (area == null){
             System.err.println("Got no area for " + values.get("KOKOTUN"));
             return;

@@ -46,14 +46,14 @@ $(document).ready(function(){
 			searchGonzo.setMap(null);
 		}
 		var zoom = map.getZoom();
-		if (zoom < 10){
+		if (zoom < 11){
 			gonzo1.setMap(null);
 			gonzo2.setMap(null);
 			gonzo3.setMap(null);
 			gonzo4.setMap(map);
 			activeGonzo = gonzo4;
 			
-		}else if (zoom < 11){
+		}else if (zoom < 12){
 			gonzo1.setMap(null);
 			gonzo2.setMap(null);
 			gonzo3.setMap(map);
@@ -176,7 +176,6 @@ function createOverlay(geo){
 function mouseOverFeature(event, where) {
 	var feature = where && where.feature;
 	if( feature ) {
-		//$("#info").html("over " + feature.properties.code);
 		if (feature.properties.code != overArea){
 			overArea = feature.properties.code;
 			var centroid = feature.properties.center;
@@ -228,7 +227,6 @@ function mouseOverFeature(event, where) {
 function clickOnFeature(event, where) {	
 	var feature = where && where.feature;
 	if (feature){
-		//$("#info").html("click " + feature.properties.code);
 		var props = feature.properties;
 		var code = props.code;
 		clickedArea = code;
