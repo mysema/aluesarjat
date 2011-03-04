@@ -66,22 +66,20 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                   Blocks.optional(dimension.has(DC.description, dimensionDescription)),
                   Blocks.optional(dimension.has(new UID(SKOS.NS, "broader"), parent)));
             query.orderBy(dimensionName.asc());
-            addFacets(
-                conn, namespaces, dimensionTypes,
-                query.select(dimensionType, dimensionTypeName, dimension, dimensionName, dimensionDescription, parent));
+
+            addFacets(conn, namespaces, dimensionTypes,query.selectAll());
 
             // DATASETS
             query = new RDFQueryImpl(conn);
             // Query datasets as a kind of dimension
             query.where(
-                  dimension.a(dimensionType), // dimensionType = scv:Dataset 
-                  dimension.has(DC.title, dimensionName), // datasetName 
+                  dimension.a(dimensionType), // dimensionType = scv:Dataset
+                  dimension.has(DC.title, dimensionName), // datasetName
                   Blocks.optional(dimension.has(DC.description, dimensionDescription)));
             query.set(dimensionType, SCV.Dataset);
             query.orderBy(dimensionName.asc());
-            addFacets(
-                conn, namespaces, dimensionTypes,
-                query.select(dimensionType, dimension, dimensionName, dimensionDescription));
+
+            addFacets(conn, namespaces, dimensionTypes, query.selectAll());
 
             JSONObject result = new JSONObject();
             result.put("facets", dimensionTypes.values());
