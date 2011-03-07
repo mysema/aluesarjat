@@ -16,20 +16,15 @@ import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SPARQLQuery;
+import com.mysema.rdfbean.model.UID;
 
-/**
- * Dumps the statements of the request url's named graph to the response writer
- *
- * @author tiwe
- *
- */
-public class ContextAccessServlet extends HttpServlet{
+public class SubjectGraphServlet extends HttpServlet{
 
-    private static final long serialVersionUID = 3545610671574978570L;
+    private static final long serialVersionUID = 9007924911100922605L;
 
     private final Repository repository;
 
-    public ContextAccessServlet(Repository repository) {
+    public SubjectGraphServlet(Repository repository) {
         this.repository = repository;
     }
 
@@ -37,17 +32,20 @@ public class ContextAccessServlet extends HttpServlet{
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
-        String context = request.getRequestURL().toString();
+        String subject = request.getRequestURL().toString();
         RDFConnection connection = repository.openConnection();
         try{
-            String queryString = String.format("CONSTRUCT { ?s ?p ?o} FROM <%s> WHERE { ?s ?p ?o } ORDER BY ?s ?p", context);
-            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, queryString);
+            SPARQLQuery query = connection.createQuery(
+                    QueryLanguage.SPARQL,
+                    "CONSTRUCT { ?s ?p ?o} WHERE { ?s ?p ?o . FILTER (?s = ?sub) } ORDER BY ?s ?p");
+            query.setBinding("sub", new UID(subject));
             String contentType = getAcceptedType(request, Format.RDFXML);
             response.setContentType(contentType);
             query.streamTriples(response.getWriter(), contentType);
         }finally{
             connection.close();
         }
+
     }
 
     // TODO : make sure this works correctly
@@ -62,5 +60,6 @@ public class ContextAccessServlet extends HttpServlet{
             return defaultFormat.getMimetype();
         }
     }
+
 
 }

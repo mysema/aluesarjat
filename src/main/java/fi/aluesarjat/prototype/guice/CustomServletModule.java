@@ -20,15 +20,16 @@ import fi.aluesarjat.prototype.ContextAccessServlet;
 import fi.aluesarjat.prototype.DataService;
 import fi.aluesarjat.prototype.FacetsServlet;
 import fi.aluesarjat.prototype.SearchServlet;
+import fi.aluesarjat.prototype.SubjectGraphServlet;
 
 public class CustomServletModule extends ServletModule{
 
     private static final Logger log = LoggerFactory.getLogger(CustomServletModule.class);
 
     private static final int SPARQL_LIMIT = 1000;
-    
+
     private static final int SPARQL_MAX_QUERY_TIME = 120;
-    
+
     @Override
     protected void configureServlets() {
         String store = System.getProperty("rdfbean.store");
@@ -50,9 +51,12 @@ public class CustomServletModule extends ServletModule{
         serve("/sparql").with(SPARQLServlet.class);
         serve("/search").with(SearchServlet.class);
         serve("/facets").with(FacetsServlet.class);
+
         serve("/rdf/domain*",
               "/rdf/dimensions*",
               "/rdf/datasets").with(ContextAccessServlet.class);
+
+        serve("/rdf/items*").with(SubjectGraphServlet.class);
     }
 
     @Provides
@@ -66,13 +70,13 @@ public class CustomServletModule extends ServletModule{
     public AreasServlet createAreasServlet(){
         return new AreasServlet();
     }
-    
+
     @Provides
     @Singleton
     public AreaDataServlet createAreaDataServlet(Repository repository, @Config Properties properties){
         return new AreaDataServlet(repository, properties.getProperty("baseURI"));
-    }    
-        
+    }
+
     @Provides
     @Singleton
     public SPARQLServlet createSPARQLServlet(Repository repository){
@@ -83,6 +87,12 @@ public class CustomServletModule extends ServletModule{
     @Singleton
     public ContextAccessServlet createContextAccessServlet(Repository repository){
         return new ContextAccessServlet(repository);
+    }
+
+    @Provides
+    @Singleton
+    public SubjectGraphServlet createSubjectGraphServlet(Repository repository){
+        return new SubjectGraphServlet(repository);
     }
 
     @Provides
