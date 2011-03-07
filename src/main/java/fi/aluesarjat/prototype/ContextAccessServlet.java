@@ -16,6 +16,7 @@ import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SPARQLQuery;
+import com.mysema.rdfbean.model.UID;
 
 /**
  * Dumps the statements of the request url's named graph to the response writer
@@ -40,8 +41,9 @@ public class ContextAccessServlet extends HttpServlet{
         String context = request.getRequestURL().toString();
         RDFConnection connection = repository.openConnection();
         try{
-            String queryString = String.format("CONSTRUCT { ?s ?p ?o} FROM <%s> WHERE { ?s ?p ?o } ORDER BY ?s ?p", context);
-            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, queryString);
+//            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "CONSTRUCT { ?s ?p ?o} FROM ?context WHERE { ?s ?p ?o }");
+            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "CONSTRUCT { ?s ?p ?o} WHERE { GRAPH ?context { ?s ?p ?o } }");
+            query.setBinding("context", new UID(context));
             String contentType = getAcceptedType(request, Format.RDFXML);
             response.setContentType(contentType);
             query.streamTriples(response.getWriter(), contentType);

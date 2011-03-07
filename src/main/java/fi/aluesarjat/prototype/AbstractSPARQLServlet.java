@@ -15,7 +15,7 @@ import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.META;
 
 public abstract class AbstractSPARQLServlet extends HttpServlet {
-    
+
     private static final long serialVersionUID = -7945359392801951785L;
 
     protected String getPrefixed(UID uri, Map<String, String> namespaces) {
@@ -33,25 +33,13 @@ public abstract class AbstractSPARQLServlet extends HttpServlet {
             while (stmts.hasNext()){
                 STMT stmt = stmts.next();
                 namespaces.put(stmt.getSubject().getId(), stmt.getObject().getValue());
-            }            
+            }
         }finally{
             stmts.close();
         }
         return namespaces;
     }
 
-    protected StringBuilder getSPARQLNamespaces(Map<String, String> namespaces) {
-        StringBuilder sparqlNamespaces = new StringBuilder();
-        for (Map.Entry<String, String> entry : namespaces.entrySet()) {
-            sparqlNamespaces.append("PREFIX ");
-            sparqlNamespaces.append(entry.getValue());
-            sparqlNamespaces.append(": <");
-            sparqlNamespaces.append(entry.getKey());
-            sparqlNamespaces.append(">\n");
-        }
-        return sparqlNamespaces;
-    }
-    
     protected NODE getSingleResult(RDFConnection connection, String queryString, Map<String,NODE> bindings) {
         SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, queryString);
         for (Map.Entry<String, NODE> binding : bindings.entrySet()){
@@ -68,6 +56,6 @@ public abstract class AbstractSPARQLServlet extends HttpServlet {
             result.close();
         }
     }
-    
+
 
 }
