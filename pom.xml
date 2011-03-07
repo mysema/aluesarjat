@@ -92,7 +92,7 @@
 	    <dependency>
 	      <groupId>com.mysema.stat</groupId>
 	      <artifactId>stat</artifactId>
-	      <version>0.5.1</version>
+	      <version>0.5.2</version>
 	    </dependency>
 		
 		<!-- KML -->
