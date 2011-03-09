@@ -41,7 +41,7 @@ public class ContextAccessServlet extends HttpServlet{
         String context = request.getRequestURL().toString();
         RDFConnection connection = repository.openConnection();
         try{
-            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "CONSTRUCT { ?s ?p ?o} WHERE { GRAPH ?context { ?s ?p ?o } }");
+            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH ?context { ?s ?p ?o } }");
             query.setBinding("context", new UID(context));
             String contentType = getAcceptedType(request, Format.RDFXML);
             response.setContentType(contentType);
