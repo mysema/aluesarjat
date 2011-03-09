@@ -9,31 +9,30 @@ import javax.servlet.ServletException;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
+import com.mysema.rdfbean.sesame.MemoryRepository;
 
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
-@Ignore
 public class AreaDataServletTest {
-    
-    protected static VirtuosoRepository repository;
+
+    protected static MemoryRepository repository;
 
     protected MockHttpServletRequest request;
 
     protected MockHttpServletResponse response;
-    
+
     private AreaDataServlet servlet;
 
     @BeforeClass
     public static void setUpClass() throws ServletException, IOException{
         String baseURI = ModuleUtils.DEFAULT_BASE_URI;
-        repository = new VirtuosoRepository("localhost:1111", "dba", "dba", baseURI);
+        repository = new MemoryRepository();
         repository.setSources(ModuleUtils.getSources(baseURI));
+        repository.initialize();
     }
 
     @AfterClass
@@ -47,7 +46,7 @@ public class AreaDataServletTest {
         response = new MockHttpServletResponse();
         servlet = new AreaDataServlet(repository, ModuleUtils.DEFAULT_BASE_URI);
     }
-    
+
     @Test
     public void Correct_Encoding() throws ServletException, IOException{
         request.setParameter("area", "_091_1_Eteläinen_suurpiiri");
@@ -55,15 +54,15 @@ public class AreaDataServletTest {
         assertEquals("UTF-8", response.getCharacterEncoding());
         assertEquals("application/json", response.getContentType());
     }
-    
+
     public static void main(String[] args) throws ServletException, IOException{
         setUpClass();
         AreaDataServletTest test = new AreaDataServletTest();
         test.setUp();
         try{
-            test.Correct_Encoding();    
+            test.Correct_Encoding();
         }finally{
-            tearDownClass();    
+            tearDownClass();
         }
     }
 }

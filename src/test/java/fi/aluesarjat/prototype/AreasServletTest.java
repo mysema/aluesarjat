@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import org.junit.Test;
 
 public class AreasServletTest extends AbstractServletTest{
-    
+
     private AreasServlet servlet;
 
     @Override
@@ -23,6 +23,34 @@ public class AreasServletTest extends AbstractServletTest{
         servlet.service(request, response);
         assertEquals("UTF-8", response.getCharacterEncoding());
         assertEquals("application/json", response.getContentType());
+    }
+
+    @Test
+    public void Level1() throws ServletException, IOException{
+        request.setParameter("level", "1");
+        servlet.service(request, response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void Level2() throws ServletException, IOException{
+        request.setParameter("level", "2");
+        servlet.service(request, response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void Level3() throws ServletException, IOException{
+        request.setParameter("level", "3");
+        servlet.service(request, response);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void Level4() throws ServletException, IOException{
+        request.setParameter("level", "4");
+        servlet.service(request, response);
+        assertEquals(200, response.getStatus());
     }
 
 }
