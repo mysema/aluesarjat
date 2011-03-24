@@ -227,8 +227,8 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                     }
                 }
 
-                // AVAILABLE DIMENSIONS
                 if (includes.contains("facets")) {
+                    // AVAILABLE DIMENSIONS
                     facets = new LinkedHashMap<UID,JSONObject>(16);
                     RDFQuery query = new RDFQueryImpl(conn);
                     query

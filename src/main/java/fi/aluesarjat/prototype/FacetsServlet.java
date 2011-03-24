@@ -67,7 +67,7 @@ public class FacetsServlet extends AbstractFacetSearchServlet {
                   Blocks.optional(dimension.has(new UID(SKOS.NS, "broader"), parent)));
             query.orderBy(dimensionName.asc());
 
-            addFacets(conn, namespaces, dimensionTypes,query.selectAll());
+            addFacets(conn, namespaces, dimensionTypes, query.selectAll());
 
             // DATASETS
             query = new RDFQueryImpl(conn);
