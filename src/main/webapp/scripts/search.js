@@ -141,9 +141,8 @@ function executeQuery() {
 				for (var i=0; i < facets.length; i++) {
 					var facet = facets[i];
 					
-					if (data.items && !restrictionFacets[facet.id] && facet.id != "dimension:Yksikkö") {
-						columns.push(facet.id);
-						template.push("<th>", getFacetName(facet.id), "</th>");
+					if (data.items && !restrictionFacets[facet] && facet != "dimension:Yksikkö") {
+						template.push("<th>", getFacetName(facet), "</th>");
 					}
 					
 					var values = facet.values;
@@ -185,6 +184,10 @@ function executeQuery() {
 				var items = data.items;
 
 				template.push("<tbody>");
+				
+				for (var i=0; i < data.headers.length; i++) {
+				    columns.push(data.headers[i]);
+				}
 				
 				var previousValues = [];
 				for (var i=0; i < items.length; i++) {

@@ -58,6 +58,9 @@ public class FacetsServlet extends AbstractSPARQLServlet {
                 generator.writeStartObject();
                 generator.writeStringField("id", getPrefixed(value.getId(), namespaces));
                 generator.writeStringField("name", value.getName());
+                if (value.getDescription() != null){
+                    generator.writeStringField("description", value.getDescription());
+                }
                 generator.writeEndObject();
             }
             generator.writeEndArray();

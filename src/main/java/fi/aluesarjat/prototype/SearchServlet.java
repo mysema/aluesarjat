@@ -74,7 +74,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         JsonGenerator generator = jsonFactory.createJsonGenerator(response.getWriter());
         generator.writeStartObject();
 
-        if (includeValues){
+        if (searchResults.getAvailableValues() != null){
             // facets
             generator.writeFieldName("facets");
             generator.writeStartArray();
@@ -92,7 +92,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
             generator.writeEndArray();
         }
 
-        if (includeItems){
+        if (searchResults.getHeaders() != null) {
             // headers
             generator.writeFieldName("headers");
             generator.writeStartArray();
@@ -100,7 +100,9 @@ public class SearchServlet extends AbstractSPARQLServlet {
                 generator.writeString(getPrefixed(header, namespaces));
             }
             generator.writeEndArray();
+        }
 
+        if (searchResults.getItems() != null) {
             // items
             generator.writeFieldName("items");
             generator.writeStartArray();
