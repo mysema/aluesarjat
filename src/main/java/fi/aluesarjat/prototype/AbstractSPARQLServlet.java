@@ -18,21 +18,21 @@ public abstract class AbstractSPARQLServlet extends HttpServlet {
 
     private static final long serialVersionUID = -7945359392801951785L;
 
-    protected String getPrefixed(UID uri, Map<String, String> namespaces) {
-        String prefix = namespaces.get(uri.getNamespace());
+    protected String getPrefixed(UID uri, Map<UID, String> namespaces) {
+        String prefix = namespaces.get(new UID(uri.getNamespace()));
         if (prefix == null) {
             throw new IllegalArgumentException("Unknown namespace: " + uri.getNamespace());
         }
         return prefix + ":" + uri.getLocalName();
     }
 
-    protected Map<String,String> getNamespaces(RDFConnection conn) {
+    protected Map<UID,String> getNamespaces(RDFConnection conn) {
         CloseableIterator<STMT> stmts = conn.findStatements(null, META.nsPrefix, null, null, false);
-        Map<String,String> namespaces = new HashMap<String, String>(32);
+        Map<UID,String> namespaces = new HashMap<UID, String>(32);
         try{
             while (stmts.hasNext()){
                 STMT stmt = stmts.next();
-                namespaces.put(stmt.getSubject().getId(), stmt.getObject().getValue());
+                namespaces.put(stmt.getSubject().asURI(), stmt.getObject().getValue());
             }
         }finally{
             stmts.close();

@@ -54,17 +54,8 @@ public class DataService {
             Repository repository,
             NamespaceHandler namespaceHandler,
             @Named("baseURI") String baseURI,
-            @Named("import.mode") String mode,
-            @Named("forceReload") String forceReload){
-        this(repository, namespaceHandler, baseURI, Mode.valueOf(mode), Boolean.valueOf(forceReload));
-    }
-
-    public DataService(
-            Repository repository,
-            NamespaceHandler namespaceHandler,
-            String baseURI,
-            Mode mode,
-            boolean forceReload){
+            @Named("import.mode") Mode mode,
+            @Named("forceReload") boolean forceReload){
         this.repository = repository;
         this.namespaceHandler = namespaceHandler;
         this.baseURI = baseURI;

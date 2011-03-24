@@ -15,18 +15,18 @@ import com.mysema.stat.scovo.NamespaceHandler;
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
 public class Loader {
-   
+
     public static void main(String[] args) throws IOException{
         VirtuosoRepository repository = null;
         String host, port, user, pass, baseURI, dataDir;
-        
+
         Properties properties = new Properties();
         InputStream in = Loader.class.getResourceAsStream("/loader.properties");
         if (in == null){
             throw new IllegalArgumentException("Make sure classpath:/loader.properties is available");
         }
         properties.load(in);
-        
+
         // get properties
         host = properties.getProperty("virtuoso.host");
         port = properties.getProperty("virtuoso.port");
@@ -34,7 +34,7 @@ public class Loader {
         pass = properties.getProperty("virtuoso.pass");
         baseURI = properties.getProperty("baseURI");
         dataDir = properties.getProperty("data.dir");
-        
+
         // collect PX files
         Stack<File> unhandled = new Stack<File>();
         unhandled.push(new File(dataDir));
@@ -43,8 +43,8 @@ public class Loader {
             File file = unhandled.pop();
             if (file.isDirectory()){
                 if (file.listFiles() != null){
-                    unhandled.addAll(Arrays.asList(file.listFiles()));    
-                }                
+                    unhandled.addAll(Arrays.asList(file.listFiles()));
+                }
             }else if (file.getName().endsWith(".px")){
                 datasets.add(file.toURI().toURL().toString() + " \".\"");
             }
@@ -54,20 +54,20 @@ public class Loader {
         repository = new VirtuosoRepository(host+":"+port, user, pass, baseURI);
         repository.setSources(ModuleUtils.getSources(baseURI));
         repository.initialize();
-        
+
         // load PX files
-        try{            
+        try{
             NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
-            DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED.name(), "true");
-            dataService.setDatasets(datasets); 
+            DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED, true);
+            dataService.setDatasets(datasets);
             dataService.initialize();
-            
+
         // close repository
         }finally{
             if (repository != null){
                 repository.close();
             }
         }
-        
+
     }
 }

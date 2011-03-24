@@ -1,5 +1,12 @@
 package fi.aluesarjat.prototype;
 
+import static fi.aluesarjat.prototype.Constants.dimension;
+import static fi.aluesarjat.prototype.Constants.dimensionDescription;
+import static fi.aluesarjat.prototype.Constants.dimensionName;
+import static fi.aluesarjat.prototype.Constants.dimensionType;
+import static fi.aluesarjat.prototype.Constants.dimensionTypeName;
+import static fi.aluesarjat.prototype.Constants.parent;
+
 import java.util.Map;
 
 import net.sf.json.JSONArray;
@@ -11,13 +18,12 @@ import com.mysema.rdfbean.model.NODE;
 import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.scovo.SCV;
-import static fi.aluesarjat.prototype.Constants.*;
 
 public abstract class AbstractFacetSearchServlet extends AbstractSPARQLServlet {
 
     private static final long serialVersionUID = 1L;
 
-    protected void addFacets(RDFConnection conn, Map<String,String> namespaces, Map<UID,JSONObject> dimensionTypes, CloseableIterator<Map<String,NODE>> results) {
+    protected void addFacets(RDFConnection conn, Map<UID,String> namespaces, Map<UID,JSONObject> dimensionTypes, CloseableIterator<Map<String,NODE>> results) {
         try {
             Map<String, NODE> row;
             while (results.hasNext()) {
@@ -29,7 +35,7 @@ public abstract class AbstractFacetSearchServlet extends AbstractSPARQLServlet {
         }
     }
 
-    protected void addFacet(Map<String, NODE> row, Map<String,String> namespaces, Map<UID,JSONObject> facets) {
+    protected void addFacet(Map<String, NODE> row, Map<UID,String> namespaces, Map<UID,JSONObject> facets) {
         UID type = (UID) row.get(dimensionType.getName());
         JSONObject dimensionType = facets.get(type);
         if (dimensionType == null) {

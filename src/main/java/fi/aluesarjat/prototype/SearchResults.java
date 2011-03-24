@@ -3,19 +3,18 @@ package fi.aluesarjat.prototype;
 import java.util.List;
 import java.util.Set;
 
-import com.google.inject.internal.Lists;
-import com.google.inject.internal.Sets;
+import com.google.common.collect.Sets;
 import com.mysema.rdfbean.model.UID;
 
 public class SearchResults {
 
     private Set<UID> availableValues;
- 
+
     /**
      * Facet IDs
      */
     private List<UID> headers;
-    
+
     private List<Item> items;
 
     public Set<UID> getAvailableValues() {
@@ -29,7 +28,7 @@ public class SearchResults {
     public List<Item> getItems() {
         return items;
     }
-    
+
     void addAvailableValue(UID valueId) {
         if (availableValues == null) {
             availableValues = Sets.newLinkedHashSet();

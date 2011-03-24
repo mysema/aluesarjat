@@ -84,7 +84,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
             Map<String, NODE> row;
 
             // NAMESPACES
-            Map<String,String> namespaces = getNamespaces(conn);
+            Map<UID,String> namespaces = getNamespaces(conn);
 
             List<UID> dimensions = new ArrayList<UID>();
             List<UID> datasets = new ArrayList<UID>();
@@ -156,7 +156,7 @@ public class SearchServlet extends AbstractFacetSearchServlet {
                         .where(filters.toArray(new Predicate[filters.size()]))
                         .distinct()
                         .select(dataset);
-    
+
                     try{
                         while (iter.hasNext()) {
                             row = iter.next();
@@ -300,16 +300,16 @@ public class SearchServlet extends AbstractFacetSearchServlet {
         return new HashSet<String>(Arrays.asList(parameterValues));
     }
 
-    private UID getUID(String prefixed, Map<String, String> namespaces) {
+    private UID getUID(String prefixed, Map<UID, String> namespaces) {
         int i = prefixed.indexOf(':');
         if (i < 0) {
             throw new IllegalArgumentException("Not an URI: " + prefixed);
         }
         String prefix = prefixed.substring(0, i);
         String localName = prefixed.substring(i+1);
-        for (Map.Entry<String, String> entry : namespaces.entrySet()) {
+        for (Map.Entry<UID, String> entry : namespaces.entrySet()) {
             if (entry.getValue().equals(prefix)) {
-                return new UID(entry.getKey(), localName);
+                return new UID(entry.getKey().getId(), localName);
             }
         }
         throw new IllegalArgumentException("Unknown prefix: " + prefixed);

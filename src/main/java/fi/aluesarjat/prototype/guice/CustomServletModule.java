@@ -8,17 +8,20 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.google.inject.servlet.ServletModule;
 import com.mysema.rdfbean.guice.Config;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.sparql.SPARQLServlet;
 import com.mysema.stat.scovo.NamespaceHandler;
+import com.sun.tools.xjc.reader.RawTypeSet.Mode;
 
 import fi.aluesarjat.prototype.AreaDataServlet;
 import fi.aluesarjat.prototype.AreasServlet;
 import fi.aluesarjat.prototype.ContextAccessServlet;
 import fi.aluesarjat.prototype.DataService;
 import fi.aluesarjat.prototype.FacetsServlet;
+import fi.aluesarjat.prototype.SearchService;
 import fi.aluesarjat.prototype.SearchServlet;
 import fi.aluesarjat.prototype.SubjectGraphServlet;
 
@@ -103,8 +106,28 @@ public class CustomServletModule extends ServletModule{
 
     @Provides
     @Singleton
-    public FacetsServlet createFacetedSearchInitServlet(Repository repository){
-        return new FacetsServlet(repository);
+    public FacetsServlet createFacetedSearchInitServlet(SearchService searchService){
+        return new FacetsServlet(searchService);
+    }
+
+    @Provides
+    @Singleton
+    public SearchService createSearchService(Repository repository){
+        return new SearchService(repository);
+    }
+
+    @Provides
+    @Named("import.mode")
+    @Singleton
+    public Mode importMode(@Named("import.mode") String mode){
+        return Mode.valueOf(mode);
+    }
+
+    @Provides
+    @Named("forceReload")
+    @Singleton
+    public boolean forceReload(@Named("forceReload") String forceReload){
+        return Boolean.parseBoolean(forceReload);
     }
 
 }

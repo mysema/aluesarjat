@@ -23,24 +23,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.google.inject.internal.Lists;
-import com.google.inject.internal.Maps;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.types.Predicate;
-import com.mysema.rdfbean.model.Blocks;
-import com.mysema.rdfbean.model.DC;
-import com.mysema.rdfbean.model.LIT;
-import com.mysema.rdfbean.model.NODE;
-import com.mysema.rdfbean.model.QID;
-import com.mysema.rdfbean.model.RDF;
-import com.mysema.rdfbean.model.RDFConnection;
-import com.mysema.rdfbean.model.RDFQuery;
-import com.mysema.rdfbean.model.RDFQueryImpl;
-import com.mysema.rdfbean.model.RDFS;
-import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.model.SKOS;
-import com.mysema.rdfbean.model.STMT;
-import com.mysema.rdfbean.model.UID;
+import com.mysema.rdfbean.model.*;
 import com.mysema.stat.META;
 import com.mysema.stat.STAT;
 import com.mysema.stat.scovo.SCV;
@@ -50,7 +37,7 @@ public class SearchService {
     private static final int SPARQL_MAX_LIMIT = 1000;
 
     private static final Logger log = LoggerFactory.getLogger(SearchService.class);
-    
+
     private static class Headers {
         private final Map<UID, Integer> headerIndexes = Maps.newLinkedHashMap();
         private final Map<UID, UID> valueToFacet = Maps.newHashMap();
@@ -64,19 +51,19 @@ public class SearchService {
             }
             return index.intValue();
         }
-        
+
         public int getHeaderCount() {
             return headerIndexes.size();
         }
-        
+
         public List<UID> getHeaders() {
             return Lists.newArrayList(headerIndexes.keySet());
         }
-        
+
         public Set<UID> getAvailableValues() {
             return valueToFacet.keySet();
         }
-        
+
         public int getFacetIndex(UID facet) {
             Integer index = headerIndexes.get(facet);
             if (index == null) {
@@ -84,14 +71,14 @@ public class SearchService {
             }
             return index.intValue();
         }
-        
+
         public int getValueIndex(UID value) {
             return getFacetIndex(valueToFacet.get(value));
         }
     }
-    
+
     private final Repository repository;
-    
+
     public SearchService(Repository repository) {
         this.repository = repository;
     }
@@ -179,7 +166,7 @@ public class SearchService {
         if (uid != null) {
             value.setParent(uid);
         }
-        
+
         facet.addValue(value);
     }
 
@@ -206,7 +193,7 @@ public class SearchService {
         RDFConnection conn = repository.openConnection();
         try {
             ListMultimap<UID, UID> facetRestrictions = getFacetRestrictions(restrictions, conn);
-            
+
             if (facetRestrictions.size() < 2) {
                 return getAvailableDatasetValues(facetRestrictions, conn);
             } else {
@@ -224,10 +211,10 @@ public class SearchService {
         List<Predicate> filters = getSearchFilters(facetRestrictions);
 
         boolean containsDatasetRestriction = facetRestrictions.containsKey(SCV.Dataset);
-        
+
         findAvailableDimensions(filters, headers, conn);
         findAvailableDatasets(filters, containsDatasetRestriction, headers, conn);
-        
+
         SearchResults results = new SearchResults();
         if (includeItems) {
             List<Item> items = findItems(filters, containsDatasetRestriction, limit, offset, headers, conn);
@@ -253,7 +240,7 @@ public class SearchService {
                 item.has(RDF.value, value))
             .limit(limit+1)
             .offset(offset);
-        
+
         if (!containsDatasetRestriction) {
             query.where(item.has(SCV.dataset, dataset));
         }
@@ -267,10 +254,10 @@ public class SearchService {
                 UID id = (UID) row.get(item.getName());
                 UID datasetUID = (UID) row.get(dataset.getName());
                 LIT valueLIT = (LIT) row.get(value.getName());
-                
+
                 Item item = new Item(id, valueLIT.getValue(), headers.getHeaderCount());
                 item.setValue(headers.getFacetIndex(SCV.Dataset), datasetUID);
-                
+
                 CloseableIterator<STMT> stmts = conn.findStatements(id, SCV.dimension, null, datasetUID, false);
                 try {
                     while (stmts.hasNext()) {
@@ -287,7 +274,7 @@ public class SearchService {
             iter.close();
         }
         logDuration("Available dimensions query", System.currentTimeMillis() - start);
-        
+
         return results;
     }
 
@@ -318,11 +305,11 @@ public class SearchService {
         query
             .where(filters.toArray(new Predicate[filters.size()]))
             .distinct();
-        
+
         if (!containsDatasetRestriction) {
             query.where(item.has(SCV.dataset, dataset));
         }
-        
+
         long start = System.currentTimeMillis();
         CloseableIterator<Map<String,NODE>> iter = query.select(dataset);
         try {
@@ -345,7 +332,7 @@ public class SearchService {
     private List<Predicate> getSearchFilters(
             ListMultimap<UID, UID> facetRestrictions) {
         List<Predicate> filters = new ArrayList<Predicate>();
-        
+
         int dimensionRestrictionCount = 0;
         for (UID facet : facetRestrictions.keySet()) {
             List<UID> values = facetRestrictions.get(facet);
@@ -395,7 +382,7 @@ public class SearchService {
                 }
             }
         }
-        
+
         SearchResults result = new SearchResults();
 
         // DIMENSIONS
@@ -439,7 +426,7 @@ public class SearchService {
 
         RDFQuery query = new RDFQueryImpl(conn);
         query.where(dimension.a(dimensionType), dimension.in(restrictions));
-        
+
         CloseableIterator<Map<String, NODE>> iter = query.select(dimension, dimensionType);
         try {
             Map<String, NODE> row;

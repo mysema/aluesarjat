@@ -16,7 +16,7 @@ public class FacetsServletTest extends AbstractServletTest{
     @Override
     public void setUp(){
         super.setUp();
-        servlet = new FacetsServlet(repository);
+        servlet = new FacetsServlet(new SearchService(repository));
     }
 
     @Test
@@ -27,11 +27,11 @@ public class FacetsServletTest extends AbstractServletTest{
         System.err.println(response.getContentAsString());
         assertTrue(response.getContentAsString().contains("Etel\u00E4inen suurpiiri"));
     }
-    
+
     @Test
     public void JSONP_Is_Supported() throws ServletException, IOException{
         request.setParameter("callback", "handleResponse");
-        servlet.service(request, response);        
+        servlet.service(request, response);
         String res = response.getContentAsString();
         assertTrue(res.startsWith("handleResponse("));
         assertTrue(res.endsWith(")"));

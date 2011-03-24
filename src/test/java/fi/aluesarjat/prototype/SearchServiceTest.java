@@ -1,6 +1,9 @@
 package fi.aluesarjat.prototype;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -26,7 +29,7 @@ import fi.aluesarjat.prototype.guice.ModuleUtils;
 public class SearchServiceTest {
 
     protected static MemoryRepository repository;
-    
+
     protected static SearchService service;
 
     private static final UID AREA = new UID("http://localhost:8080/rdf/dimensions/Alue");
@@ -62,7 +65,7 @@ public class SearchServiceTest {
     private static final UID UNITS = new UID("http://localhost:8080/rdf/dimensions/Yksikk\u00F6");
 
     private static final UID UNIT = new UID("http://localhost:8080/rdf/dimensions/Yksikk\u00F6#Unit");
-    
+
     @BeforeClass
     public static void setUpClass() throws ServletException, IOException{
         String baseURI = ModuleUtils.DEFAULT_BASE_URI;
@@ -71,19 +74,19 @@ public class SearchServiceTest {
         repository.initialize();
 
         NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
-        DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED.name(), "true");
+        DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED, true);
         dataService.setDatasets(Lists.newArrayList("classpath:/search-test-1.px \".\"", "classpath:/search-test-2.px \".\""));
         dataService.initialize();
-        
+
         service = new SearchService(repository);
     }
-    
+
     @Test
     public void Facets() {
         Collection<Facet> facets = service.getFacets();
-        
+
         assertEquals(6, facets.size()); // Dimensions (Alue, Vuosi, Toimiala, Tekijä) + Units + Dataset
-        
+
         Multimap<UID, UID> expectedFacets = LinkedHashMultimap.create();
         expectedFacets.put(AREA, HKI);
         expectedFacets.put(AREA, ESP);
@@ -100,50 +103,50 @@ public class SearchServiceTest {
         for (Facet facet : facets) {
             Collection<UID> expectedValues = expectedFacets.get(facet.getId());
             assertNotNull(expectedValues);
-            
+
             for (Value value : facet.getValues()) {
                 assertTrue("Found extra facet/value: " + value.getId(), expectedFacets.remove(facet.getId(), value.getId()));
             }
         }
-        
+
         assertEquals("Not all facets/values found: " + expectedFacets, 0, expectedFacets.size());
     }
 
     @Test
     public void Single_Dimension() {
         SearchResults results = service.search(Sets.newHashSet(HKI), true, 1000, 0, true);
-        
+
         // Not enough restrictions!
         assertNull(results.getItems());
         assertNull(results.getHeaders());
-        
+
         assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
     }
 
     @Test
     public void Single_Dataset() {
         SearchResults results = service.search(Sets.newHashSet(DATASET1), true, 1000, 0, true);
-        
+
         // Not enough restrictions!
         assertNull(results.getItems());
         assertNull(results.getHeaders());
-        
+
         assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ICT, ATK, DATASET1, UNIT);
     }
-    
+
     private void assertExpectedValues(Set<UID> actualValues, UID ... expectedValues) {
         Set<UID> expected = Sets.newHashSet(expectedValues);
         for (UID value : actualValues) {
             assertTrue("Found extra value: " + value, expected.remove(value));
         }
-        
+
         assertEquals("Not all values found: " + expected, 0, expected.size());
     }
-    
-    
+
+
     @AfterClass
     public static void tearDownClass(){
         repository.close();
     }
-    
+
 }
