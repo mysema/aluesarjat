@@ -6,10 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServlet;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.rdfbean.model.NODE;
-import com.mysema.rdfbean.model.QueryLanguage;
 import com.mysema.rdfbean.model.RDFConnection;
-import com.mysema.rdfbean.model.SPARQLQuery;
 import com.mysema.rdfbean.model.STMT;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.META;
@@ -39,23 +36,5 @@ public abstract class AbstractSPARQLServlet extends HttpServlet {
         }
         return namespaces;
     }
-
-    protected NODE getSingleResult(RDFConnection connection, String queryString, Map<String,NODE> bindings) {
-        SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, queryString);
-        for (Map.Entry<String, NODE> binding : bindings.entrySet()){
-            query.setBinding(binding.getKey(), binding.getValue());
-        }
-        CloseableIterator<Map<String,NODE>> result = query.getTuples();
-        try{
-            if (result.hasNext()){
-                return result.next().values().iterator().next();
-            }else{
-                return null;
-            }
-        }finally{
-            result.close();
-        }
-    }
-
 
 }
