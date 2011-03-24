@@ -113,6 +113,16 @@ public class SearchServiceTest {
     }
 
     @Test
+    public void Empty_Search() {
+        SearchResults results = service.search(Sets.<UID>newHashSet(), true, 1000, 0, true);
+        
+        assertNull(results.getItems());
+        assertNull(results.getHeaders());
+
+        assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
+    }
+
+    @Test
     public void Single_Dimension() {
         SearchResults results = service.search(Sets.newHashSet(HKI), true, 1000, 0, true);
 
