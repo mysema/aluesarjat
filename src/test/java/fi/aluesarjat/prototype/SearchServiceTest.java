@@ -2,7 +2,7 @@ package fi.aluesarjat.prototype;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -121,6 +121,15 @@ public class SearchServiceTest {
 
         assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
     }
+    
+    @Test
+    public void Conflicting_Restrictions() {
+        SearchResults results = service.search(Sets.newHashSet(SAMPPA, ATK), true, 1000, 0, true);
+        
+        assertTrue(results.getItems().isEmpty());
+        assertTrue(results.getHeaders().isEmpty());
+        assertTrue(results.getAvailableValues().isEmpty());
+    }
 
     @Test
     public void Single_Dimension() {
@@ -131,6 +140,18 @@ public class SearchServiceTest {
         assertNull(results.getHeaders());
 
         assertExpectedValues(results.getAvailableValues(), HKI, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
+    }
+
+    @Test
+    public void Optimized_Multi_Dimension() {
+        SearchService altService = new SearchService(repository, 3);
+        SearchResults results = altService.search(Sets.newHashSet(HKI, TIMO), true, 1000, 0, true);
+
+        // Not enough restrictions!
+        assertNull(results.getItems());
+        assertNull(results.getHeaders());
+
+        assertExpectedValues(results.getAvailableValues(), HKI, Y2010, Y2011, TIMO, DATASET2, UNIT);
     }
 
     @Test
@@ -170,7 +191,6 @@ public class SearchServiceTest {
     public void Two_Dimensions_With_Separate_Common_Facets() {
         SearchResults results = service.search(Sets.newHashSet(HKI, Y2010), true, 1000, 0, true);
         
-        // Not enough restrictions!
         assertNotNull(results.getItems());
         assertNotNull(results.getHeaders());
         
@@ -189,7 +209,6 @@ public class SearchServiceTest {
     public void One_Dimension_One_Dataset() {
         SearchResults results = service.search(Sets.newHashSet(HKI, DATASET1), true, 1000, 0, true);
         
-        // Not enough restrictions!
         assertNotNull(results.getItems());
         assertNotNull(results.getHeaders());
         
@@ -208,7 +227,6 @@ public class SearchServiceTest {
     public void Two_Dimensions_Two_Datasets() {
         SearchResults results = service.search(Sets.newHashSet(HKI, ESP, DATASET1, DATASET2), true, 1000, 0, true);
         
-        // Not enough restrictions!
         assertNotNull(results.getItems());
         assertNotNull(results.getHeaders());
         
@@ -216,6 +234,20 @@ public class SearchServiceTest {
         
         // All values!
         assertEquals(16, results.getItems().size());
+    }
+    
+    @Test
+    public void Limit_Offset() {
+        for (int i=0; i < 4; i++) {
+            SearchResults results = service.search(Sets.newHashSet(HKI, ESP, DATASET1, DATASET2), true, 4, i*4, true);
+            
+            assertNotNull(results.getItems());
+            assertNotNull(results.getHeaders());
+            
+            assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
+            
+            assertEquals(4, results.getItems().size());
+        }
     }
     
     private void assertExpectedValues(Set<UID> actualValues, UID ... expectedValues) {

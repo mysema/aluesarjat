@@ -93,9 +93,16 @@ public class SearchService {
     }
 
     private final Repository repository;
+    
+    private final int minRestrictions;
 
     public SearchService(Repository repository) {
+        this(repository, 2);
+    }
+
+    public SearchService(Repository repository, int minRestrictions) {
         this.repository = repository;
+        this.minRestrictions = minRestrictions;
     }
 
     public Collection<Facet> getFacets() {
@@ -209,7 +216,7 @@ public class SearchService {
         try {
             ListMultimap<UID, UID> facetRestrictions = getFacetRestrictions(restrictions, conn);
 
-            if (facetRestrictions.keySet().size() < 2) {
+            if (facetRestrictions.keySet().size() < minRestrictions) {
                 return getAvailableDatasetValues(facetRestrictions, conn);
             } else {
                 return getResults(facetRestrictions, includeItems, limit, offset, includeAvailableValues, conn);
@@ -369,6 +376,14 @@ public class SearchService {
         }
     }
     
+    private BooleanExpression notEqualsIn(QID subject, Collection<UID> values) {
+        if (values.size() == 1) {
+            return subject.ne(values.iterator().next());
+        } else {
+            return subject.notIn(values);
+        }
+    }
+    
     private List<? extends Predicate> equalsIn(QID subject, UID predicate, Collection<UID> values, String varName, int varIndex) {
         if (values.size() == 1) {
             return Lists.newArrayList(subject.has(predicate, values.iterator().next()));
@@ -404,15 +419,11 @@ public class SearchService {
         }
 
         if (!excludedDimensionTypes.isEmpty()) {
-            BooleanExpression not;
-            
-            if (excludedDimensionTypes.size() == 1) {
-                not = dimensionType.ne(excludedDimensionTypes.iterator().next());
-            } else {
-                not = dimensionType.notIn(excludedDimensionTypes);
-            }
-            filters.add(dimension.has(RDF.type, dimensionType));
-            filters.add(not.or(equalsIn(dimension, includedDimensions)));
+            filters.add(dimension.a(dimensionType));
+            filters.add(
+                    notEqualsIn(dimensionType, excludedDimensionTypes)
+                    .or(equalsIn(dimension, includedDimensions))
+            );
         }
 
         // DIMENSIONS
@@ -453,19 +464,20 @@ public class SearchService {
     private ListMultimap<UID, UID> getFacetRestrictions(Set<UID> restrictions,
             RDFConnection conn) {
         ListMultimap<UID, UID> facetValues = ArrayListMultimap.create();
-
-        RDFQuery query = new RDFQueryImpl(conn);
-        query.where(dimension.a(dimensionType), dimension.in(restrictions));
-
-        CloseableIterator<Map<String, NODE>> iter = query.select(dimension, dimensionType);
-        try {
-            Map<String, NODE> row;
-            while (iter.hasNext()) {
-                row = iter.next();
-                facetValues.put((UID) row.get(dimensionType.getName()), (UID) row.get(dimension.getName()));
+        if (!restrictions.isEmpty()) {
+            RDFQuery query = new RDFQueryImpl(conn);
+            query.where(dimension.a(dimensionType), dimension.in(restrictions));
+    
+            CloseableIterator<Map<String, NODE>> iter = query.select(dimension, dimensionType);
+            try {
+                Map<String, NODE> row;
+                while (iter.hasNext()) {
+                    row = iter.next();
+                    facetValues.put((UID) row.get(dimensionType.getName()), (UID) row.get(dimension.getName()));
+                }
+            }finally{
+                iter.close();
             }
-        }finally{
-            iter.close();
         }
         return facetValues;
     }
