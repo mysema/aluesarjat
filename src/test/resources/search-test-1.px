@@ -1,0 +1,13 @@
+CHARSET="ANSI";
+LANGUAGE="fi";
+TITLE="SearchServiceTest Dataset 1";
+CONTENTS="SearchServiceTest Dataset 1";
+UNITS="unit";
+STUB="Alue","Toimiala";
+HEADING="Vuosi";
+VALUES("Alue")="Helsinki","Espoo";
+VALUES("Toimiala")="ICT","ATK";
+VALUES("Vuosi")="2010","2011";
+DATA=
+1 2 3 4
+5 6 7 8;

@@ -39,4 +39,7 @@ public class Facet {
         this.name = name;
     }
     
+    public String toString() {
+        return name;
+    }
 }

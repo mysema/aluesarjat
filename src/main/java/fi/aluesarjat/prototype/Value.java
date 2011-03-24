@@ -46,4 +46,7 @@ public class Value {
         this.parent = parent;
     }
 
+    public String toString() {
+        return name;
+    }
 }

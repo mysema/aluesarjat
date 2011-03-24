@@ -1,0 +1,13 @@
+CHARSET="ANSI";
+LANGUAGE="fi";
+TITLE="SearchServiceTest Dataset 1";
+CONTENTS="SearchServiceTest Dataset 1";
+UNITS="unit";
+STUB="Alue","Tekijä";
+HEADING="Vuosi";
+VALUES("Alue")="Helsinki","Espoo";
+VALUES("Tekijä")="Samppa","Timo";
+VALUES("Vuosi")="2010","2011";
+DATA=
+9 10 11 12
+13 14 15 16;

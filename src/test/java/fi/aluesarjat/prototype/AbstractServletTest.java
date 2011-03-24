@@ -32,7 +32,7 @@ public abstract class AbstractServletTest {
         repository.initialize();
 
         NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
-        DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED.name(), "true");
+        DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED, true);
         dataService.setDatasets(Collections.singletonList("classpath:/data/A01HKIS_Vaestotulot.px \".\""));
         dataService.initialize();
     }
