@@ -111,29 +111,33 @@ public class SearchService {
             Map<UID, Facet> dimensionTypes = new LinkedHashMap<UID,Facet>();
 
             // DIMENSIONS
+            long start = System.currentTimeMillis();
             RDFQuery query = new RDFQueryImpl(conn);
             query.where(
                   dimensionType.has(RDFS.subClassOf, SCV.Dimension),
                   dimensionType.has(DC.title, dimensionTypeName),
                   dimension.a(dimensionType),
                   dimension.has(DC.title, dimensionName),
-                  Blocks.optional(dimension.has(DC.description, dimensionDescription)),
-                  Blocks.optional(dimension.has(new UID(SKOS.NS, "broader"), parent)));
+                  dimension.has(DC.description, dimensionDescription).asOptional(),
+                  dimension.has(new UID(SKOS.NS, "broader"), parent).asOptional());
             query.orderBy(dimensionName.asc());
 
-            addFacets(conn, dimensionTypes, query.selectAll());
+            addFacets(conn, dimensionTypes, query.select(dimensionType, dimensionTypeName, dimension, dimensionName, dimensionDescription, parent));
+            logDuration("getFacets(): Dimensions", System.currentTimeMillis() - start);
 
             // DATASETS
+            start = System.currentTimeMillis();
             query = new RDFQueryImpl(conn);
             // Query datasets as a kind of dimension
             query.where(
                   dimension.a(dimensionType), // dimensionType = scv:Dataset
                   dimension.has(DC.title, dimensionName), // datasetName
-                  Blocks.optional(dimension.has(DC.description, dimensionDescription)));
+                  dimension.has(DC.description, dimensionDescription).asOptional());
             query.set(dimensionType, SCV.Dataset);
             query.orderBy(dimensionName.asc());
 
-            addFacets(conn, dimensionTypes, query.selectAll());
+            addFacets(conn, dimensionTypes, query.select(dimensionType, dimension, dimensionName, dimensionDescription));
+            logDuration("getFacets(): Datasets", System.currentTimeMillis() - start);
 
             return dimensionTypes.values();
         } finally {
@@ -295,7 +299,7 @@ public class SearchService {
         } finally {
             iter.close();
         }
-        logDuration("Available dimensions query", System.currentTimeMillis() - start);
+        logDuration("findItems", System.currentTimeMillis() - start);
 
         return results;
     }
@@ -319,7 +323,7 @@ public class SearchService {
         } finally {
             iter.close();
         }
-        logDuration("Available dimensions query", System.currentTimeMillis() - start);
+        logDuration("findAvailableDimensions", System.currentTimeMillis() - start);
     }
 
     private void findAvailableDatasets(List<Predicate> filters, boolean containsDatasetRestriction, Headers headers, RDFConnection conn) {
@@ -342,7 +346,7 @@ public class SearchService {
         } finally {
             iter.close();
         }
-        logDuration("Available datasets query", System.currentTimeMillis() - start);
+        logDuration("findAvailableDatasets", System.currentTimeMillis() - start);
     }
 
     private void logDuration(String title, long duration){
