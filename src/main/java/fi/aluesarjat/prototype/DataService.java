@@ -56,11 +56,20 @@ public class DataService {
             @Named("baseURI") String baseURI,
             @Named("import.mode") String mode,
             @Named("forceReload") String forceReload){
+        this(repository, namespaceHandler, baseURI, Mode.valueOf(mode), Boolean.valueOf(forceReload));
+    }
+
+    public DataService(
+            Repository repository,
+            NamespaceHandler namespaceHandler,
+            String baseURI,
+            Mode mode,
+            boolean forceReload){
         this.repository = repository;
         this.namespaceHandler = namespaceHandler;
         this.baseURI = baseURI;
-        this.forceReload = Boolean.valueOf(forceReload);
-        this.mode = Mode.valueOf(mode);
+        this.forceReload = forceReload;
+        this.mode = mode;
     }
 
     @SuppressWarnings("unchecked")
