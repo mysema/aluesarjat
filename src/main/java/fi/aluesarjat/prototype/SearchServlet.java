@@ -90,7 +90,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         }
 
         // headers
-        if (!searchResults.getHeaders().isEmpty()){
+        if (searchResults.getHeaders() != null){
             generator.writeFieldName("headers");
             generator.writeStartArray();
             for (UID header : searchResults.getHeaders()){
@@ -100,7 +100,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         }
 
         // items
-        if (!searchResults.getItems().isEmpty()){
+        if (searchResults.getItems() != null){
             generator.writeFieldName("items");
             generator.writeStartArray();
             for (Item item : searchResults.getItems()){

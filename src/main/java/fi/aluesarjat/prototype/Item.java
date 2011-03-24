@@ -35,4 +35,7 @@ public class Item {
         values[index] = value;
     }
     
+    public String toString() {
+        return value + ": " + values;
+    }
 }

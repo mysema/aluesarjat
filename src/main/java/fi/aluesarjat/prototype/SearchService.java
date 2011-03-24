@@ -25,9 +25,24 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.types.Predicate;
-import com.mysema.rdfbean.model.*;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.rdfbean.model.Blocks;
+import com.mysema.rdfbean.model.DC;
+import com.mysema.rdfbean.model.LIT;
+import com.mysema.rdfbean.model.NODE;
+import com.mysema.rdfbean.model.QID;
+import com.mysema.rdfbean.model.RDF;
+import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.RDFQuery;
+import com.mysema.rdfbean.model.RDFQueryImpl;
+import com.mysema.rdfbean.model.RDFS;
+import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.SKOS;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.META;
 import com.mysema.stat.STAT;
 import com.mysema.stat.scovo.SCV;
@@ -194,7 +209,7 @@ public class SearchService {
         try {
             ListMultimap<UID, UID> facetRestrictions = getFacetRestrictions(restrictions, conn);
 
-            if (facetRestrictions.size() < 2) {
+            if (facetRestrictions.keySet().size() < 2) {
                 return getAvailableDatasetValues(facetRestrictions, conn);
             } else {
                 return getResults(facetRestrictions, includeItems, limit, offset, includeAvailableValues, conn);
@@ -247,7 +262,7 @@ public class SearchService {
 
         List<Item> results = new ArrayList<Item>(limit+1);
         long start = System.currentTimeMillis();
-        CloseableIterator<Map<String,NODE>> iter = query.select(dimension, dimensionType, value);
+        CloseableIterator<Map<String,NODE>> iter = query.select(item, dataset, value);
         try {
             while (iter.hasNext()) {
                 Map<String,NODE> row = iter.next();
@@ -338,52 +353,67 @@ public class SearchService {
             List<UID> values = facetRestrictions.get(facet);
             if (facet.equals(SCV.Dataset)) {
                 filters.add(item.has(SCV.dataset, dataset));
-                if (1 < values.size()) {
-                    filters.add(dataset.in(values));
-                } else {
-                    filters.add(dataset.eq(values.get(0)));
-                }
+                filters.add(equalsIn(dataset, values));
             } else {
-                if (1 < values.size()) {
-                    ++dimensionRestrictionCount;
-                    QID dimensionRestriction = new QID("dimensionRestriction" + dimensionRestrictionCount);
-                    filters.add(item.has(SCV.dimension, dimensionRestriction));
-                    filters.add(dimensionRestriction.in(values));
-                } else {
-                    filters.add(item.has(SCV.dimension, values.get(0)));
-                }
+                filters.addAll(equalsIn(item, SCV.dimension, values, "dimensionRestriction", ++dimensionRestrictionCount));
             }
         }
         return filters;
     }
-
+    
+    private BooleanExpression equalsIn(QID subject, Collection<UID> values) {
+        if (values.size() == 1) {
+            return subject.eq(values.iterator().next());
+        } else {
+            return subject.in(values);
+        }
+    }
+    
+    private List<? extends Predicate> equalsIn(QID subject, UID predicate, Collection<UID> values, String varName, int varIndex) {
+        if (values.size() == 1) {
+            return Lists.newArrayList(subject.has(predicate, values.iterator().next()));
+        } else {
+            QID var = new QID(varName + varIndex);
+            return Lists.newArrayList(
+                    subject.has(predicate, var),
+                    var.in(values)
+            );
+        }
+    }
+    
     private SearchResults getAvailableDatasetValues(ListMultimap<UID, UID> facetRestrictions, RDFConnection conn) {
+        SearchResults result = new SearchResults();
+
         List<Predicate> filters = new ArrayList<Predicate>();
 
         filters.add(dataset.has(STAT.datasetDimension, dimension));
 
+        Set<UID> excludedDimensionTypes = Sets.newLinkedHashSet();
+        Set<UID> includedDimensions = Sets.newLinkedHashSet();
+        
         int dimensionRestrictionCount = 0;
         for (UID facet : facetRestrictions.keySet()) {
             List<UID> values = facetRestrictions.get(facet);
             if (facet.equals(SCV.Dataset)) {
-                if (1 < values.size()) {
-                    filters.add(dataset.in(values));
-                } else {
-                    filters.add(dataset.eq(values.get(0)));
-                }
+                filters.add(equalsIn(dataset, values));
             } else {
-                if (1 < values.size()) {
-                    ++dimensionRestrictionCount;
-                    QID dimensionRestriction = new QID("dimensionRestriction" + dimensionRestrictionCount);
-                    filters.add(dataset.has(STAT.datasetDimension, dimensionRestriction));
-                    filters.add(dimensionRestriction.in(values));
-                } else {
-                    filters.add(dataset.has(STAT.datasetDimension, values.get(0)));
-                }
+                excludedDimensionTypes.add(facet);
+                includedDimensions.addAll(values);
+                filters.addAll(equalsIn(dataset, STAT.datasetDimension, values, "dimensionRestriction", ++dimensionRestrictionCount));
             }
         }
 
-        SearchResults result = new SearchResults();
+        if (!excludedDimensionTypes.isEmpty()) {
+            BooleanExpression not;
+            
+            if (excludedDimensionTypes.size() == 1) {
+                not = dimensionType.ne(excludedDimensionTypes.iterator().next());
+            } else {
+                not = dimensionType.notIn(excludedDimensionTypes);
+            }
+            filters.add(dimension.has(RDF.type, dimensionType));
+            filters.add(not.or(equalsIn(dimension, includedDimensions)));
+        }
 
         // DIMENSIONS
         RDFQuery query = new RDFQueryImpl(conn)

@@ -1,6 +1,5 @@
 package fi.aluesarjat.prototype;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -14,9 +13,9 @@ public class SearchResults {
     /**
      * Facet IDs
      */
-    private List<UID> headers = Collections.emptyList();
+    private List<UID> headers;
 
-    private List<Item> items = Collections.emptyList();
+    private List<Item> items;
 
     public Set<UID> getAvailableValues() {
         return availableValues;

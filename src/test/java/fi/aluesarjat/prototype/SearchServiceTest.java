@@ -120,7 +120,7 @@ public class SearchServiceTest {
         assertNull(results.getItems());
         assertNull(results.getHeaders());
 
-        assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
+        assertExpectedValues(results.getAvailableValues(), HKI, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
     }
 
     @Test
@@ -134,13 +134,87 @@ public class SearchServiceTest {
         assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ICT, ATK, DATASET1, UNIT);
     }
 
+    @Test
+    public void Single_Facet_Many_Datasets() {
+        SearchResults results = service.search(Sets.newHashSet(DATASET1, DATASET2), true, 1000, 0, true);
+        
+        // Not enough restrictions!
+        assertNull(results.getItems());
+        assertNull(results.getHeaders());
+        
+        assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, SAMPPA, TIMO, ICT, ATK, DATASET1, DATASET2, UNIT);
+    }
+
+    @Test
+    public void Single_Facet_Many_Dimensions() {
+        SearchResults results = service.search(Sets.newHashSet(HKI, ESP), true, 1000, 0, true);
+        
+        // Not enough restrictions!
+        assertNull(results.getItems());
+        assertNull(results.getHeaders());
+        
+        assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
+    }
+    
+    @Test
+    public void Two_Dimensions_With_Separate_Common_Facets() {
+        SearchResults results = service.search(Sets.newHashSet(HKI, Y2010), true, 1000, 0, true);
+        
+        // Not enough restrictions!
+        assertNotNull(results.getItems());
+        assertNotNull(results.getHeaders());
+        
+        assertExpectedValues(results.getAvailableValues(), HKI, Y2010, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
+        
+        assertEquals(4, results.getItems().size());
+        
+        Set<String> expected = Sets.newHashSet("1", "3", "9", "11");
+        for (Item item : results.getItems()) {
+            assertTrue("Unexpected value: " + item.getValue(), expected.remove(item.getValue()));
+        }
+        assertTrue("Found extra values: " + expected, expected.isEmpty());
+    }
+    
+    @Test
+    public void One_Dimension_One_Dataset() {
+        SearchResults results = service.search(Sets.newHashSet(HKI, DATASET1), true, 1000, 0, true);
+        
+        // Not enough restrictions!
+        assertNotNull(results.getItems());
+        assertNotNull(results.getHeaders());
+        
+        assertExpectedValues(results.getAvailableValues(), HKI, Y2010, Y2011, ATK, ICT, DATASET1, UNIT);
+        
+        assertEquals(4, results.getItems().size());
+        
+        Set<String> expected = Sets.newHashSet("1", "2", "3", "4");
+        for (Item item : results.getItems()) {
+            assertTrue("Unexpected value: " + item.getValue(), expected.remove(item.getValue()));
+        }
+        assertTrue("Found extra values: " + expected, expected.isEmpty());
+    }
+    
+    @Test
+    public void Two_Dimensions_Two_Datasets() {
+        SearchResults results = service.search(Sets.newHashSet(HKI, ESP, DATASET1, DATASET2), true, 1000, 0, true);
+        
+        // Not enough restrictions!
+        assertNotNull(results.getItems());
+        assertNotNull(results.getHeaders());
+        
+        assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
+        
+        // All values!
+        assertEquals(16, results.getItems().size());
+    }
+    
     private void assertExpectedValues(Set<UID> actualValues, UID ... expectedValues) {
         Set<UID> expected = Sets.newHashSet(expectedValues);
         for (UID value : actualValues) {
             assertTrue("Found extra value: " + value, expected.remove(value));
         }
 
-        assertEquals("Not all values found: " + expected, 0, expected.size());
+        assertTrue("Not all values found: " + expected, expected.isEmpty());
     }
 
 
