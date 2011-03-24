@@ -114,10 +114,9 @@ public class SearchServletTest extends AbstractServletTest{
     }
 
     private void validateItems(JSONArray jsonArray) {
-        for (Object f : jsonArray.toArray()){
-            JSONObject facet = (JSONObject)f;
-            assertNotNull(facet.get("value"));
-            assertNotNull(facet.get("values"));
+        for (Object i : jsonArray.toArray()){
+            JSONArray item = (JSONArray)i;
+            assertTrue(item.size() > 0);
         }
     }
 

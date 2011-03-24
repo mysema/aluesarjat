@@ -56,7 +56,10 @@ public class SearchServlet extends AbstractSPARQLServlet {
         for (String value : nullToEmpty(request.getParameterValues("value"))) {
             restrictions.add(getUID(value, namespaces));
         }
-        SearchResults searchResults = searchService.search(restrictions, includes.contains("items"), limit, offset, includes.contains("values"));
+
+        boolean includeItems = includes.contains("items");
+        boolean includeValues = includes.contains("values");
+        SearchResults searchResults = searchService.search(restrictions, includeItems, limit, offset, includeValues);
 
         MultiMap<UID, UID> facets = new MultiHashMap<UID, UID>();
         for (UID facet : searchResults.getAvailableValues()){
@@ -72,7 +75,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         generator.writeStartObject();
 
         // facets
-        if (!searchResults.getAvailableValues().isEmpty()){
+        if (includeValues){
             generator.writeFieldName("facets");
             generator.writeStartArray();
             for (Map.Entry<UID, Collection<UID>> facet : facets.entrySet()){
@@ -90,7 +93,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         }
 
         // headers
-        if (searchResults.getHeaders() != null){
+        if (includeItems){
             generator.writeFieldName("headers");
             generator.writeStartArray();
             for (UID header : searchResults.getHeaders()){
@@ -100,7 +103,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         }
 
         // items
-        if (searchResults.getItems() != null){
+        if (includeItems){
             generator.writeFieldName("items");
             generator.writeStartArray();
             for (Item item : searchResults.getItems()){
