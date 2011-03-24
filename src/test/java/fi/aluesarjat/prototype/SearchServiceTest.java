@@ -117,7 +117,7 @@ public class SearchServiceTest {
         assertNull(results.getItems());
         assertNull(results.getHeaders());
         
-        assertExpectedValues(results.getAvailableValues(), HKI, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
+        assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
     }
 
     @Test
@@ -128,7 +128,7 @@ public class SearchServiceTest {
         assertNull(results.getItems());
         assertNull(results.getHeaders());
         
-        assertExpectedValues(results.getAvailableValues(), HKI, Y2010, Y2011, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
+        assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ICT, ATK, DATASET1, UNIT);
     }
     
     private void assertExpectedValues(Set<UID> actualValues, UID ... expectedValues) {

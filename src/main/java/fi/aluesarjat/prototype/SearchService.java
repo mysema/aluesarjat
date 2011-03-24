@@ -371,42 +371,65 @@ public class SearchService {
     }
 
     private SearchResults getAvailableDatasetValues(ListMultimap<UID, UID> facetRestrictions, RDFConnection conn) {
-        RDFQuery query = new RDFQueryImpl(conn);
+        List<Predicate> filters = new ArrayList<Predicate>();
 
+        filters.add(dataset.has(STAT.datasetDimension, dimension));
+        
         int dimensionRestrictionCount = 0;
         for (UID facet : facetRestrictions.keySet()) {
             List<UID> values = facetRestrictions.get(facet);
             if (facet.equals(SCV.Dataset)) {
                 if (1 < values.size()) {
-                    query.where(dataset.in(values));
+                    filters.add(dataset.in(values));
                 } else {
-                    query.set(dataset, values.get(0));
+                    filters.add(dataset.eq(values.get(0)));
                 }
             } else {
                 if (1 < values.size()) {
                     ++dimensionRestrictionCount;
                     QID dimensionRestriction = new QID("dimensionRestriction" + dimensionRestrictionCount);
-                    query.where(dataset.has(STAT.datasetDimension, dimensionRestriction));
-                    query.where(dimensionRestriction.in(values));
+                    filters.add(dataset.has(STAT.datasetDimension, dimensionRestriction));
+                    filters.add(dimensionRestriction.in(values));
                 } else {
-                    query.where(dataset.has(STAT.datasetDimension, values.get(0)));
+                    filters.add(dataset.has(STAT.datasetDimension, values.get(0)));
                 }
             }
         }
         
         SearchResults result = new SearchResults();
-        CloseableIterator<Map<String, NODE>> iter = query.select(dataset, dimension);
+
+        // DIMENSIONS
+        RDFQuery query = new RDFQueryImpl(conn)
+            .where(filters.toArray(new Predicate[filters.size()]))
+            .distinct();
+        
+        CloseableIterator<Map<String, NODE>> iter = query.select(dimension);
         try {
             Map<String, NODE> row;
             while (iter.hasNext()) {
                 row = iter.next();
-                result.addAvailableValue((UID) row.get(dataset.getName()));
                 result.addAvailableValue((UID) row.get(dimension.getName()));
             }
         }finally{
             iter.close();
         }
 
+        // DATASETS
+        query = new RDFQueryImpl(conn)
+            .where(filters.toArray(new Predicate[filters.size()]))
+            .distinct();
+        
+        iter = query.select(dataset);
+        try {
+            Map<String, NODE> row;
+            while (iter.hasNext()) {
+                row = iter.next();
+                result.addAvailableValue((UID) row.get(dataset.getName()));
+            }
+        }finally{
+            iter.close();
+        }
+        
         return result;
     }
 
@@ -415,7 +438,7 @@ public class SearchService {
         ListMultimap<UID, UID> facetValues = ArrayListMultimap.create();
 
         RDFQuery query = new RDFQueryImpl(conn);
-        query.where(dimension.a(dimensionType), dimensionType.in(restrictions));
+        query.where(dimension.a(dimensionType), dimension.in(restrictions));
         
         CloseableIterator<Map<String, NODE>> iter = query.select(dimension, dimensionType);
         try {
