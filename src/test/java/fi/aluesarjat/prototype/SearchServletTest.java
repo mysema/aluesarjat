@@ -21,13 +21,16 @@ public class SearchServletTest extends AbstractServletTest{
     @Override
     public void setUp(){
         super.setUp();
-        servlet = new SearchServlet(repository);
+        servlet = new SearchServlet(new SearchService(repository));
     }
-    
+
     @Test
     public void JSONP_Is_Supported() throws ServletException, IOException{
         request.setParameter("callback", "handleResponse");
-        servlet.service(request, response);        
+        request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
+        request.addParameter("include", "values");
+        servlet.service(request, response);
+
         String res = response.getContentAsString();
         assertTrue(res.startsWith("handleResponse("));
         assertTrue(res.endsWith(")"));
@@ -36,7 +39,7 @@ public class SearchServletTest extends AbstractServletTest{
     @Test
     public void By_Dataset_FacetsOnly() throws ServletException, IOException{
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
-        request.addParameter("include", "facets");
+        request.addParameter("include", "values");
         servlet.service(request, response);
 
         JSONObject obj = JSONObject.fromObject(response.getContentAsString());
@@ -51,7 +54,7 @@ public class SearchServletTest extends AbstractServletTest{
         request.addParameter("value", "alue:_091_603_Laajasalon_peruspiiri");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
         request.addParameter("value", "vuosi:_2001");
-        request.addParameter("include", "facets");
+        request.addParameter("include", "values");
         servlet.service(request, response);
 
         JSONObject obj = JSONObject.fromObject(response.getContentAsString());
@@ -67,7 +70,7 @@ public class SearchServletTest extends AbstractServletTest{
         request.addParameter("value", "alue:_091_603_Laajasalon_peruspiiri");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
         request.addParameter("include", "items");
-        request.addParameter("include", "facets");
+        request.addParameter("include", "values");
         servlet.service(request, response);
 
         JSONObject obj = JSONObject.fromObject(response.getContentAsString());
@@ -83,7 +86,7 @@ public class SearchServletTest extends AbstractServletTest{
         request.addParameter("value", "tuloluokka:_15-vuotta_täyttäneet_yhteensä");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
         request.addParameter("include", "items");
-        request.addParameter("include", "facets");
+        request.addParameter("include", "values");
         request.addParameter("limit", "10");
         servlet.service(request, response);
 
@@ -99,7 +102,7 @@ public class SearchServletTest extends AbstractServletTest{
         request.addParameter("value", "tuloluokka:_15-vuotta_täyttäneet_yhteensä");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
         request.addParameter("include", "items");
-        request.addParameter("include", "facets");
+        request.addParameter("include", "values");
         request.addParameter("limit", "10");
         request.addParameter("offset", "10");
         servlet.service(request, response);

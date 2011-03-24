@@ -1,5 +1,6 @@
 package fi.aluesarjat.prototype;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -8,14 +9,14 @@ import com.mysema.rdfbean.model.UID;
 
 public class SearchResults {
 
-    private Set<UID> availableValues;
+    private Set<UID> availableValues = Sets.newLinkedHashSet();
 
     /**
      * Facet IDs
      */
-    private List<UID> headers;
+    private List<UID> headers = Collections.emptyList();
 
-    private List<Item> items;
+    private List<Item> items = Collections.emptyList();
 
     public Set<UID> getAvailableValues() {
         return availableValues;
@@ -30,9 +31,6 @@ public class SearchResults {
     }
 
     void addAvailableValue(UID valueId) {
-        if (availableValues == null) {
-            availableValues = Sets.newLinkedHashSet();
-        }
         availableValues.add(valueId);
     }
 

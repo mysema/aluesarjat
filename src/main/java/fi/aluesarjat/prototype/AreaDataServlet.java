@@ -27,7 +27,7 @@ import com.mysema.rdfbean.model.UID;
 
 public class AreaDataServlet extends AbstractSPARQLServlet{
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractFacetSearchServlet.class);
+    private static final Logger log = LoggerFactory.getLogger(AreaDataServlet.class);
 
     private static final long serialVersionUID = 1307767271709547227L;
 

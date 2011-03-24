@@ -100,8 +100,8 @@ public class CustomServletModule extends ServletModule{
 
     @Provides
     @Singleton
-    public SearchServlet createFacetedSearchServlet(Repository repository){
-        return new SearchServlet(repository);
+    public SearchServlet createFacetedSearchServlet(SearchService searchService){
+        return new SearchServlet(searchService);
     }
 
     @Provides

@@ -67,7 +67,7 @@ public class SearchService {
         public int getFacetIndex(UID facet) {
             Integer index = headerIndexes.get(facet);
             if (index == null) {
-                throw new IllegalArgumentException("Unknown value: " + value);
+                throw new IllegalArgumentException("Unknown value: " + facet);
             }
             return index.intValue();
         }
@@ -247,7 +247,7 @@ public class SearchService {
 
         List<Item> results = new ArrayList<Item>(limit+1);
         long start = System.currentTimeMillis();
-        CloseableIterator<Map<String,NODE>> iter = query.select(dimension, dimensionType);
+        CloseableIterator<Map<String,NODE>> iter = query.select(dimension, dimensionType, value);
         try {
             while (iter.hasNext()) {
                 Map<String,NODE> row = iter.next();
@@ -361,7 +361,7 @@ public class SearchService {
         List<Predicate> filters = new ArrayList<Predicate>();
 
         filters.add(dataset.has(STAT.datasetDimension, dimension));
-        
+
         int dimensionRestrictionCount = 0;
         for (UID facet : facetRestrictions.keySet()) {
             List<UID> values = facetRestrictions.get(facet);
@@ -389,7 +389,7 @@ public class SearchService {
         RDFQuery query = new RDFQueryImpl(conn)
             .where(filters.toArray(new Predicate[filters.size()]))
             .distinct();
-        
+
         CloseableIterator<Map<String, NODE>> iter = query.select(dimension);
         try {
             Map<String, NODE> row;
@@ -405,7 +405,7 @@ public class SearchService {
         query = new RDFQueryImpl(conn)
             .where(filters.toArray(new Predicate[filters.size()]))
             .distinct();
-        
+
         iter = query.select(dataset);
         try {
             Map<String, NODE> row;
@@ -416,7 +416,7 @@ public class SearchService {
         }finally{
             iter.close();
         }
-        
+
         return result;
     }
 

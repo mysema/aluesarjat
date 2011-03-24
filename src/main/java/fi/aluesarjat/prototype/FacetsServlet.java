@@ -16,7 +16,7 @@ import org.codehaus.jackson.JsonGenerator;
 import com.mysema.rdfbean.model.UID;
 
 
-public class FacetsServlet extends AbstractFacetSearchServlet {
+public class FacetsServlet extends AbstractSPARQLServlet {
 
     private static final long serialVersionUID = 2149808648205848159L;
 
