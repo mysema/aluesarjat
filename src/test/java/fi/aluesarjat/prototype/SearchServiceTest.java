@@ -2,7 +2,7 @@ package fi.aluesarjat.prototype;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -115,17 +115,17 @@ public class SearchServiceTest {
     @Test
     public void Empty_Search() {
         SearchResults results = service.search(Sets.<UID>newHashSet(), true, 1000, 0, true);
-        
+
         assertNull(results.getItems());
         assertNull(results.getHeaders());
 
         assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
     }
-    
+
     @Test
     public void Conflicting_Restrictions() {
         SearchResults results = service.search(Sets.newHashSet(SAMPPA, ATK), true, 1000, 0, true);
-        
+
         assertTrue(results.getItems().isEmpty());
         assertTrue(results.getHeaders().isEmpty());
         assertTrue(results.getAvailableValues().isEmpty());
@@ -168,88 +168,88 @@ public class SearchServiceTest {
     @Test
     public void Single_Facet_Many_Datasets() {
         SearchResults results = service.search(Sets.newHashSet(DATASET1, DATASET2), true, 1000, 0, true);
-        
+
         // Not enough restrictions!
         assertNull(results.getItems());
         assertNull(results.getHeaders());
-        
+
         assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, SAMPPA, TIMO, ICT, ATK, DATASET1, DATASET2, UNIT);
     }
 
     @Test
     public void Single_Facet_Many_Dimensions() {
         SearchResults results = service.search(Sets.newHashSet(HKI, ESP), true, 1000, 0, true);
-        
+
         // Not enough restrictions!
         assertNull(results.getItems());
         assertNull(results.getHeaders());
-        
+
         assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
     }
-    
+
     @Test
     public void Two_Dimensions_With_Separate_Common_Facets() {
         SearchResults results = service.search(Sets.newHashSet(HKI, Y2010), true, 1000, 0, true);
-        
+
         assertNotNull(results.getItems());
         assertNotNull(results.getHeaders());
-        
+
         assertExpectedValues(results.getAvailableValues(), HKI, Y2010, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
-        
+
         assertEquals(4, results.getItems().size());
-        
+
         Set<String> expected = Sets.newHashSet("1", "3", "9", "11");
         for (Item item : results.getItems()) {
             assertTrue("Unexpected value: " + item.getValue(), expected.remove(item.getValue()));
         }
         assertTrue("Found extra values: " + expected, expected.isEmpty());
     }
-    
+
     @Test
     public void One_Dimension_One_Dataset() {
         SearchResults results = service.search(Sets.newHashSet(HKI, DATASET1), true, 1000, 0, true);
-        
+
         assertNotNull(results.getItems());
         assertNotNull(results.getHeaders());
-        
+
         assertExpectedValues(results.getAvailableValues(), HKI, Y2010, Y2011, ATK, ICT, DATASET1, UNIT);
-        
+
         assertEquals(4, results.getItems().size());
-        
+
         Set<String> expected = Sets.newHashSet("1", "2", "3", "4");
         for (Item item : results.getItems()) {
             assertTrue("Unexpected value: " + item.getValue(), expected.remove(item.getValue()));
         }
         assertTrue("Found extra values: " + expected, expected.isEmpty());
     }
-    
+
     @Test
     public void Two_Dimensions_Two_Datasets() {
         SearchResults results = service.search(Sets.newHashSet(HKI, ESP, DATASET1, DATASET2), true, 1000, 0, true);
-        
+
         assertNotNull(results.getItems());
         assertNotNull(results.getHeaders());
-        
+
         assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
-        
+
         // All values!
         assertEquals(16, results.getItems().size());
     }
-    
+
     @Test
     public void Limit_Offset() {
         for (int i=0; i < 4; i++) {
             SearchResults results = service.search(Sets.newHashSet(HKI, ESP, DATASET1, DATASET2), true, 4, i*4, true);
-            
+
             assertNotNull(results.getItems());
             assertNotNull(results.getHeaders());
-            
+
             assertExpectedValues(results.getAvailableValues(), HKI, ESP, Y2010, Y2011, ATK, ICT, SAMPPA, TIMO, DATASET1, DATASET2, UNIT);
-            
+
             assertEquals(4, results.getItems().size());
         }
     }
-    
+
     private void assertExpectedValues(Set<UID> actualValues, UID ... expectedValues) {
         Set<UID> expected = Sets.newHashSet(expectedValues);
         for (UID value : actualValues) {
