@@ -17,8 +17,14 @@ public class SearchResults {
 
     private List<Item> items;
 
+    private boolean hasMoreResults;
+
     public Set<UID> getAvailableValues() {
         return availableValues;
+    }
+
+    public boolean isHasMoreResults() {
+        return hasMoreResults;
     }
 
     public List<UID> getHeaders() {
@@ -43,6 +49,10 @@ public class SearchResults {
 
     void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    void setHasMoreResults(boolean hasMoreResults) {
+        this.hasMoreResults = hasMoreResults;
     }
 
 }

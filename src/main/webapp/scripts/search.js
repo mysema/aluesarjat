@@ -135,21 +135,8 @@ function executeQuery() {
 			var columns = [];
 			
 			// FACETS
-			if (data.facets) {
-				var facets = data.facets;
-				var visibleValues = {};
-				for (var i=0; i < facets.length; i++) {
-					var facet = facets[i];
-					
-					if (data.items && !restrictionFacets[facet] && facet != "dimension:Yksikkö") {
-						template.push("<th>", getFacetName(facet), "</th>");
-					}
-					
-					var values = facet.values;
-					for (var j=0; j < values.length; j++) {
-						visibleValues[values[j].id] = true;
-					}
-				}
+			if (data.availableValues) {
+				var visibleValues = data.availableValues;
 				
 				$(".facetValue").each(function () {
 					var id = $(this).data("id");
@@ -180,14 +167,16 @@ function executeQuery() {
 			
 			// ITEMS
 			if (data.items) {
-				template.push("<th>Tilastoarvo</th><th>Yksikk&ouml;</th></tr></thead>");
+				var headers = data.headers;
+				
+				for (var i=0; i < headers.length; i++) {
+					template.push("<th>", getFacetName(headers[i]), "</th>");
+				}
+				template.push("</tr></thead>");
+				
 				var items = data.items;
 
 				template.push("<tbody>");
-				
-				for (var i=0; i < data.headers.length; i++) {
-				    columns.push(data.headers[i]);
-				}
 				
 				var previousValues = [];
 				for (var i=0; i < items.length; i++) {
@@ -196,39 +185,31 @@ function executeQuery() {
 					template.push("<tr class='itemRow ", (i % 2 == 0 ? "odd" : "even"),"'>")
 
 					var columnValues = []; // [value 1 ... value N, value, unit]
-					columnValues[columns.length] = "<td><div class='itemValue'> = " + item.value + "</div></td>";
+					
+					columnValues[headers.length] = "<td><div class='itemValue'> = " + item.value + "</div></td>";
 
 					for (var j=0; j < values.length; j++) {
 						var value = allValues[values[j]];
 						var facet = value.facet;
-						var colIndex;
+//						var colIndex;
 						var extraClass = "";
 						
-						if (facet.id == "dimension:Yksikkö") {
-							colIndex = columns.length + 1;
-							if (restrictionFacets[facet.id]) {
-								extraClass = " selectedValue";
-							}
-						} else {
-							colIndex = columns.indexOf(facet.id);
+//						if (facet.id == "dimension:Yksikkö") {
+//							colIndex = columns.length + 1;
+//							if (restrictionFacets[facet.id]) {
+//								extraClass = " selectedValue";
+//							}
+//						} else {
+//							colIndex = columns.indexOf(facet.id);
+//						}
+						var columnTemplate = [];
+						columnTemplate.push("<td><div class='facetValue", extraClass, "' data-id='", value.id, "'>", value.name);
+						
+						if (value.description) {
+							columnTemplate.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id, "'/>");
 						}
-						if (colIndex >= 0) {
-							var columnTemplate = [];
-							columnTemplate.push("<td><div class='facetValue", extraClass, "' data-id='", value.id, "'>", value.name);
-							
-							if (value.description) {
-								columnTemplate.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id, "'/>");
-							}
-							columnTemplate.push("</div></td>");
-							columnValues[colIndex] = columnTemplate.join("");
-						}
-					}
-					
-					// add missing cells
-					for (var k = 0; k < columnValues.length; k++){
-						if (!columnValues[k]){
-							columnValues[k] = "<td></td>";
-						}
+						columnTemplate.push("</div></td>");
+						columnValues[j] = columnTemplate.join("");
 					}
 					
 					template.push(columnValues.join(""));

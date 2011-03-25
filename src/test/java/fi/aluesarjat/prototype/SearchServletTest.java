@@ -43,8 +43,8 @@ public class SearchServletTest extends AbstractServletTest{
         servlet.service(request, response);
 
         JSONObject obj = JSONObject.fromObject(response.getContentAsString());
-        assertNotNull(obj.get("facets"));
-        validateFacets((JSONArray) obj.get("facets"));
+        assertNotNull(obj.get("availableValues"));
+        validateFacets((JSONObject) obj.get("availableValues"));
         assertNull(obj.get("items"));
     }
 
@@ -58,8 +58,8 @@ public class SearchServletTest extends AbstractServletTest{
         servlet.service(request, response);
 
         JSONObject obj = JSONObject.fromObject(response.getContentAsString());
-        assertNotNull(obj.get("facets"));
-        validateFacets((JSONArray) obj.get("facets"));
+        assertNotNull(obj.get("availableValues"));
+        validateFacets((JSONObject) obj.get("availableValues"));
         assertNull(obj.get("items"));
     }
 
@@ -73,9 +73,10 @@ public class SearchServletTest extends AbstractServletTest{
         request.addParameter("include", "values");
         servlet.service(request, response);
 
+        System.err.println(response.getContentAsString());
         JSONObject obj = JSONObject.fromObject(response.getContentAsString());
-        assertNotNull(obj.get("facets"));
-        validateFacets((JSONArray) obj.get("facets"));
+        assertNotNull(obj.get("availableValues"));
+        validateFacets((JSONObject) obj.get("availableValues"));
         assertNotNull(obj.get("items"));
         validateItems((JSONArray) obj.get("items"));
     }
@@ -114,16 +115,16 @@ public class SearchServletTest extends AbstractServletTest{
     }
 
     private void validateItems(JSONArray jsonArray) {
-        for (Object i : jsonArray.toArray()){
-            JSONArray item = (JSONArray)i;
-            assertTrue(item.size() > 0);
+        for (Object obj : jsonArray.toArray()){
+            JSONObject o = (JSONObject)obj;
+            assertNotNull(o.get("value"));
+            assertNotNull(o.get("values"));
         }
     }
 
-    private void validateFacets(JSONArray jsonArray){
-        for (Object f : jsonArray.toArray()){
-            JSONObject facet = (JSONObject)f;
-            assertNotNull(facet.get("id"));
+    private void validateFacets(JSONObject jsonObject){
+        for(Object key : jsonObject.keySet()){
+            assertEquals(true, jsonObject.get(key));
         }
     }
 }

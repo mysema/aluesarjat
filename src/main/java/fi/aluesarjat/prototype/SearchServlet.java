@@ -2,7 +2,6 @@ package fi.aluesarjat.prototype;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -13,8 +12,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections15.MultiMap;
-import org.apache.commons.collections15.multimap.MultiHashMap;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 
@@ -61,11 +58,6 @@ public class SearchServlet extends AbstractSPARQLServlet {
         boolean includeValues = includes.contains("values");
         SearchResults searchResults = searchService.search(restrictions, includeItems, limit, offset, includeValues);
 
-        MultiMap<UID, UID> facets = new MultiHashMap<UID, UID>();
-        for (UID facet : searchResults.getAvailableValues()){
-            facets.put(new UID(facet.ns()), facet);
-        }
-
         String jsonpCallback = request.getParameter("callback");
         if (jsonpCallback != null){
             response.getWriter().write(jsonpCallback + "(");
@@ -75,21 +67,13 @@ public class SearchServlet extends AbstractSPARQLServlet {
         generator.writeStartObject();
 
         if (searchResults.getAvailableValues() != null){
-            // facets
-            generator.writeFieldName("facets");
-            generator.writeStartArray();
-            for (Map.Entry<UID, Collection<UID>> facet : facets.entrySet()){
-                generator.writeStartObject();
-                generator.writeStringField("id", getPrefixed(facet.getKey(), namespaces));
-                generator.writeFieldName("values");
-                generator.writeStartArray();
-                for (UID value : facet.getValue()){
-                    generator.writeString(getPrefixed(value, namespaces));
-                }
-                generator.writeEndArray();
-                generator.writeEndObject();
+            // availableValues
+            generator.writeFieldName("availableValues");
+            generator.writeStartObject();
+            for (UID value : searchResults.getAvailableValues()){
+                generator.writeBooleanField(getPrefixed(value, namespaces), true);
             }
-            generator.writeEndArray();
+            generator.writeEndObject();
         }
 
         if (searchResults.getHeaders() != null) {
@@ -107,12 +91,15 @@ public class SearchServlet extends AbstractSPARQLServlet {
             generator.writeFieldName("items");
             generator.writeStartArray();
             for (Item item : searchResults.getItems()){
+                generator.writeStartObject();
+                generator.writeFieldName("values");
                 generator.writeStartArray();
                 for (UID uid : item.getValues()){
                     generator.writeString(getPrefixed(uid, namespaces));
                 }
-                generator.writeString(item.getValue());
                 generator.writeEndArray();
+                generator.writeStringField("value", item.getValue());
+                generator.writeEndObject();
             }
             generator.writeEndArray();
         }

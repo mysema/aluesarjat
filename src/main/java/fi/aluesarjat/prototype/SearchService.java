@@ -235,6 +235,7 @@ public class SearchService {
             List<Item> items = findItems(filters, containsDatasetRestriction, limit, offset, headers, conn);
             boolean hasMoreResults = items.size() > limit;
             if (hasMoreResults) {
+                results.setHasMoreResults(true);
                 items = items.subList(0, limit);
             }
             results.setHeaders(headers.getHeaders());
@@ -247,18 +248,14 @@ public class SearchService {
     }
 
     private List<Item> findItems(List<Predicate> filters, boolean containsDatasetRestriction, int limit, int offset, Headers headers, RDFConnection conn) {
+        filters.add(item.has(RDF.value, value));
+        if (!containsDatasetRestriction) {
+            filters.add(item.has(SCV.dataset, dataset));
+        }
 
         RDFQuery query = new RDFQueryImpl(conn);
-        query
-            .where(filters.toArray(new Predicate[filters.size()]))
-            .where(
-                item.has(RDF.value, value))
-            .limit(limit+1)
-            .offset(offset);
-
-        if (!containsDatasetRestriction) {
-            query.where(item.has(SCV.dataset, dataset));
-        }
+        query.limit(limit+1).offset(offset);
+        query.where(Blocks.graph(dataset, filters));
 
         List<Item> results = new ArrayList<Item>(limit+1);
         long start = System.currentTimeMillis();
@@ -298,16 +295,17 @@ public class SearchService {
         query
             .where(filters.toArray(new Predicate[filters.size()]))
             .where(
-                item.has(SCV.dimension, dimension),
-                dimension.a(dimensionType))
+                item.has(SCV.dimension, dimension))
             .distinct();
 
         long start = System.currentTimeMillis();
-        CloseableIterator<Map<String,NODE>> iter = query.select(dimension, dimensionType);
+        CloseableIterator<Map<String,NODE>> iter = query.select(dimension);
         try {
             while (iter.hasNext()) {
                 Map<String,NODE> row = iter.next();
-                headers.addFacetValue((UID) row.get(dimensionType.getName()), (UID) row.get(dimension.getName()));
+                UID dimensionUID = row.get(dimension.getName()).asURI();
+                UID dimensionTypeUID = new UID(dimensionUID.ns().substring(0, dimensionUID.ns().length()-1));
+                headers.addFacetValue(dimensionTypeUID, dimensionUID);
             }
         } finally {
             iter.close();
@@ -317,13 +315,13 @@ public class SearchService {
 
     private void findAvailableDatasets(List<Predicate> filters, boolean containsDatasetRestriction, Headers headers, RDFConnection conn) {
         RDFQuery query = new RDFQueryImpl(conn);
-        query
-            .where(filters.toArray(new Predicate[filters.size()]))
-            .distinct();
+        query.distinct();
 
         if (!containsDatasetRestriction) {
-            query.where(item.has(SCV.dataset, dataset));
+            filters.add(item.has(SCV.dataset, dataset));
         }
+
+        query.where(Blocks.graph(dataset, filters));
 
         long start = System.currentTimeMillis();
         CloseableIterator<Map<String,NODE>> iter = query.select(dataset);
@@ -438,8 +436,7 @@ public class SearchService {
         return result;
     }
 
-    private ListMultimap<UID, UID> getFacetRestrictions(Set<UID> restrictions,
-            RDFConnection conn) {
+    private ListMultimap<UID, UID> getFacetRestrictions(Set<UID> restrictions, RDFConnection conn) {
         ListMultimap<UID, UID> facetValues = ArrayListMultimap.create();
         if (!restrictions.isEmpty()) {
             RDFQuery query = new RDFQueryImpl(conn);
