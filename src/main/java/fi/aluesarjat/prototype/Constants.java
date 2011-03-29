@@ -1,6 +1,5 @@
 package fi.aluesarjat.prototype;
 
-import com.mysema.rdfbean.model.QID;
 import com.mysema.rdfbean.model.QLIT;
 import com.mysema.rdfbean.model.QUID;
 
@@ -22,7 +21,7 @@ public final class Constants {
 
     public static final QUID item = new QUID("item");
 
-    public static final QID parent = new QID("parent");
+    public static final QUID parent = new QUID("parent");
 
     private Constants(){}
 
