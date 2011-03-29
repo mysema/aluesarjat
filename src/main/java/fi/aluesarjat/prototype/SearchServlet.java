@@ -95,7 +95,11 @@ public class SearchServlet extends AbstractSPARQLServlet {
                 generator.writeFieldName("values");
                 generator.writeStartArray();
                 for (UID uid : item.getValues()){
-                    generator.writeString(getPrefixed(uid, namespaces));
+                    if (uid != null) {
+                        generator.writeString(getPrefixed(uid, namespaces));
+                    }else{
+                        generator.writeNull();
+                    }
                 }
                 generator.writeEndArray();
                 generator.writeStringField("value", item.getValue());
