@@ -93,9 +93,6 @@ public class SearchServiceImpl implements SearchService {
         this.minRestrictions = minRestrictions;
     }
 
-    /* (non-Javadoc)
-     * @see fi.aluesarjat.prototype.SearchService#getFacets()
-     */
     public Collection<Facet> getFacets() {
         RDFConnection conn = repository.openConnection();
         try {
@@ -190,9 +187,6 @@ public class SearchServiceImpl implements SearchService {
         facet.addValue(value);
     }
 
-    /* (non-Javadoc)
-     * @see fi.aluesarjat.prototype.SearchService#getNamespaces()
-     */
     public Map<UID, String> getNamespaces() {
         RDFConnection conn = repository.openConnection();
         try {
@@ -212,9 +206,6 @@ public class SearchServiceImpl implements SearchService {
         }
     }
 
-    /* (non-Javadoc)
-     * @see fi.aluesarjat.prototype.SearchService#search(java.util.Set, boolean, int, int, boolean)
-     */
     public SearchResults search(Set<UID> restrictions, boolean includeItems, int limit, int offset, boolean includeAvailableValues) {
         RDFConnection conn = repository.openConnection();
         try {
