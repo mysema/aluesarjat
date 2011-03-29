@@ -105,7 +105,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         }
 
         // hasMoreResults
-        generator.writeBooleanField("hasMoreResults", false); // FIXME
+        generator.writeBooleanField("hasMoreResults", searchResults.isHasMoreResults());
         generator.writeEndObject();
         generator.flush();
 

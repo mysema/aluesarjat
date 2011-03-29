@@ -12,6 +12,7 @@ import static fi.aluesarjat.prototype.Constants.value;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 import com.mysema.rdfbean.model.*;
 import com.mysema.stat.META;
@@ -223,16 +225,17 @@ public class SearchService {
         limit = Math.min(limit, SPARQL_MAX_LIMIT);
         Headers headers = new Headers();
 
-        List<Predicate> filters = getSearchFilters(facetRestrictions);
+        Map<ParamExpression<UID>, UID> bindings = new HashMap<ParamExpression<UID>, UID>();
+        List<Predicate> filters = getSearchFilters(facetRestrictions, bindings);
 
         boolean containsDatasetRestriction = facetRestrictions.containsKey(SCV.Dataset);
 
-        findAvailableDimensions(filters, headers, conn);
-        findAvailableDatasets(filters, containsDatasetRestriction, headers, conn);
+        findAvailableDimensions(filters, bindings, headers, conn);
+        findAvailableDatasets(filters, bindings, containsDatasetRestriction, headers, conn);
 
         SearchResults results = new SearchResults();
         if (includeItems) {
-            List<Item> items = findItems(filters, containsDatasetRestriction, limit, offset, headers, conn);
+            List<Item> items = findItems(filters, bindings, limit, offset, headers, conn);
             boolean hasMoreResults = items.size() > limit;
             if (hasMoreResults) {
                 results.setHasMoreResults(true);
@@ -247,15 +250,22 @@ public class SearchService {
         return results;
     }
 
-    private List<Item> findItems(List<Predicate> filters, boolean containsDatasetRestriction, int limit, int offset, Headers headers, RDFConnection conn) {
+    private List<Item> findItems(List<Predicate> filters, Map<ParamExpression<UID>, UID> bindings, int limit, int offset, Headers headers, RDFConnection conn) {
         filters.add(item.has(RDF.value, value));
-        if (!containsDatasetRestriction) {
-            filters.add(item.has(SCV.dataset, dataset));
-        }
 
         RDFQuery query = new RDFQueryImpl(conn);
         query.limit(limit+1).offset(offset);
-        query.where(Blocks.graph(dataset, filters));
+
+        if (bindings.containsKey(dataset)){
+            query.from(bindings.get(dataset)).where(filters.toArray(new Predicate[filters.size()]));
+        }else{
+            query.where(Blocks.graph(dataset, filters));
+        }
+
+
+        for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
+            query.set(entry.getKey(), entry.getValue());
+        }
 
         List<Item> results = new ArrayList<Item>(limit+1);
         long start = System.currentTimeMillis();
@@ -290,13 +300,21 @@ public class SearchService {
         return results;
     }
 
-    private void findAvailableDimensions(List<Predicate> filters, Headers headers, RDFConnection conn) {
+    private void findAvailableDimensions(List<Predicate> filters, Map<ParamExpression<UID>, UID> bindings, Headers headers, RDFConnection conn) {
         RDFQuery query = new RDFQueryImpl(conn);
         query
             .where(filters.toArray(new Predicate[filters.size()]))
             .where(
                 item.has(SCV.dimension, dimension))
             .distinct();
+
+        if (bindings.containsKey(dataset)){
+            query.from(bindings.get(dataset));
+        }
+
+        for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
+            query.set(entry.getKey(), entry.getValue());
+        }
 
         long start = System.currentTimeMillis();
         CloseableIterator<Map<String,NODE>> iter = query.select(dimension);
@@ -313,7 +331,7 @@ public class SearchService {
         logDuration("findAvailableDimensions", System.currentTimeMillis() - start);
     }
 
-    private void findAvailableDatasets(List<Predicate> filters, boolean containsDatasetRestriction, Headers headers, RDFConnection conn) {
+    private void findAvailableDatasets(List<Predicate> filters, Map<ParamExpression<UID>, UID> bindings, boolean containsDatasetRestriction, Headers headers, RDFConnection conn) {
         RDFQuery query = new RDFQueryImpl(conn);
         query.distinct();
 
@@ -321,7 +339,15 @@ public class SearchService {
             filters.add(item.has(SCV.dataset, dataset));
         }
 
-        query.where(Blocks.graph(dataset, filters));
+        if (bindings.containsKey(dataset)){
+            query.from(bindings.get(dataset)).where(filters.toArray(new Predicate[filters.size()]));
+        }else{
+            query.where(Blocks.graph(dataset, filters));
+        }
+
+        for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
+            query.set(entry.getKey(), entry.getValue());
+        }
 
         long start = System.currentTimeMillis();
         CloseableIterator<Map<String,NODE>> iter = query.select(dataset);
@@ -342,8 +368,7 @@ public class SearchService {
         }
     }
 
-    private List<Predicate> getSearchFilters(
-            ListMultimap<UID, UID> facetRestrictions) {
+    private List<Predicate> getSearchFilters(ListMultimap<UID, UID> facetRestrictions, Map<ParamExpression<UID>, UID> bindings) {
         List<Predicate> filters = new ArrayList<Predicate>();
 
         int dimensionRestrictionCount = 0;
@@ -351,7 +376,11 @@ public class SearchService {
             List<UID> values = facetRestrictions.get(facet);
             if (facet.equals(SCV.Dataset)) {
                 filters.add(item.has(SCV.dataset, dataset));
-                filters.add(dataset.in(values));
+                if (values.size() == 1){
+                    bindings.put(dataset, values.get(0));
+                }else{
+                    filters.add(dataset.in(values));
+                }
             } else {
                 filters.addAll(equalsIn(item, SCV.dimension, values, "dimensionRestriction", ++dimensionRestrictionCount));
             }
@@ -361,7 +390,7 @@ public class SearchService {
 
     private List<? extends Predicate> equalsIn(QUID subject, UID predicate, Collection<UID> values, String varName, int varIndex) {
         if (values.size() == 1) {
-            return Lists.newArrayList(subject.has(predicate, values.iterator().next()));
+            return Collections.singletonList(subject.has(predicate, values.iterator().next()));
         } else {
             QID var = new QID(varName + varIndex);
             return Lists.newArrayList(

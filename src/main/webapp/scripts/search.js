@@ -107,7 +107,7 @@ function executeQuery() {
 	$.ajax({
 		url: "search", 
 		datatype: "json",
-		data: {"value": restrictions, "include": ["items", "facets"], "limit": limit, "offset": offset},
+		data: {"value": restrictions, "include": ["items", "values"], "limit": limit, "offset": offset},
 		error: function(xhr, textStatus, errorThrown) {
 			$("#results").html(xhr.responseText);
 		},

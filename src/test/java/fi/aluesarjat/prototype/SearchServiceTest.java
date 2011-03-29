@@ -237,6 +237,12 @@ public class SearchServiceTest {
     }
 
     @Test
+    public void Has_More_Results() {
+        SearchResults results = service.search(Sets.newHashSet(HKI, ESP, DATASET1, DATASET2), true, 4, 0, true);
+        assertTrue(results.isHasMoreResults());
+    }
+
+    @Test
     public void Limit_Offset() {
         for (int i=0; i < 4; i++) {
             SearchResults results = service.search(Sets.newHashSet(HKI, ESP, DATASET1, DATASET2), true, 4, i*4, true);
