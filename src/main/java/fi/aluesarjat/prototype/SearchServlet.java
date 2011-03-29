@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonGenerator;
 
 import com.mysema.rdfbean.model.UID;
@@ -67,45 +68,15 @@ public class SearchServlet extends AbstractSPARQLServlet {
         generator.writeStartObject();
 
         if (searchResults.getAvailableValues() != null){
-            // availableValues
-            generator.writeFieldName("availableValues");
-            generator.writeStartObject();
-            for (UID value : searchResults.getAvailableValues()){
-                generator.writeBooleanField(getPrefixed(value, namespaces), true);
-            }
-            generator.writeEndObject();
+            addAvailableValues(namespaces, searchResults, generator);
         }
 
         if (searchResults.getHeaders() != null) {
-            // headers
-            generator.writeFieldName("headers");
-            generator.writeStartArray();
-            for (UID header : searchResults.getHeaders()){
-                generator.writeString(getPrefixed(header, namespaces));
-            }
-            generator.writeEndArray();
+            addHeaders(namespaces, searchResults, generator);
         }
 
         if (searchResults.getItems() != null) {
-            // items
-            generator.writeFieldName("items");
-            generator.writeStartArray();
-            for (Item item : searchResults.getItems()){
-                generator.writeStartObject();
-                generator.writeFieldName("values");
-                generator.writeStartArray();
-                for (UID uid : item.getValues()){
-                    if (uid != null) {
-                        generator.writeString(getPrefixed(uid, namespaces));
-                    }else{
-                        generator.writeNull();
-                    }
-                }
-                generator.writeEndArray();
-                generator.writeStringField("value", item.getValue());
-                generator.writeEndObject();
-            }
-            generator.writeEndArray();
+            addItems(namespaces, searchResults, generator);
         }
 
         // hasMoreResults
@@ -117,6 +88,54 @@ public class SearchServlet extends AbstractSPARQLServlet {
             response.getWriter().write(")");
         }
         response.getWriter().flush();
+    }
+
+    private void addItems(Map<UID, String> namespaces,
+            SearchResults searchResults, JsonGenerator generator)
+            throws IOException, JsonGenerationException {
+        // items
+        generator.writeFieldName("items");
+        generator.writeStartArray();
+        for (Item item : searchResults.getItems()){
+            generator.writeStartObject();
+            generator.writeFieldName("values");
+            generator.writeStartArray();
+            for (UID uid : item.getValues()){
+                if (uid != null) {
+                    generator.writeString(getPrefixed(uid, namespaces));
+                }else{
+                    generator.writeNull();
+                }
+            }
+            generator.writeEndArray();
+            generator.writeStringField("value", item.getValue());
+            generator.writeEndObject();
+        }
+        generator.writeEndArray();
+    }
+
+    private void addHeaders(Map<UID, String> namespaces,
+            SearchResults searchResults, JsonGenerator generator)
+            throws IOException, JsonGenerationException {
+        // headers
+        generator.writeFieldName("headers");
+        generator.writeStartArray();
+        for (UID header : searchResults.getHeaders()){
+            generator.writeString(getPrefixed(header, namespaces));
+        }
+        generator.writeEndArray();
+    }
+
+    private void addAvailableValues(Map<UID, String> namespaces,
+            SearchResults searchResults, JsonGenerator generator)
+            throws IOException, JsonGenerationException {
+        // availableValues
+        generator.writeFieldName("availableValues");
+        generator.writeStartObject();
+        for (UID value : searchResults.getAvailableValues()){
+            generator.writeBooleanField(getPrefixed(value, namespaces), true);
+        }
+        generator.writeEndObject();
     }
 
     private Set<String> getIncludes(String[] values) {
