@@ -190,18 +190,15 @@ function executeQuery() {
 
 					for (var j=0; j < values.length; j++) {
 						var value = allValues[values[j]];
+						
+						if (!value) {
+							columnValues[j] = "<td>&nbsp;</td>";
+							continue;
+						}
+						
 						var facet = value.facet;
-//						var colIndex;
 						var extraClass = "";
 						
-//						if (facet.id == "dimension:Yksikkö") {
-//							colIndex = columns.length + 1;
-//							if (restrictionFacets[facet.id]) {
-//								extraClass = " selectedValue";
-//							}
-//						} else {
-//							colIndex = columns.indexOf(facet.id);
-//						}
 						var columnTemplate = [];
 						columnTemplate.push("<td><div class='facetValue", extraClass, "' data-id='", value.id, "'>", value.name);
 						
