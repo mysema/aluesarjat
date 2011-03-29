@@ -116,18 +116,23 @@ function executeQuery() {
 
 			template.push("<table class='items'><thead>");
 			
+			var usedFacets = [];
+			
 			// RESTRICTIONS
 			var restrictionFacets = {};
+			var headersLength = data.headers ? data.headers.length : 10;
 			for (var i=0; i < restrictions.length; i++) {
 				var restriction = allValues[restrictions[i]];
 				var facet = restriction.facet;
 				restrictionFacets[facet.id] = true;
-				template.push("<tr><th class='restriction'>", facet.name, ":</th><td colspan='10'><div class='facetValue selectedValue' data-id='", 
+				template.push("<tr><th class='restriction'>", facet.name, ":</th><td colspan='",headersLength,"'><div class='facetValue selectedValue' data-id='", 
 						restriction.id, "'>", restriction.name);
 				if (restriction.description) {
 					template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id,"'/>");
 				}
 				template.push("</div></td></tr>");
+				
+				usedFacets.push(facet.id);
 			}
 			
 			template.push("<tr>");
@@ -169,9 +174,16 @@ function executeQuery() {
 			if (data.items) {
 				var headers = data.headers;
 				
+				var skippedColumns = [];
+				
 				for (var i=0; i < headers.length; i++) {
-					template.push("<th>", getFacetName(headers[i]), "</th>");
+					if ($.inArray(headers[i], usedFacets) == -1){
+						template.push("<th>", getFacetName(headers[i]), "</th>");	
+					}else{
+						skippedColumns.push(i);
+					}
 				}
+				template.push("<th>Arvo</th>");
 				template.push("</tr></thead>");
 				
 				var items = data.items;
@@ -190,6 +202,10 @@ function executeQuery() {
 
 					for (var j=0; j < values.length; j++) {
 						var value = allValues[values[j]];
+						
+						if ($.inArray(j, skippedColumns) > -1){
+							continue;
+						}
 						
 						if (!value) {
 							columnValues[j] = "<td>&nbsp;</td>";
