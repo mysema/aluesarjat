@@ -16,7 +16,7 @@ public class FacetsServletTest extends AbstractServletTest{
     @Override
     public void setUp(){
         super.setUp();
-        servlet = new FacetsServlet(new SearchService(repository));
+        servlet = new FacetsServlet(new SearchServiceImpl(repository));
     }
 
     @Test

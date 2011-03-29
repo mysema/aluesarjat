@@ -21,7 +21,7 @@ public class SearchServletTest extends AbstractServletTest{
     @Override
     public void setUp(){
         super.setUp();
-        servlet = new SearchServlet(new SearchService(repository));
+        servlet = new SearchServlet(new SearchServiceImpl(repository));
     }
 
     @Test

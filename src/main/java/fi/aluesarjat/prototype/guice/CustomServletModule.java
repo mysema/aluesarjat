@@ -22,6 +22,7 @@ import fi.aluesarjat.prototype.ContextAccessServlet;
 import fi.aluesarjat.prototype.DataService;
 import fi.aluesarjat.prototype.FacetsServlet;
 import fi.aluesarjat.prototype.SearchService;
+import fi.aluesarjat.prototype.SearchServiceImpl;
 import fi.aluesarjat.prototype.SearchServlet;
 import fi.aluesarjat.prototype.SubjectGraphServlet;
 
@@ -113,7 +114,7 @@ public class CustomServletModule extends ServletModule{
     @Provides
     @Singleton
     public SearchService createSearchService(Repository repository){
-        return new SearchService(repository);
+        return new SearchServiceImpl(repository);
     }
 
     @Provides
