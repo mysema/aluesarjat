@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.types.ParamExpression;
@@ -40,45 +39,6 @@ public class SearchServiceImpl implements SearchService {
     private static final int SPARQL_MAX_LIMIT = 1000;
 
     private static final Logger log = LoggerFactory.getLogger(SearchServiceImpl.class);
-
-    private static class Headers {
-        private final Map<UID, Integer> headerIndexes = Maps.newLinkedHashMap();
-        private final Map<UID, UID> valueToFacet = Maps.newHashMap();
-
-        public int addFacetValue(UID facet, UID value) {
-            valueToFacet.put(value, facet);
-            Integer index = headerIndexes.get(facet);
-            if (index == null) {
-                index = headerIndexes.size();
-                headerIndexes.put(facet, index);
-            }
-            return index.intValue();
-        }
-
-        public int getHeaderCount() {
-            return headerIndexes.size();
-        }
-
-        public List<UID> getHeaders() {
-            return Lists.newArrayList(headerIndexes.keySet());
-        }
-
-        public Set<UID> getAvailableValues() {
-            return valueToFacet.keySet();
-        }
-
-        public int getFacetIndex(UID facet) {
-            Integer index = headerIndexes.get(facet);
-            if (index == null) {
-                throw new IllegalArgumentException("Unknown value: " + facet);
-            }
-            return index.intValue();
-        }
-
-        public int getValueIndex(UID value) {
-            return getFacetIndex(valueToFacet.get(value));
-        }
-    }
 
     private final Repository repository;
 
