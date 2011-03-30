@@ -42,6 +42,8 @@ public class SearchServlet extends AbstractSPARQLServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
+        response.setDateHeader("Last-Modified", System.currentTimeMillis());
+        response.setHeader("Cache-Control", "max-age=3600");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 

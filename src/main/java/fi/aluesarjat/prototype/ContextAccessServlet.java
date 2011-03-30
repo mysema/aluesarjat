@@ -44,6 +44,7 @@ public class ContextAccessServlet extends HttpServlet{
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH ?context { ?s ?p ?o } }");
             query.setBinding("context", new UID(context));
             String contentType = getAcceptedType(request, Format.RDFXML);
+            response.setDateHeader("Last-Modified", System.currentTimeMillis());
             response.setContentType(contentType);
             query.streamTriples(response.getWriter(), contentType);
         }finally{
