@@ -7,3 +7,7 @@ virtuoso-t -f &
 FIX FOR OPEN FILES LIMIT ISSUES
 
 http://knol.google.com/k/fred-grott/open-file-limits-settings-on-ubuntu/166jfml0mowlh/3# 
+
+INDEX ADDITIONS
+
+create bitmap index RDF_QUAD_PGOS on DB.DBA.RDF_QUAD (G, P, O, S) partition (O varchar (-1, 0hexffff));

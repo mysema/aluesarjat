@@ -262,7 +262,6 @@ public class SearchServiceImpl implements SearchService {
             query.where(Blocks.graph(dataset, filters));
         }
 
-
         for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
             query.set(entry.getKey(), entry.getValue());
         }
