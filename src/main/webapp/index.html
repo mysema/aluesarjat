@@ -12,12 +12,70 @@
 	<h1>Aluesarjat</h1>
 	<div style="clear:both;"></div>
 
-	Etusivu
+	<b>Etusivu</b>
 	<a href="search.html">Fasettihaku</a>
     <a href="sparql.html">SPARQL</a>
     <a href="mapdemo.html">Karttanäkymä</a>
     
-    <p>TODO : front page</p>
+<h2 id="webpages">Web pages</h2>
+
+<h3>Faceted search</h3>
+
+<p>The <a href="search.html">Faceted search</a> displays a list of all dimension types and dimensions loaded into the service. Dimension values can be selected and unselected
+by clicking on them. Each selection reduces the list of shown dimensions to those used in items having the selected dimensions.</p>
+
+<p>A minimum of three dimension selections is necessary to show items having the selected dimesions on the right hand side of the window.
+The dimension buttons on the right hand side can be used as well to add and remove dimension selections.</p>
+
+<p>The header of the item results shows the selected dimensions and the body shows the item data in tabular form.</p>
+
+<p>The page size of results can be controlled via the Page size field. For cases where the result size exceeds the page size, the Previous and Next page
+links can be used for navigation between the result pages.</p>
+
+<h3>SPARQL query form</h3>
+
+<p>The <a href="sparql.html">SPARQL query form</a> provides an easy to use interface to execute SPARQL queries against the integrated HTTP based SPARQL endpoint.
+The queries are entered into the query field and either executed via the Submit Query -button or saved into the list of saved queries via the
+Save Query -button. Default namespaces for most of the query cases are by default used and needn't be declared in the Query field.</p>
+
+<p>The page size of results can be controlled via the Page size field. For cases where the result size exceeds the page size, the Previous and Next page
+links can be used for navigation between the result pages.</p>
+
+<p>Saved queries can be copied into the Query form by single clicks and deleted from the list of saved queries by double clicks.</p>
+
+<h3>Map visualization</h3>
+
+<p>The <a href="mapdemo.html">Map visualization</a> uses a GoogleMaps widget to show the area borders of the Capital Region of Helsinki. The visualization
+uses three layers of widgets to show large areas for small zoom levels, medium areas for medium zoom range and small areas for high zoom range.
+</p>
+
+<p>When crossing an area with the mouse, the background opacity of the area becomes smaller and a marker with the area title is shown at the center
+point of the area. When clicking an area related data is shown in the info widget on the right of the window. The tabs of the info widget contain
+a general description of the area, the DBpedia description of the area and a small excerpt of the area statistics. </p>
+
+<h2 id="services">Services</h2>
+
+<p>The Web pages interact with the backend through a number of services, which are presented below.</p>
+
+<h3>SPARQL endpoint</h3>
+
+<p>The SPARQL endpoint is available via /sparql and acts according to the following <a href="http://www.w3.org/TR/rdf-sparql-protocol/">SPARQL protocol</a> specification  </p>
+
+<h3>Faceted search</h3>
+
+<p>The facected search functionality is provided via /search and /facets. The /facets service provides data on all available dimension values
+in JSON form via HTTP GET /facets.</p>
+
+<p>The /search service provides the actual search functionality via HTTP GET /search. Via "value" named request parameters the result is constrained
+to items having the given dimension values, e.g. value=valmistumisvuosi:_1940-1949 to search for items having the given dimension value.</p>
+
+<p>The parameter "include" is used to declare if "items" and/or "values" are to be returned. Use include=items and include=values to return both.</p>
+
+<p>"limit" and "offset" can be used for paging of the results. The semantics are the same as in SQL. </p>
+
+<p>The result is an object with the optional entries "items" for matched items, "availableDimensions" for additional dimension values to be chosen and optinally
+"hasMoreResults" with the value true, if more results are available.</p>
+
 	
 </body>
 </html>
