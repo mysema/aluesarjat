@@ -212,7 +212,13 @@
 			<properties>
 				<extraResources>profiles/hudson</extraResources>
 			</properties>
-		</profile>		
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<extraResources>profiles/prod</extraResources>
+			</properties>
+		</profile>	
 	</profiles>	
 	
 </project>
