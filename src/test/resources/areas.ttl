@@ -1,5 +1,5 @@
-@prefix ns1: <http://localhost:8080/rdf/dimensions/Alue#> .
-@prefix ns2: <http://localhost:8080/rdf/dimensions/> .
+@prefix ns1: <http://localhost:8080/data/dimensions/Alue#> .
+@prefix ns2: <http://localhost:8080/data/dimensions/> .
 
 ns1:_049_635_Kunnarla a ns2:Alue .
 ns1:_091_351_Paloheinä a ns2:Alue .

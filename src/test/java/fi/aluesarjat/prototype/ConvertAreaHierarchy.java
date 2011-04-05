@@ -20,7 +20,7 @@ public class ConvertAreaHierarchy {
             System.out.println(
                     "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
                     "@prefix dc: <http://purl.org/dc/elements/1.1/> .\n" +
-                    "@prefix alue: <http://localhost:8080/rdf/dimensions/Alue#> .\n" +
+                    "@prefix alue: <http://localhost:8080/data/dimensions/Alue#> .\n" +
                     "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .\n"
             );
             Set<String> seen = new HashSet<String>();

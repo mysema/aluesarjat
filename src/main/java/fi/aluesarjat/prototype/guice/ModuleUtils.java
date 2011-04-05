@@ -12,7 +12,7 @@ import com.mysema.stat.scovo.SCV;
 
 public final class ModuleUtils {
 
-    public static final String DEFAULT_BASE_URI = "http://localhost:8080/rdf/";
+    public static final String DEFAULT_BASE_URI = "http://localhost:8080/data/";
 
     public static RDFSource[] getSources() {
         return getSources(DEFAULT_BASE_URI);
@@ -58,6 +58,6 @@ public final class ModuleUtils {
     private ModuleUtils(){}
 
     public static void main(String[] args){
-        ModuleUtils.getSources("http://localhost:8080/rdf/");
+        ModuleUtils.getSources("http://localhost:8080/data/");
     }
 }

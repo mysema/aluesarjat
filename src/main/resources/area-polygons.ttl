@@ -1,4 +1,4 @@
-@prefix ns1: <http://localhost:8080/rdf/dimensions/Alue#> .
+@prefix ns1: <http://localhost:8080/data/dimensions/Alue#> .
 @prefix ns2: <http://www.w3.org/2003/01/geo/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 

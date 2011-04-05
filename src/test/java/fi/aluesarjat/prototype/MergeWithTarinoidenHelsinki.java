@@ -26,7 +26,7 @@ public class MergeWithTarinoidenHelsinki {
     public static void main(String[] args) throws IOException{
         MemoryRepository repository = new MemoryRepository();
         repository.setSources(
-                new RDFSource("classpath:/area-titles.ttl", Format.TURTLE, "http://localhost:8080/rdf/dimensions/Alue"),
+                new RDFSource("classpath:/area-titles.ttl", Format.TURTLE, "http://localhost:8080/data/dimensions/Alue"),
                 new RDFSource("classpath:/ext/tarinoidenhelsinki.ttl", Format.TURTLE, "http://www.tarinoidenhelsinki.fi"));
         repository.initialize();
 
@@ -43,7 +43,7 @@ public class MergeWithTarinoidenHelsinki {
                     for (STMT stmt : stmts){
                         if (stmt.getSubject().getValue().startsWith("http://www.tarinoidenhelsinki.fi/resource/place")){
                             tarinaTitles.put(stmt.getObject().getValue(), stmt.getSubject());
-                        }else if (stmt.getSubject().getValue().startsWith("http://localhost:8080/rdf/dimensions/Alue#")){
+                        }else if (stmt.getSubject().getValue().startsWith("http://localhost:8080/data/dimensions/Alue#")){
                             areaTitles.put(stmt.getObject().getValue(), stmt.getSubject());
                         }
                     }

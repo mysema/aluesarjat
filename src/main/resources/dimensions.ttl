@@ -1,10 +1,10 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix dimension: <http://localhost:8080/rdf/dimensions/> .
-@prefix huoneistotyyppi: <http://localhost:8080/rdf/dimensions/Huoneistotyyppi#> .
-@prefix hallintaperuste: <http://localhost:8080/rdf/dimensions/Hallintaperuste#> .
-@prefix toimiala: <http://localhost:8080/rdf/dimensions/Toimiala#> . 
+@prefix dimension: <http://localhost:8080/data/dimensions/> .
+@prefix huoneistotyyppi: <http://localhost:8080/data/dimensions/Huoneistotyyppi#> .
+@prefix hallintaperuste: <http://localhost:8080/data/dimensions/Hallintaperuste#> .
+@prefix toimiala: <http://localhost:8080/data/dimensions/Toimiala#> . 
 
 
 huoneistotyyppi:Kaikki_asunnot skos:broader huoneistotyyppi:Yhteensä . 

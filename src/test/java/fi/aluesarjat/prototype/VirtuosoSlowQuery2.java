@@ -23,8 +23,8 @@ public class VirtuosoSlowQuery2 {
 
             SPARQLQuery query = conn.createQuery(QueryLanguage.SPARQL, queryString);
             query.setBinding("_c3",  SCV.dimension);
-            query.setBinding("_c4",  new UID("http://localhost:8080/rdf/dimensions/Rahoitusmuoto#Yhteensä"));
-            query.setBinding("_c5",  new UID("http://localhost:8080/rdf/dimensions/Hallintaperuste#Omistusasunnot"));
+            query.setBinding("_c4",  new UID("http://localhost:8080/data/dimensions/Rahoitusmuoto#Yhteensä"));
+            query.setBinding("_c5",  new UID("http://localhost:8080/data/dimensions/Hallintaperuste#Omistusasunnot"));
             query.setBinding("_c6",  SCV.dataset);
 
             long start = System.currentTimeMillis();

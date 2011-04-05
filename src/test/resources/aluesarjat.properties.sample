@@ -1,4 +1,4 @@
-baseURI=http://localhost:8080/rdf/
+baseURI=http://localhost:8080/data/
 forceReload=false
 
 virtuoso.host=localhost

@@ -79,7 +79,7 @@ public class BigDataRDFBeanModule extends RDFBeanRepositoryModule{
     private RDFSource getAreaDescriptions(Properties properties){
         try {
             String str = IOUtils.toString(RDFBeanRepositoryModule.class.getResourceAsStream("/alue.ttl"), "ISO-8859-1");
-            String normalized = str.replace("http://localhost:8080/rdf/", properties.getProperty("baseURI"));
+            String normalized = str.replace("http://localhost:8080/data/", properties.getProperty("baseURI"));
             return new RDFSource(new ByteArrayInputStream(normalized.getBytes("UTF-8")), Format.TURTLE, normalized + "dimensions/Alue");
         } catch (IOException e) {
             throw new RepositoryException(e);

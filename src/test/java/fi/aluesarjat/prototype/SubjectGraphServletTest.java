@@ -43,7 +43,7 @@ public class SubjectGraphServletTest {
         repository.initialize();
         RDFConnection connection = repository.openConnection();
         try{
-            UID uid = new UID("http://localhost:80/rdf/test");
+            UID uid = new UID("http://localhost:80/data/test");
             Set<STMT> stmts = new HashSet<STMT>();
             stmts.add(new STMT(uid, RDF.type, RDFS.Class, uid));
             stmts.add(new STMT(uid, RDFS.label, new LIT("label"), uid));
@@ -67,7 +67,7 @@ public class SubjectGraphServletTest {
 
     @Test
     public void Get_Available_Context() throws ServletException, IOException{
-        request.setRequestURI("/rdf/test");
+        request.setRequestURI("/data/test");
         servlet.service(request, response);
 
         assertEquals(Format.RDFXML.getMimetype(), response.getContentType());
@@ -78,7 +78,7 @@ public class SubjectGraphServletTest {
 
     @Test
     public void Get_Available_Context_as_Turtle() throws ServletException, IOException{
-        request.setRequestURI("/rdf/test");
+        request.setRequestURI("/data/test");
         request.addHeader("Accept", Format.TURTLE.getMimetype());
         servlet.service(request, response);
 
@@ -89,7 +89,7 @@ public class SubjectGraphServletTest {
 
     @Test
     public void Get_Unavailable_Context() throws ServletException, IOException{
-        request.setRequestURI("/rdf/unknown");
+        request.setRequestURI("/data/unknown");
         servlet.service(request, response);
 
         assertEquals(Format.RDFXML.getMimetype(), response.getContentType());
@@ -100,7 +100,7 @@ public class SubjectGraphServletTest {
 
     @Test
     public void Get_with_Html_Accept() throws ServletException, IOException{
-        request.setRequestURI("/rdf/unknown");
+        request.setRequestURI("/data/unknown");
         request.addHeader("Accept", "text/html");
         servlet.service(request, response);
 

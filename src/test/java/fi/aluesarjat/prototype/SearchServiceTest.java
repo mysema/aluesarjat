@@ -32,39 +32,39 @@ public class SearchServiceTest {
 
     protected static SearchService service;
 
-    private static final UID AREA = new UID("http://localhost:8080/rdf/dimensions/Alue");
+    private static final UID AREA = new UID("http://localhost:8080/data/dimensions/Alue");
 
-    private static final UID HKI = new UID("http://localhost:8080/rdf/dimensions/Alue#Helsinki");
+    private static final UID HKI = new UID("http://localhost:8080/data/dimensions/Alue#Helsinki");
 
-    private static final UID ESP = new UID("http://localhost:8080/rdf/dimensions/Alue#Espoo");
+    private static final UID ESP = new UID("http://localhost:8080/data/dimensions/Alue#Espoo");
 
-    private static final UID YEAR = new UID("http://localhost:8080/rdf/dimensions/Vuosi");
+    private static final UID YEAR = new UID("http://localhost:8080/data/dimensions/Vuosi");
 
-    private static final UID Y2010 = new UID("http://localhost:8080/rdf/dimensions/Vuosi#_2010");
+    private static final UID Y2010 = new UID("http://localhost:8080/data/dimensions/Vuosi#_2010");
 
-    private static final UID Y2011 = new UID("http://localhost:8080/rdf/dimensions/Vuosi#_2011");
+    private static final UID Y2011 = new UID("http://localhost:8080/data/dimensions/Vuosi#_2011");
 
-    private static final UID INDUSTRY = new UID("http://localhost:8080/rdf/dimensions/Toimiala");
+    private static final UID INDUSTRY = new UID("http://localhost:8080/data/dimensions/Toimiala");
 
-    private static final UID ICT = new UID("http://localhost:8080/rdf/dimensions/Toimiala#ICT");
+    private static final UID ICT = new UID("http://localhost:8080/data/dimensions/Toimiala#ICT");
 
-    private static final UID ATK = new UID("http://localhost:8080/rdf/dimensions/Toimiala#ATK");
+    private static final UID ATK = new UID("http://localhost:8080/data/dimensions/Toimiala#ATK");
 
-    private static final UID CREATOR = new UID("http://localhost:8080/rdf/dimensions/Tekij\u00E4");
+    private static final UID CREATOR = new UID("http://localhost:8080/data/dimensions/Tekij\u00E4");
 
-    private static final UID SAMPPA = new UID("http://localhost:8080/rdf/dimensions/Tekij\u00E4#Samppa");
+    private static final UID SAMPPA = new UID("http://localhost:8080/data/dimensions/Tekij\u00E4#Samppa");
 
-    private static final UID TIMO = new UID("http://localhost:8080/rdf/dimensions/Tekij\u00E4#Timo");
+    private static final UID TIMO = new UID("http://localhost:8080/data/dimensions/Tekij\u00E4#Timo");
 
     private static final UID DATASET = SCV.Dataset;
 
-    private static final UID DATASET1 = new UID("http://localhost:8080/rdf/datasets#search-test-1");
+    private static final UID DATASET1 = new UID("http://localhost:8080/data/datasets#search-test-1");
 
-    private static final UID DATASET2 = new UID("http://localhost:8080/rdf/datasets#search-test-2");
+    private static final UID DATASET2 = new UID("http://localhost:8080/data/datasets#search-test-2");
 
-    private static final UID UNITS = new UID("http://localhost:8080/rdf/dimensions/Yksikk\u00F6");
+    private static final UID UNITS = new UID("http://localhost:8080/data/dimensions/Yksikk\u00F6");
 
-    private static final UID UNIT = new UID("http://localhost:8080/rdf/dimensions/Yksikk\u00F6#Unit");
+    private static final UID UNIT = new UID("http://localhost:8080/data/dimensions/Yksikk\u00F6#Unit");
 
     @BeforeClass
     public static void setUpClass() throws ServletException, IOException{

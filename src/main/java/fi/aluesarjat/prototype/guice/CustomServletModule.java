@@ -56,11 +56,11 @@ public class CustomServletModule extends ServletModule{
         serve("/search").with(SearchServlet.class);
         serve("/facets").with(FacetsServlet.class);
 
-        serve("/rdf/domain*",
-              "/rdf/dimensions*",
-              "/rdf/datasets").with(ContextAccessServlet.class);
+        serve("/data/domain*",
+              "/data/dimensions*",
+              "/data/datasets").with(ContextAccessServlet.class);
 
-        serve("/rdf/items*").with(SubjectGraphServlet.class);
+        serve("/data/items*").with(SubjectGraphServlet.class);
     }
 
     @Provides
