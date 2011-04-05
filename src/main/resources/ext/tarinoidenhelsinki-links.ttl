@@ -1,4 +1,4 @@
-@prefix ns1: <http://localhost:8080/rdf/dimensions/Alue#> .
+@prefix ns1: <http://localhost:8080/data/dimensions/Alue#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 ns1:_091_702_Myllypuron_peruspiiri owl:sameAs <http://www.tarinoidenhelsinki.fi/resource/place/97/> .
