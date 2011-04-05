@@ -45,7 +45,7 @@ public class SearchServiceImpl implements SearchService {
     private final int minRestrictions;
 
     public SearchServiceImpl(Repository repository) {
-        this(repository, 2);
+        this(repository, 3);
     }
 
     public SearchServiceImpl(Repository repository, int minRestrictions) {

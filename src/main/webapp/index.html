@@ -63,18 +63,50 @@ a general description of the area, the DBpedia description of the area and a sma
 
 <h3>Faceted search</h3>
 
-<p>The facected search functionality is provided via /search and /facets. The /facets service provides data on all available dimension values
-in JSON form via HTTP GET /facets.</p>
+<p>The facected search functionality is provided via /search and /facets. The facets service provides data on all available dimension values
+in JSON form via HTTP GET /facets. Result is of form
+<pre>
+{
+  "facets": [
+    {"id":"dimension:facetLocalName", "name":"facet name", "values": [
+      {"id":"facetNamespace:valueLocalName", "name":"value name", "description":"Optional description of value""},
+      ...
+      ]
+    },
+    ...
+  ]
+}
+</pre>
+All IDs are namespace/local name encoded URIs. These must be properly URL encoded when used as parameters to search service.
+</p>
 
-<p>The /search service provides the actual search functionality via HTTP GET /search. Via "value" named request parameters the result is constrained
-to items having the given dimension values, e.g. value=valmistumisvuosi:_1940-1949 to search for items having the given dimension value.</p>
+<p>The search service provides the actual search functionality via HTTP GET /search. Via "value" named request parameters the result is constrained
+to items having the given dimension values, e.g. value=valmistumisvuosi:_1940-1949 to search for items having the given dimension value.
+One or more values can be specified from each facet (multi-selection not implemented in search demo), but items are only returned
+if there's restrictions from at least three facets. </p>
 
 <p>The parameter "include" is used to declare if "items" and/or "values" are to be returned. Use include=items and include=values to return both.</p>
 
 <p>"limit" and "offset" can be used for paging of the results. The semantics are the same as in SQL. </p>
 
-<p>The result is an object with the optional entries "items" for matched items, "availableDimensions" for additional dimension values to be chosen and optinally
-"hasMoreResults" with the value true, if more results are available.</p>
+<p>The result is a JSON-object with the optional entries "items" for matched items, "availableValues" for additional facet values to be chosen and optinally
+"hasMoreResults" with the value true, if more results are available. Values related to a given item are positionally encoded with facet headers given in "headers".
+Available values are in a hash map with value ID as a key and "true" as value for easy and efficient filtering. 
+</p>
+<p>For example number of families with two children in Helsinki 2010: 
+<pre>
+http://localhost:8080/search?value=vuosi%3A_2010&value=alue%3A_091_Helsinki&value=lasten_m%C3%A4%C3%A4r%C3%A4_perheess%C3%A4%3ALapsiluku_2&include=items&include=values&limit=50&offset=0
+</pre>
+returns
+<pre>
+{
+  "availableValues": { "vuosi:_2010":true, "alue:_091_Helsinki":true, "yksikkö:Perhe":true, "dataset:A04S_HKI_Lapsiperheet":true, "lasten_määrä_perheessä:Lapsiluku_2":true },
+  "headers": [ "dimension:Alue", "dimension:Vuosi", "dimension:Yksikkö", "dimension:Lasten_määrä_perheessä", "scv:Dataset" ],
+  "items": [ { "values": ["alue:_091_Helsinki", "vuosi:_2010","yksikkö:Perhe", "lasten_määrä_perheessä:Lapsiluku_2", "dataset:A04S_HKI_Lapsiperheet" ], "value":"24416" } ],
+  "hasMoreResults": false
+}
+</pre>
+</p>
 
 	
 </body>

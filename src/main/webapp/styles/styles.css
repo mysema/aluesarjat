@@ -82,10 +82,21 @@ td {
 .itemValue {
     font-weight: bold;
     white-space: nowrap;
+    padding: 0px 0.5em;
 }
 
 .facet {
 	clear: both;
+    background-color: #FDFDF0;
+    margin: 1em 1em 1em 0em;
+    border-style: solid none none solid;
+    border-width: 1px 0px 0px 1px;
+    border-color: gray;
+}
+
+.facetTitle {
+	padding: 5px 10px;
+	margin: 0px;
 }
 
 .facetValue {
@@ -105,6 +116,12 @@ tr.even .facetValue, tr.even .facetValueDuplicate {
 	text-align: left;
 }
 
+.facetValues {
+	max-height: 10em;
+	overflow: auto;
+    margin: 0px;
+}
+
 th.restriction {
     text-align: right;
 }
@@ -119,6 +136,8 @@ th.restriction {
 
 input.quicksearch {
     display: block;
+    float: right;
+    margin: 4px;
 }
 
 #popup {

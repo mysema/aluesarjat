@@ -78,7 +78,7 @@ public class SearchServiceTest {
         dataService.setDatasets(Lists.newArrayList("classpath:/search-test-1.px \".\"", "classpath:/search-test-2.px \".\""));
         dataService.initialize();
 
-        service = new SearchServiceImpl(repository);
+        service = new SearchServiceImpl(repository, 2);
     }
 
     @Test

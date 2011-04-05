@@ -52,15 +52,17 @@ function getFacetId(facetValue) {
 }
 
 function printFacet(facet, template) {
-	template.push("<div class='facet' id='", toID(facet.id), "' data-id='", facet.id, "'><h3 class='facetTitle'>", facet.name, "</h3>");
-	allFacets[facet.id] = facet;
-	
 	var values = facet.values;
+	template.push("<div class='facet' id='", toID(facet.id), "' data-id='", facet.id, "'>");
 	
 	if (values.length >= 20) {
 		template.push("<input class='quicksearch' type='text' data-id='", facet.id, "'/>");
 	}
 	
+	template.push("<h3 class='facetTitle'>", facet.name, "</h3>");
+	allFacets[facet.id] = facet;
+
+	template.push("<div class='facetValues'>");
 	for (var i=0; i < values.length; i++) {
 		var value = values[i];
 		value.facet = facet;
@@ -71,7 +73,7 @@ function printFacet(facet, template) {
 		template.push("</div>");
 		allValues[value.id] = value;
 	}
-	template.push("</div>");
+	template.push("</div></div>");
 }
 
 function fromID(id) {
