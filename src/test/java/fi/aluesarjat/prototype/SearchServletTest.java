@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -22,6 +23,20 @@ public class SearchServletTest extends AbstractServletTest{
     public void setUp(){
         super.setUp();
         servlet = new SearchServlet(new SearchServiceImpl(repository));
+    }
+
+    @Test
+    public void IfModifiedSince_Handling() throws ServletException, IOException{
+        request.setParameter("callback", "handleResponse");
+        request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
+        request.addParameter("include", "values");
+        servlet.service(request, response);
+        assertEquals(200, response.getStatus());
+
+        Object lastModified = response.getHeader("Last-Modified");
+        request.addHeader("If-Modified-Since", lastModified);
+        servlet.service(request, response);
+        assertEquals(HttpServletResponse.SC_NOT_MODIFIED, response.getStatus());
     }
 
     @Test

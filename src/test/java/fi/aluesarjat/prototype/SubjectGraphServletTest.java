@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -63,6 +64,18 @@ public class SubjectGraphServletTest {
         servlet = new SubjectGraphServlet(repository);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
+    }
+
+    @Test
+    public void IfModifiedSince_Handling() throws ServletException, IOException{
+        request.setRequestURI("/data/test");
+        servlet.service(request, response);
+        assertEquals(200, response.getStatus());
+
+        Object lastModified = response.getHeader("Last-Modified");
+        request.addHeader("If-Modified-Since", lastModified);
+        servlet.service(request, response);
+        assertEquals(HttpServletResponse.SC_NOT_MODIFIED, response.getStatus());
     }
 
     @Test

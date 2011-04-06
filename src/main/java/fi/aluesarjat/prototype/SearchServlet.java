@@ -22,7 +22,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
 
 //    private static final Logger log = LoggerFactory.getLogger(SearchServlet.class);
 
-    private static final long LAST_MODIFIED = System.currentTimeMillis();
+    private static final long LAST_MODIFIED = System.currentTimeMillis() / 1000 * 1000;
 
     private static final long serialVersionUID = 2149808648205848159L;
 
@@ -44,6 +44,13 @@ public class SearchServlet extends AbstractSPARQLServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
+
+        long ifModifiedSince = request.getDateHeader("If-Modified-Since");
+        if (ifModifiedSince >= LAST_MODIFIED){
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         response.setDateHeader("Last-Modified", LAST_MODIFIED);
         response.setHeader("Cache-Control", "max-age=3600");
         response.setContentType("application/json");

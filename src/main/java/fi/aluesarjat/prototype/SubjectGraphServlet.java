@@ -22,6 +22,8 @@ public class SubjectGraphServlet extends HttpServlet{
 
     private static final long serialVersionUID = 9007924911100922605L;
 
+    private static final long LAST_MODIFIED = System.currentTimeMillis() / 1000 * 1000;
+
     private final Repository repository;
 
     public SubjectGraphServlet(Repository repository) {
@@ -32,13 +34,20 @@ public class SubjectGraphServlet extends HttpServlet{
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
+
+        long ifModifiedSince = request.getDateHeader("If-Modified-Since");
+        if (ifModifiedSince >= LAST_MODIFIED){
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         String subject = request.getRequestURL().toString();
         RDFConnection connection = repository.openConnection();
         try{
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL,"CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }");
             query.setBinding("s", new UID(subject));
             String contentType = getAcceptedType(request, Format.RDFXML);
-            response.setDateHeader("Last-Modified", System.currentTimeMillis());
+            response.setDateHeader("Last-Modified", LAST_MODIFIED);
             response.setContentType(contentType);
             query.streamTriples(response.getWriter(), contentType);
         }finally{
