@@ -16,6 +16,8 @@ public class AreasServlet extends HttpServlet{
 
     private static final long serialVersionUID = -1216436366722412316L;
 
+    private static final long LAST_MODIFIED = System.currentTimeMillis() / 1000 * 1000;
+
     private final String areas, areas1, areas2, areas3, areas4;
 
     public AreasServlet() {
@@ -34,9 +36,16 @@ public class AreasServlet extends HttpServlet{
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
+
+        long ifModifiedSince = request.getDateHeader("If-Modified-Since");
+        if (ifModifiedSince >= LAST_MODIFIED){
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setDateHeader("Last-Modified", System.currentTimeMillis());
+        response.setDateHeader("Last-Modified", LAST_MODIFIED);
 
         String level = request.getParameter("level");
         String content;

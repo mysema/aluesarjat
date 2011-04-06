@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 
@@ -16,6 +17,17 @@ public class AreasServletTest extends AbstractServletTest{
     public void setUp(){
         super.setUp();
         servlet = new AreasServlet();
+    }
+
+    @Test
+    public void IfModifiedSince_Handling() throws ServletException, IOException{
+        servlet.service(request, response);
+        assertEquals(200, response.getStatus());
+
+        Object lastModified = response.getHeader("Last-Modified");
+        request.addHeader("If-Modified-Since", lastModified);
+        servlet.service(request, response);
+        assertEquals(HttpServletResponse.SC_NOT_MODIFIED, response.getStatus());
     }
 
     @Test
