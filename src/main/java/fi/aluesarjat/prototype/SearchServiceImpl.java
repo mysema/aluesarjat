@@ -215,11 +215,10 @@ public class SearchServiceImpl implements SearchService {
 
         RDFQuery query = new RDFQueryImpl(conn);
         query.limit(limit+1).offset(offset);
+        query.where(filters.toArray(new Predicate[filters.size()]));
 
         if (bindings.containsKey(dataset)){
-            query.from(bindings.get(dataset)).where(filters.toArray(new Predicate[filters.size()]));
-        }else{
-            query.where(Blocks.graph(dataset, filters));
+            query.from(bindings.get(dataset));
         }
 
         for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
@@ -297,11 +296,10 @@ public class SearchServiceImpl implements SearchService {
         if (!containsDatasetRestriction) {
             filters.add(item.has(SCV.dataset, dataset));
         }
+        query.where(filters.toArray(new Predicate[filters.size()]));
 
         if (bindings.containsKey(dataset)){
-            query.from(bindings.get(dataset)).where(filters.toArray(new Predicate[filters.size()]));
-        }else{
-            query.where(Blocks.graph(dataset, filters));
+            query.from(bindings.get(dataset));
         }
 
         for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
