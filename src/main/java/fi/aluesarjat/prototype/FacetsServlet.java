@@ -41,7 +41,7 @@ public class FacetsServlet extends AbstractSPARQLServlet {
             return;
         }
 
-        response.setDateHeader("Last-Modified", LAST_MODIFIED);
+        response.setDateHeader("Last-Modified", System.currentTimeMillis());
         response.setHeader("Cache-Control", "max-age=86400");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

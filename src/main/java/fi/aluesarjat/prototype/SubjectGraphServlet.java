@@ -47,7 +47,7 @@ public class SubjectGraphServlet extends HttpServlet{
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }");
             query.setBinding("s", new UID(subject));
             String contentType = getAcceptedType(request, Format.RDFXML);
-            response.setDateHeader("Last-Modified", LAST_MODIFIED);
+            response.setDateHeader("Last-Modified", System.currentTimeMillis());
             response.setContentType(contentType);
             query.streamTriples(response.getWriter(), contentType);
         }finally{
