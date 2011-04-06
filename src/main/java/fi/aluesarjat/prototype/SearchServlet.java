@@ -52,7 +52,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         }
 
         response.setDateHeader("Last-Modified", LAST_MODIFIED);
-        response.setHeader("Cache-Control", "max-age=3600");
+        response.setHeader("Cache-Control", "max-age=86400");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
