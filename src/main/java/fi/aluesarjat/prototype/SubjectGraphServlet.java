@@ -44,7 +44,7 @@ public class SubjectGraphServlet extends HttpServlet{
         String subject = request.getRequestURL().toString();
         RDFConnection connection = repository.openConnection();
         try{
-            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL,"CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }");
+            SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }");
             query.setBinding("s", new UID(subject));
             String contentType = getAcceptedType(request, Format.RDFXML);
             response.setDateHeader("Last-Modified", LAST_MODIFIED);
