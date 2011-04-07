@@ -28,6 +28,8 @@ public class ContextAccessServlet extends HttpServlet{
 
     private static final long serialVersionUID = 3545610671574978570L;
 
+    private static final long LAST_MODIFIED = System.currentTimeMillis() / 1000 * 1000;
+
     private final Repository repository;
 
     public ContextAccessServlet(Repository repository) {
@@ -38,6 +40,13 @@ public class ContextAccessServlet extends HttpServlet{
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)res;
+
+        long ifModifiedSince = request.getDateHeader("If-Modified-Since");
+        if (ifModifiedSince >= LAST_MODIFIED){
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         String context = request.getRequestURL().toString();
         RDFConnection connection = repository.openConnection();
         try{
