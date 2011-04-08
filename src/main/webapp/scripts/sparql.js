@@ -49,7 +49,7 @@ function executeQuery () {
 	
 	$.ajax({
 		url: "sparql", 
-		data: { "query": qry}, 
+		data: { "query": qry, "type": "json"}, 
 		datatype: "json", 
 		beforeSend : function (xhr) {
     		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
@@ -180,7 +180,7 @@ function getReadableURI(uri) {
 		if (prefix != null) {
 			return prefix + ":" + uri.substring(namespaces[prefix].length);
 		} else {
-			return "&lt;" + uri + ">";
+			return "&lt;" + uri + "&gt;";
 		}
 	}
 }
@@ -234,7 +234,7 @@ $(document).ready(function(){
 	var query = "SELECT ?ns ?prefix WHERE { ?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix }";
 	$.ajax({
 		url: "sparql", 
-		data: { "query": query}, 
+		data: { "query": query, "type": "json"}, 
 		datatype: "json", 
 		beforeSend : function (xhr) {
     		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
@@ -248,7 +248,7 @@ $(document).ready(function(){
 			for (var i = 0; i < bindings.length; i++){
 				var binding = bindings[i];
 				namespaces[binding["prefix"].value] = binding["ns"].value;
-				defaultNamespaces.push("PREFIX ", binding["prefix"].value, ": &lt;", binding["ns"].value, "&gt;</br>\n");
+				defaultNamespaces.push("PREFIX ", binding["prefix"].value, ": &lt;", binding["ns"].value, "&gt; </br>\n");
 			}
 			
 			$("#namespaces").html(defaultNamespaces.join(""));
