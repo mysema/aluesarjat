@@ -224,7 +224,7 @@ function mouseOverFeature(event, where) {
 	}
 }	
 
-function clickOnFeature(event, where) {	
+function clickOnFeature(event, where) {	
 	var feature = where && where.feature;
 	if (feature){
 		var props = feature.properties;

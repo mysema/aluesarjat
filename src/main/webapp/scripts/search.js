@@ -1,6 +1,17 @@
 
 String.prototype.startsWith = function(str) {return (this.match("^"+str)==str)}
 
+if(!Array.indexOf){
+	Array.prototype.indexOf = function(obj){
+	  for(var i=0; i<this.length; i++){
+	     if(this[i]===obj){
+	        return i;
+	     }
+	  }
+	  return -1;
+	}
+}
+
 jQuery.ajaxSettings.traditional = true;
 
 var restrictions = [];
