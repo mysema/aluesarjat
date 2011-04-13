@@ -6,6 +6,8 @@ var gonzo1, gonzo2, gongo3, gonzo4;
 
 var activeGonzo = null;
 
+var defaultNamespaces = [];
+
 var geoOverlay = {
 		type: "FeatureCollection",
 		properties: { },
@@ -31,6 +33,28 @@ var statistics = {};
 
 $(document).ready(function(){	
     var latlng = new google.maps.LatLng(60.1662735988013, 24.93207843548);
+    
+	// get namespaces from SPARQL endpoint
+	var query = "SELECT ?ns ?prefix WHERE { ?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix }";
+	$.ajax({
+		url: "sparql", 
+		data: { "query": query, "type": "json"}, 
+		datatype: "json", 
+		beforeSend : function (xhr) {
+    		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+		},
+		error: function(xhr, textStatus, errorThrown){
+			$("#results").html(xhr.responseText);
+		},
+		success: function(data){			
+			var bindings = data.results.bindings;
+			for (var i = 0; i < bindings.length; i++){
+				var binding = bindings[i];
+				defaultNamespaces.push("PREFIX ", binding["prefix"].value, ": <", binding["ns"].value, ">\n");
+			}
+			defaultNamespaces = defaultNamespaces.join("");
+		}
+	});
     
     // create map
     map = new google.maps.Map(
@@ -232,12 +256,30 @@ function clickOnFeature(event, where) {
 		clickedArea = code;
 		if (!statistics[code]){
 			// initial display
+			
+			var qry = [];
+			qry.push(defaultNamespaces)
+			qry.push("SELECT ?ikl ?val WHERE {\n");
+		    qry.push("  ?item scv:dimension vuosi:_2009 , alue:",code," , ?ik ; rdf:value ?val .\n"); 
+		    qry.push("  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . \n");
+		    qry.push("}\n");
+		    qry = qry.join("");
+			
 			updateInfo(props, null);
 			$.ajax({
-				url: "areadata", 
-				data: {area: code}, 
+				url: "sparql", 
+				data: { "query": qry, "type": "json"},  
 				datatype: "json", 
-				success: function(data){
+				beforeSend : function (xhr) {
+		    		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+				},
+				success: function(sparqlResults){
+					var data = []; 
+					var bindings = sparqlResults.results.bindings;					
+					for (var i = 0; i < bindings.length; i++){
+						var binding = bindings[i];
+						data.push( { label: binding["ikl"].value, value:  parseInt(binding["val"].value) } );
+					}					
 					statistics[code] = data;
 					if (code == clickedArea){
 						updateInfo(props, data);	
@@ -256,42 +298,57 @@ function updateInfo(props, areaData){
 	
 	// tabs 
 	content.push("<ul class='tabs'>");
-	content.push("<li class='active'><a href='#tab1'>Kuvaus</a></li>");
-	if (dbpediateComments[props.code]){
-		content.push("<li><a href='#tab2'>DBpedia</a></li>");
-	}
 	if (areaData){
-		content.push("<li><a href='#tab3'>Tilastot</a></li>");	
+		content.push("<li class='active'><a href='#tab1'>Tilastot</a></li>");	
 	}		
+	if (comments[props.code]){
+		content.push("<li><a href='#tab2'>Kuvaus</a></li>");
+	}
+	if (dbpediateComments[props.code]){
+		content.push("<li><a href='#tab3'>DBpedia</a></li>");
+	}	
 	content.push("</ul>");
 	
 	// tab container
 	content.push("<div class='tab_container'>");
-	content.push("<div id='tab1' class='tab_content'>");
-	if (comments[props.code]){
-		content.push(comments[props.code]);
-	}else{
-		content.push("Ei kuvausta");
+	if (areaData){
+		// calculate max 
+		var length = areaData.length;
+		var max = 0;
+		for (var i = 1; i < length; i++){
+			var entry = areaData[i];
+			if (entry.value > max){
+				max = entry.value;
+			}				
+		}				
+		
+		// render table
+		content.push("<div id='tab1' class='tab_content'>");		
+		content.push("<h4>Väestö ikärymittäin (2009)</h4>");
+		content.push("<table>");
+		for (var i = 1; i < length; i++){
+			var entry = areaData[i];
+			content.push("<tr>");
+			content.push("<th>", entry.label, "</th>");
+			content.push("<td>", entry.value, "</td>");
+			content.push("<td><div class='panel' style='width: ", (100 * entry.value) / max, "px;'>&nbsp;</div></td>");
+			content.push("</tr>");
+		}
+		content.push("<tr><td>Yhteensä</td><td>", max, "</td><td>&nbsp;</td></tr>");		
+		content.push("</table>");
+		content.push("</div>");
 	}
-	content.push("</div>");
-	
+	if (comments[props.code]){
+		content.push("<div id='tab2' class='tab_content' style='display:none;'>");	
+		content.push(comments[props.code]);
+		content.push("</div>");
+	}	
 	if (dbpediateComments[props.code]){
-		content.push("<div id='tab2' class='tab_content' style='display:none'>");
+		content.push("<div id='tab3' class='tab_content' style='display:none'>");
 		content.push(dbpediateComments[props.code]);
 		content.push("</div>");
 	}	
 	
-	if (areaData){
-		content.push("<div id='tab3' class='tab_content' style='display:none;'>");
-		content.push("<table>");
-		var length = areaData.length;
-		for (var i = 0; i < length; i++){
-			var entry = areaData[i];
-			content.push("<tr><th>"+ entry.label + "</th><td>" + entry.value + "</td></tr>");
-		}
-		content.push("</table>");
-		content.push("</div>");
-	}
 	content.push("</div>");
 		
 	$("#info").html(content.join(""));

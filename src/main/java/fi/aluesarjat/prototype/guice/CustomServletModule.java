@@ -1,7 +1,5 @@
 package fi.aluesarjat.prototype.guice;
 
-import java.util.Properties;
-
 import org.guiceyfruit.jsr250.Jsr250Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,13 +8,11 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.servlet.ServletModule;
-import com.mysema.rdfbean.guice.Config;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.sparql.SPARQLServlet;
 import com.mysema.stat.scovo.NamespaceHandler;
 import com.sun.tools.xjc.reader.RawTypeSet.Mode;
 
-import fi.aluesarjat.prototype.AreaDataServlet;
 import fi.aluesarjat.prototype.AreasServlet;
 import fi.aluesarjat.prototype.ContextAccessServlet;
 import fi.aluesarjat.prototype.DataService;
@@ -51,7 +47,6 @@ public class CustomServletModule extends ServletModule{
         bind(DataService.class).asEagerSingleton();
 
         serve("/areas").with(AreasServlet.class);
-        serve("/areadata").with(AreaDataServlet.class);
         serve("/sparql").with(SPARQLServlet.class);
         serve("/search").with(SearchServlet.class);
         serve("/facets").with(FacetsServlet.class);
@@ -73,12 +68,6 @@ public class CustomServletModule extends ServletModule{
     @Singleton
     public AreasServlet createAreasServlet(){
         return new AreasServlet();
-    }
-
-    @Provides
-    @Singleton
-    public AreaDataServlet createAreaDataServlet(Repository repository, @Config Properties properties){
-        return new AreaDataServlet(repository, properties.getProperty("baseURI"));
     }
 
     @Provides

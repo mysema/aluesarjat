@@ -5,12 +5,16 @@ Fasettihakuun vertailu!
 CSV Export! Puolipiste erotinmerkkinä, desimaalit pilkulla.
 
 Karttanäkymässä tilastot ensimmäiseksi (oletus) tabiksi! Kuvaus-tabi pois, jos kuvausta ei ole.
+DONE
 
 Karttanäkymään tilaston vuosi näkyviin.
+DONE
 
 Kartta: SPARQL-haku JavaScriptista.
+DONE
 
 Kartta: Lukujen palkkivisualisointi!
+DONE
 
 Kartan IE testaus.
 
@@ -21,6 +25,7 @@ Etusivulle linkki PCAxis parseriin!
 Käyttöehdot Villeltä! Etusivulle.
 
 Etusivu (linkit) kokonaan englanniksi!
+DONE
 
 Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä kokonaan uudestaan. Mistä tilastot löytyvät? -> Henri Ahti.
 

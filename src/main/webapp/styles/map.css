@@ -34,3 +34,7 @@
 	overflow: auto;
 	height: 320px;
 }
+
+.panel {
+	background: gray;   
+}
