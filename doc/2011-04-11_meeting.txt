@@ -17,6 +17,7 @@ Kartta: Lukujen palkkivisualisointi!
 DONE
 
 Kartan IE testaus.
+DONE
 
 SPARQL esimerkkikyselyitä! Esim. Alueet, joilla väkiluku alle/yli "jotakin", "Tulotaso yli X ja naisia enemmän kuin miehiä" tms.
 
@@ -30,6 +31,7 @@ DONE
 Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä kokonaan uudestaan. Mistä tilastot löytyvät? -> Henri Ahti.
 
 Merialueiden keskipisteet ylemmäksi mantereen päälle.
+DONE
 
 
 => Ylläpitosopimus
