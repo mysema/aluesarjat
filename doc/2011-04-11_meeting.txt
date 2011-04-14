@@ -1,6 +1,7 @@
 Lyhyt kuvaus fasettihausta, karttademosta (viitteet HRI:n KML aineistoihin) ja FloAppsin Motion Chartista(?): miten tehty? Esimerkkejä!
 
 Fasettihakuun vertailu!
+DONE
 
 CSV Export! Puolipiste erotinmerkkinä, desimaalit pilkulla.
 
@@ -22,6 +23,7 @@ DONE
 SPARQL esimerkkikyselyitä! Esim. Alueet, joilla väkiluku alle/yli "jotakin", "Tulotaso yli X ja naisia enemmän kuin miehiä" tms.
 
 Etusivulle linkki PCAxis parseriin!
+DONE
 
 Käyttöehdot Villeltä! Etusivulle.
 
@@ -32,7 +34,6 @@ Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä 
 
 Merialueiden keskipisteet ylemmäksi mantereen päälle.
 DONE
-
 
 => Ylläpitosopimus
 
