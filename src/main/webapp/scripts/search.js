@@ -62,27 +62,34 @@ function getFacetId(facetValue) {
 	return allValues[facetValue].facet.id;
 }
 
-function printFacet(facet, template) {
+function printFacet(facet, template, availableValues) {
 	var values = facet.values;
-	template.push("<div class='facet' id='", toID(facet.id), "' data-id='", facet.id, "'>");
-	
+	template.push("<div class='facet' data-id='", facet.id, "'>");
 	if (values.length >= 20) {
 		template.push("<input class='quicksearch' type='text' data-id='", facet.id, "'/>");
 	}
+	template.push("<a href='#' class='compare' data-id='", facet.id, "'>vertaa</a>");
 	
 	template.push("<h3 class='facetTitle'>", facet.name, "</h3>");
+	
 	allFacets[facet.id] = facet;
 
 	template.push("<div class='facetValues'>");
 	for (var i=0; i < values.length; i++) {
 		var value = values[i];
-		value.facet = facet;
-		template.push("<div class='facetValue visible' id='", toID(value.id), "' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name);
-		if (value.description) {
-			template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id,"'/>");
+		if (!availableValues || availableValues[value.id]) {
+			value.facet = facet;
+			template.push("<div class='facetValue visible");
+			if (0 <= restrictions.indexOf(value.id)) {
+				template.push(" selectedValue");
+			}
+			template.push("' data-id='", value.id,"' data-facet='", facet.id, "'>", value.name);
+			if (value.description) {
+				template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", value.id,"'/>");
+			}
+			template.push("</div>");
+			allValues[value.id] = value;
 		}
-		template.push("</div>");
-		allValues[value.id] = value;
 	}
 	template.push("</div></div>");
 }
@@ -115,8 +122,33 @@ function prevPage() {
 	}
 }
 
+function strCompare(a, b) {
+	if (a < b) return -1;
+	else if (b < a) return 1;
+	else return 0;
+}
+function sortRestrictions(restrictions) {
+	restrictions.sort(function(a, b) {
+		var result =  strCompare(allValues[a].facet.id, allValues[b].facet.id);
+		if (result == 0) {
+			result = strCompare(a, b);
+		}
+		return result;
+	});
+}
 function executeQuery() {
+	// No restrictions
+	if (restrictions.length == 0) {
+		$(".facet").show();
+		// TODO: Apply quicksearch
+		$(".facetValue").show().addClass("visible");
+		$(".selectedValue").removeClass("selectedValue");
+		$("#results").html("");
+		return;
+	} 
+	
 	$("#results").html("<img src='images/ajax-loader.gif' alt='Loading results'/>");
+	sortRestrictions(restrictions);
 	$.ajax({
 		url: "search", 
 		datatype: "json",
@@ -137,15 +169,39 @@ function executeQuery() {
 			for (var i=0; i < restrictions.length; i++) {
 				var restriction = allValues[restrictions[i]];
 				var facet = restriction.facet;
+				var multiSelection = false;
 				restrictionFacets[facet.id] = true;
-				template.push("<tr><th class='restriction'>", facet.name, ":</th><td colspan='",headersLength,"'><div class='facetValue selectedValue' data-id='", 
-						restriction.id, "'>", restriction.name);
-				if (restriction.description) {
-					template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id,"'/>");
-				}
-				template.push("</div></td></tr>");
+				template.push("<tr><th class='restriction'>", facet.name, ":</th><td colspan='",headersLength,"'>");
+
+				do {
+					restriction = allValues[restrictions[i]];
+					template.push("<div class='facetValue selectedValue' data-id='", 
+							restriction.id, "'>", restriction.name);
+					if (restriction.description) {
+						template.push("<img src='images/info.png' alt='Click for more information' class='facetValueInfo' data-id='", restriction.id,"'/>");
+					}
+					template.push("</div>");
+					i++;
+					if (i < restrictions.length) {
+						restriction = allValues[restrictions[i]];
+						if (facet.id != restriction.facet.id) {
+							restriction = null;
+							i--;
+						} else {
+							multiSelection = true;
+						}
+					} else {
+						restriction = null;
+					}
+				} while (restriction != null);
 				
-				usedFacets.push(facet.id);
+				if (!multiSelection) {
+					usedFacets.push(facet.id);
+				}
+				
+				template.push("<a href='#' class='compare' data-id='", facet.id, "'>vertaa</a>");
+				template.push("</td></tr>");
+				
 			}
 			
 			template.push("<tr>");
@@ -274,6 +330,92 @@ function executeQuery() {
 	});	
 }
 
+function quicksearch(event) {
+	var id = $(event.target).data("id");
+	var text = $(event.target).val().toUpperCase();
+	$(event.target).parent().find(".facetValue").each(function() {
+		var value = $(this);
+		if (value.hasClass("visible")) {
+			if (text.length == 0) {
+				value.show();
+			} 
+			else if (0 <= value.text().toUpperCase().indexOf(text)) {
+				value.show();
+			} 
+			else if (!value.hasClass("selectedValue")) {
+				value.hide();
+			}
+		}
+	});
+}
+
+function compare(event) {
+	var id = $(event.target).data("id");
+
+	sortRestrictions(restrictions);
+	
+	var comparisonRestrictions = [];
+	for (var i=0; i < restrictions.length; i++) {
+		if (allValues[restrictions[i]].facet.id != id) {
+			comparisonRestrictions.push(restrictions[i]);
+		}
+	}
+	var template = [];
+	var facet = allFacets[id]
+	var popup = $("#popup");
+
+	if (comparisonRestrictions.length == 0) {
+		printFacet(facet, template);
+		popup.html(template.join(""));
+	} else {
+		popup.html("<img src='images/ajax-loader.gif' alt='Loading results'/>");
+		$.ajax({
+			url: "search", 
+			datatype: "json",
+			data: {"value": comparisonRestrictions, "include": ["values"]},
+			error: function(xhr, textStatus, errorThrown) {
+				popup.html(xhr.responseText);
+			},
+			success: function(data){
+				printFacet(facet, template, data.availableValues);
+				popup.html(template.join(""));
+			}
+		});
+	}
+	
+	popup.jqm({
+		onHide: function(hash) {
+			var changed = false;
+			$("#popup .facetValue").each(function () {
+				var valueId = $(this).data("id");
+				var rindex = restrictions.indexOf(valueId);
+				var checked = $(this).hasClass("selectedValue");
+				if (checked) {
+					if (rindex < 0) {
+						restrictions.push(valueId);
+						changed = true;
+					}
+				} else {
+					if (0 <= rindex) {
+						restrictions.splice(rindex,1);
+						changed = true;
+					}
+				}
+				restrictions.push();
+			});
+			// Remove this listener
+			popup.jqm({onHide:null});
+			hash.w.hide(); // Hide
+			hash.o.remove(); // Hide
+			if (changed) {
+				executeQuery();
+			}
+			return true;
+		}
+	});
+	popup.jqmShow();
+}
+
 $(document).ready(function(){
 
 	var parameters = getRequestParameters();
@@ -309,6 +451,7 @@ $(document).ready(function(){
 		}
 	});
 
+	$("#popup").jqm();
 	
 	$(".facetValueInfo").live("click",function(event) {
 		var id = $(event.target).data("id");
@@ -316,30 +459,15 @@ $(document).ready(function(){
 		if (value.description) {
 			var popup = $("#popup");
 			popup.html("<h3>" + value.name + "</h3>" + value.description.replace(/\n/g, "</br>"));
-			popup.show();
+			popup.jqmShow();
+//			popup.show();
 		}
 		return false;
 	});
 	
-	$("input.quicksearch").live("keyup",function(event) {
-		var id = $(event.target).data("id");
-		var text = $(event.target).val();
-		$("#" + toID(id) + " .facetValue").each(function() {
-			var value = $(this);
-			if (value.hasClass("visible")) {
-				if (text.length == 0) {
-					value.show();
-				} 
-				// starts with or has a word starting with given text
-				else if (new RegExp("^" + text + "|[ -\\(\\)\\.\\+/]" + text, "i").test(value.text())) {
-					value.show();
-				} 
-				else if (!value.hasClass("selectedValue")) {
-					value.hide();
-				}
-			}
-		});
-	});
+	$("input.quicksearch").live("keyup", quicksearch);
+	
+	$(".compare").live("click", compare);
 	
 	$("#help").click(function(){
 		var popup = $("#popup");
@@ -347,12 +475,7 @@ $(document).ready(function(){
 		popup.show();
 	});
 	
-	$("#popup").click(function(event){
-		$(this).hide();
-		return false;
-	});
-	
-	$(".facetValue").live("click",function(event) {
+	$("#facets .facetValue, #results .facetValue").live("click",function(event) {
 		var id = $(event.target).data("id");
 		offset = 0;
 		
@@ -363,14 +486,15 @@ $(document).ready(function(){
 			restrictions.splice(i,1);
 		}
 		
-		if (restrictions.length == 0) {
-			$(".facet").show();
-			// TODO: Apply quicksearch
-			$(".facetValue").show().addClass("visible");
-			$(".selectedValue").removeClass("selectedValue");
-			$("#results").html("");
+		executeQuery();
+	});
+	
+	$("#popup .facetValue").live("click",function(event) {
+		var target = $(event.target);
+		if (target.hasClass("selectedValue")) {
+			target.removeClass("selectedValue");
 		} else {
-			executeQuery();
+			target.addClass("selectedValue");
 		}
 	});
 	
