@@ -1,21 +1,29 @@
 package fi.aluesarjat.prototype;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.events.EndDocument;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonGenerator;
 
+import com.google.common.base.Function;
+import com.google.common.collect.MapMaker;
+import com.google.inject.internal.Maps;
+import com.mysema.delegate.Delegate;
 import com.mysema.rdfbean.model.UID;
 
 public class SearchServlet extends AbstractSPARQLServlet {
@@ -24,20 +32,50 @@ public class SearchServlet extends AbstractSPARQLServlet {
 
     private static final long LAST_MODIFIED = System.currentTimeMillis() / 1000 * 1000;
 
+    private static final int EXPORT_LIMIT = 100000;
+    
     private static final long serialVersionUID = 2149808648205848159L;
 
     private static final int SPARQL_DEFAULT_LIMIT = 200;
 
     private static final int SPARQL_MAX_LIMIT = 1000;
+    
+    private static final String CSV_DELIM = ";";
+    
+    private static final Pattern DECIMAL = Pattern.compile("\\d+\\.\\d+");
 
     private static final String[] EMPTY = new String[0];
+
+    private static enum Format { 
+        JSON("application/json", "UTF-8"), CSV("text/csv", "ISO-8859-15"); 
+        final String contentType;
+        final String encoding;
+        private Format(String contentType, String encoding) {
+            this.contentType = contentType;
+            this.encoding = encoding;
+        }
+        public String getContentType() {
+            return contentType;
+        }
+        public String getCharacterEncoding() {
+            return encoding;
+        }
+    };
 
     private final JsonFactory jsonFactory = new JsonFactory();
 
     private final SearchService searchService;
+    
+    private Map<UID, String> labels = Maps.newHashMap();
 
     public SearchServlet(SearchService searchService) {
         this.searchService = searchService;
+        for (Facet facet : searchService.getFacets()) {
+            labels.put(facet.getId(), facet.getName());
+            for (Value value : facet.getValues()) {
+                labels.put(value.getId(), value.getName());
+            }
+        }
     }
 
     @Override
@@ -50,11 +88,13 @@ public class SearchServlet extends AbstractSPARQLServlet {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
+        Format format = getFormat(request);
 
+        response.setCharacterEncoding(format.getCharacterEncoding());
+        response.setContentType(format.getContentType());
         response.setDateHeader("Last-Modified", System.currentTimeMillis());
         response.setHeader("Cache-Control", "max-age=86400");
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        
 
         int limit = Math.min(getInt(request, "limit", SPARQL_DEFAULT_LIMIT), SPARQL_MAX_LIMIT);
         int offset = getInt(request, "offset", 0);
@@ -68,8 +108,70 @@ public class SearchServlet extends AbstractSPARQLServlet {
 
         boolean includeItems = includes.contains("items");
         boolean includeValues = includes.contains("values");
-        SearchResults searchResults = searchService.search(restrictions, includeItems, limit, offset, includeValues);
 
+        if (Format.JSON.equals(format)) {
+            SearchResults searchResults = searchService.search(restrictions, includeItems, limit, offset, includeValues);
+            serviceJson(searchResults, namespaces, request, response);
+        } else if (Format.CSV.equals(format)) {
+            SearchResults searchResults = searchService.search(restrictions, true, EXPORT_LIMIT, 0, false);
+            serviceCSV(searchResults, namespaces, request, response);
+        }
+    }
+    
+    private void serviceCSV(SearchResults searchResults,
+            Map<UID, String> namespaces, HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+
+        List<UID> headers = searchResults.getHeaders();
+        if (headers != null) {
+            boolean first = true;
+            for (UID header : headers) {
+                if (first) {
+                    first = false; 
+                } else {
+                    out.append(CSV_DELIM);
+                }
+                out.append(labels.get(header));
+            }
+            out.append(CSV_DELIM);
+            out.append("Value");
+            out.append('\n');
+            List<Item> items = searchResults.getItems();
+            if (items != null) {
+                for (Item item : items) {
+                    first = true;
+                    for (UID value : item.getValues()) {
+                        if (first) {
+                            first = false; 
+                        } else {
+                            out.append(CSV_DELIM);
+                        }
+                        if (value != null) {
+                            String label = labels.get(value);
+                            if (0 <= label.indexOf(CSV_DELIM)) {
+                                label = "\"" + label + "\"";
+                            }
+                            out.append(label);
+                        }
+                    }
+                    out.append(CSV_DELIM);
+                    out.append(getValue(item.getValue()));
+                    out.append('\n');
+                }
+            }
+        }
+    }
+    
+    private String getValue(String val) {
+        if (DECIMAL.matcher(val).matches()) {
+            return val.replace('.', ',');
+        } else {
+            return val;
+        }
+    }
+
+    private void serviceJson(SearchResults searchResults, Map<UID, String> namespaces, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String jsonpCallback = request.getParameter("callback");
         if (jsonpCallback != null){
             response.getWriter().write(jsonpCallback + "(");
@@ -98,7 +200,17 @@ public class SearchServlet extends AbstractSPARQLServlet {
         if (jsonpCallback != null){
             response.getWriter().write(")");
         }
-        response.getWriter().flush();
+        response.getWriter().flush();    }
+
+    private Format getFormat(HttpServletRequest req) {
+        String format = req.getParameter("format");
+        String accept = req.getHeader("Accept");
+        
+        if ("csv".equalsIgnoreCase(format) || "text/csv".equalsIgnoreCase(accept)){
+            return Format.CSV;
+        } else {
+            return Format.JSON;
+        }
     }
 
     private void addItems(Map<UID, String> namespaces,

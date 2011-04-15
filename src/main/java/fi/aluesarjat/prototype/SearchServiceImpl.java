@@ -36,8 +36,6 @@ import com.mysema.stat.scovo.SCV;
 
 public class SearchServiceImpl implements SearchService {
 
-    private static final int SPARQL_MAX_LIMIT = 1000;
-
     private static final Logger log = LoggerFactory.getLogger(SearchServiceImpl.class);
 
     private final Repository repository;
@@ -182,7 +180,6 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private SearchResults getResults(ListMultimap<UID, UID> facetRestrictions, boolean includeItems, int limit, int offset, boolean includeAvailableValues, RDFConnection conn) {
-        limit = Math.min(limit, SPARQL_MAX_LIMIT);
         Headers headers = new Headers();
 
         Map<ParamExpression<UID>, UID> bindings = new HashMap<ParamExpression<UID>, UID>();

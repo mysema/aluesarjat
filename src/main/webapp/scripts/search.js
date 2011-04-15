@@ -49,6 +49,14 @@ function getBookmarkLink() {
 	}
 	return href;
 }
+function getExportCSVLink() {
+	var href = "search?";
+	for (var i=0; i < restrictions.length; i++) {
+		href += "value=" + encodeURIComponent(restrictions[i]) + "&";
+	}
+	href += "format=csv"
+	return href;
+}
 
 function getFacetName(facetId) {
 	return allFacets[facetId].name;
@@ -68,7 +76,7 @@ function printFacet(facet, template, availableValues) {
 	if (values.length >= 20) {
 		template.push("<input class='quicksearch' type='text' data-id='", facet.id, "'/>");
 	}
-	template.push("<a href='#' class='compare' data-id='", facet.id, "'>vertaa</a>");
+	template.push("<a href='#' class='compare' data-id='", facet.id, "'>compare</a>");
 	
 	template.push("<h3 class='facetTitle'>", facet.name, "</h3>");
 	
@@ -199,7 +207,7 @@ function executeQuery() {
 					usedFacets.push(facet.id);
 				}
 				
-				template.push("<a href='#' class='compare' data-id='", facet.id, "'>vertaa</a>");
+				template.push("<a href='#' class='compare' data-id='", facet.id, "'>compare</a>");
 				template.push("</td></tr>");
 				
 			}
@@ -252,7 +260,7 @@ function executeQuery() {
 						skippedColumns.push(i);
 					}
 				}
-				template.push("<th>Arvo</th>");
+				template.push("<th>Value</th>");
 				template.push("</tr></thead>");
 				
 				var items = data.items;
@@ -306,7 +314,7 @@ function executeQuery() {
 			
 			template.push("</table>");
 			
-			if (data.items){								
+			if (data.items){
 				// navigation
 				if (offset > 0) {
 					template.push("<a href='javascript: prevPage();'>Previous page</a> - ");
@@ -318,6 +326,8 @@ function executeQuery() {
 				} else {
 					template.push("Next page");
 				}
+				
+				template.push(" - <a href='javascript: window.location = getExportCSVLink();'>Export CSV</a>");
 				
 				$("#sizes").show();
 			}else{
