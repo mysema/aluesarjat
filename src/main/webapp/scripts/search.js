@@ -508,6 +508,18 @@ $(document).ready(function(){
 		}
 	});
 	
+	$("#popup").click(function(event) {
+		var target = $(event.target);
+		var offset = target.offset();
+		var width = target.outerWidth();
+
+		if (event.pageX <= offset.left+width && offset.left+width-24 <= event.pageX
+				&& event.pageY <= offset.top+26 && offset.top <= event.pageY+2) {
+			$(this).jqmHide();
+		}
+		return true;
+	});
+	
 	// Change page size
 	$("#pageSize").change(function() {
 		offset = 0;

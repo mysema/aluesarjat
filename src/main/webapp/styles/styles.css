@@ -158,6 +158,9 @@ input.quicksearch {
 	padding: 1em;
 	z-index: 9002;
 	overflow: auto;
+	background-image: url("/images/close.png");
+	background-position: top right;
+	background-repeat: no-repeat;
 }
 
 #popup .compare {
