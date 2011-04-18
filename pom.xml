@@ -19,12 +19,6 @@
   </properties>
 
   <dependencies>
-    <!-- Annotation processor(s) -->
-    <dependency>
-      <groupId>com.mysema.delegate</groupId>
-      <artifactId>delegate-apt</artifactId>
-      <version>0.9.1-SNAPSHOT</version>
-    </dependency>
     <!-- Project dependencies -->
     <dependency>
       <groupId>com.mysema.rdf</groupId>
@@ -203,27 +197,6 @@
         <configuration>
           <argLine>-Xms512m -Xmx512m</argLine>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.mysema.maven</groupId>
-        <artifactId>maven-apt-plugin</artifactId>
-        <version>1.0</version>
-        <configuration>
-          <outputDirectory>target/generated-sources/java</outputDirectory>
-          <showWarnings>true</showWarnings>
-        </configuration>
-        <executions>
-          <execution>
-            <id>delegates</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>process</goal>
-            </goals>
-            <configuration>
-              <processor>com.mysema.delegate.DelegateAnnotationProcessor</processor>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

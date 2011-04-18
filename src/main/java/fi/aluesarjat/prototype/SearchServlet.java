@@ -14,16 +14,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.stream.events.EndDocument;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonGenerator;
 
-import com.google.common.base.Function;
-import com.google.common.collect.MapMaker;
 import com.google.inject.internal.Maps;
-import com.mysema.delegate.Delegate;
 import com.mysema.rdfbean.model.UID;
 
 public class SearchServlet extends AbstractSPARQLServlet {
@@ -66,7 +62,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
 
     private final SearchService searchService;
     
-    private Map<UID, String> labels = Maps.newHashMap();
+    private final Map<UID, String> labels = Maps.newHashMap();
 
     public SearchServlet(SearchService searchService) {
         this.searchService = searchService;
