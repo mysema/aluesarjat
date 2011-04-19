@@ -38,6 +38,8 @@ public class SearchServlet extends AbstractSPARQLServlet {
     
     private static final String CSV_DELIM = ";";
     
+    private static final String CSV_QUOTE = "\"";
+    
     private static final Pattern DECIMAL = Pattern.compile("\\d+\\.\\d+");
 
     private static final String[] EMPTY = new String[0];
@@ -146,7 +148,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
                         if (value != null) {
                             String label = labels.get(value);
                             if (0 <= label.indexOf(CSV_DELIM)) {
-                                label = "\"" + label + "\"";
+                                label = CSV_QUOTE + label + CSV_QUOTE;
                             }
                             out.append(label);
                         }

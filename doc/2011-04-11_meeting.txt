@@ -1,9 +1,16 @@
 Lyhyt kuvaus fasettihausta, karttademosta (viitteet HRI:n KML aineistoihin) ja FloAppsin Motion Chartista(?): miten tehty? Esimerkkejä!
 
+SPARQL esimerkkikyselyitä! Esim. Alueet, joilla väkiluku alle/yli "jotakin", "Tulotaso yli X ja naisia enemmän kuin miehiä" tms.
+
+Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä kokonaan uudestaan. Mistä tilastot löytyvät? -> Henri Ahti.
+
+Ylläpitosopimus
+
 Fasettihakuun vertailu!
 DONE
 
 CSV Export! Puolipiste erotinmerkkinä, desimaalit pilkulla.
+DONE
 
 Karttanäkymässä tilastot ensimmäiseksi (oletus) tabiksi! Kuvaus-tabi pois, jos kuvausta ei ole.
 DONE
@@ -20,8 +27,6 @@ DONE
 Kartan IE testaus.
 DONE
 
-SPARQL esimerkkikyselyitä! Esim. Alueet, joilla väkiluku alle/yli "jotakin", "Tulotaso yli X ja naisia enemmän kuin miehiä" tms.
-
 Etusivulle linkki PCAxis parseriin!
 DONE
 
@@ -30,14 +35,5 @@ Käyttöehdot Villeltä! Etusivulle.
 Etusivu (linkit) kokonaan englanniksi!
 DONE
 
-Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä kokonaan uudestaan. Mistä tilastot löytyvät? -> Henri Ahti.
-
 Merialueiden keskipisteet ylemmäksi mantereen päälle.
 DONE
-
-=> Ylläpitosopimus
-
-vuosi:_2009
-yksikkö:Henkilö
-sukupuoli:Molemmat_sukupuolet
-
