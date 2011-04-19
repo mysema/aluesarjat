@@ -155,16 +155,21 @@ input.quicksearch {
 	margin-right: 15%;
 	margin-left: 15%;
 	height: 75%;
-	padding: 1em;
 	z-index: 9002;
 	overflow: auto;
-	background-image: url("/images/close.png");
-	background-position: top right;
-	background-repeat: no-repeat;
+}
+
+#popupContent {
+    padding: 2px 1em 1em 1em;
 }
 
 #popup .compare {
 	display: none;
+}
+
+#popupClose {
+	float: right;
+	margin: 2px 2px 0px 0px;
 }
 
 .table {
