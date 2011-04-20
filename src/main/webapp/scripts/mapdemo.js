@@ -278,6 +278,10 @@ function clickOnFeature(event, where) {
 					var bindings = sparqlResults.results.bindings;					
 					for (var i = 0; i < bindings.length; i++){
 						var binding = bindings[i];
+						var val = binding["val"].value;
+						if (val == '..' || val == '.') {
+							binding["val"].value = '0';
+						}
 						data.push( { label: binding["ikl"].value, value:  parseInt(binding["val"].value) } );
 					}					
 					statistics[code] = data;
@@ -325,17 +329,21 @@ function updateInfo(props, areaData){
 		// render table
 		content.push("<div id='tab1' class='tab_content'>");		
 		content.push("<h4>Väestö ikärymittäin (2009)</h4>");
-		content.push("<table>");
-		for (var i = 1; i < length; i++){
-			var entry = areaData[i];
-			content.push("<tr>");
-			content.push("<th>", entry.label, "</th>");
-			content.push("<td>", entry.value, "</td>");
-			content.push("<td><div class='panel' style='width: ", (100 * entry.value) / max, "px;'>&nbsp;</div></td>");
-			content.push("</tr>");
-		}
-		content.push("<tr><td>Yhteensä</td><td>", max, "</td><td>&nbsp;</td></tr>");		
-		content.push("</table>");
+		if (max > 0) {
+			content.push("<table>");
+			for (var i = 1; i < length; i++){
+				var entry = areaData[i];
+				content.push("<tr>");
+				content.push("<th>", entry.label, "</th>");
+				content.push("<td>", entry.value, "</td>");
+				content.push("<td><div class='panel' style='width: ", (100 * entry.value) / max, "px;'>&nbsp;</div></td>");
+				content.push("</tr>");
+			}
+			content.push("<tr><td>Yhteensä</td><td>", max, "</td><td>&nbsp;</td></tr>");		
+			content.push("</table>");	
+		}else{
+			content.push("<p>Ei tietoa</p>");
+		}		
 		content.push("</div>");
 	}
 	if (comments[props.code]){
