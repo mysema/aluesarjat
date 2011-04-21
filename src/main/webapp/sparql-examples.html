@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<style type="text/css">
+.code {
+    white-space: pre;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SPARQL Example Queries for semantic.hri.fi</title>
+</head>
+<body>
+<p>
+NOTE: For readability PREFIX declarations are omitted from these example queries. 
+As <a href="sparql.html">sparql test page</a> prepends default namespaces to hand-written 
+queries, these examples can be copy-pasted directly to query box.
+</p>
+<p>
+NOTE: Semantic.hri.fi's SPARQL-interface requires that limit and offset to a query be given as 
+HTTP-parameters instead of as part of a query. This limitation is because of an enforced
+maximum limit (100 000 rows) for 
+</p>
+<h3>Areas with over all population over 50 000 in (year) 2010 with one level of hierarchy, ordered biggest</h3>
+As not all areas have a broader area, skos:broader is defined as an OPTIONAL element of the query.
+<div class="code">
+SELECT ?areaParentName ?areaName ?value
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension vuosi:_2010;
+        scv:dimension väestön_määrä:Henkilöitä_yhteensä;
+        scv:dimension ?area.
+  ?area rdf:type dimension:Alue;
+        dc:title ?areaName.
+  OPTIONAL { ?area skos:broader ?areaParent. ?areaParent dc:title ?areaParentName .}
+  FILTER (?value >= 50000)
+}
+</div>
+
+<div class="code">
+SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+WHERE {
+  [ rdf:type scv:Item;
+    rdf:value ?avgIncome;
+    scv:dimension ?area;
+    scv:dimension tuloluokka:Keskitulo;
+    scv:dimension vuosi:_2007
+  ] .
+  FILTER ( ?avgIncome > 50000 )
+  ?area rdf:type dimension:Alue; dc:title ?areaName.
+  [ rdf:type scv:Item;
+    rdf:value ?workingWomen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Naiset;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+  [ rdf:type scv:Item;
+    rdf:value ?workingMen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Miehet;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+}
+</div>
+</body>
+</html>

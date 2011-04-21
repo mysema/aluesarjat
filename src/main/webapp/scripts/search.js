@@ -425,6 +425,59 @@ function compare(event) {
 	});
 	popup.jqmShow();
 }
+function getSparqlLink() {
+	return "sparql.html?query=" + encodeURIComponent(toSparql());
+}
+function toSparql() {
+	var facetToRestrictions = {};
+	for (var i=0; i < restrictions.length; i++) {
+		var r = restrictions[i];
+		var f = r.substring(0, r.indexOf(':'));
+		if (!facetToRestrictions[f]) {
+			facetToRestrictions[f] = [];
+		}
+		facetToRestrictions[f].push(r);
+	}
+	var sparql = ["SELECT ?item ?value ?dimension\n",
+	              "WHERE {\n",
+	              "  ?item rdf:type scv:Item;\n",
+	              "        rdf:value ?value;\n",
+	              "        scv:dimension ?dimension"];
+	var filter;
+
+	for (f in facetToRestrictions) {
+		var facetRestrictions = facetToRestrictions[f];
+		if (facetRestrictions.length == 1) {
+			sparql.push(";\n        scv:dimension ", facetRestrictions[0]);
+		} else {
+			sparql.push(";\n        scv:dimension ?", f);
+			
+	
+			if (filter) {
+				filter.push("\n  && (");
+			} else {
+				filter = ["(\n  "];
+			}
+			for (var i=0; i < facetRestrictions.length; i++) {
+				if (0 < i) {
+					filter.push(" || ");
+				}
+				filter.push("?", f, " = ", facetRestrictions[i]);
+			}
+			filter.push(")");
+		}
+	}
+	sparql.push(".\n")
+	if (filter) {
+		sparql.push("FILTER (");
+		sparql = sparql.concat(filter);
+		sparql.push(")\n");
+	}
+	sparql.push("}");
+	return sparql.join("");
+}
+
+
 
 $(document).ready(function(){
 

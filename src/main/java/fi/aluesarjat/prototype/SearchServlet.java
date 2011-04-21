@@ -28,13 +28,13 @@ public class SearchServlet extends AbstractSPARQLServlet {
 
     private static final long LAST_MODIFIED = System.currentTimeMillis() / 1000 * 1000;
 
-    private static final int EXPORT_LIMIT = 100000;
+    public static final int EXPORT_LIMIT = 100000;
     
     private static final long serialVersionUID = 2149808648205848159L;
 
-    private static final int SPARQL_DEFAULT_LIMIT = 200;
+    private static final int SEARCH_DEFAULT_LIMIT = 200;
 
-    private static final int SPARQL_MAX_LIMIT = 1000;
+    private static final int SEARCH_MAX_LIMIT = 1000;
     
     private static final String CSV_DELIM = ";";
     
@@ -94,7 +94,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         response.setHeader("Cache-Control", "max-age=86400");
         
 
-        int limit = Math.min(getInt(request, "limit", SPARQL_DEFAULT_LIMIT), SPARQL_MAX_LIMIT);
+        int limit = Math.min(getInt(request, "limit", SEARCH_DEFAULT_LIMIT), SEARCH_MAX_LIMIT);
         int offset = getInt(request, "offset", 0);
 
         Map<UID, String> namespaces = searchService.getNamespaces();

@@ -26,7 +26,7 @@ public class CustomServletModule extends ServletModule{
 
     private static final Logger log = LoggerFactory.getLogger(CustomServletModule.class);
 
-    private static final int SPARQL_LIMIT = 1000;
+    private static final int SPARQL_LIMIT = SearchServlet.EXPORT_LIMIT;
 
     private static final int SPARQL_MAX_QUERY_TIME = 120;
 

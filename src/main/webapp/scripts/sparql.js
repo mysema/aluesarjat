@@ -120,8 +120,8 @@ function handleSPARQLResult(data){
 			var oddRow;
 			if (typeof binding[key] == "undefined") {
 				binding[key] = {type: "undefined", value: "undefined"};
-				oddRow = evenRow[j];
-			} else if (lastColumns[j] != null && lastColumns[j] == binding[key].value) {
+			} 
+			if (0 < i && lastColumns[j] == binding[key].value) {
 				binding[key].value = "&nbsp;";
 				oddRow = evenRow[j];
 			} else {
