@@ -319,27 +319,32 @@ function updateInfo(props, areaData){
 		// calculate max 
 		var length = areaData.length;
 		var max = 0;
-		for (var i = 1; i < length; i++){
+		var sum = 0;
+		for (var i = 0; i < length; i++){
 			var entry = areaData[i];
-			if (entry.value > max){
+			if (entry.label == "Väestö yhteensä"){
+				sum = entry.value;
+			} else if (entry.value > max){
 				max = entry.value;
 			}				
-		}				
+		}
 		
 		// render table
 		content.push("<div id='tab1' class='tab_content'>");		
-		content.push("<h4>Väestö ikärymittäin (2009)</h4>");
+		content.push("<h4>Väestö ikäryhmittäin (2009)</h4>");
 		if (max > 0) {
 			content.push("<table>");
-			for (var i = 1; i < length; i++){
+			for (var i = 0; i < length; i++){
 				var entry = areaData[i];
-				content.push("<tr>");
-				content.push("<th>", entry.label, "</th>");
-				content.push("<td>", entry.value, "</td>");
-				content.push("<td><div class='panel' style='width: ", (100 * entry.value) / max, "px;'>&nbsp;</div></td>");
-				content.push("</tr>");
+				if (entry.label != "Väestö yhteensä"){
+					content.push("<tr>");
+					content.push("<th>", entry.label, "</th>");
+					content.push("<td>", entry.value, "</td>");
+					content.push("<td><div class='panel' style='width: ", (100 * entry.value) / max, "px;'>&nbsp;</div></td>");
+					content.push("</tr>");
+				}
 			}
-			content.push("<tr><td>Yhteensä</td><td>", max, "</td><td>&nbsp;</td></tr>");		
+			content.push("<tr><td>Yhteensä</td><td>", sum, "</td><td>&nbsp;</td></tr>");		
 			content.push("</table>");	
 		}else{
 			content.push("<p>Ei tietoa</p>");
