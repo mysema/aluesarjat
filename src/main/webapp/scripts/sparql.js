@@ -41,15 +41,15 @@ function executeQuery () {
 	var qry = 
 		$("#namespaces").text() // Default namespaces 
 		+ $("#query").val() // Query
-		+ "\nlimit " + limit // Limit
-		+ "\noffset " + offset // Offset
+//		+ "\nlimit " + limit // Limit
+//		+ "\noffset " + offset // Offset
 		;
 	
 	queryStartTime = new Date().getTime()
 	
 	$.ajax({
 		url: "sparql", 
-		data: { "query": qry, "type": "json"}, 
+		data: { "query": qry, "type": "json", "limit": limit, "offset": offset}, 
 		datatype: "json", 
 		beforeSend : function (xhr) {
     		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
@@ -273,7 +273,7 @@ $(document).ready(function(){
 		printSavedQuery(index, query);
 	});
 
-	limit = new Number($("#pageSize").val());
+//	limit = new Number($("#pageSize").val());
 	
 	// Change page size
 	$("#pageSize").change(function() {
