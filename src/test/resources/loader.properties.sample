@@ -3,5 +3,5 @@ virtuoso.port=1111
 virtuoso.user=dba
 virtuoso.pass=dba
 
-baseURI=http://localhost:8080/rdf/
+baseURI=http://localhost:8080/data/
 data.dir=/home/tiwe/Documents/Aluesarjat_kaupunkiverkko
