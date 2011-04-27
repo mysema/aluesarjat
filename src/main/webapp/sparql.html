@@ -25,7 +25,8 @@
     
 		<form method="get" action="/query">
 	        <h3>Query</h3>
-	
+	        <p>See here for <a href="sparql-examples.html">examples</a>.
+	        </p>
 			<div>
 				<textarea id="query" name="query" cols="80" rows="12"></textarea>
 			</div>
@@ -52,6 +53,12 @@
 		
 		<div id="savedQueries">
 	    	<h3>Saved Queries</h3>
+	    	<ul>
+	    	<li>Click "Save Query" to save a query here.</li> 
+	    	<li>Click a saved query (below) to copy it into the query area and "Submit Query" to execute it.</li> 
+	    	<li>Double click to remove saved query. NOTE: When saved query is removed, it gets first
+	    	copied to the query area and can then be re-saved.</li>
+	    	</ul>
 	    </div>
 	    
 	    <div id="namespacesInfo">

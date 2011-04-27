@@ -4,26 +4,97 @@
 <style type="text/css">
 .code {
     white-space: pre;
+    font-family: monospace;
+    border: 1px solid gray;
+    padding: 0.5em;
+}
+
+h3, h2 {
+    margin: 2em 0.5em 0em 0em;
+}
+p, .code {
+    margin: 1em;
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SPARQL Example Queries for semantic.hri.fi</title>
 </head>
 <body>
+<h1><a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL</a> Example Queries for semantic.hri.fi</h1>
+
+<div style="clear:both;"></div>
+
+<a href="index.html">Frontpage</a>
+<a href="search.html">Faceted search</a>
+<a href="sparql.html">SPARQL</a>
+<a href="mapdemo.html">Map demo</a>
+
+<h2>SCOVO</h2>
+<p>
+<a href="http://sw.joanneum.at/scovo/schema.html">SCOVO</a> is a vocabulary for representing statistical data on the Web.
+Semantic.hri.fi uses SCOVO for representing statistics of Helsinki region. SCOVO datamodel, 
+consists of Datasets containing statistical Items (statistical values). Semantics of each item is defined by
+linking it to subclasses of Dimension, e.g. Year or Area.
+</p>
+<img alt="SCOVO Data Model" src="images/scovo.jpg">
+<p>
+Below is a picture of Item depicting number (4) of women of age range 15-24 with higher education 
+in Kallion peruspiiri (area) in year 2009. For brevity only dimensions gender, year and area are
+shown. 
+</p>
+<img alt="SCOVO Item Example" src="images/scovo-example-1.jpg">
+<p>
+Item queries can be formed using <a href="search.html">Facet search</a> and then clicking "Show SPARQL".
+SPARQL allows constraints on values as well as result ordering.
+</p>
+
+<h2>SPARQL Examples</h2>
 <p>
 NOTE: For readability PREFIX declarations are omitted from these example queries. 
-As <a href="sparql.html">sparql test page</a> prepends default namespaces to hand-written 
-queries, these examples can be copy-pasted directly to query box.
+As <a href="sparql.html">SPARQL test page</a> prepends those default namespaces to hand-written 
+queries, these examples can be copy-pasted directly into the query box.
 </p>
 <p>
 NOTE: Semantic.hri.fi's SPARQL-interface requires that limit and offset to a query be given as 
-HTTP-parameters instead of as part of a query. This limitation is because of an enforced
-maximum limit (100 000 rows) for 
+HTTP-parameters instead of as part of a query itself. This limitation is because of an enforced
+maximum result size limit (100 000 rows). All data can be read programmatically by paging 
+through the results using OFFSET along with limit. 
 </p>
-<h3>Areas with over all population over 50 000 in (year) 2010 with one level of hierarchy, ordered biggest</h3>
+<p>
+NOTE: It is possible that overly complex queries take "too long" to finish. In most cases 
+these queries can easily be broken into a series of smaller fast queries executed programmatically.
+</p>
+
+<h3>All dimensions and values</h3>
+
+<div class="code">SELECT ?dimension ?dimensionValue ?dimensionValueName
+WHERE { 
+?dimension rdfs:subClassOf scv:Dimension .
+?dimensionValue rdf:type ?dimension ;
+    dc:title ?dimensionValueName .
+}
+</div>
+
+<h3>All information about areas</h3>
+<div class="code">SELECT ?area ?pred ?obj
+WHERE { 
+  ?area rdf:type dimension:Alue;
+     ?pred ?obj.
+}</div>
+
+<h3>Namespace mappings</h3>
+<div class="code">SELECT ?prefix str(?ns) as ?namespace
+WHERE {
+?ns meta:nsPrefix ?prefix .
+}
+</div>
+
+
+<h3>Areas with over all population over 50 000 in year 2010 with one level of hierarchy, ordered biggest first</h3>
+<p>
 As not all areas have a broader area, skos:broader is defined as an OPTIONAL element of the query.
-<div class="code">
-SELECT ?areaParentName ?areaName ?value
+</p>
+<div class="code">SELECT ?areaParentName ?areaName ?value
 WHERE {
   ?item rdf:type scv:Item;
         rdf:value ?value;
@@ -37,33 +108,32 @@ WHERE {
 }
 </div>
 
-<div class="code">
-SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+<h3>Areas with average income over 40 000 and more working women than men in year 2007</h3>
+
+<div class="code">SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
 WHERE {
-  [ rdf:type scv:Item;
-    rdf:value ?avgIncome;
+  [ rdf:value ?avgIncome;
     scv:dimension ?area;
     scv:dimension tuloluokka:Keskitulo;
     scv:dimension vuosi:_2007
   ] .
-  FILTER ( ?avgIncome > 50000 )
+  FILTER ( ?avgIncome > 40000 )
   ?area rdf:type dimension:Alue; dc:title ?areaName.
-  [ rdf:type scv:Item;
+  [ scv:dimension ?area;
     rdf:value ?workingWomen;
-    scv:dimension ?area;
     scv:dimension sukupuoli:Naiset;
     scv:dimension vuosi:_2007;
     scv:dimension ikä:Työll__työvoima_yhteensä;
     scv:dimension yksikkö:Työssä_käyvä_henkilö
   ] .
-  [ rdf:type scv:Item;
+  [ scv:dimension ?area;
     rdf:value ?workingMen;
-    scv:dimension ?area;
     scv:dimension sukupuoli:Miehet;
     scv:dimension vuosi:_2007;
     scv:dimension ikä:Työll__työvoima_yhteensä;
     scv:dimension yksikkö:Työssä_käyvä_henkilö
   ] .
+  FILTER ( ?workingWomen > ?workingMen )
 }
 </div>
 </body>
