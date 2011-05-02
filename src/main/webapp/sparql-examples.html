@@ -108,10 +108,9 @@ WHERE {
   FILTER (?value >= 50000)
 }
 </div>
-
-<!-- 
+<!--  
 <h3>Areas with average income over 40 000 and more working women than men in year 2007</h3>
-
+<p>NOTE: This query needs optimizing.</p> 
 <div class="code">SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
 WHERE {
   [ rdf:value ?avgIncome;
@@ -121,23 +120,27 @@ WHERE {
   ] .
   FILTER ( ?avgIncome > 40000 )
   ?area rdf:type dimension:Alue; dc:title ?areaName.
-  [ scv:dimension ?area;
-    rdf:value ?workingWomen;
-    scv:dimension sukupuoli:Naiset;
-    scv:dimension vuosi:_2007;
-    scv:dimension ikä:Työll__työvoima_yhteensä;
-    scv:dimension yksikkö:Työssä_käyvä_henkilö
-  ] .
-  [ scv:dimension ?area;
-    rdf:value ?workingMen;
-    scv:dimension sukupuoli:Miehet;
-    scv:dimension vuosi:_2007;
-    scv:dimension ikä:Työll__työvoima_yhteensä;
-    scv:dimension yksikkö:Työssä_käyvä_henkilö
-  ] .
+  OPTIONAL { 
+    [ scv:dimension ?area;
+      rdf:value ?workingWomen;
+      scv:dimension sukupuoli:Naiset;
+      scv:dimension vuosi:_2007;
+      scv:dimension ikä:Työll__työvoima_yhteensä;
+      scv:dimension yksikkö:Työssä_käyvä_henkilö
+    ] 
+  } .
+  OPTIONAL {
+    [ scv:dimension ?area;
+      rdf:value ?workingMen;
+      scv:dimension sukupuoli:Miehet;
+      scv:dimension vuosi:_2007;
+      scv:dimension ikä:Työll__työvoima_yhteensä;
+      scv:dimension yksikkö:Työssä_käyvä_henkilö
+    ] .
+  }
   FILTER ( ?workingWomen > ?workingMen )
 }
 </div>
- -->
+-->
 </body>
 </html>

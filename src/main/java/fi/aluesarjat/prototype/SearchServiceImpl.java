@@ -69,7 +69,7 @@ public class SearchServiceImpl implements SearchService {
                      dimension.has(DC.description, dimensionDescription).asOptional(),
                      dimension.has(SKOS.broader, parent).asOptional()
                   ));
-            query.orderBy(dimensionName.asc());
+            //query.orderBy(dimensionName.asc());
 
             addFacets(conn, dimensionTypes, query.selectAll());
             logDuration("getFacets(): Dimensions", System.currentTimeMillis() - start);
