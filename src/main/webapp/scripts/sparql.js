@@ -278,7 +278,7 @@ $(document).ready(function(){
 	// Change page size
 	$("#pageSize").change(function() {
 		offset = 0;
-		limit = new Number($(this).val());
+		limit = parseInt($(this).val());
 		if (queryActive) {
 			executeQuery();
 		}
@@ -289,11 +289,11 @@ $(document).ready(function(){
 function init() {
 	var parameters = getRequestParameters();
 	if (parameters.limit) {
-		limit = new Number(parameters.limit[0]);
+		limit = parseInt(parameters.limit[0]);
 		$("#pageSize").val(parameters.limit[0]);
 	}
 	if (parameters.offset) {
-		offset = new Number(parameters.offset[0]);
+		offset = parseInt(parameters.offset[0]);
 	}
 	if (parameters.query) {
 		$("#query").val(parameters.query[0]);
