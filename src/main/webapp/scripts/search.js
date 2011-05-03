@@ -486,10 +486,10 @@ $(document).ready(function(){
 		restrictions = parameters.value;
 	}
 	if (parameters.limit) {
-		limit = new Number(parameters.limit[0]);
+		limit = parseInt(parameters.limit[0]);
 	}
 	if (parameters.offset) {
-		offset = new Number(parameters.offset[0]);
+		offset = parseInt(parameters.offset[0]);
 	}
 
 	$.ajax({
@@ -568,7 +568,7 @@ $(document).ready(function(){
 	// Change page size
 	$("#pageSize").change(function() {
 		offset = 0;
-		limit = new Number($(this).val());
+		limit = parseInt($(this).val());
 		executeQuery();
 	});
 
