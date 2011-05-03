@@ -1,7 +1,6 @@
 Lyhyt kuvaus fasettihausta, karttademosta (viitteet HRI:n KML aineistoihin) ja FloAppsin Motion Chartista(?): miten tehty? Esimerkkejä!
 
-SPARQL esimerkkikyselyitä! Esim. Alueet, joilla väkiluku alle/yli "jotakin", "Tulotaso yli X ja naisia enemmän kuin miehiä" tms.
-DONE: Fasettihausta sparql-kysely
+DONE: SPARQL esimerkkikyselyitä! Esim. Alueet, joilla väkiluku alle/yli "jotakin", "Tulotaso yli X ja naisia enemmän kuin miehiä" tms.
 
 Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä kokonaan uudestaan. Mistä tilastot löytyvät? -> Henri Ahti.
 

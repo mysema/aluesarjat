@@ -447,10 +447,16 @@ function toSparql() {
 
 	for (f in facetToRestrictions) {
 		var facetRestrictions = facetToRestrictions[f];
-		if (facetRestrictions.length == 1) {
-			sparql.push(";\n        scv:dimension ", facetRestrictions[0]);
+		if (f == "dataset") {
+			sparql.push(";\n        scv:dataset ");
 		} else {
-			sparql.push(";\n        scv:dimension ?", f);
+			sparql.push(";\n        scv:dimension ");
+		}
+		
+		if (facetRestrictions.length == 1) {
+			sparql.push(facetRestrictions[0]);
+		} else {
+			sparql.push("?", f);
 			
 	
 			if (filter) {
