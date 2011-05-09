@@ -102,8 +102,8 @@ public class CustomServletModule extends ServletModule{
 
     @Provides
     @Singleton
-    public SearchService createSearchService(Repository repository){
-        return new SearchServiceImpl(repository);
+    public SearchService createSearchService(Repository repository, @Named("baseURI") String baseURI){
+        return new SearchServiceImpl(repository, baseURI);
     }
 
     @Provides

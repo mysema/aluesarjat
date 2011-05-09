@@ -15,6 +15,8 @@ import net.sf.json.JSONObject;
 
 import org.junit.Test;
 
+import fi.aluesarjat.prototype.guice.ModuleUtils;
+
 public class SearchServletTest extends AbstractServletTest{
 
     private SearchServlet servlet;
@@ -22,7 +24,7 @@ public class SearchServletTest extends AbstractServletTest{
     @Override
     public void setUp(){
         super.setUp();
-        servlet = new SearchServlet(new SearchServiceImpl(repository));
+        servlet = new SearchServlet(new SearchServiceImpl(repository, ModuleUtils.DEFAULT_BASE_URI));
     }
 
     @Test

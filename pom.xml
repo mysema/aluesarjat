@@ -15,7 +15,7 @@
     <!-- versions of dependencies -->
     <jetty.version>6.1.0-SNAPSHOT</jetty.version>
     <spring.version>2.5.5</spring.version>
-    <rdfbean.version>1.5.2</rdfbean.version>
+    <rdfbean.version>1.5.2-SNAPSHOT</rdfbean.version>
   </properties>
 
   <dependencies>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>com.mysema.stat</groupId>
       <artifactId>stat</artifactId>
-      <version>0.5.2</version>
+      <version>0.6.1-SNAPSHOT</version>
     </dependency>
 
     <!-- KML -->

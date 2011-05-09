@@ -441,8 +441,7 @@ function toSparql() {
 	var sparql = ["SELECT ?item ?value ?dimension\n",
 	              "WHERE {\n",
 	              "  ?item rdf:type scv:Item;\n",
-	              "        rdf:value ?value;\n",
-	              "        scv:dimension ?dimension"];
+	              "        rdf:value ?value"];
 	var filter;
 
 	for (f in facetToRestrictions) {
@@ -450,7 +449,7 @@ function toSparql() {
 		if (f == "dataset") {
 			sparql.push(";\n        scv:dataset ");
 		} else {
-			sparql.push(";\n        scv:dimension ");
+			sparql.push(";\n        dimension:", f, " ");
 		}
 		
 		if (facetRestrictions.length == 1) {
@@ -473,7 +472,7 @@ function toSparql() {
 			filter.push(")");
 		}
 	}
-	sparql.push(".\n")
+    sparql.push(";\n        ?dimensionProperty ?dimension .\n  ?dimensionProperty rdfs:subPropertyOf scv:dimension .\n");
 	if (filter) {
 		sparql.push("FILTER (");
 		sparql = sparql.concat(filter);

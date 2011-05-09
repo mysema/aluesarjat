@@ -14,6 +14,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import virtuoso.jdbc4.VirtuosoConnection;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.mysema.rdfbean.Namespaces;
@@ -24,12 +26,14 @@ import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SKOS;
 import com.mysema.rdfbean.model.UID;
+import com.mysema.rdfbean.virtuoso.VirtuosoRepositoryConnection;
 import com.mysema.stat.META;
 import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.PCAxisParser;
 import com.mysema.stat.scovo.NamespaceHandler;
-import com.mysema.stat.scovo.RDFDatasetHandler;
 import com.mysema.stat.scovo.SCV;
+import com.mysema.stat.scovo.ScovoDatasetHandler;
+import com.mysema.stat.scovo.ScovoExtDatasetHandler;
 
 public class DataService {
 
@@ -76,8 +80,8 @@ public class DataService {
         namespaces.put(DCTERMS.NS, "dcterms");
         namespaces.put(STAT.NS, "stat");
         namespaces.put(SKOS.NS, "skos");
-        namespaces.put(baseURI + RDFDatasetHandler.DIMENSION_NS, "dimension");
-        namespaces.put(baseURI + RDFDatasetHandler.DATASET_CONTEXT_BASE, "dataset");
+        namespaces.put(baseURI + ScovoDatasetHandler.DIMENSION_NS, "dimension");
+        namespaces.put(baseURI + ScovoDatasetHandler.DATASET_CONTEXT_BASE, "dataset");
         namespaceHandler.addNamespaces(namespaces);
 
         logger.info("initializing data");
@@ -121,7 +125,7 @@ public class DataService {
 
     public void importData(String datasetDef, boolean reload) {
         try {
-            RDFDatasetHandler handler = new RDFDatasetHandler(repository, namespaceHandler, baseURI);
+            ScovoExtDatasetHandler handler = new ScovoExtDatasetHandler(repository, namespaceHandler, baseURI);
             PCAxisParser parser = new PCAxisParser(handler);
 
             if (StringUtils.isNotBlank(datasetDef)) {
@@ -138,8 +142,8 @@ public class DataService {
                     ignoredValues = new String[0];
                 }
 
-                UID uid = RDFDatasetHandler.datasetUID(baseURI, datasetName);
-                UID datasetsContext = RDFDatasetHandler.datasetsContext(baseURI);
+                UID uid = ScovoExtDatasetHandler.datasetUID(baseURI, datasetName);
+                UID datasetsContext = ScovoExtDatasetHandler.datasetsContext(baseURI);
                 boolean load;
                 RDFConnection conn = repository.openConnection();
                 try {

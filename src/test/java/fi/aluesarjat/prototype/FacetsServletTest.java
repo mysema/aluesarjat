@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 
+import fi.aluesarjat.prototype.guice.ModuleUtils;
+
 public class FacetsServletTest extends AbstractServletTest{
 
     private FacetsServlet servlet;
@@ -17,7 +19,7 @@ public class FacetsServletTest extends AbstractServletTest{
     @Override
     public void setUp(){
         super.setUp();
-        servlet = new FacetsServlet(new SearchServiceImpl(repository));
+        servlet = new FacetsServlet(new SearchServiceImpl(repository, ModuleUtils.DEFAULT_BASE_URI));
     }
 
     @Test

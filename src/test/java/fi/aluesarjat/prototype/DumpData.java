@@ -15,7 +15,7 @@ import com.mysema.rdfbean.sesame.MemoryRepository;
 import com.mysema.rdfbean.sesame.SesameRepository;
 import com.mysema.stat.pcaxis.PCAxisParser;
 import com.mysema.stat.scovo.NamespaceHandler;
-import com.mysema.stat.scovo.RDFDatasetHandler;
+import com.mysema.stat.scovo.ScovoExtDatasetHandler;
 
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
@@ -30,7 +30,7 @@ public class DumpData {
             repository.initialize();
 
             NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
-            RDFDatasetHandler handler = new RDFDatasetHandler(repository, namespaceHandler, baseURI);
+            ScovoExtDatasetHandler handler = new ScovoExtDatasetHandler(repository, namespaceHandler, baseURI);
             PCAxisParser parser = new PCAxisParser(handler);
             parser.parse("A01HKIS_Vaestotulot",   getResourceAsStream("/data/A01HKIS_Vaestotulot.px"));
             parser.parse("B02S_ESP_Vakiluku1975", getResourceAsStream("/data/B02S_ESP_Vakiluku1975.px"));

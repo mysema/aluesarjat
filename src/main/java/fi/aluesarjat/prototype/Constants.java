@@ -13,6 +13,8 @@ public final class Constants {
 
     public static final QUID dimension = new QUID("dimension");
 
+    public static final QUID dimensionProperty = new QUID("dimensionProperty");
+
     public static final QLIT dimensionDescription = new QLIT("dimensionDescription");
 
     public static final QLIT dimensionName = new QLIT("dimensionName");

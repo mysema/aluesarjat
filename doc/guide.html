@@ -360,6 +360,7 @@ WHERE {
     dc:title ?datasetName ;
     stat:datasetDimension [ rdf:type ?dimensionType ] .
 }
+order by ?datasetName
 </pre>
 
 <h3>Datasets with timestamps</h3>
@@ -377,45 +378,49 @@ WHERE {
 <pre>
 SELECT ?dataset ?item ?value ?dimension
 WHERE {
-    ?item scv:dimension alue:_091_301_Kallion_peruspiiri ;
-    scv:dimension vuosi:_2009 ;
+  ?item dimension:alue alue:_091_301_Kallion_peruspiiri ;
+    dimension:vuosi vuosi:_2009 ;
     scv:dataset ?dataset ;
-    scv:dimension ?dimension ;
+    ?dimensionProperty ?dimension ;
     rdf:value ?value .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
 }
-ORDER BY ?value
+ORDER BY ?dataset
 </pre>
 
-<h3>Alueet, joilla enemmän nuoria kuin vanhoja</h3>
+<h3>Alueet, joilla enemmän 0-6 vuotiaita kuin 7-12 vuotiaita vuonna 2009</h3>
 <pre>
 SELECT DISTINCT ?area ?young ?old
 WHERE { 
-    [ scv:dimension ikäryhmä:_0-6-vuotiaat ;
-      scv:dimension vuosi:_2009 ;
+  {
+    [ dimension:ikäryhmä ikäryhmä:_0-6-vuotiaat ;
+      dimension:vuosi vuosi:_2009 ;
       scv:dataset ?dataset ; 
-      scv:dimension ?area ;
+      dimension:alue ?area ;
       rdf:value ?young ].
-    [ scv:dimension ikäryhmä:_7-12-vuotiaat ;
-      scv:dimension vuosi:_2009 ;
-      scv:dataset ?dataset ; 
-      scv:dimension ?area ;
-      rdf:value ?old ] .
-    ?area rdf:type dimension:Alue .
-    FILTER ( ?young > ?old
-        && ( ?dataset = dataset:A02S_HKI_Vakiluku1962 
-      || ?dataset = dataset:B02S_ESP_Vakiluku1975 ) ).
+    OPTIONAL {
+      [ dimension:ikäryhmä ikäryhmä:_7-12-vuotiaat ;
+        dimension:vuosi vuosi:_2009 ;
+        scv:dataset ?dataset ; 
+        dimension:alue ?area ;
+        rdf:value ?old ] .
+    }
+  }
+  FILTER ( ?young > ?old ).
 } 
+
+
 </pre>
 
 <h3>Taulukko 1. Väkiluku ikäryhmittäin 1. tammikuuta ja ennuste</h3>
 <pre>
 SELECT ?ik ?v ?val 
 WHERE { 
- ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . 
+ ?i dimension:vuosi ?v .  
  FILTER ( ?v = vuosi:_2000 || ?v = vuosi:_2008 || ?v = vuosi:_2009 || ?v = vuosi:_2010 ) 
- ?i scv:dimension yksikkö:Henkilöä . 
- ?i scv:dimension ?ik . ?ik rdf:type dimension:Ikäryhmä . 
- ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i dimension:yksikkö yksikkö:Henkilöä . 
+ ?i dimension:ikäryhmä ?ik . 
+ ?i dimension:alue alue:_091_101_Vironniemen_peruspiiri . 
  ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
 } 
 ORDER BY ?ik ?v
@@ -423,27 +428,30 @@ ORDER BY ?ik ?v
 
 <h3>Taulukko 2. Väkiluku äidinkielen mukaan 1. tammikuuta</h3>
 <pre>
-SELECT ?k ?v ?val 
+SELECT ?ika ?aidinkieli ?v ?val 
 WHERE { 
- ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . 
+ ?i dimension:vuosi ?v .  
  FILTER ( ?v = vuosi:_2000 || ?v = vuosi:_2008 || ?v = vuosi:_2009 || ?v = vuosi:_2010 ) 
- ?i scv:dimension yksikkö:Henkilö . 
- ?i scv:dimension ?k . ?k rdf:type dimension:Äidinkieli . 
- ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
- ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+ ?i dimension:yksikkö yksikkö:Henkilö . 
+ ?i dimension:äidinkieli ?aidinkieli . 
+ ?i dimension:ikä ?ika . 
+ ?i dimension:sukupuoli sukupuoli:Molemmat_sukupuolet .
+ ?i dimension:alue alue:_091_101_Vironniemen_peruspiiri . 
+ ?i rdf:value ?val . 
+ FILTER ( datatype(?val) = xsd:double ) 
 } 
-ORDER BY ?k ?v
-</pre>
+ORDER BY ?ika ?aidinkieli</pre>
 
 <h3>Taulukko 3. Väestönmuutokset</h3>
 <pre>
 SELECT ?k ?v ?val 
 WHERE { 
- ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . 
+ ?i dimension:vuosi ?v .  
  FILTER ( ?v = vuosi:_2000 || ?v = vuosi:_2008 || ?v = vuosi:_2009 || ?v = vuosi:_2010 ) 
- ?i scv:dimension yksikkö:Henkilö , ikä:Väestö_yhteensä . 
- ?i scv:dimension ?k . ?k rdf:type dimension:Muuttosuunta . 
- ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i dimension:yksikkö yksikkö:Henkilö .
+ ?i dimension:ikä ikä:Väestö_yhteensä . 
+ ?i dimension:muuttosuunta ?k .  
+ ?i dimension:alue alue:_091_101_Vironniemen_peruspiiri . 
  ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
 } 
 ORDER BY ?k ?v
@@ -451,12 +459,13 @@ ORDER BY ?k ?v
 
 <h3>Taulukko 4. Asuntokanta hallintaperusteen ja huoneistotyypin mukaan 31.12.2009 (viimeinen vuosi)</h3>
 <pre>
-SELECT ?ha ?hu sum(?val) 
+SELECT ?ha ?hu sum(?val) as ?asuntoja
 WHERE { 
- ?i scv:dimension vuosi:_2008 , yksikkö:Asunto_ja_neliömetri . 
- ?i scv:dimension ?ha2 . ?ha2 rdf:type dimension:Hallintaperuste ; skos:broader ?ha . 
- ?i scv:dimension ?hu2 . ?hu2 rdf:type dimension:Huoneistotyyppi ; skos:broader ?hu . 
- ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i dimension:vuosi vuosi:_2008 .
+ ?i dimension:yksikkö yksikkö:Asunto_ja_neliömetri . 
+ ?i dimension:hallintaperuste ?ha2 . ?ha2 skos:broader ?ha . 
+ ?i dimension:huoneistotyyppi ?hu2 . ?hu2 skos:broader ?hu . 
+ ?i dimension:alue alue:_091_101_Vironniemen_peruspiiri . 
  ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
 } 
 GROUP BY ?ha ?hu
@@ -467,10 +476,11 @@ ORDER BY ?ha ?hu
 <pre>
 SELECT ?kt ?yk ?val 
 WHERE { 
- ?i scv:dimension vuosi:_2008 , valmistumisvuosi:Yhteensä . 
- ?i scv:dimension ?kt . ?kt rdf:type dimension:Käyttötarkoitus_ja_kerrosluku . 
- ?i scv:dimension ?yk . ?yk rdf:type dimension:Yksikkö . 
- ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i dimension:vuosi vuosi:_2008 .
+ ?i dimension:valmistumisvuosi valmistumisvuosi:Yhteensä . 
+ ?i dimension:käyttötarkoitus_ja_kerrosluku ?kt . ?kt rdf:type dimension:Käyttötarkoitus_ja_kerrosluku . 
+ ?i dimension:yksikkö ?yk . 
+ ?i dimension:alue alue:_091_101_Vironniemen_peruspiiri . 
  ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
 } 
 ORDER BY ?kt ?yk
@@ -478,17 +488,20 @@ ORDER BY ?kt ?yk
 
 <h3>Taulukko 6. Asuntotuotanto (kolme viimeistä vuotta)</h3>
 <pre>
-SELECT ?k ?v sum(?val) 
+SELECT ?k ?v sum(?val) as ?asuntoja
 WHERE { 
  GRAPH dataset:A01HKI_Astuot_hper_rahoitus_talotyyppi {
-   ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
-   ?i scv:dimension yksikkö:Asuntojen_lukumäärä , hallintaperuste:Asunnot_yhteensä , rahoitusmuoto:Yhteensä , talotyyppi:Yhteensä . 
+   ?i dimension:alue alue:_091_101_Vironniemen_peruspiiri . 
+   ?i dimension:yksikkö yksikkö:Asuntojen_lukumäärä .
+   ?i dimension:hallintaperuste hallintaperuste:Asunnot_yhteensä .
+   ?i dimension:rahoitusmuoto rahoitusmuoto:Yhteensä .
+   ?i dimension:talotyyppi talotyyppi:Yhteensä . 
    ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
-   ?i scv:dimension ?v . 
+   ?i dimension:vuosi ?v . 
    FILTER ( ?v = vuosi:_2007 || ?v = vuosi:_2008 || ?v = vuosi:_2009 ) 
-   ?i scv:dimension ?k2 
+   ?i dimension:huoneistotyyppi ?k2 .
  } 
- ?k2 rdf:type dimension:Huoneistotyyppi ; skos:broader ?k . 
+ ?k2 skos:broader ?k . 
  ?v rdf:type dimension:Vuosi . 
 } 
 GROUP BY ?k ?v
@@ -499,25 +512,26 @@ ORDER BY ?k ?v
 <pre>
 SELECT ?val 
 WHERE { 
- ?i scv:dimension vuosi:_2008 , tuloluokka:Keskitulo , yksikkö:Henkilö_ja_euro . 
- ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i dimension:vuosi vuosi:_2008 .
+ ?i dimension:tuloluokka tuloluokka:Keskitulo .
+ ?i dimension:yksikkö yksikkö:Henkilö_ja_euro . 
+ ?i dimension:alue alue:_091_101_Vironniemen_peruspiiri . 
  ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
 } 
 </pre>
 
 <h3>Taulukko 7. Työpaikat toimialan mukaan (kolme viimeistä vuotta)</h3>
 <pre>
-SELECT ?t ?v sum(?val) 
+SELECT ?t ?v sum(?val) as ?työpaikkoja
 WHERE { 
- ?i scv:dimension yksikkö:Henkilö . 
- ?i scv:dimension ?v . ?v rdf:type dimension:Vuosi . 
+ ?i dimension:yksikkö yksikkö:Henkilö . 
+ ?i dimension:vuosi ?v .  
  FILTER ( ?v = vuosi:_2005 || ?v = vuosi:_2006 || ?v = vuosi:_2007 ) 
- ?i scv:dimension ?t2 . ?t2 rdf:type dimension:Toimiala ; skos:broader ?t . 
- ?i scv:dimension alue:_091_101_Vironniemen_peruspiiri . 
+ ?i dimension:toimiala ?t2 . ?t2 skos:broader ?t . 
+ ?i dimension:alue alue:_091_101_Vironniemen_peruspiiri . 
  ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
 } 
 GROUP BY ?t ?v
-ORDER BY ?t ?v
 </pre>
 
 </html>

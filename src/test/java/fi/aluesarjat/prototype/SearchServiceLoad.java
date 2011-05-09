@@ -10,12 +10,14 @@ import com.google.common.collect.Sets;
 import com.mysema.rdfbean.model.UID;
 import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
 
+import fi.aluesarjat.prototype.guice.ModuleUtils;
+
 public class SearchServiceLoad {
 
     public static void main(String[] args) throws InterruptedException{
         VirtuosoRepository repository = new VirtuosoRepository("localhost:1111", "dba", "dba");
         repository.initialize();
-        SearchService searchService = new SearchServiceImpl(repository);
+        SearchService searchService = new SearchServiceImpl(repository, ModuleUtils.DEFAULT_BASE_URI);
 
         List<String> slowQueries = new ArrayList<String>();
         Set<Set<UID>> tested = new HashSet<Set<UID>>();

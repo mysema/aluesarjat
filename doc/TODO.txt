@@ -1,0 +1,71 @@
+From meeting 11.4.2011:
+
+SPARQL esimerkkikyselyitä! Esim. Alueet, joilla väkiluku alle/yli "jotakin", "Tulotaso yli X ja naisia enemmän kuin miehiä" tms.
+DONE
+
+Käyttöehdot Villeltä! Etusivulle.
+DONE
+
+Fasettihakuun vertailu!
+DONE
+
+CSV Export! Puolipiste erotinmerkkinä, desimaalit pilkulla.
+DONE
+
+Karttanäkymässä tilastot ensimmäiseksi (oletus) tabiksi! Kuvaus-tabi pois, jos kuvausta ei ole.
+DONE
+
+Karttanäkymään tilaston vuosi näkyviin.
+DONE
+
+Kartta: SPARQL-haku JavaScriptista.
+DONE
+
+Kartta: Lukujen palkkivisualisointi!
+DONE
+
+Kartan IE testaus.
+DONE
+
+Etusivulle linkki PCAxis parseriin!
+DONE
+
+Etusivu (linkit) kokonaan englanniksi!
+DONE
+
+Merialueiden keskipisteet ylemmäksi mantereen päälle.
+DONE
+
+
+Lyhyt kuvaus fasettihausta, karttademosta (viitteet HRI:n KML aineistoihin) ja FloAppsin Motion Chartista(?): miten tehty? Esimerkkejä!
+
+Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä kokonaan uudestaan. Mistä tilastot löytyvät? -> Henri Ahti.
+
+Ylläpitosopimus Mikalta
+
+
+From email from Ville 3.5.2011:
+
+Muuttakaa etusivulle (ja muihin osioihin) : Aluesarjat POIS -> TILALLE semantic.hri.fi 
+DONE
+
+Laittakaa etuvisulle lyhyt, yhden kappaleen kuvaus siitä mikä tämä semantic.hri.fi on -> englanniksi
+DONE
+
+Laittakaa jonnekin maininta tyyliin että (saa muokata mun ehdottamaa sanamuotoa):
+semantic.hri.fi source data and related licenses:
+"
+the RDF-database located at semantic.hri.fi is based on statistical material from www.aluesarjat.fi -statistical database. The license for this data is located at : http://www.hri.fi/lisenssit/hri-nimea/#english)
+
+In addition semantic.hri.fi -database contains geometric data provided by Helsinki City Survey Division - more information about the source data (in Finnish) at http://www.hri.fi/fi/data/paakaupunkiseudun-aluejakokartat/. License in Finnish located at http://www.hri.fi/lisenssit/kmo-aluejakorajat/ (license terms very close (but not identical) to http://creativecommons.org/licenses/by-sa/3.0/).
+"
+DONE
+
+Laittakaa jonnekin maininta että "semantic.hri.fi terms and conditions are same as for www.hri.fi - http://www.hri.fi/en/terms-and-conditions/)
+DONE
+
+Laittakaa linkki www.hri.fi -verkkopalveluun
+DONE
+
+Lisää vaan esimerkkejä, toivottavasti monihakuongelmat ratkeaa, mutta ihan jo yksittäistäkin hakua koskien on hyvä olla niitä vielä muutama lisää.
+

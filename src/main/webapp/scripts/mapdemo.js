@@ -260,8 +260,8 @@ function clickOnFeature(event, where) {
 			var qry = [];
 			qry.push(defaultNamespaces)
 			qry.push("SELECT ?ikl ?val WHERE {\n");
-		    qry.push("  ?item scv:dimension vuosi:_2009 , alue:",code," , ?ik ; rdf:value ?val .\n"); 
-		    qry.push("  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . \n");
+		    qry.push("  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:",code," ; dimension:ikäryhmä ?ik ; rdf:value ?val .\n"); 
+		    qry.push("  ?ik dc:title ?ikl . \n");
 		    qry.push("}\n");
 		    qry = qry.join("");
 			

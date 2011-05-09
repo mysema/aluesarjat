@@ -2,6 +2,7 @@ package fi.aluesarjat.prototype;
 
 import static fi.aluesarjat.prototype.Constants.dataset;
 import static fi.aluesarjat.prototype.Constants.dimension;
+import static fi.aluesarjat.prototype.Constants.dimensionProperty;
 import static fi.aluesarjat.prototype.Constants.dimensionDescription;
 import static fi.aluesarjat.prototype.Constants.dimensionName;
 import static fi.aluesarjat.prototype.Constants.dimensionType;
@@ -26,29 +27,52 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.inject.name.Named;
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
-import com.mysema.rdfbean.model.*;
+import com.mysema.rdfbean.model.Blocks;
+import com.mysema.rdfbean.model.DC;
+import com.mysema.rdfbean.model.LIT;
+import com.mysema.rdfbean.model.NODE;
+import com.mysema.rdfbean.model.QID;
+import com.mysema.rdfbean.model.QUID;
+import com.mysema.rdfbean.model.RDF;
+import com.mysema.rdfbean.model.RDFConnection;
+import com.mysema.rdfbean.model.RDFQuery;
+import com.mysema.rdfbean.model.RDFQueryImpl;
+import com.mysema.rdfbean.model.RDFS;
+import com.mysema.rdfbean.model.Repository;
+import com.mysema.rdfbean.model.SKOS;
+import com.mysema.rdfbean.model.STMT;
+import com.mysema.rdfbean.model.UID;
 import com.mysema.stat.META;
 import com.mysema.stat.STAT;
 import com.mysema.stat.scovo.SCV;
+import com.mysema.stat.scovo.ScovoDatasetHandler;
+import com.mysema.stat.scovo.ScovoExtDatasetHandler;
 
 public class SearchServiceImpl implements SearchService {
+
+//    private static final String DEFINE_INFERENCE_DIMENSIONS = "DEFINE input:inference \"dimensions\"\n";
 
     private static final Logger log = LoggerFactory.getLogger(SearchServiceImpl.class);
 
     private final Repository repository;
 
     private final int minRestrictions;
+    
+    private final String dimensionBase;
 
-    public SearchServiceImpl(Repository repository) {
-        this(repository, 3);
+    public SearchServiceImpl(Repository repository, String baseURI) {
+        this(repository, baseURI, 3);
     }
 
-    public SearchServiceImpl(Repository repository, int minRestrictions) {
+    public SearchServiceImpl(Repository repository, String baseURI, int minRestrictions) {
         this.repository = repository;
         this.minRestrictions = minRestrictions;
+        this.dimensionBase = baseURI + ScovoDatasetHandler.DIMENSION_NS;
     }
 
     public Collection<Facet> getFacets() {
@@ -235,15 +259,27 @@ public class SearchServiceImpl implements SearchService {
                 Item item = new Item(id, valueLIT.getValue(), headers.getHeaderCount());
                 item.setValue(headers.getFacetIndex(SCV.Dataset), datasetUID);
 
-                CloseableIterator<STMT> stmts = conn.findStatements(id, SCV.dimension, null, datasetUID, false);
+                RDFQuery dimensionsQuery = new RDFQueryImpl(conn);
+                dimensionsQuery.where(
+                        Blocks.pattern(Constants.item, dimensionProperty, dimension, datasetUID), 
+                        dimensionProperty.stringValue().startsWith(dimensionBase)
+//                        Blocks.pattern(dimensionProperty, RDFS.subPropertyOf, SCV.dimension) 
+                );
+//                RDFQuery dimensionsQuery = new RDFQueryImpl(conn);
+//                dimensionsQuery.addFlag(Position.START, DEFINE_INFERENCE_DIMENSIONS);
+//                dimensionsQuery.where(
+//                        Blocks.pattern(Constants.item, SCV.dimension, dimension, datasetUID) 
+//                );
+                dimensionsQuery.set(Constants.item, id);
+                CloseableIterator<Map<String, NODE>> dimensions = dimensionsQuery.select(dimension);
                 try {
-                    while (stmts.hasNext()) {
-                        STMT stmt = stmts.next();
-                        UID dimensionUID = (UID) stmt.getObject();
+                    while (dimensions.hasNext()) {
+                        Map<String, NODE> dimensionRow = dimensions.next();
+                        UID dimensionUID = (UID) dimensionRow.get(dimension.getName());
                         item.setValue(headers.getValueIndex(dimensionUID), dimensionUID);
                     }
                 } finally {
-                    stmts.close();
+                    dimensions.close();
                 }
                 results.add(item);
             }
@@ -260,12 +296,21 @@ public class SearchServiceImpl implements SearchService {
         query
             .where(filters.toArray(new Predicate[filters.size()]))
             .where(
-                item.has(SCV.dimension, dimension))
-            .distinct();
+                item.has(dimensionProperty, dimension),
+                dimensionProperty.stringValue().startsWith(dimensionBase)
+//                dimensionProperty.has(RDFS.subPropertyOf, SCV.dimension)
+            ).distinct();
+//        RDFQuery query = new RDFQueryImpl(conn);
+//        query.addFlag(Position.START, DEFINE_INFERENCE_DIMENSIONS);
+//        query
+//            .where(filters.toArray(new Predicate[filters.size()]))
+//            .where(
+//                item.has(SCV.dimension, dimension)
+//            ).distinct();
 
-        if (bindings.containsKey(dataset)){
-            query.from(bindings.get(dataset));
-        }
+//        if (bindings.containsKey(dataset)){
+//            query.from(bindings.get(dataset));
+//        }
 
         for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
             query.set(entry.getKey(), entry.getValue());
@@ -283,7 +328,7 @@ public class SearchServiceImpl implements SearchService {
         } finally {
             iter.close();
         }
-        logDuration("findAvailableDimensions", System.currentTimeMillis() - start);
+        logDuration("findAvailableDimensions:\n" + query, System.currentTimeMillis() - start);
     }
 
     private void findAvailableDatasets(List<Predicate> filters, Map<ParamExpression<UID>, UID> bindings, boolean containsDatasetRestriction, Headers headers, RDFConnection conn) {
@@ -313,12 +358,12 @@ public class SearchServiceImpl implements SearchService {
         } finally {
             iter.close();
         }
-        logDuration("findAvailableDatasets", System.currentTimeMillis() - start);
+        logDuration("findAvailableDatasets:\n" + query, System.currentTimeMillis() - start);
     }
 
     private void logDuration(String title, long duration){
-        if (log.isInfoEnabled() && duration > 500){
-            log.info(title + " took " + duration + "ms");
+        if (log.isWarnEnabled() && duration > 500){
+            log.warn(title + " took " + duration + "ms");
         }
     }
 
@@ -336,7 +381,8 @@ public class SearchServiceImpl implements SearchService {
                     filters.add(dataset.in(values));
                 }
             } else {
-                filters.addAll(equalsIn(item, SCV.dimension, values, "dimensionRestriction", ++dimensionRestrictionCount));
+                UID dimensionPredicate = ScovoExtDatasetHandler.getDimensionProperty(facet);
+                filters.addAll(equalsIn(item, dimensionPredicate, values, "dimensionRestriction", ++dimensionRestrictionCount));
             }
         }
         return filters;

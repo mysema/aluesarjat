@@ -78,7 +78,7 @@ public class SearchServiceTest {
         dataService.setDatasets(Lists.newArrayList("classpath:/search-test-1.px \".\"", "classpath:/search-test-2.px \".\""));
         dataService.initialize();
 
-        service = new SearchServiceImpl(repository, 2);
+        service = new SearchServiceImpl(repository, ModuleUtils.DEFAULT_BASE_URI, 2);
     }
 
     @Test
@@ -144,7 +144,7 @@ public class SearchServiceTest {
 
     @Test
     public void Optimized_Multi_Dimension() {
-        SearchService altService = new SearchServiceImpl(repository, 3);
+        SearchService altService = new SearchServiceImpl(repository, ModuleUtils.DEFAULT_BASE_URI, 3);
         SearchResults results = altService.search(Sets.newHashSet(HKI, TIMO), true, 1000, 0, true);
 
         // Not enough restrictions!

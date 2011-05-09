@@ -22,7 +22,7 @@ import com.mysema.stat.META;
 
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
-@Ignore
+@Ignore // FIXME: Use sub-properties of scv:dimension
 public class TabularResults {
 
     interface RowCallback {

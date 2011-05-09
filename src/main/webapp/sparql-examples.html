@@ -39,6 +39,12 @@ linking it to subclasses of Dimension, e.g. Year or Area.
 </p>
 <img alt="SCOVO Data Model" src="images/scovo.jpg">
 <p>
+Semantic.hri.fi extends basic SCOVO model by creating dimension specific sup-properties for <tt>scv:dimension</tt>. 
+This results in better indexing of data and thus faster queries. 
+The method is described in chapter 2.3 in 
+<a href="http://www.w3.org/egov/wiki/images/8/85/Isem2010-bandholtz.pdf">www.w3.org/egov/wiki/images/8/85/Isem2010-bandholtz.pdf</a>.
+</p>
+<p>
 Below is a picture of Item depicting number (4) of women of age range 15-24 with higher education 
 in Kallion peruspiiri (area) in year 2009. For brevity only dimensions gender, year and area are
 shown. 
@@ -68,79 +74,160 @@ these queries can easily be broken into a series of smaller fast queries execute
 
 <h3>All dimensions and values</h3>
 
-<div class="code">SELECT ?dimension ?dimensionValue ?dimensionValueName
+<pre class="code">SELECT ?dimension ?dimensionValue ?dimensionValueName
 WHERE { 
 ?dimension rdfs:subClassOf scv:Dimension .
 ?dimensionValue rdf:type ?dimension ;
     dc:title ?dimensionValueName .
 }
-</div>
+</pre>
 
 <h3>All information about areas</h3>
-<div class="code">SELECT ?area ?pred ?obj
+<pre class="code">SELECT ?area ?pred ?obj
 WHERE { 
   ?area rdf:type dimension:Alue;
      ?pred ?obj.
-}</div>
+}</pre>
 
 <h3>Namespace mappings</h3>
-<div class="code">SELECT ?prefix str(?ns) as ?namespace
+<pre class="code">SELECT ?prefix str(?ns) as ?namespace
 WHERE {
 ?ns meta:nsPrefix ?prefix .
 }
-</div>
+</pre>
+
+<h3>Dataset names</h3>
+<pre class="code">SELECT ?dataset
+WHERE { 
+    ?d rdf:type scv:Dataset ; dc:title ?dataset .
+}
+</pre>
+
+<h3>Statistics of Kallio in 2000</h3>
+<pre class="code">SELECT ?dataset ?item ?value ?dimension
+WHERE {
+  ?item dimension:alue alue:_091_301_Kallion_peruspiiri ;
+    dimension:vuosi vuosi:_2009 ;
+    scv:dataset ?dataset ;
+    ?dimensionProperty ?dimension ;
+    rdf:value ?value .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+ORDER BY ?dataset
+</pre>
 
 
 <h3>Areas with over all population over 50 000 in year 2010 with one level of hierarchy, ordered biggest first</h3>
 <p>
 As not all areas have a broader area, skos:broader is defined as an OPTIONAL element of the query.
 </p>
-<div class="code">SELECT ?areaParentName ?areaName ?value
+<pre class="code">SELECT ?areaParentName ?areaName ?value
 WHERE {
   ?item rdf:type scv:Item;
         rdf:value ?value;
-        scv:dimension vuosi:_2010;
-        scv:dimension väestön_määrä:Henkilöitä_yhteensä;
-        scv:dimension ?area.
+        dimension:vuosi vuosi:_2010;
+        dimension:väestön_määrä väestön_määrä:Henkilöitä_yhteensä;
+        dimension:alue ?area.
   ?area rdf:type dimension:Alue;
         dc:title ?areaName.
   OPTIONAL { ?area skos:broader ?areaParent. ?areaParent dc:title ?areaParentName .}
   FILTER (?value >= 50000)
 }
-</div>
-<!--  
-<h3>Areas with average income over 40 000 and more working women than men in year 2007</h3>
-<p>NOTE: This query needs optimizing.</p> 
-<div class="code">SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+</pre>
+
+
+<h3>Number of workplaces by industries in Vironniemi in years 2005, 2006 and 2007</h3>
+<p>
+This sum-aggregate query sums the number of workplaces in sub industries into main industries. 
+The industry classification hierarchy is encoded by skos:broader. 
+</p>
+<pre class="code">SELECT ?industry ?year sum(?val) as ?workplaces
+WHERE { 
+ ?i dimension:yksikkö yksikkö:Henkilö ; 
+    dimension:vuosi ?year .  
+ FILTER ( ?year = vuosi:_2005 || ?year = vuosi:_2006 || ?year = vuosi:_2007 ) 
+
+ ?i dimension:toimiala ?subIndustry . 
+ ?subIndustry skos:broader ?industry . 
+
+ ?i dimension:alue alue:_091_101_Vironniemen_peruspiiri . 
+ ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) 
+} 
+GROUP BY ?industry ?year
+</pre>
+
+
+
+<h3>Areas with more 0-6 year old than 7-12 year old children in year 2009</h3>
+<p>This query combines two statistical values: 1) number of 0-6 year old children and
+2) number of 7-12 year old children. The second part is marked as optional for better
+performance. Finally filtering is applied outside the graph patterns. 
+</p> 
+<pre class="code">SELECT DISTINCT ?area ?young ?old
+WHERE { 
+  {
+    [ dimension:ikäryhmä ikäryhmä:_0-6-vuotiaat ;
+      dimension:vuosi vuosi:_2009 ;
+      scv:dataset ?dataset ; 
+      dimension:alue ?area ;
+      rdf:value ?young ].
+    OPTIONAL {
+      [ dimension:ikäryhmä ikäryhmä:_7-12-vuotiaat ;
+        dimension:vuosi vuosi:_2009 ;
+        scv:dataset ?dataset ; 
+        dimension:alue ?area ;
+        rdf:value ?old ] .
+    }
+  }
+  FILTER ( ?young > ?old ).
+} 
+</pre>
+
+<h3>Areas with average income over 40 000 and more working women than working men in year 2007</h3>
+<p>
+This query combines three statistical values: 1) average income, 2) number of working women and 
+3) number of workin men. For performance reasons statistics of working men and working woman 
+are marked as optional, while the main query is for average income. As optional blocks are
+processed after filters, the filter for "more working women than men" needs to be outside
+the actual query. 
+</p>
+<p>Note, however, that while there are many optimizations in place, this
+query still takes around one minute to finish. Breaking the query in three parts 
+and joining these programmatically would result in much better performance.
+</p>
+<pre class="code">SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
 WHERE {
-  [ rdf:value ?avgIncome;
-    scv:dimension ?area;
-    scv:dimension tuloluokka:Keskitulo;
-    scv:dimension vuosi:_2007
-  ] .
-  FILTER ( ?avgIncome > 40000 )
-  ?area rdf:type dimension:Alue; dc:title ?areaName.
-  OPTIONAL { 
-    [ scv:dimension ?area;
-      rdf:value ?workingWomen;
-      scv:dimension sukupuoli:Naiset;
-      scv:dimension vuosi:_2007;
-      scv:dimension ikä:Työll__työvoima_yhteensä;
-      scv:dimension yksikkö:Työssä_käyvä_henkilö
-    ] 
-  } .
-  OPTIONAL {
-    [ scv:dimension ?area;
-      rdf:value ?workingMen;
-      scv:dimension sukupuoli:Miehet;
-      scv:dimension vuosi:_2007;
-      scv:dimension ikä:Työll__työvoima_yhteensä;
-      scv:dimension yksikkö:Työssä_käyvä_henkilö
+  {
+    [ rdf:value ?avgIncome;
+      dimension:alue ?area;
+      dimension:tuloluokka tuloluokka:Keskitulo;
+      dimension:vuosi vuosi:_2007
     ] .
+    FILTER ( ?avgIncome > 40000 )
+    OPTIONAL { ?area dc:title ?areaName } .
+    OPTIONAL {
+      [ dimension:alue ?area;
+        rdf:value ?workingWomen;
+        dimension:sukupuoli sukupuoli:Naiset;
+        dimension:vuosi vuosi:_2007;
+        dimension:ikä ikä:Työll__työvoima_yhteensä;
+        dimension:yksikkö yksikkö:Työssä_käyvä_henkilö
+      ] .
+    } .
+    OPTIONAL {
+      [ dimension:alue ?area;
+        rdf:value ?workingMen;
+        dimension:sukupuoli sukupuoli:Miehet;
+        dimension:vuosi vuosi:_2007;
+        dimension:ikä ikä:Työll__työvoima_yhteensä;
+        dimension:yksikkö yksikkö:Työssä_käyvä_henkilö
+      ] .
+    } .
   }
   FILTER ( ?workingWomen > ?workingMen )
 }
-</div>
--->
+</pre>
+
+</script>
 </body>
 </html>

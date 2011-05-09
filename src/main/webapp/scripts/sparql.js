@@ -36,15 +36,19 @@ function getBookmarkLink() {
 	return href;
 }
 
-function executeQuery () {
+function executeUserQuery() {
 	$("#results").html("<img src='images/ajax-loader.gif' alt='Loading results'/>");
 	var qry = 
+//		"define input:inference \"dimensions\"\n"+
 		$("#namespaces").text() // Default namespaces 
 		+ $("#query").val() // Query
 //		+ "\nlimit " + limit // Limit
 //		+ "\noffset " + offset // Offset
 		;
-	
+	return executeQuery(qry, handleSPARQLResult);
+}
+
+function executeQuery(qry, resultHandler) {
 	queryStartTime = new Date().getTime()
 	
 	$.ajax({
@@ -57,14 +61,14 @@ function executeQuery () {
 		error: function(xhr, textStatus, errorThrown){
 			$("#results").html(xhr.responseText);
 		},			
-		success: handleSPARQLResult
+		success: resultHandler
 	});
 	return false;
 }
 
 function nextPage() {
 	offset += limit;
-	executeQuery();
+	executeUserQuery();
 }
 
 function prevPage() {
@@ -73,7 +77,7 @@ function prevPage() {
 		if (offset < 0) {
 			offset = 0;
 		}
-		executeQuery();
+		executeUserQuery();
 	}
 }
 
@@ -260,7 +264,7 @@ $(document).ready(function(){
 	// SPARQL query handling
 	$("#formsubmit").click(function() {
 		offset = 0;
-		executeQuery();
+		executeUserQuery();
 		return false;
 	});
 
@@ -280,7 +284,7 @@ $(document).ready(function(){
 		offset = 0;
 		limit = parseInt($(this).val());
 		if (queryActive) {
-			executeQuery();
+			executeUserQuery();
 		}
 	});
 	
@@ -297,7 +301,7 @@ function init() {
 	}
 	if (parameters.query) {
 		$("#query").val(parameters.query[0]);
-		executeQuery();
+		executeUserQuery();
 	} else {
 		// Example query
 		$("#query").val(
