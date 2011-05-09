@@ -21,7 +21,7 @@ td, th {
 
 #namespaces {
     border: 1px solid gray;
-    white-space: pre;
+    white-space: nowrap;
     overflow: scroll;
 }
 
