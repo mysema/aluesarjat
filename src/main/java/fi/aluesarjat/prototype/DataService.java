@@ -14,8 +14,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import virtuoso.jdbc4.VirtuosoConnection;
-
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.mysema.rdfbean.Namespaces;
@@ -26,7 +24,6 @@ import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SKOS;
 import com.mysema.rdfbean.model.UID;
-import com.mysema.rdfbean.virtuoso.VirtuosoRepositoryConnection;
 import com.mysema.stat.META;
 import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.PCAxisParser;
