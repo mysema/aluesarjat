@@ -10,6 +10,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -19,7 +21,7 @@ import com.mysema.rdfbean.model.Repository;
 
 public class Reloader {
 
-    private long lastModified = System.currentTimeMillis();
+    private static final Logger logger = LoggerFactory.getLogger(Reloader.class);
     
     private final Repository repository;
     
@@ -28,6 +30,10 @@ public class Reloader {
     private final String datasetsList;
     
     private final ScheduledExecutorService scheduler;
+    
+    private long lastModified = System.currentTimeMillis();
+    
+    private boolean loading = false;
     
     @Inject
     public Reloader(Repository repository, DataService dataService, @Named("datasets.list") String datasetsList) {
@@ -44,35 +50,42 @@ public class Reloader {
             return;
         }
         
-        addJob(0, 0, new Runnable() {
+        addJob(12, 0, new Runnable() {
             @Override
             public void run() {
+                if (loading) {
+                    return;
+                }                
                 try {
-                    reload();
+                    loading = true;
+                    long modified = new URL("datasetsList").openConnection().getLastModified();
+                    if (modified > lastModified) {
+                        reload();
+                        lastModified = modified;                
+                    } else {
+                        logger.info("Skipped reloading");                        
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
-                }                
+                } finally {
+                    loading = false;
+                }
             }            
         });
     }
     
-    private void reload() throws IOException {
-        long modified = new URL("datasetsList").openConnection().getLastModified();
-        if (modified > lastModified) {
-            // remove all data
-            repository.execute(new RDFConnectionCallback<Void>(){
-                @Override
-                public Void doInConnection(RDFConnection connection) throws IOException {
-                    connection.remove(null, null, null, null);
-                    return null;
-                }                            
-            });
-            
-            // execute dataservice
-            dataService.initialize();
-            
-            lastModified = modified;
-        }
+    private void reload() throws IOException {        
+        // remove all data
+        repository.execute(new RDFConnectionCallback<Void>(){
+            @Override
+            public Void doInConnection(RDFConnection connection) throws IOException {
+                connection.remove(null, null, null, null);
+                return null;
+            }                            
+        });
+        
+        // reload data
+        dataService.loadData(DataService.Mode.NONTHREADED);            
     }
     
     @PreDestroy

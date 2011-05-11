@@ -48,7 +48,7 @@ public class DataService {
 
     private final NamespaceHandler namespaceHandler;
 
-    private final Mode mode;
+    private final Mode defaultMode;
 
     private final String datasetsList;
     
@@ -66,13 +66,18 @@ public class DataService {
         this.namespaceHandler = namespaceHandler;
         this.baseURI = baseURI;
         this.forceReload = forceReload;
-        this.mode = mode;
+        this.defaultMode = mode;
         this.datasetsList = datasetsList;
     }
 
-    @SuppressWarnings("unchecked")
+    
     @PostConstruct
     public void initialize() throws IOException{
+        loadData(defaultMode);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void loadData(Mode mode) throws IOException {
         logger.info("adding namespaces");
 
         Map<String,String> namespaces = new HashMap<String,String>(Namespaces.DEFAULT);
@@ -130,7 +135,6 @@ public class DataService {
                 importData(d.trim(), forceReload);
             }
         }
-
     }
 
     public void importData(String datasetDef, boolean reload) {

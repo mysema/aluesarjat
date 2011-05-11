@@ -17,6 +17,7 @@ import fi.aluesarjat.prototype.AreasServlet;
 import fi.aluesarjat.prototype.ContextAccessServlet;
 import fi.aluesarjat.prototype.DataService;
 import fi.aluesarjat.prototype.FacetsServlet;
+import fi.aluesarjat.prototype.Reloader;
 import fi.aluesarjat.prototype.SearchService;
 import fi.aluesarjat.prototype.SearchServiceImpl;
 import fi.aluesarjat.prototype.SearchServlet;
@@ -45,7 +46,8 @@ public class CustomServletModule extends ServletModule{
         }
         install(new Jsr250Module());
         bind(DataService.class).asEagerSingleton();
-
+        bind(Reloader.class).asEagerSingleton();
+        
         serve("/areas").with(AreasServlet.class);
         serve("/sparql").with(SPARQLServlet.class);
         serve("/search").with(SearchServlet.class);
