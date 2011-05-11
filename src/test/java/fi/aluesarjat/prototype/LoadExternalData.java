@@ -21,7 +21,7 @@ public class LoadExternalData {
         
         try{
             File file = new File("src/test/resources/pc-axis.txt");
-            DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED, true, file.toURI().toURL().toString());
+            DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataServiceMode.NONTHREADED, true, file.toURI().toURL().toString());
             dataService.initialize();    
         } finally {
             repository.close();

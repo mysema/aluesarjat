@@ -36,8 +36,6 @@ import com.mysema.stat.scovo.ScovoExtDatasetHandler;
 
 public class DataService {
 
-    public enum Mode { PARALLEL, THREADED, NONTHREADED }
-
     private static final Logger logger = LoggerFactory.getLogger(DataService.class);
 
     private final String baseURI;
@@ -48,7 +46,7 @@ public class DataService {
 
     private final NamespaceHandler namespaceHandler;
 
-    private final Mode defaultMode;
+    private final DataServiceMode defaultMode;
 
     private final String datasetsList;
     
@@ -59,7 +57,7 @@ public class DataService {
             Repository repository,
             NamespaceHandler namespaceHandler,
             @Named("baseURI") String baseURI,
-            @Named("import.mode") Mode mode,
+            @Named("import.mode") DataServiceMode mode,
             @Named("forceReload") boolean forceReload,
             @Named("datasets.list") String datasetsList){
         this.repository = repository;
@@ -77,7 +75,7 @@ public class DataService {
     }
     
     @SuppressWarnings("unchecked")
-    public void loadData(Mode mode) throws IOException {
+    public void loadData(DataServiceMode mode) throws IOException {
         logger.info("adding namespaces");
 
         Map<String,String> namespaces = new HashMap<String,String>(Namespaces.DEFAULT);
@@ -105,7 +103,7 @@ public class DataService {
             }
         }
 
-        if (mode == Mode.PARALLEL) {
+        if (mode == DataServiceMode.PARALLEL) {
             for (String d : datasets) {
                 final String datasetDef = d.trim();
                 Thread thread = new Thread() {
@@ -118,7 +116,7 @@ public class DataService {
                 thread.start();
             }
 
-        } else if (mode == Mode.THREADED) {
+        } else if (mode == DataServiceMode.THREADED) {
             Thread thread = new Thread(){
                 @Override
                 public void run() {

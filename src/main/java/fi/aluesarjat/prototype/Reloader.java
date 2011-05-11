@@ -50,15 +50,16 @@ public class Reloader {
             return;
         }
         
-        addJob(12, 0, new Runnable() {
+        addJob(0, 0, new Runnable() {
             @Override
             public void run() {
                 if (loading) {
+                    logger.info("Still loading");
                     return;
                 }                
                 try {
                     loading = true;
-                    long modified = new URL("datasetsList").openConnection().getLastModified();
+                    long modified = new URL(datasetsList).openConnection().getLastModified();
                     if (modified > lastModified) {
                         reload();
                         lastModified = modified;                
@@ -76,6 +77,7 @@ public class Reloader {
     
     private void reload() throws IOException {        
         // remove all data
+        logger.info("Removing data");
         repository.execute(new RDFConnectionCallback<Void>(){
             @Override
             public Void doInConnection(RDFConnection connection) throws IOException {
@@ -85,7 +87,8 @@ public class Reloader {
         });
         
         // reload data
-        dataService.loadData(DataService.Mode.NONTHREADED);            
+        logger.info("Reloading data");
+        dataService.loadData(DataServiceMode.NONTHREADED);            
     }
     
     @PreDestroy
@@ -99,10 +102,11 @@ public class Reloader {
         long scheduleTime = hours * 60 + minutes;
         long initialDelay;
         if (minutesOfDay < scheduleTime){
-            initialDelay = minutesOfDay - scheduleTime;
+            initialDelay = scheduleTime - minutesOfDay;
         }else{
             initialDelay = 24 * 60 - minutesOfDay + scheduleTime; 
         }
+        System.err.println(initialDelay);
         scheduler.scheduleAtFixedRate(runnable, initialDelay, 24 * 60, TimeUnit.MINUTES);
     }
     

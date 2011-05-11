@@ -74,7 +74,7 @@ public class SearchServiceTest {
         repository.initialize();
 
         NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
-        DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED, true, "");
+        DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataServiceMode.NONTHREADED, true, "");
         dataService.setDatasets(Lists.newArrayList("classpath:/search-test-1.px \".\"", "classpath:/search-test-2.px \".\""));
         dataService.initialize();
 

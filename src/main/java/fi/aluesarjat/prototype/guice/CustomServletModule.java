@@ -11,17 +11,8 @@ import com.google.inject.servlet.ServletModule;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.sparql.SPARQLServlet;
 import com.mysema.stat.scovo.NamespaceHandler;
-import com.sun.tools.xjc.reader.RawTypeSet.Mode;
 
-import fi.aluesarjat.prototype.AreasServlet;
-import fi.aluesarjat.prototype.ContextAccessServlet;
-import fi.aluesarjat.prototype.DataService;
-import fi.aluesarjat.prototype.FacetsServlet;
-import fi.aluesarjat.prototype.Reloader;
-import fi.aluesarjat.prototype.SearchService;
-import fi.aluesarjat.prototype.SearchServiceImpl;
-import fi.aluesarjat.prototype.SearchServlet;
-import fi.aluesarjat.prototype.SubjectGraphServlet;
+import fi.aluesarjat.prototype.*;
 
 public class CustomServletModule extends ServletModule{
 
@@ -111,8 +102,8 @@ public class CustomServletModule extends ServletModule{
     @Provides
     @Named("import.mode")
     @Singleton
-    public Mode importMode(@Named("import.mode") String mode){
-        return Mode.valueOf(mode);
+    public DataServiceMode importMode(@Named("import.mode") String mode){
+        return DataServiceMode.valueOf(mode);
     }
 
     @Provides
