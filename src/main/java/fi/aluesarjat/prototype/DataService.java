@@ -1,8 +1,10 @@
 package fi.aluesarjat.prototype;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,20 +50,24 @@ public class DataService {
 
     private final Mode mode;
 
+    private final String datasetsList;
+    
     private List<String> datasets;
-
+    
     @Inject
     public DataService(
             Repository repository,
             NamespaceHandler namespaceHandler,
             @Named("baseURI") String baseURI,
             @Named("import.mode") Mode mode,
-            @Named("forceReload") boolean forceReload){
+            @Named("forceReload") boolean forceReload,
+            @Named("datasets.list") String datasetsList){
         this.repository = repository;
         this.namespaceHandler = namespaceHandler;
         this.baseURI = baseURI;
         this.forceReload = forceReload;
         this.mode = mode;
+        this.datasetsList = datasetsList;
     }
 
     @SuppressWarnings("unchecked")
@@ -84,7 +90,14 @@ public class DataService {
         logger.info("initializing data");
 
         if (datasets == null){
-            datasets = IOUtils.readLines(getStream("/data/datasets"));
+//            datasets = IOUtils.readLines(getStream("/data/datasets"));
+            if (datasetsList.startsWith("classpath:")) {
+                datasets = IOUtils.readLines(getStream(datasetsList.substring("classpath:".length())));
+            } else {
+                InputStream in = new URL(datasetsList).openStream();
+                datasets = IOUtils.readLines(in);
+                in.close();
+            }
         }
 
         if (mode == Mode.PARALLEL) {
@@ -157,7 +170,10 @@ public class DataService {
                     if ("classpath".equals(protocol)){
                         in = getStream(path);
                     } else {
-                        in = new URL(values[0]).openStream();
+                        URLConnection urlConnection = new URL(values[0]).openConnection();
+                        urlConnection.setConnectTimeout(3000);
+                        urlConnection.setReadTimeout(3000);
+                        in = urlConnection.getInputStream();
                     }
                     try {
                         parser.parse(datasetName, in);
@@ -169,6 +185,8 @@ public class DataService {
                     logger.info("Skipping existing " + datasetName);
                 }
             }
+        } catch(FileNotFoundException e) {    
+            logger.error(e.getMessage(), e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

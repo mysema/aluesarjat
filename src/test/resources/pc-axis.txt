@@ -7,16 +7,13 @@ http://www.aluesarjat.fi/database/seutusarjat/vaesto/vaestorakenne/hginseutu_va_
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/vaestorakenne/hginseutu_va_vr02_vakiluku_aidinkieli3.px
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/vaestorakenne/hginseutu_va_vr03_vakiluku_ika_sukup_aidinkieli3_ssaaty.px
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/vaestorakenne/hginseutu_va_vr04_vakiluku_aidinkieli_ika.px
-http://www.aluesarjat.fi/database/seutusarjat/vaesto/vaestorakenne/hginseutu_va_vr05_vakiluku_kansalaisuus_s.px
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/vaestoennusteet/hginseutu_va_ve03_vaestoennuste_kieli.px
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/vaestoennusteet/hginseutu_va_ve02_vaestoennuste_kehys.px
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/vaestoennusteet/hginseutu_va_ve01_vaestoennuste_pks.px
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/perheet/hginseutu_va_pe04_perhevaesto.px
-http://www.aluesarjat.fi/database/seutusarjat/vaesto/muuttaneiden_tausta/hginseutu_va_mt01b_lahtomuuttajatkoulutussuku.px
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/perheet/hginseutu_va_pe03_lapsiperheet_perhetyyppi.px
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/perheet/hginseutu_va_pe02_lapsiperheet_lapsiluku.px
 http://www.aluesarjat.fi/database/seutusarjat/vaesto/perheet/hginseutu_va_pe01_perheet_perhetyyppi.px
-http://www.aluesarjat.fi/database/seutusarjat/vaesto/muuttaneiden_tausta/hginseutu_va_mt01a_tulomuuttajatkoulutussuku.px
 http://www.aluesarjat.fi/database/seutusarjat/tyomarkkinat_tyossakaynti/tyovoima/hginseutu_tt_tv03_tyovoima_vanhaekl.px
 http://www.aluesarjat.fi/database/seutusarjat/tyomarkkinat_tyossakaynti/tyovoima/hginseutu_tt_tv02c_tyovoima_tol1988.px
 http://www.aluesarjat.fi/database/seutusarjat/tyomarkkinat_tyossakaynti/tyovoima/hginseutu_tt_tv02b_tyovoima_tol1995_2002.px

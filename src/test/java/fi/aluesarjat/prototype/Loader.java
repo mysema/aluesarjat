@@ -58,7 +58,7 @@ public class Loader {
         // load PX files
         try{
             NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
-            DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED, true);
+            DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataService.Mode.NONTHREADED, true, "");
             dataService.setDatasets(datasets);
             dataService.initialize();
 
