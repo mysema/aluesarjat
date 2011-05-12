@@ -56,8 +56,22 @@ concatenation.
 </p>
 
 <h2>Map Demo </h2>
-Coordinates?
-Google Maps?
-SPARQL queries?
+
+<p>
+The Map Demo uses Google Maps to visualize area polygons of the Finnish capital region. The polygon data is provided
+in JSON form to the Google Maps script and additional area specific metadata such as example statistics and DBpedia descriptions
+are loaded lazily via Ajax/HTTP.
+</p>
+<p>
+The polygon visualization uses the Google Maps JavaScript library and <a href="http://code.google.com/p/polygonzo/">Polygonzo</a>
+for fast polygon rendering. Polygonzo processes the polygon data via JSON objects in <a href="http://geojson.org/">GeoJSON</a> form. 
+</p>
+
+<h2>SPARQL queries</h2>
+
+<p>SPARQL queryies can be executed both via the query form and the SPARQL HTTP endpoint. The SPARQL HTTP endpoint is SPARQL 1.0 compliant with 
+the exception that limit and offset have to be provided via limit and offset HTTP parameters. When LIMIT and/or OFFSET are declared in the query, 
+the query processing might fail.</p>
+
 </body>
 </html>
