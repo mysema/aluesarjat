@@ -253,5 +253,63 @@ WHERE {
 }
 </pre>
 
+<h3>Sum of Non-Apartment Buildings By Area</h3>
+<pre class="code">SELECT ?area sum(?value) as ?buildings
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:talotyyppi ?talotyyppi;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        dimension:yksikkö yksikkö:Asunto;
+        scv:dataset ?dataset .
+  FILTER ((?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005) 
+    && (?talotyyppi = talotyyppi:Erilliset_pientalot || ?talotyyppi = talotyyppi:Rivi-_ja_ketjutalot) 
+    && datatype(?value) = xsd:double)
+}
+GROUP BY ?area
+</pre>
+
+<h3>Areas With Less Apartment Buildings Than Other Type of Buildings</h3>
+<p>In this query, the previous aggregate query is combined as a sub-query to
+number of apartment buildings. Finally a filter is applied for areas
+with less apartment buildings than other type of buildings.
+</p>
+<p>
+Note, however, that while this query takes long to finish, it is possible to split it in 
+two or three simpler queries, which are joined programmatically. In this case
+it is much faster to execute three smaller queries that one large such as this.
+Here is an <a href="javascript-sparql-example.html">example of joining SPARQL
+results using JavaScript</a>. 
+</p>
+<pre class="code">SELECT ?area ?apartmentBuildints ?otherBuildings
+WHERE {
+  {
+    ?item rdf:value ?apartmentBuildints;
+          dimension:alue ?area;
+          dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+          dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+          dimension:yksikkö yksikkö:Asunto;
+          scv:dataset ?dataset .
+    FILTER ((?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005) 
+      && datatype(?apartmentBuildints) = xsd:double)
+
+    {
+      SELECT ?area sum(?value) as ?otherBuildings
+      WHERE {
+        ?item rdf:value ?value;
+              dimension:alue ?area;
+              dimension:talotyyppi ?talotyyppi;
+              dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+              dimension:yksikkö yksikkö:Asunto;
+              scv:dataset ?dataset .
+        FILTER ((?talotyyppi = talotyyppi:Erilliset_pientalot || ?talotyyppi = talotyyppi:Rivi-_ja_ketjutalot) 
+          && datatype(?value) = xsd:double)
+      }
+      GROUP BY ?area
+    }
+  }
+  FILTER (?apartmentBuildints < ?otherBuildings)
+}
+</pre>
 </body>
 </html>
