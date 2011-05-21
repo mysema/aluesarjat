@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>  
+<head>
+    <title>Semantic.hri.fi</title>
+    <meta http-equiv="Content-Type" content="text/html; CHARSET=UTF-8"/>    
+    <script type="text/javascript" src="scripts/jquery-1.4.3.min.js"></script>  
+    <script type="text/javascript" src="scripts/rdf.common.js"></script>    
+    
+<script type="text/javascript">
+// Get default PREFIX-declarations for simpler SPARQL
+initNamespaces("http://semantic.hri.fi/sparql");
+
+/**
+ * Gets queries from <pre class="query> -elements and their titles from preceding h3-element, 
+ * executes them, groups results by area
+ * and finally shows (optinally filtered) results.
+ */
+function executeQueries(filter) {
+    var queries = [];
+    var groupBy = "area";
+
+    // Collect queries
+    $("pre.query").each(function() { 
+        queries.push({
+            sparql: $(this).text(), // Each query needs name...
+            name: $(this).prev().text() //...and SPARQL that returns one row per area
+        });
+    });
+    
+    executeAndJoinResults(queries, 0, groupBy, {},
+    	// Filter and show results in a table
+        function(results) {
+            // Result table headers
+            var html = ["<table><thead><tr><th>", groupBy, "</th>"];
+            for (var j=0; j < queries.length; j++) {
+                html.push("<th>", queries[j].name, "</th>");
+            }
+            html.push("</tr></thead><tbody>");
+            // Result table rows
+            for (group in results) {
+                var result = results[group];
+                if (!filter || filter(result)) {
+	                html.push("<tr><td>", getReadableURI(group), "</td>");
+	                for (var j=0; j < queries.length; j++) {
+	                    html.push("<td>", result[queries[j].name], "</td>");
+	                }
+	                html.push("</tr>");
+                }
+            }
+            html.push("</tbody></table>");
+            $("#results").html(html.join(""));
+        }
+    ); 
+}
+
+function executeWithFilter() {
+    executeQueries(function(result) {
+        // 1) filter out non-numeric results
+        // 2) keep rows where there is more of single-floor houses (erilliset pientalot, 
+        //    rivi- ja ketjutalot) than block of flats (asuinkerrostalot) 
+        var kerrostalot = new Number(result["Asuinkerrostalot"]);
+        var pientalot = new Number(result["Erilliset pientalot"]);
+        var rivitalot = new Number(result["Rivi- ja ketjutalot"]);
+        return kerrostalot != NaN && pientalot != NaN && rivitalot != NaN
+            && kerrostalot < (pientalot+rivitalot)
+    });
+}
+
+function executeAndJoinResults(queries, i, groupBy, results, callback) {
+	// Execute each query sequentially
+	if (i < queries.length) {
+		var query = queries[i];
+		querySparql("http://semantic.hri.fi/sparql", prefixes + query.sparql, function(data){
+		    // Collect results into results map with area as the key and 
+		    // results of each query as value, e.g. { query1: result1, query2: result2 }  
+			var bindings = data.results.bindings;
+		    for (var j=0; j < bindings.length; j++) {
+			    var binding = bindings[j];
+			    var group = binding[groupBy].value;
+			    if (!results[group]) {
+				    results[group] = {};
+			    }
+			    var result = results[group];
+			    result[query.name] = binding["value"].value;
+		    }
+		    // Execute next query
+		    executeAndJoinResults(queries, i+1, groupBy, results, callback); 
+		});
+	} else {
+		// Show results using given callback
+		callback(results);
+	}
+}
+</script>
+</head>
+<body>
+
+<h1>Joining SPARQL Results Using JavaScript</h1>
+<p>
+This page is an example of how to join SPARQL results using JavaScript.
+It uses JSONP protocol for executing queries from a different domain (e.g. localhost).
+</p>
+<p>
+Queries shown on this page can be combined into a single query in theory. 
+In practise, however, this results in an overly complex query that takes "too long" to execute.
+Executing each of these queries separately and combining the results programmatically
+is fast and simple with basic knowledge of HTML, JavaScript and JQuery - and of course SPARQL it self.
+</p>
+<p>
+This page is designed so that one may save it's source code into a local file along 
+with two required JavaScript libraries: 
+</p>
+
+<ul>
+<li><a href="scripts/jquery-1.4.3.min.js">scripts/jquery-1.4.3.min.js</a></li>  
+<li><a href="scripts/rdf.common.js">scripts/rdf.common.js</a></li>    
+</ul>
+<p>
+After that queries may be locally modified, added, removed and executed against Semantic.hri.fi. 
+Just take care that each query returns a single row per area and selects variables area and value.
+</p>
+
+<h2>Queries To Be Joined</h2>
+
+<h3>Asuinkerrostalot</h3>
+<pre class="query">
+SELECT ?area ?value
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        dimension:yksikkö yksikkö:Asunto;
+        scv:dataset ?dataset .
+  FILTER (?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+}
+</pre>
+
+<h3>Erilliset pientalot</h3>
+<pre class="query">
+SELECT ?area ?value
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:yksikkö yksikkö:Asunto;
+        dimension:talotyyppi talotyyppi:Erilliset_pientalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset .
+  FILTER (?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+}
+</pre>
+
+<h3>Rivi- ja ketjutalot</h3>
+<pre class="query">
+SELECT ?area ?value
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:yksikkö yksikkö:Asunto;
+        dimension:talotyyppi talotyyppi:Rivi-_ja_ketjutalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+  FILTER (?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+}
+</pre>
+<p>
+<a href="javascript: executeQueries()">Execute and join queries</a>
+<a href="javascript: executeWithFilter()">Execute and filter queries</a>
+</p>
+<div id="results"></div>
+</body>
+</html>

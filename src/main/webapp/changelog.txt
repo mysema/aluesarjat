@@ -1,0 +1,20 @@
+2011-05-19
+
+* Changed data model to use dimension specific sub properties of scv:dimension, e.g. 
+  dimension:alue, dimension:vuosi. When using inference engine, this semantic 
+  extension of SCOVO is fully compatible with basic SCOVO model. Using sub properties
+  instead of scv:dimension results in better index usage and thus faster queries.
+  
+  Without inference engine querying for any dimension property of an Item must
+  be done using pattern like
+  
+    ?item ?dimensionProperty ?dimensionValue .
+    ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+  
+  TODO: Enable inference with SPARQL queries. 
+
+2011-05-22
+
+* Added more SPARQL examples.
+* Added an example page of joining SPARQL results with JavaScript. 
+* Modified rdf.common.js to use JSONP instead of plain JSON for cross-domain compatibility.

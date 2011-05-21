@@ -34,18 +34,19 @@ function initNamespaces(endPoint, callback){
 			defaultNamespaces.push("PREFIX ", binding["prefix"].value, ": <", binding["ns"].value, ">\n");
 		}			
 		prefixes = defaultNamespaces.join("");			
-		callback();
+		if (callback) {
+			callback();
+		}
 	});
 }
 
 function querySparql(endPoint, query, success){
+	// Use JSONP for cross-domain 
 	$.ajax({
 		url: endPoint, 
-		data: { "query": query}, 
-		datatype: "json", 
-		beforeSend : function (xhr) {
-    		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-		},
+		data: { "query": query, "type": "json"}, 
+		dataType: "jsonp", 
+		accepts: {script:"application/sparql-results+json"},
 		success: success
 	});
 }

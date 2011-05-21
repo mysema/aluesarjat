@@ -42,6 +42,7 @@ Lyhyt kuvaus fasettihausta, karttademosta (viitteet HRI:n KML aineistoihin) ja F
 Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä kokonaan uudestaan. Mistä tilastot löytyvät? -> Henri Ahti.
 
 Ylläpitosopimus Mikalta
+DONE
 
 
 From email from Ville 3.5.2011:
@@ -73,3 +74,28 @@ DONE
 
 Lisää vaan esimerkkejä, toivottavasti monihakuongelmat ratkeaa, mutta ihan jo yksittäistäkin hakua koskien on hyvä olla niitä vielä muutama lisää.
 DONE
+
+
+18.5.2011 palaverissa
+
+Tietomallin ja rajapintojen muutoshistoria!
+DONE
+
+Disclaimer etusivulle: rajapinnat, tietomalli ja tietojen identiteeti (URIt) voivat muutta!
+DONE
+
+Keskusteluryhmä
+DONE
+
+Kontaktitiedot
+DONE
+
+Kerrostalot verrattuna pientaloihin yhteensä -kyselyn debuggaus -> esimerkiksi!
+DONE -> JavaScript esimerkki usean tilaston yhdistämisestä
+
+Usean tilastotiedon yhdistäminen ohjelmallisesti!
+DONE
+
+SPARQL-haut tietokeskuksen tiloissa?!? -> Soita Pekka Vuori 040 3344 790 
+
+Inferenssi-optio sparql hakuihin

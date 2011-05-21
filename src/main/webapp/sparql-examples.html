@@ -196,6 +196,8 @@ the actual query.
 <p>Note, however, that while there are many optimizations in place, this
 query still takes around one minute to finish. Breaking the query in three parts 
 and joining these programmatically would result in much better performance.
+Here is an <a href="javascript-sparql-example.html">example of joining SPARQL
+results using JavaScript</a>. It also demonstrates JSONP usage for cross-domain usage.
 </p>
 <pre class="code">SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
 WHERE {
@@ -230,6 +232,26 @@ WHERE {
 }
 </pre>
 
-</script>
+<h3>Areas that are estimated to grow in population from year 2010 to 2015</h3>
+<p>
+</p>
+<pre class="code">SELECT ?alue ?fakta ?ennuste
+WHERE {
+  {
+    ?item rdf:value ?fakta;
+          dimension:alue ?alue ;
+          dimension:ikäryhmä ikäryhmä:Väestö_yhteensä;
+          dimension:vuosi vuosi:_2010.
+    OPTIONAL {
+      ?item2 rdf:value ?ennuste;
+            dimension:alue ?alue ;
+            dimension:ikä ikä:Väestö_yhteensä;
+            dimension:vuosi vuosi:_2015 .
+      }
+  }
+  FILTER (?ennuste > ?fakta)
+}
+</pre>
+
 </body>
 </html>
