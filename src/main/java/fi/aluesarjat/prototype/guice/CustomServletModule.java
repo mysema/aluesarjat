@@ -9,10 +9,19 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.servlet.ServletModule;
 import com.mysema.rdfbean.model.Repository;
-import com.mysema.rdfbean.sparql.SPARQLServlet;
 import com.mysema.stat.scovo.NamespaceHandler;
 
-import fi.aluesarjat.prototype.*;
+import fi.aluesarjat.prototype.AreasServlet;
+import fi.aluesarjat.prototype.ContextAccessServlet;
+import fi.aluesarjat.prototype.DataService;
+import fi.aluesarjat.prototype.DataServiceMode;
+import fi.aluesarjat.prototype.FacetsServlet;
+import fi.aluesarjat.prototype.Reloader;
+import fi.aluesarjat.prototype.SPARQLServlet;
+import fi.aluesarjat.prototype.SearchService;
+import fi.aluesarjat.prototype.SearchServiceImpl;
+import fi.aluesarjat.prototype.SearchServlet;
+import fi.aluesarjat.prototype.SubjectGraphServlet;
 
 public class CustomServletModule extends ServletModule{
 

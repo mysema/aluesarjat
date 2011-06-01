@@ -57,6 +57,35 @@ Item queries can be formed using <a href="search.html">Facet search</a> and then
 SPARQL allows constraints on values as well as result ordering.
 </p>
 
+<h2>About Inference</h2>
+<p>In the core of Semantic Web is a notion about inference. It means that given some facts
+and an ontology, other information can be inferred. For example given a fact that <tt>Ville is a Human</tt> 
+and an ontology that says that <tt>Human is a kind of Mammal</tt>, we can deduce that 
+<tt>Ville is a Mammal</tt>.
+</p>
+<p>In Semantic.hri.fi we use sub properties of <tt>scv:dimension</tt>,
+such as <tt>dimension:vuosi</tt> or <tt>dimension:alue</tt> for linking (facts) of statistical items 
+to dimensions. This results in better query optimization. Now, given a fact that <tt>an item has
+dimension:alue Helsinki</tt> and <a href="data/dimensions">an ontology</a> saying that 
+<tt>dimension:alue is a sub property of scv:dimension</tt>, we can infer that <tt>the same item
+has scv:dimension Helsinki</tt>. By turning on RDFS inference in SPARQL searches, this kind 
+of inferred information comes available to queries. Without inference only facts count.
+You may try this with the following query, with inference on and off: 
+</p>
+<pre class="code">SELECT ?item ?dimension
+WHERE {
+  ?item scv:dimension ?dimension .
+}
+</pre>
+<p>
+With inference off, nothing is returned. There are no facts that use <tt>scv:dimension</tt> predicate directly.
+However, with inference on, this search will match all item-to-dimension relations like <tt>dimension:alue</tt> 
+and <tt>dimension:vuosi</tt>.
+</p>
+<p>
+NOTE: While this inference is certainly "smart" and convenient, it comes with a trade-off of reduced performance.
+</p>
+
 <h2>SPARQL Examples</h2>
 <p>
 NOTE: For readability PREFIX declarations are omitted from these example queries. 

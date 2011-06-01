@@ -7,6 +7,7 @@ var limit = 200;
 var offset = 0;
 var queryActive = false;
 var queryStartTime;
+var inference = false;
 
 function getRequestParameters() {
 	var parameters = {};
@@ -31,7 +32,7 @@ function getRequestParameters() {
 function getBookmarkLink() {
 	var href = window.location.href;
 	href = href.substring(0, href.length - window.location.search.length);
-	href += "?limit=" + limit + "&offset=" + offset + "&query=" + encodeURIComponent($("#query").val());
+	href += "?limit=" + limit + "&offset=" + offset + "&inference=" + inference + "&query=" + encodeURIComponent($("#query").val());
 	
 	return href;
 }
@@ -53,7 +54,7 @@ function executeQuery(qry, resultHandler) {
 	
 	$.ajax({
 		url: "sparql", 
-		data: { "query": qry, "type": "json", "limit": limit, "offset": offset}, 
+		data: { "query": qry, "type": "json", "limit": limit, "offset": offset, "inference": inference}, 
 		datatype: "json", 
 		beforeSend : function (xhr) {
     		xhr.setRequestHeader('Accept', 'application/sparql-results+json');
@@ -288,6 +289,11 @@ $(document).ready(function(){
 		}
 	});
 	
+	// Turn inference on/off
+	$("#inference").change(function() {
+		inference = $(this).attr('checked');
+	});
+	
 });
 
 function init() {
@@ -298,6 +304,10 @@ function init() {
 	}
 	if (parameters.offset) {
 		offset = parseInt(parameters.offset[0]);
+	}
+	if (parameters.inference) {
+		inference = "TRUE" === parameters.inference[0].toUpperCase();
+		$("#inference").attr('checked', inference);
 	}
 	if (parameters.query) {
 		$("#query").val(parameters.query[0]);
