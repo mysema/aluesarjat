@@ -97,5 +97,6 @@ Usean tilastotiedon yhdistäminen ohjelmallisesti!
 DONE
 
 SPARQL-haut tietokeskuksen tiloissa?!? -> Soita Pekka Vuori 040 3344 790 
+EI TARVETTA ENÄÄ?
 
 Inferenssi-optio sparql hakuihin
