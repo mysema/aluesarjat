@@ -1,0 +1,8 @@
+LOG SPARQL queries
+
+echo -n -e "$(cat access.log.1 | grep SELECT | sed 's/+/ /g;s/%\(..\)/\\x\1/g;')" | grep -v HTTP | grep -v PREFIX
+
+
+IP ADDRESSES
+
+
