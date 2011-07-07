@@ -1,0 +1,3019 @@
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_6517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension ?yksikkö.
+FILTER ((
+  ?yksikkö = yksikkö:Henkilö || ?yksikkö = yksikkö:Henkilöä))
+
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+select count(*)
+where { ?s ?p ?o }
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?dataset
+WHERE { 
+?d rdf:type scv:Dataset ; dc:title ?dataset .
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_171_Länsi-Pasila ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  
+  { ?s stat:datasetDimension ?o }
+}
+limit 200
+offset 1200
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension ?dimension;
+        dimension: ikäryhmä:_8517-vuotiaat;
+        dimension: vuosi:_2010;
+        dimension: ?yksikkö.
+FILTER ((
+  ?yksikkö = yksikkö:Henkilö || ?yksikkö = yksikkö:Henkilöä))
+
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_231_Toukola , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+select *
+where {
+?item rdf:type scv:Item; ?pred ?obj
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?dimension ?dimensionValue ?dimensionValueName
+WHERE { 
+?dimension rdfs:subClassOf scv:Dimension .
+?dimensionValue rdf:type ?dimension ;
+    dc:title ?dimensionValueName .
+}
+
+executed : 1 times
+
+construct  ?s ?p ?o  WHERE  ?s ?p ?o 
+executed : 1 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  
+  { ?s stat:datasetDimension ?o }
+}
+limit 200
+offset 1000
+executed : 1 times
+
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:sukupuoli sukupuoli:Miehet;
+        dimension:työttömyys työttömyys:Työttömyysaste;
+        dimension:vuosi vuosi:_2007;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+FILTER (?value >= 8)
+}
+executed : 2 times
+
+SELECT ?dimension ?dimensionValue ?dimensionValueName WHERE { ?dimension rdfs:subClassOf scv:Dimension . ?dimensionValue rdf:type ?dimension ; dc:title ?dimensionValueName . } 
+executed : 5 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilö.
+scv:dimension yksikkö:Henkilö.
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+SELECT ?dimensionName ?dimensionURI
+WHERE {
+?dimensionURI rdfs:subClassOf  scv:Dimension ;
+    dc:title ?dimensionName .
+}
+limit 200
+offset 0
+executed : 2 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilöä.
+FILTER (?value <= 10) 
+}
+executed : 1 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+{
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä.
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 4 times
+
+PREFIX scv: <http://purl.org/NET/scovo
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_132_Kuninkainen ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT *
+WHERE {
+?s ?p ?o
+}
+limit 200
+offset 0
+executed : 1 times
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>  PREFIX dataset: <http://semantic.hri.fi/data/datasets#>  PREFIX dc: <http://purl.org/dc/elements/1.1/>  PREFIX stat: <http://data.mysema.com/schemas/stat#>  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  PREFIX dimension: <http://semantic.hri.fi/data/dimensions/>  PREFIX geo: <http://www.w3.org/2003/01/geo/>  PREFIX scv: <http://purl.org/NET/scovo#>  PREFIX owl: <http://www.w3.org/2002/07/owl#>  PREFIX dcterms: <http://purl.org/dc/terms/>  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>  PREFIX meta: <http://data.mysema.com/schemas/meta#>  PREFIX rahoitusmuoto: <http://semantic.hri.fi/data/dimensions/Rahoitusmuoto#>  PREFIX talotyyppi: <http://semantic.hri.fi/data/dimensions/Talotyyppi#>  PREFIX alue: <http://semantic.hri.fi/data/dimensions/Alue#>  PREFIX hallintaperuste: <http://semantic.hri.fi/data/dimensions/Hallintaperuste#>  PREFIX vuosi: <http://semantic.hri.fi/data/dimensions/Vuosi#>  PREFIX huoneistotyyppi: <http://semantic.hri.fi/data/dimensions/Huoneistotyyppi#>  PREFIX yksikkö: <http://semantic.hri.fi/data/dimensions/Yksikkö#>  PREFIX henkilöluku: <http://semantic.hri.fi/data/dimensions/Henkilöluku#>  PREFIX ikäryhmä: <http://semantic.hri.fi/data/dimensions/Ikäryhmä#>  PREFIX äidinkieli: <http://semantic.hri.fi/data/dimensions/Äidinkieli#>  PREFIX sukupuoli: <http://semantic.hri.fi/data/dimensions/Sukupuoli#>  PREFIX ikä: <http://semantic.hri.fi/data/dimensions/Ikä#>  PREFIX lasten_määrä_perheessä_140-17v_15: <http://semantic.hri.fi/data/dimensions/Lasten_määrä_perheessä_140-17v_15#>  PREFIX perhetyyppi: <http://semantic.hri.fi/data/dimensions/Perhetyyppi#>  PREFIX väestön_määrä: <http://semantic.hri.fi/data/dimensions/Väestön_määrä#>  PREFIX lasten_määrä_perheessä: <http://semantic.hri.fi/data/dimensions/Lasten_määrä_perheessä#>  PREFIX muuttosuunta: <http://semantic.hri.fi/data/dimensions/Muuttosuunta#>  PREFIX koulutusaste: <http://semantic.hri.fi/data/dimensions/Koulutusaste#>  PREFIX toimiala: <http://semantic.hri.fi/data/dimensions/Toimiala#>  PREFIX toimiala-1995: <http://semantic.hri.fi/data/dimensions/Toimiala-1995#>  PREFIX työttömyys: <http://semantic.hri.fi/data/dimensions/Työttömyys#>  PREFIX valmistumisvuosi: <http://semantic.hri.fi/data/dimensions/Valmistumisvuosi#>  PREFIX käytössäolotilanne: <http://semantic.hri.fi/data/dimensions/Käytössäolotilanne#>  PREFIX käyttötarkoitus_ja_kerrosluku: <http://semantic.hri.fi/data/dimensions/Käyttötarkoitus_ja_kerrosluku#>  PREFIX tuloluokka: <http://semantic.hri.fi/data/dimensions/Tuloluokka#>  PREFIX käyttötarkoitus: <http://semantic.hri.fi/data/dimensions/Käyttötarkoitus#>  PREFIX toimenpide: <http://semantic.hri.fi/data/dimensions/Toimenpide#>   SELECT ?dimensionName ?dimensionURI  WHERE {  ?dimensionURI rdfs:subClassOf scv:Dimension ;      dc:title ?dimensionName .  }
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_235_1_Kauniainen ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 5 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_220_Vallila ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_235_009 ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  
+  { dataset:A04S_HKI_Lapsiperheet stat:datasetDimension ?o }
+}
+limit 200
+offset 0
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_201_Reijolan_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT *
+WHERE {
+}
+executed : 1 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+{
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä. 
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_432_Roihuvuori ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_130_Etu-Töölö ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 5 times
+
+SELECT ?dimension ?dimensionValue ?dimensionValueName
+WHERE { 
+?dimension rdfs:subClassOf scv:Dimension .
+?dimensionValue rdf:type ?dimension ;
+    dc:title ?dimensionValueName .
+}
+
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_7_Itäinen_suurpiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_332_Suurpelto ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_102_Ullanlinnan_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 5 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_21_Kanta-Tapiola ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 4 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_4_Pohjoinen_suurpiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 9 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_049_212_Länsikorkee , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilö;
+scv:dimension yksikkö:Henkilöä.
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+SELECT ?class
+WHERE {
+?resources rdfs:Class ?class
+}
+executed : 1 times
+
+SELECT ?area ?value
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:yksikkö yksikkö:Asunto;
+        dimension:talotyyppi talotyyppi:Rivi-_ja_ketjutalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+FILTER (?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+}
+
+executed : 12 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2009;
+        scv:dimension yksikkö:Henkilöä.
+FILTER (?value >= 500) 
+}
+executed : 1 times
+
+WHERE {
+?dimensionURI rdfs:subClassOf scv:Dimension ;
+    dc:title ?dimensionName .
+}
+limit 200
+offset 0
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_53_Lentokenttä ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_049_313_Matinlahti , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension ?yksikkö.
+FILTER ((
+  ?yksikkö = yksikkö:Henkilö || ?yksikkö = yksikkö:Henkilöä))
+}
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_45_Suvisaaristo ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+WHERE {
+  {
+    [ rdf:value ?avgIncome;
+      dimension:alue ?area;
+      dimension:tuloluokka tuloluokka:Keskitulo;
+      dimension:vuosi vuosi:_2007
+    ] .
+    FILTER ( ?avgIncome > 40000 )
+    OPTIONAL { ?area dc:title ?areaName } .
+    OPTIONAL {
+      [ dimension:alue ?area;
+        rdf:value ?workingWomen;
+        dimension:sukupuoli sukupuoli:Naiset;
+        dimension:vuosi vuosi:_2007;
+        dimension:ikä ikä:Työll__työvoima_yhteensä;
+        dimension:yksikkö yksikkö:Työssä_käyvä_henkilö
+      ] .
+    } .
+    OPTIONAL {
+      [ dimension:alue ?area;
+        rdf:value ?workingMen;
+        dimension:sukupuoli sukupuoli:Miehet;
+        dimension:vuosi vuosi:_2007;
+        dimension:ikä ikä:Työll__työvoima_yhteensä;
+        dimension:yksikkö yksikkö:Työssä_käyvä_henkilö
+      ] .
+    } .
+  }
+  FILTER ( ?workingWomen > ?workingMen )
+}
+
+executed : 1 times
+
+construct {
+ ?item ?pred ?obj
+}
+where {
+?item rdf:type scv:Item; ?pred ?obj
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_602_Herttoniemen_peruspiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_456_Roihupellon_teollisuusalue ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT *
+WHERE {
+graph <http://semantic.hri.fi/data/datasets> {
+<http://semantic.hri.fi/data/datasets#A01HKIS_Vaestoennuste> ?pred ?obj .
+}}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?area ?value
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä;
+        scv:dimension ?area .
+  ?area rdf:type dimension:Alue.
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_235_1_Kauniainen , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:alue ?alue;
+        dimension:ikä ?ikä;
+        dimension:vuosi ?vuosi;
+        dimension:yksikkö yksikkö:Henkilö;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+FILTER ((
+  ?alue = alue:_091_10_Kruununhaka || ?alue = alue:_091_232_Arabianranta)
+  
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_251_Ruukinranta ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_049_7_Pohjois-Espoo , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_104_Taka-Töölön_peruspiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?alue ?fakta ?ennuste
+WHERE {
+  {
+    ?item rdf:value ?fakta;
+          dimension:alue ?alue ;
+          dimension:ikäryhmä ikäryhmä:Väestö_yhteensä;
+          dimension:vuosi vuosi:_2010.
+    OPTIONAL {
+      ?item2 rdf:value ?ennuste;
+            dimension:alue ?alue ;
+            dimension:ikä ikä:Väestö_yhteensä;
+            dimension:vuosi vuosi:_2015 .
+      }
+  }
+  FILTER (?ennuste > ?fakta)
+}
+
+executed : 2 times
+
+SELECT ?alue ?kerrostalot ?pientalot ?rivitalot (?pientalot + ?rivitalot) as ?pientalotYhteensa
+WHERE {
+{
+  ?item1 rdf:value ?kerrostalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset;
+FILTER ((
+  ?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005))
+OPTIONAL {
+  ?item2 rdf:value ?pientalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Erilliset_pientalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset;
+}
+OPTIONAL {
+  ?item3 rdf:value ?rivitalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Rivi-_tai_ketjutalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset;
+}
+}
+FILTER (?kerrostalot < (?pientalot+?rivitalot))
+}
+executed : 1 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  { ?s ?p ?o }
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_80_Katajanokka ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_5_Koillinen_suurpiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 12 times
+
+select count(*)
+where { ?item rdf:type scv:Item }
+limit 200
+offset 0
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_491_Yliskylä , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:sukupuoli sukupuoli:Miehet;
+        dimension:työttömyys työttömyys:Työttömyysaste;
+        dimension:vuosi vuosi:_2007;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+executed : 2 times
+
+select *
+where {
+?item scv:dataset dataset:A01HKI_Astuot_hper_rahoitus_talotyyppi
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_5_Suur-Kauklahti ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 4 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_31_Matinkylä ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?areaParentName ?areaName ?value WHERE { ?item rdf:type scv:Item; rdf:value ?value; scv:dimension vuosi:_2010; scv:dimension väestön_määrä:Henkilöitä_yhteensä; scv:dimension ?area. ?area rdf:type dimension:Alue; dc:title ?areaName. OPTIONAL { ?area skos:broader ?areaParent. ?areaParent dc:title ?areaParentName .} FILTER (?value <= 3500) } 
+executed : 1 times
+
+SELECT ?dimension
+WHERE {
+?dimensionURI rdfs:subClassOf scv:Dimension ;
+    dc:title ?dimensionName .
+}
+executed : 1 times
+
+SELECT ?alue ?kerrostalot ?pientalot ?rivitalot
+WHERE {
+{
+  ?item1 rdf:value ?kerrostalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+FILTER ((
+  ?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005))
+OPTIONAL {
+  ?item2 rdf:value ?pientalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Erilliset_pientalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset .
+}
+OPTIONAL {
+  ?item3 rdf:value ?rivitalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Rivi-_tai_ketjutalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+}
+}
+FILTER (?kerrostalot < (?pientalot+?rivitalot))
+
+executed : 1 times
+
+SELECT ?ns ?prefix 
+WHERE { ?ns <http://data.mysema.com/schemas/meta#nsPrefix> ?prefix }
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_80_Katajanokka , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension: ?dimension;
+        dimension: ikäryhmä:_8517-vuotiaat;
+        dimension: vuosi:_2010;
+        dimension: ?yksikkö.
+FILTER ((
+  ?yksikkö = yksikkö:Henkilö || ?yksikkö = yksikkö:Henkilöä))
+
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+?s ?o ?v
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?alue ?kerrostalot ?pientalot ?rivitalot
+WHERE {
+{
+  ?item1 rdf:value ?kerrostalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+FILTER ((
+  ?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005))
+OPTIONAL {
+  ?item2 rdf:value ?pientalot;
+}
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Erilliset_pientalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset .
+}
+OPTIONAL {
+  ?item3 rdf:value ?rivitalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Rivi-_tai_ketjutalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+}
+}
+FILTER (?kerrostalot < (?pientalot+?rivitalot))
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_704_Vuosaaren_peruspiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_413_Tattarisuo , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_242_Taavinkylä ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_25_Myllymäki ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+{
+  ?item rdf:type scv:Item ;
+        rdf:value ?value ;
+        scv:dimension ?dimension ;
+        scv:dimension vuosi:_2010 ;
+        scv:dimension väestön_määrä:Henkilöitä_yhteensä .
+
+OPTIONAL { ?dimension skos:broader ?dimensionParent . }
+
+FILTER (?value >= 100000)
+}
+ORDER BY DESC(?value)
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_90_Kaivopuisto ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?alue ?fakta ?ennuste
+WHERE {
+  {
+  ?item rdf:value ?fakta;
+        dimension:alue ?alue ;
+        dimension:ikäryhmä ikäryhmä:Väestö_yhteensä;
+        dimension:vuosi vuosi:_2010.
+  FILTER (?fakta > 2500)
+  OPTIONAL {
+  ?item2 rdf:value ?ennuste;
+        dimension:alue ?alue ;
+        dimension:ikä ikä:Väestö_yhteensä;
+        dimension:vuosi vuosi:_2015 .
+  }
+  }
+  FILTER (?ennuste > ?fakta)
+}
+executed : 1 times
+
+SELECT ?area ?value
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:yksikkö yksikkö:Asunto;
+        dimension:talotyyppi talotyyppi:Rivi-_ja_ketjutalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+  FILTER (?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+}
+
+executed : 31 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_173_Itä-Pasila , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2009;
+        scv:dimension yksikkö:Henkilöä.
+FILTER (?value >= 200) 
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_103_Kampinmalmin_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 9 times
+
+WHERE {
+?ns meta:nsPrefix ?prefix .
+}
+
+executed : 1 times
+
+SELECT ?item ?dataset ?value 
+WHERE 
+  { GRAPH ?dataset { ?item <http://purl.org/NET/scovo#dimension> <http://localhost:8080/rdf/dimensions/Talotyyppi#Yhteensä> , <http://localhost:8080/rdf/dimensions/Vuosi#_2009> , <http://localhost:8080/rdf/dimensions/Huoneistotyyppi#_1_h_17_k1btk> ; <http://purl.org/NET/scovo#dataset> ?dataset ; <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> ?value } }
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä.
+OPTIONAL {?dimension dc:title ?dimensionParent . }
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_180_Laakso ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  
+  { ?s stat:datasetDimension ?o }
+}
+limit 200
+offset 800
+executed : 1 times
+
+SELECT *
+WHERE {
+?dataset ?pred ?obj; rdf:type scv:Dataset
+}
+limit 200
+offset 200
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_40_Kamppi , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 7 times
+
+SELECT ?area ?value
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        dimension:yksikkö yksikkö:Asunto;
+        scv:dataset ?dataset .
+  FILTER (?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+}
+
+executed : 38 times
+
+SELECT ?dimensionName ?dimensionURI
+WHERE {
+?dimensionURI rdfs:subClassOf scv:Dimension ;
+    dc:title ?dimensionName .
+}
+executed : 37 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_6_Kaakkoinen_suurpiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 12 times
+
+select * 
+where { ?cls rdf:type dimension:Alue }
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_104_Taka-Töölön_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 5 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:alue alue:_091_130_Etu-Töölö;
+        dimension:huoneistotyyppi huoneistotyyppi:_2h17k;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+executed : 2 times
+
+SELECT ?area sum(?value)
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:yksikkö yksikkö:Asunto;
+        dimension:talotyyppi ?talotyyppi;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset .
+  FILTER ((?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+    
+executed : 5 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  
+  { ?s stat:datasetDimension ?o }
+}
+limit 200
+offset 0
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_092_2_Kivistön_suuralue , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?dataset ?item ?value ?dimension
+WHERE {
+  ?item dimension:alue alue:_091_301_Kallion_peruspiiri ;
+    dimension:vuosi vuosi:_2010 ;
+    dimension:ikäryhmä ikäryhmä:_0-6-vuotiaat ;
+    scv:dataset ?dataset ;
+    ?dimensionProperty ?dimension ;
+    rdf:value ?value .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+ORDER BY ?dataset
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_100_Sörnäinen , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:alue alue:_091_546_Aurinkolahti;
+        dimension:koulutusaste koulutusaste:Ylempi_korkeakouluaste_ja_tutkijakoulutus;
+        dimension:vuosi vuosi:_2009;
+        scv:dataset dataset:A01S_HKI_Vaesto_koulutusaste;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+executed : 1 times
+
+select * 
+where {
+?alue rdf:type dimension:Alue; ?pred ?obj
+}
+limit 200
+offset 0
+executed : 2 times
+
+SELECT ?item ?value ?dimension WHERE { ?item dimension:alue alue:_091_301_Kallion_peruspiiri ; dimension:vuosi vuosi:_2009 ; scv:dataset ?dataset ; ?dimensionProperty ?dimension ; rdf:value ?value . ?dimensionProperty rdfs:subPropertyOf scv:dimension . } ORDER BY ?dataset
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_210_Hermanni , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?alue ?fakta ?ennuste
+WHERE {
+  {
+    ?item rdf:value ?fakta;
+          dimension:alue ?alue ;
+          dimension:ikäryhmä ikäryhmä:Väestö_yhteensä;
+          dimension:vuosi vuosi:_2010.
+    OPTIONAL {
+      ?item2 rdf:value ?ennuste;
+            dimension:alue ?alue ;
+            dimension:ikä ikä:Väestö_yhteensä;
+            dimension:vuosi vuosi:_2015 .
+      }
+  }
+  FILTER (?ennuste > ?fakta)
+}
+executed : 1 times
+
+SELECT ?dimensionName ?dimensionURI
+WHERE {
+?dimensionURI rdfs:subClassOf scv:Dimension ;
+    dc:title ?dimensionName .
+}
+limit 200
+offset 0
+executed : 20 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2009;
+        scv:dimension yksikkö:Henkilö.
+}
+executed : 1 times
+
+SELECT *
+WHERE {
+  ?item rdf:type scv:Item ;
+  OPTIONAL { ?item ?p ?o }
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_431_Länsi-Herttoniemi , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT distinct ?dataset
+WHERE 
+  { ?item <http://purl.org/NET/scovo#dimension> <http://semantic.hri.fi/data/dimensions/Talotyyppi#Yhteensä> , <http://semantic.hri.fi/data/dimensions/Vuosi#_2009> , <http://semantic.hri.fi/data/dimensions/Huoneistotyyppi#_1_h_17_k1btk> ; <http://purl.org/NET/scovo#dataset> ?dataset ; <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> ?value }
+limit 200
+offset 0
+executed : 5 times
+
+SELECT count(*)
+WHERE {
+?item scv:dimension vuosi:_2008,
+huoneistotyyppi:_1_h_17_k1btk,
+talotyyppi:Yhteensä
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilöä.
+FILTER (?value < 1) 
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilö.
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+SELECT distinct ?area ?young ?old
+WHERE { 
+[ scv:dimension ikäryhmä:_0-6-vuotiaat ;
+  scv:dimension vuosi:_2009 ;
+  scv:dataset ?dataset ; 
+  scv:dimension ?area ;
+  rdf:value ?young ].
+[ scv:dimension ikäryhmä:_7-12-vuotiaat ;
+  scv:dimension vuosi:_2009 ;
+  scv:dataset ?dataset ; 
+  scv:dimension ?area ;
+  rdf:value ?old ] .
+?area rdf:type dimension:Alue .
+FILTER ( ?young > ?old
+  
+executed : 1 times
+
+select * 
+where {
+  ?s rdf:type dimension:Alue ; ?p ?o .
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_601_Kulosaaren_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä.
+OPTIONAL {?dimension skos:broader ?dimensionParent .}
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_2_Kivistön_suuralue ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT count(*)
+WHERE {
+?s ?p ?o
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_3_Keskinen_suurpiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 13 times
+
+SELECT *
+WHERE {
+<http://semantic.hri.fi/data/datasets#A01HKIS_Vaestoennuste> ?pred ?obj .
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT *
+WHERE { ?s ?p ?o }
+limit 200
+offset 0
+executed : 5 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_7_Pohjois-Espoo ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_322_Olarinmäki ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_1_Suur-Leppävaara ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 12 times
+
+SELECT ?alue ?kerrostalot ?pientalot ?rivitalot
+WHERE {
+{
+  ?item1 rdf:value ?kerrostalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+FILTER ((
+  ?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005))
+OPTIONAL {
+  ?item2 rdf:value ?pientalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Erilliset_pientalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset .
+}
+OPTIONAL {
+  ?item3 rdf:value ?rivitalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Rivi-_tai_ketjutalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+}
+}
+FILTER (?kerrostalot < (?pientalot+?rivitalot))
+}
+executed : 1 times
+
+SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+WHERE {
+{
+  [ rdf:type scv:Item;
+    rdf:value ?avgIncome;
+    scv:dimension ?area;
+    scv:dimension tuloluokka:Keskitulo;
+    scv:dimension vuosi:_2007
+  ] .
+  FILTER ( ?avgIncome > 50000 )
+  ?area rdf:type dimension:Alue; dc:title ?areaName.
+}
+
+  [ rdf:type scv:Item;
+    rdf:value ?workingWomen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Naiset;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+  [ rdf:type scv:Item;
+    rdf:value ?workingMen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Miehet;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+}
+limit 200
+offset 0
+executed : 4 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilöä.
+FILTER (?value < 1) 
+}
+executed : 2 times
+
+SELECT ?area sum(?val) as ?value
+WHERE {
+  ?item rdf:value ?val;
+        dimension:alue ?area;
+        dimension:talotyyppi ?talotyyppi;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        dimension:yksikkö yksikkö:Asunto;
+        scv:dataset ?dataset .
+  FILTER ((?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005) 
+    
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_8_Östersundomin_suurpiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+  ?item rdf:type scv:Item ;
+        rdf:value ?value ;
+        scv:dimension ?dimension ;
+        scv:dimension ?vuosi ;
+        scv:dimension ?vm .
+OPTIONAL { ?value skos:broader ?dimensionParent . }
+FILTER (
+ ( ?vuosi = vuosi:_2010 )
+  
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_601_Kulosaaren_peruspiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_232_Arabianranta , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_092_91_Länsimäki , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?prefix str(?ns) as ?namespace WHERE { ?ns meta:nsPrefix ?prefix . } 
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilö.
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_204_Munkkisaari , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+select * where {?s ?p ?o};
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_504_Suutarilan_peruspiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+WHERE {
+?dimensionURI rdfs:subClassOf scv:Dimension ;
+    dc:title ?dimensionName .
+}
+executed : 2 times
+
+SELECT ?x
+WHERE {
+?x geo:long ?lon .
+?x geo:lat ?lat .
+FILTER(?lon >= 0.0)
+FILTER(?lon <= 90.0)
+}
+LIMIT 100
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension alue:_092_17_Martinlaakso;
+        scv:dimension vuosi:_2009.
+FILTER (?value > 1) 
+
+
+}
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_50_Punavuori , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT DISTINCT ?area ?young ?old
+WHERE { 
+  {
+    [ dimension:ikäryhmä ikäryhmä:_0-6-vuotiaat ;
+      dimension:vuosi vuosi:_2009 ;
+      scv:dataset ?dataset ; 
+      dimension:alue ?area ;
+      rdf:value ?young ].
+    OPTIONAL {
+      [ dimension:ikäryhmä ikäryhmä:_7-12-vuotiaat ;
+        dimension:vuosi vuosi:_2009 ;
+        scv:dataset ?dataset ; 
+        dimension:alue ?area ;
+        rdf:value ?old ] .
+    }
+  }
+  FILTER ( ?young > ?old ).
+} 
+
+executed : 5 times
+
+SELECT ?alue ?kerrostalot ?pientalot ?rivitalot
+WHERE {
+{
+  ?item1 rdf:value ?kerrostalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+FILTER ((
+  ?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005))
+OPTIONAL {
+  ?item2 rdf:value ?pientalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Erilliset_pientalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset .
+}
+OPTIONAL {
+  ?item3 rdf:value ?rivitalot;
+        dimension:alue ?alue;
+        dimension:talotyyppi talotyyppi:Rivi-_tai_ketjutalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset.
+}
+}
+FILTER (?kerrostalot < (?pientalot+?rivitalot))
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2009;
+        scv:dimension yksikkö:Henkilöä.
+FILTER (?value <= 10) 
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_150_Meilahti , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_71_Ilola ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_302_Kuusisaari ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_23_Haukilahti-Westend ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_310_Lauttasaari , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+
+limit 200
+offset 0
+executed : 1 times
+
+"><script>alert(1);</script>
+limit 200
+offset 0
+executed : 1 times
+
+select * where {?s ?p ?o} limit 10
+limit 200
+offset 0
+executed : 5 times
+
+SELECT *
+WHERE {
+<http://semantic.hri.fi/data/datasets#A01HKIS_Vaestoennuste> ?pred ?obj .
+}
+limit 200
+offset 200
+executed : 1 times
+
+SELECT *
+WHERE {
+ ?da rdf:type scv:Dataset ; stat:datasetDimension ?di
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_092_6_Korson_suuralue , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_312_Tiistilä ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_616_Ymmersta ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_140_Taka-Töölö ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_112_Linjat ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_092_3_Aviapoliksen_suuralue , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?x ?y
+WHERE {
+ ?x ?y "Kauniainen"
+
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:alue alue:_091_601_Kulosaaren_peruspiiri;
+        dimension:hallintaperuste hallintaperuste:Omistaa_talon;
+        dimension:käytössäolotilanne ?käytössäolotilanne;
+        dimension:talotyyppi talotyyppi:Erilliset_pientalot;
+        dimension:vuosi vuosi:_2008;
+        dimension:yksikkö yksikkö:Asunto_ja_neliömetri;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+FILTER ((
+  ?käytössäolotilanne = käytössäolotilanne:Ei_vakinaisessa_asuinkäytössä || ?käytössäolotilanne = käytössäolotilanne:Vakinaisesti_asutut_asunnot))
+}
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+FILTER ((
+  ?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005))
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_434_Herttoniemenranta , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_50_Punavuori ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item dimension:alue alue:_091_301_Kallion_peruspiiri ;
+    dimension:vuosi vuosi:_2009 ;
+    scv:dataset ?dataset ;
+    ?dimensionProperty ?dimension ;
+    rdf:value ?value .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+ORDER BY ?dataset
+executed : 1 times
+
+select * where {?s ?p ?o} LIMIT 10
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?x
+WHERE {
+?x geo:long ?lon .
+?x geo:lat ?lat .
+FILTER(?lon >= 0.0)
+FILTER(?lon <= 90.0)
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_501_Latokartanon_peruspiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_292_Kivihaka ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2009;
+        scv:dimension yksikkö:Henkilöä.
+FILTER (?value <= 100) 
+}
+executed : 1 times
+
+SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+WHERE {
+{
+  ?area rdf:type dimension:Alue; dc:title ?areaName.
+  [ 
+    scv:dimension tuloluokka:Keskitulo ;
+    scv:dimension vuosi:_2007 ;
+    scv:dimension ?area ;
+    rdf:type scv:Item ;
+    rdf:value ?avgIncome    
+  ] .
+  FILTER ( ?avgIncome > 50000 )
+
+}
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_203_Jätkäsaari ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_131_Nuijala ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_101_Vironniemen_peruspiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_049_222_Otaniemi , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  
+  { dataset:A01HKIS_Vaestotulot stat:datasetDimension ?o }
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?areaName ?value
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä;
+        scv:dimension ?area .
+  ?area rdf:type dimension:Alue; 
+        dc:title ?areaName .
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä.
+  OPTIONAL {?dimension dc:title ?dimensionParent }
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+SELECT ?class
+WHERE {
+?resources rdfs:Property ?class
+}
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension alue:_091_232_Arabianranta;
+        scv:dimension ?perhetyyppi;
+        scv:dimension vuosi:_2009.
+FILTER ((
+  ?perhetyyppi = perhetyyppi:Isä_ja_lapsia || ?perhetyyppi = perhetyyppi:Äiti_ja_lapsia))
+}
+executed : 1 times
+
+select ?g count(?item) as ?count
+where { graph ?g {?item a scv:Item}}
+group by ?g
+executed : 1 times
+
+SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+WHERE {
+{
+  ?area rdf:type dimension:Alue; dc:title ?areaName.
+  [ rdf:type scv:Item;
+    rdf:value ?avgIncome;
+    scv:dimension ?area;
+    scv:dimension tuloluokka:Keskitulo;
+    scv:dimension vuosi:_2007
+  ] .
+  FILTER ( ?avgIncome > 50000 )
+}
+
+  [ rdf:type scv:Item;
+    rdf:value ?workingWomen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Naiset;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+  [ rdf:type scv:Item;
+    rdf:value ?workingMen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Miehet;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+WHERE {
+{
+  [ rdf:type scv:Item;
+    rdf:value ?avgIncome;
+    scv:dimension ?area;
+    scv:dimension tuloluokka:Keskitulo;
+    scv:dimension vuosi:_2007
+  ] .
+  FILTER ( ?avgIncome > 50000 )
+}
+  ?area rdf:type dimension:Alue; dc:title ?areaName.
+  [ rdf:type scv:Item;
+    rdf:value ?workingWomen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Naiset;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+  [ rdf:type scv:Item;
+    rdf:value ?workingMen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Miehet;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?dataset ?item ?value ?dimension WHERE { ?item dimension:alue alue:_091_301_Kallion_peruspiiri ; dimension:vuosi vuosi:_2009 ; scv:dataset ?dataset ; ?dimensionProperty ?dimension ; rdf:value ?value . ?dimensionProperty rdfs:subPropertyOf scv:dimension . } ORDER BY ?dataset
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension alue:_091_232_Arabianranta;
+        scv:dimension ?lasten_määrä_perheessä_140-17v_15;
+        scv:dimension vuosi:_2010.
+FILTER ((
+  ?lasten_määrä_perheessä_140-17v_15 = lasten_määrä_perheessä_140-17v_15:Lapsiluku_1_140-17_v_15 || ?lasten_määrä_perheessä_140-17v_15 = lasten_määrä_perheessä_140-17v_15:Lapsiluku_2_140-17_v_15 || ?lasten_määrä_perheessä_140-17v_15 = lasten_määrä_perheessä_140-17v_15:Lapsiluku_3_140-17_v_15 || ?lasten_määrä_perheessä_140-17v_15 = lasten_määrä_perheessä_140-17v_15:Lapsiluku_417_140-17_v_15))
+}
+executed : 2 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilöä.
+FILTER (?value < 1) 
+}
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilö.
+FILTER (?value < 1) 
+}
+executed : 2 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+  ?item rdf:type scv:Item ;
+        rdf:value ?value ;
+        scv:dimension ?dimension ;
+        scv:dimension ?vuosi ;
+        scv:dimension ?vm .
+OPTIONAL { ?dimension skos:broader ?dm . }
+FILTER (
+ ( ?vuosi = vuosi:_2010 )
+  
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_404_Oulunkylän_peruspiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension alue:_092_17_Martinlaakso;
+        scv:dimension vuosi:_2009.
+}
+executed : 5 times
+
+SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+WHERE {
+  {
+    [ rdf:value ?avgIncome;
+      dimension:alue ?area;
+      dimension:tuloluokka tuloluokka:Keskitulo;
+      dimension:vuosi vuosi:_2007
+    ] .
+    FILTER ( ?avgIncome > 40000 )
+    OPTIONAL { ?area dc:title ?areaName } .
+    OPTIONAL {
+      [ dimension:alue ?area;
+        rdf:value ?workingWomen;
+        dimension:sukupuoli sukupuoli:Naiset;
+        dimension:vuosi vuosi:_2007;
+        dimension:ikä ikä:Työll__työvoima_yhteensä;
+        dimension:yksikkö yksikkö:Työssä_käyvä_henkilö
+      ] .
+    } .
+    OPTIONAL {
+      [ dimension:alue ?area;
+        rdf:value ?workingMen;
+        dimension:sukupuoli sukupuoli:Miehet;
+        dimension:vuosi vuosi:_2007;
+        dimension:ikä ikä:Työll__työvoima_yhteensä;
+        dimension:yksikkö yksikkö:Työssä_käyvä_henkilö
+      ] .
+    } .
+  }
+  FILTER ( ?workingWomen > ?workingMen )
+}
+
+executed : 2 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:alue ?alue;
+        dimension:ikäryhmä ikäryhmä:_0-6-vuotiaat;
+        dimension:vuosi vuosi:_2010;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+FILTER ((
+  ?alue = alue:_049_431_Latokaskenmäki || ?alue = alue:_049_43_Nöykkiö-Latokaski || ?alue = alue:_091_232_Arabianranta))
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_4_Suur-Espoonlahti ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 9 times
+
+construct {?s ?p ?o} where {?s ?p ?o}
+executed : 3 times
+
+SELECT ?x
+WHERE {
+?x geo:long >= 0.0 ;
+?x geo:long <= 90.0 ;
+}
+LIMIT 100
+
+executed : 1 times
+
+SELECT ?geo
+WHERE {
+  ?item dimension:alue alue:_091_301_Kallion_peruspiiri ;
+    dimension:vuosi vuosi:_2009 ;
+    scv:dataset ?dataset ;
+    ?dimensionProperty ?dimension ;
+    rdf:value ?value .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+ORDER BY ?dataset
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_433_Herttoniemen_teollisuusalue , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_33_Seutula ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_70_Ullanlinna ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?areaParentName ?areaName ?value
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:vuosi vuosi:_2010;
+        dimension:väestön_määrä väestön_määrä:Henkilöitä_yhteensä;
+        dimension:alue ?area.
+  ?area rdf:type dimension:Alue;
+        dc:title ?areaName.
+  OPTIONAL { ?area skos:broader ?areaParent. ?areaParent dc:title ?areaParentName .}
+  FILTER (?value >= 50000)
+}
+executed : 1 times
+
+select * where { ?s ?p ?o }
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_433_Malminmäki ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_205_Kaarelan_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_122_Alppila ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_302_Kuusisaari , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?area ?value
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä;
+        scv:dimension ?area .
+  ?area rdf:type dimension:Alue .
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_6_Kaakkoinen_suurpiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 6 times
+
+SELECT ?x
+WHERE {
+
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_1-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension ?yksikkö.
+FILTER ((
+  ?yksikkö = yksikkö:Henkilö || ?yksikkö = yksikkö:Henkilöä))
+
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+SELECT ?area
+WHERE { 
+  ?area rdf:type dimension:Alue;
+     ?pred ?obj.
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_10_Kruununhaka ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  
+  { ?s stat:datasetDimension ?o }
+}
+limit 200
+offset 200
+executed : 2 times
+
+SELECT+?ns+?prefix+WHERE+{+?ns+<http://data.mysema.com/schemas/meta#nsPrefix>+?prefix+}
+executed : 3 times
+
+"><script>alert();</script>
+executed : 1 times
+
+select *
+where {
+?item scv:dataset <dataset:A01HKI_Astuot_hper_rahoitus_talotyyppi>
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_092_5_Koivukylän_suuralue , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?dimensionName ?dimensionURI  WHERE {  ?dimensionURI rdfs:subClassOf scv:Dimension ;      dc:title ?dimensionName .  }
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_301_Vanha_Munkkiniemi ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilöä;
+scv:dimension yksikkö:Henkilö.
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+SELECT ?area ?value
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:yksikkö yksikkö:Asunto;
+        dimension:talotyyppi talotyyppi:Erilliset_pientalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset .
+  FILTER (?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+}
+
+executed : 31 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_302_Alppiharjun_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_103_Kampinmalmin_peruspiiri , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 4 times
+
+SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+WHERE {
+  [ 
+    scv:dimension tuloluokka:Keskitulo ;
+    scv:dimension vuosi:_2007 ;
+    scv:dimension ?area ;
+    rdf:value ?avgIncome    
+  ] .
+  ?area rdf:type dimension:Alue; dc:title ?areaName.
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?item ?dataset ?value 
+WHERE 
+  { GRAPH ?dataset { ?item <http://purl.org/NET/scovo#dimension> <http://semantic.hri.fi/data/dimensions/dimensions/Talotyyppi#Yhteensä> , <http://semantic.hri.fi/data/dimensions/Vuosi#_2009> , <http://semantic.hri.fi/data/dimensions/Huoneistotyyppi#_1_h_17_k1btk> ; <http://purl.org/NET/scovo#dataset> ?dataset ; <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> ?value } }
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_252_Pohjois-Laajalahti ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_049_31_Matinkylä , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_306_Talinranta ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?x ?y
+WHERE {
+ ?x ?y alue:_235_1_Kauniainen
+
+}
+
+executed : 1 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  
+  { ?s stat:datasetDimension ?o }
+}
+limit 200
+offset 600
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_34_Kiila ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_092_1_Myyrmäen_suuralue , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_6_Korson_suuralue ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_151_Viherlaakso ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?areaParentName ?areaName ?value WHERE { ?item rdf:type scv:Item; rdf:value ?value; scv:dimension vuosi:_2010; scv:dimension väestön_määrä:Henkilöitä_yhteensä; scv:dimension ?area. ?area rdf:type dimension:Alue; dc:title ?areaName. OPTIONAL { ?area skos:broader ?areaParent. ?areaParent dc:title ?areaParentName .} FILTER (?value >= 50000) } 
+executed : 4 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension käyttötarkoitus_ja_kerrosluku:Erilliset_pientalot;
+        scv:dimension vuosi:_2008;
+        scv:dimension yksikkö:Kerrosala_14m215.
+}
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension valmistumisvuosi:_1940-1949;
+        scv:dimension vuosi:_2002;
+        scv:dimension yksikkö:Rakennus.
+}
+executed : 1 times
+
+SELECT ?x
+WHERE {
+ ?x dc:title ?y
+}
+
+executed : 1 times
+
+WHERE {
+  ?item dimension:alue alue:_091_301_Kallion_peruspiiri ;
+    dimension:vuosi vuosi:_2009 ;
+    scv:dataset ?dataset ;
+    ?dimensionProperty ?dimension ;
+    rdf:value ?value .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+ORDER BY ?dataset
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_70_Ullanlinna , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_704_Vuosaaren_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_420_Kulosaari , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_235_004 ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+WHERE {
+  [ rdf:type scv:Item;
+    rdf:value ?avgIncome;
+    scv:dimension ?area;
+    scv:dimension tuloluokka:Keskitulo;
+    scv:dimension vuosi:_2007
+  ] .
+  FILTER ( ?avgIncome > 50000 )
+  ?area rdf:type dimension:Alue; dc:title ?areaName.
+  [ rdf:type scv:Item;
+    rdf:value ?workingWomen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Naiset;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+  [ rdf:type scv:Item;
+    rdf:value ?workingMen;
+    scv:dimension ?area;
+    scv:dimension sukupuoli:Miehet;
+    scv:dimension vuosi:_2007;
+    scv:dimension ikä:Työll__työvoima_yhteensä;
+    scv:dimension yksikkö:Työssä_käyvä_henkilö
+  ] .
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_7517-vuotiaat;
+        scv:dimension ?Alue:_091_Helsinki
+        scv:dimension ?vuosi;
+        scv:dimension ?yksikkö.
+FILTER ((
+  ?vuosi = vuosi:_2006 || ?vuosi = vuosi:_2007 || ?vuosi = vuosi:_2008 || ?vuosi = vuosi:_2009 || ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+SELECT ?dimension
+WHERE {
+  ?item dimension:alue alue:_091_301_Kallion_peruspiiri ;
+    dimension:vuosi vuosi:_2009 ;
+    scv:dataset ?dataset ;
+    ?dimensionProperty ?dimension ;
+    rdf:value ?value .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+ORDER BY ?dataset
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_3_Aviapoliksen_suuralue ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_411_Puistola , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?area ?value
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:yksikkö yksikkö:Asunto;
+        dimension:talotyyppi talotyyppi:Erilliset_pientalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        scv:dataset ?dataset .
+FILTER (?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+}
+
+executed : 12 times
+
+select *
+where {
+?item rdf:value ".."^^xsd:string;
+?pred ?obj.
+}
+executed : 2 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension alue:_092_17_Martinlaakso;
+        scv:dimension vuosi:_2009.
+FILTER (?value < 1) 
+
+
+}
+executed : 1 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+{
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä. }
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_520_Suomenlinna , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?areaName ?avgIncome ?workingWomen ?workingMen
+WHERE {
+{
+  [ 
+    scv:dimension tuloluokka:Keskitulo;
+    scv:dimension vuosi:_2007;
+    scv:dimension ?area;
+    rdf:type scv:Item;
+    rdf:value ?avgIncome    
+  ] .
+  ?area rdf:type dimension:Alue; dc:title ?areaName.
+  FILTER ( ?avgIncome > 50000 )
+
+}
+}
+limit 200
+offset 0
+executed : 3 times
+
+SELECT *
+WHERE {
+?item rdf:value ".."^^xsd:string;
+?pred ?obj.
+}
+executed : 1 times
+
+select *
+where {
+?item rdf:value ".."^^xsd:string
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_2_Läntinen_suurpiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 19 times
+
+SELECT ?area ?comment WHERE { ?area owl:sameAs ?area2 . ?area2 rdfs:comment ?comment }
+executed : 165 times
+
+SELECT ?area ?pred ?obj
+WHERE { 
+  ?area rdf:type dimension:Alue;
+     ?pred ?obj.
+}
+executed : 6 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_463_Reimarla ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?x
+WHERE {
+?x geo:long ?lon ;
+?x geo:lat ?lat ;
+FILTER(?lon >= 0.0)
+FILTER(?lon <= 90.0)
+}
+LIMIT 100
+
+executed : 1 times
+
+nullSELECT ?area ?value
+WHERE {
+  ?item rdf:value ?value;
+        dimension:alue ?area;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+        dimension:yksikkö yksikkö:Asunto;
+        scv:dataset ?dataset .
+FILTER (?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005)
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_20_Kluuvi , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 6 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ikäryhmä:_8517-vuotiaat;
+        scv:dimension vuosi:_2010;
+        scv:dimension yksikkö:Henkilöä;
+FILTER (?value < 1) 
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_304_Munkkivuori ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_603_Laajasalon_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT ?x
+WHERE {
+ ?x dc:title ?y .
+ ?x geo:long ?lon .
+ ?x geo:lat ?lat .
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_60_Eira , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_105_Lauttasaaren_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 3 times
+
+SELECT *
+WHERE {
+  GRAPH <http://semantic.hri.fi/data/datasets>  
+  { dataset:A04S_HKI_Lapsiperheet stat:datasetDimension ?o }
+}
+limit 200
+offset 200
+executed : 1 times
+
+SELECT *
+WHERE {
+?item rdf:value ".."^^xsd:string;
+?pred ?obj.
+optional  {?obj dc:title ?title}
+}
+executed : 1 times
+
+SELECT bif:regexp_substr(".+/(.+$"), ?item, 0) as ?itemCode ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension alue:_091_303_Vallilan_peruspiiri;
+        scv:dimension hallintaperuste:Omistaa_talon.
+}
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:alue ?alue;
+        dimension:ikä ikä:Väestö_yhteensä;
+        dimension:vuosi vuosi:_2010;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+FILTER ((
+  ?alue = alue:_049_22_Otaniemi || ?alue = alue:_091_232_Arabianranta))
+}
+executed : 1 times
+
+SELECT ?dataset ?item ?value ?dimension
+WHERE {
+  ?item dimension:alue alue:_091_301_Kallion_peruspiiri ;
+    dimension:ikäryhmä ikäryhmä:_0-6-vuotiaat
+    scv:dataset ?dataset ;
+    ?dimensionProperty ?dimension ;
+    rdf:value ?value .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+ORDER BY ?dataset
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_20_Kluuvi ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 5 times
+
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension alue:_091_104_Taka-Töölön_peruspiiri;
+        scv:dimension huoneistotyyppi:_1h17k;
+        scv:dimension vuosi:_2002.
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_092_93_Vaarala , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?areaName ?value
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä;
+        scv:dimension ?area .
+  ?area rdf:type dimension:Alue .
+  ?area dc:title ?areaName .
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+select count(*)
+where {
+?item scv:dimension vuosi:_2009, yksikkö:Henkilö, sukupuoli:Molemmat_sukupuolet
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?area ?apartmentBuildints ?otherBuildings
+WHERE {
+  {
+    ?item rdf:value ?apartmentBuildints;
+          dimension:alue ?area;
+          dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+          dimension:valmistumisvuosi valmistumisvuosi:Yhteensä;
+          dimension:yksikkö yksikkö:Asunto;
+          scv:dataset ?dataset .
+    FILTER ((?dataset = dataset:A01S_HKI_Askan_2005 || ?dataset = dataset:B01S_ESP_Askan_2005 || ?dataset = dataset:C01S_VAN_Askan_2005) 
+      
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_493_Tullisaari , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_40_Kamppi ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 10 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä.
+OPTIONAL { ?dimension skos:broader ?dimensionParent . }
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 14 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:hallintaperuste hallintaperuste:Asunnot_yhteensä;
+        dimension:huoneistotyyppi huoneistotyyppi:Yhteensä;
+        dimension:rahoitusmuoto rahoitusmuoto:Yhteensä;
+        dimension:talotyyppi talotyyppi:Asuinkerrostalot;
+        dimension:vuosi vuosi:_2008;
+        dimension:yksikkö yksikkö:Asuntojen_lukumäärä;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_431_Länsi-Herttoniemi ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+select * 
+where {
+  ?s rdf:type dimension:Alue .
+}
+limit 200
+offset 0
+executed : 1 times
+
+SELECT ?dimensionName ?dimensionURI WHERE { ?dimensionURI rdfs:subClassOf scv:Dimension ; dc:title ?dimensionName . }
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_5_Koivukylän_suuralue ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_7_Hakunilan_suuralue ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT count(*)
+WHERE {
+ ?ds rdf:type scv:Dataset
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_122_Alppila , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_049_432_Eestinmalmi ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT *
+WHERE {
+graph ?g {
+<http://semantic.hri.fi/data/datasets#A01HKIS_Vaestotulot> ?p ?o }
+}
+executed : 2 times
+
+SELECT ?item ?value ?dimension ?dimensionParent
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension ?vuosi;
+        scv:dimension ?väestön_määrä.
+OPTIONAL {?dimension dc:title ?dimensionParent }
+FILTER ((
+  ?vuosi = vuosi:_2010)
+  
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:alue alue:_091_401_Maunulan_peruspiiri;
+        dimension:ikä ikä:_12-vuotiaat;
+        dimension:vuosi vuosi:_2011;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+executed : 1 times
+
+select *
+where {
+?item scv:dataset dataset:A01HKI_Astuot_hper_rahoitus_talotyyppi; ?p ?o
+}
+executed : 1 times
+
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:sukupuoli sukupuoli:Miehet;
+        dimension:työttömyys työttömyys:Työttömyysaste;
+        dimension:vuosi vuosi:_2007;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+FILTER (?value >= 10)
+}
+executed : 4 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension alue:_091_232_Arabianranta;
+        scv:dimension ikäryhmä:Väestö_yhteensä;
+        scv:dimension vuosi:_2009.
+}
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension alue:_091_303_Vallilan_peruspiiri;
+        scv:dimension hallintaperuste:Omistaa_talon.
+}
+executed : 3 times
+
+SELECT *
+WHERE {
+?dataset ?pred ?obj; rdf:type scv:Dataset
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_190_Mustikkamaa-Korkeasaari , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 2 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_092_30_Vestra ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        dimension:alue ?alue;
+        dimension:tuloluokka tuloluokka:Keskitulo;
+        dimension:vuosi vuosi:_2008;
+        dimension:yksikkö yksikkö:Henkilö_ja_euro;
+        ?dimensionProperty ?dimension .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+FILTER ((
+  ?alue = alue:_091_203_Haagan_peruspiiri || ?alue = alue:_091_303_Vallilan_peruspiiri || ?alue = alue:_091_505_Puistolan_peruspiiri || ?alue = alue:_091_506_Jakomäen_peruspiiri))
+}
+executed : 1 times
+
+SELECT ?y ?z
+WHERE {
+alue:_235_01 ?y ?z
+
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_092_73_Rekola , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_049_232_Haukilahti , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_202_Munkkiniemen_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 5 times
+
+SELECT ?dataset
+WHERE { 
+    ?d rdf:type scv:Dataset ; dc:title ?dataset .
+}
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:_091_702_Myllypuron_peruspiiri ; dimension:ikäryhmä ?ik ; rdf:value ?val .
+  ?ik dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?value ?dimension
+WHERE {
+  ?item dimension:alue alue:_091_301_Kallion_peruspiiri ;
+    dimension:vuosi vuosi:_2010 ;
+    dimension:ikäryhmä ikäryhmä:_0-6-vuotiaat ;
+    scv:dataset ?dataset ;
+    ?dimensionProperty ?dimension ;
+    rdf:value ?value .
+  ?dimensionProperty rdfs:subPropertyOf scv:dimension .
+}
+ORDER BY ?dataset
+executed : 1 times
+
+SELECT ?ikl ?val WHERE {
+  ?item scv:dimension vuosi:_2009 , alue:_091_361_Viikinranta , ?ik ; rdf:value ?val .
+  ?ik rdf:type dimension:Ikäryhmä ; dc:title ?ikl . 
+}
+
+executed : 1 times
+
+SELECT ?item ?value ?dimension
+WHERE {
+  ?item rdf:type scv:Item;
+        rdf:value ?value;
+        scv:dimension ?dimension;
+        scv:dimension dataset:A03S_HKI_Tyopaikat_TOL2002laaja.
+}
+executed : 1 times
+
+select count(*) 
+where {?dataset rdf:type scv:Dataset}
+limit 200
+offset 0
+executed : 1 times
+
