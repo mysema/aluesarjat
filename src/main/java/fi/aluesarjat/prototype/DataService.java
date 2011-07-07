@@ -119,12 +119,16 @@ public class DataService {
                 // Borrow sql connection
                 Connection sqlconn = conn.getConnection();
                 CallableStatement stmt = sqlconn.prepareCall("rdfs_rule_set (?, ?, 0)");
-                stmt.setString(1, "dimensions");
-                stmt.setString(2, dimensionNs);
-                stmt.execute();
+                try {
+                    stmt.setString(1, "dimensions");
+                    stmt.setString(2, dimensionNs);
+                    stmt.execute();    
+                }finally {
+                    stmt.close();
+                }                
             } catch (SQLException e) {
                 throw new RuntimeException(e);
-            } finally {
+            } finally {                
                 conn.close();
             }
         }
