@@ -15,7 +15,7 @@
     <!-- versions of dependencies -->
     <jetty.version>6.1.0-SNAPSHOT</jetty.version>
     <spring.version>2.5.5</spring.version>
-    <rdfbean.version>1.5.4-SNAPSHOT</rdfbean.version>
+    <rdfbean.version>1.5.5</rdfbean.version>
   </properties>
 
   <dependencies>
