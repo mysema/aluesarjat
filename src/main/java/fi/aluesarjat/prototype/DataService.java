@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +26,6 @@ import com.mysema.rdfbean.model.RDFConnection;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SKOS;
 import com.mysema.rdfbean.model.UID;
-import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
-import com.mysema.rdfbean.virtuoso.VirtuosoRepositoryConnection;
 import com.mysema.stat.META;
 import com.mysema.stat.STAT;
 import com.mysema.stat.pcaxis.PCAxisParser;
@@ -109,27 +104,6 @@ public class DataService {
                 InputStream in = new URL(datasetsList).openStream();
                 datasets = IOUtils.readLines(in);
                 in.close();
-            }
-        }
-        
-        // Initialize 
-        if (repository instanceof VirtuosoRepository) {
-            VirtuosoRepositoryConnection conn = (VirtuosoRepositoryConnection) repository.openConnection();
-            try {
-                // Borrow sql connection
-                Connection sqlconn = conn.getConnection();
-                CallableStatement stmt = sqlconn.prepareCall("rdfs_rule_set (?, ?, 0)");
-                try {
-                    stmt.setString(1, "dimensions");
-                    stmt.setString(2, dimensionNs);
-                    stmt.execute();    
-                }finally {
-                    stmt.close();
-                }                
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } finally {                
-                conn.close();
             }
         }
 

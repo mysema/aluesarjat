@@ -36,10 +36,8 @@ DONE
 Merialueiden keskipisteet ylemmäksi mantereen päälle.
 DONE
 
-
 Lyhyt kuvaus fasettihausta, karttademosta (viitteet HRI:n KML aineistoihin) ja FloAppsin Motion Chartista(?): miten tehty? Esimerkkejä!
-
-Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä kokonaan uudestaan. Mistä tilastot löytyvät? -> Henri Ahti.
+DONE
 
 Ylläpitosopimus Mikalta
 DONE
@@ -100,3 +98,8 @@ SPARQL-haut tietokeskuksen tiloissa?!? -> Soita Pekka Vuori 040 3344 790
 EI TARVETTA ENÄÄ?
 
 Inferenssi-optio sparql hakuihin
+DONE
+
+Aineiston päivittäminen: kun tilastot päivittyvät, ladataan 00-05 välillä kokonaan uudestaan. Mistä tilastot löytyvät? -> Henri Ahti.
+
+Kyselyiden aikakatkaisu 5 min
