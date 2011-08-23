@@ -1,24 +1,32 @@
 // polygonzo.js
-// Copyright 2008-2010 Ernest Delgado and Michael Geary
+// By Ernest Delgado and Michael Geary
 // http://ernestdelgado.com/
 // http://mg.to/
-// Use under any OSI license: http://www.opensource.org/
+// See UNLICENSE or http://unlicense.org/ for public domain notice
 
 PolyGonzo = {
 	
 	// PolyGonzo.Frame() - Canvas/VML frame
 	Frame: function( a ) {
 		
+		var frame = this;
+		
 		if( ! PolyGonzo.onetime ) {
 			onetime();
 			PolyGonzo.onetime = true;
 		}
 		
-		var box = a.container, geo = a.geo, features = geo.features, canvas, ctx, tracker, markpane, zoom, offset;
+		var pane = a.container;
+		var panes = a.panes || { overlayLayer:pane, overlayImage:pane, overlayMouseTarget:pane };
 		
-		if( PolyGonzo.msie ) {
+		if( ! a.events )
+			delete panes.overlayMouseTarget;
+		
+		var geos = a.geos || [ a.geo ];
+		var canvas, ctx, tracker, markers, zoom, offset;
+		
+		if( PolyGonzo.isVML() ) {
 			canvas = document.createElement( 'div' );
-			canvas.className = 'PolyGonzoCanvas';
 		}
 		else {
 			canvas = document.createElement( 'canvas' );
@@ -26,53 +34,73 @@ PolyGonzo = {
 		}
 		
 		this.canvas = canvas;
+		canvas.className = 'PolyGonzoCanvas';
 		canvas.style.position = 'absolute';
 		canvas.style.left = '0px';
 		canvas.style.top = '0px';
-		canvas.style.width = box.offsetWidth + 'px';
-		canvas.style.height = box.offsetHeight + 'px';
-		canvas.width = box.offsetWidth;
-		canvas.height = box.offsetHeight;
-		box.appendChild( canvas );
+		canvas.style.width = panes.overlayLayer.offsetWidth + 'px';
+		canvas.style.height = panes.overlayLayer.offsetHeight + 'px';
+		canvas.width = panes.overlayLayer.offsetWidth;
+		canvas.height = panes.overlayLayer.offsetHeight;
+		panes.overlayLayer.appendChild( canvas );
 		
-		// TODO: refactor
-		tracker = this.tracker = markpane = this.markpane = document.createElement( 'div' );
-		markpane.className = 'PolyGonzoMarkers';
-		markpane.zoom = 1;
-		markpane.style.position = 'absolute';
-		markpane.style.left = '0px';
-		markpane.style.top = '0px';
-		markpane.style.width = '100%';
-		markpane.style.height = '100%';
-		box.appendChild( markpane );
+		function addDiv( className, pane ) {
+			var div = document.createElement( 'div' );
+			div.className = className;
+			div.zoom = 1;
+			div.style.position = 'absolute';
+			div.style.left = '0px';
+			div.style.top = '0px';
+			div.style.width = '100%';
+			div.style.height = '100%';
+			pane.appendChild( div );
+			return div;
+		}
 		
-		// Temp jQuery dependency
-		var $canvas = $(canvas);
-		var canvasOffset;
+		if( panes.overlayImage )
+			markers = this.markers = addDiv( 'PolyGonzoMarkers', panes.overlayImage );
+		
+		if( panes.overlayMouseTarget ) {
+			tracker = this.tracker = addDiv( 'PolyGonzoTracker', panes.overlayMouseTarget );
+			
+			if( ! PolyGonzo.isVML() ) {
+				// Tracker needs a background color in IE9, doesn't hurt in
+				// other browsers except when VML is used
+				tracker.style.backgroundColor = 'white';
+				tracker.style.opacity = 0;
+			}
+		}
+		
 		var hitWhere, hitZoom, hitOffset;
 		
 		for( var name in ( a.events || {} ) )
 			wireEvent( name );
 		
 		this.draw = function( b ) {
-			canvasOffset = hitWhere = null;
+			hitWhere = null;
+			
 			zoom = b.zoom;
 			offset = b.offset;
 			
 			if( ctx ) {
 				ctx.clearRect( 0, 0, canvas.width, canvas.height );
 				
-				eachPoly( geo, features, zoom, offset, function( offsetX, offsetY, feature, poly, coords, nCoords, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth ) {
+				eachPoly( geos, zoom, offset, function( offsetX, offsetY, feature, poly, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth ) {
 					var c = ctx;
 					c.beginPath();
 					
-					var coord = coords[0];
-					c.moveTo( ~~( coord[0] + offsetX ) + .5, ~~( coord[1] + offsetY ) + .5 );
-					
-					for( var iCoord = 0, coord;  coord = coords[++iCoord]; ) {
-						c.lineTo( ~~( coord[0] + offsetX ) + .5, ~~( coord[1] + offsetY ) + .5 );
+					for( var ring, iRing = -1;  ring = poly[++iRing]; ) {
+						var coords = ring.coords[zoom];
+						if( ! coords  ||  coords.length < 3 ) continue;
+						
+						var coord = coords[0];
+						c.moveTo( ~~( coord[0] + offsetX ) + .5, ~~( coord[1] + offsetY ) + .5 );
+						
+						for( var coord, iCoord = 0;  coord = coords[++iCoord]; ) {
+							c.lineTo( ~~( coord[0] + offsetX ) + .5, ~~( coord[1] + offsetY ) + .5 );
+						}
+						c.closePath();
 					}
-					c.closePath();
 					
 					c.globalAlpha = strokeOpacity;
 					c.strokeStyle = strokeColor;
@@ -88,24 +116,32 @@ PolyGonzo = {
 				if( canvas.firstChild ) canvas.removeChild( canvas.firstChild );
 				
 				var vml = [], iVml = 0;
-				eachPoly( geo, features, zoom, offset, function( offsetX, offsetY, feature, poly, coords, nCoords, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth ) {
+				eachPoly( geos, zoom, offset, function( offsetX, offsetY, feature, poly, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth ) {
 					
 					vml[iVml++] = '<pgz_vml_:shape style="position:absolute;width:10px;height:10px;" coordorigin="';
 					vml[iVml++] = -~~( offsetX * 10 - .5 );
 					vml[iVml++] = ' ';
 					vml[iVml++] = -~~( offsetY * 10 - .5 );
-					vml[iVml++] = '" coordsize="100 100" path=" m ';
+					vml[iVml++] = '" coordsize="100 100" path=" ';
 					
-					for( var iCoord = -1, coord;  coord = coords[++iCoord]; ) {
-						vml[iVml++] = ~~( coord[0] * 10 );
-						vml[iVml++] = ',';
-						vml[iVml++] = ~~( coord[1] * 10);
-						vml[iVml++] = ' l ';
+					for( var ring, iRing = -1;  ring = poly[++iRing]; ) {
+						var coords = ring.coords[zoom];
+						if( ! coords  ||  coords.length < 3 ) continue;
+						
+						vml[iVml++] = ' m ';
+						
+						for( var iCoord = -1, coord;  coord = coords[++iCoord]; ) {
+							vml[iVml++] = ~~( coord[0] * 10 );
+							vml[iVml++] = ',';
+							vml[iVml++] = ~~( coord[1] * 10);
+							vml[iVml++] = ' l ';
+						}
+						
+						iVml--;  // remove last ' l '
+						vml[iVml++] = ' x ';
 					}
 					
-					iVml--;  // remove last ' l '
-					
-					vml[iVml++] = ' x "><pgz_vml_:stroke color="';
+					vml[iVml++] = ' "><pgz_vml_:stroke color="';
 					vml[iVml++] = strokeColor;
 					vml[iVml++] = '" opacity="';
 					vml[iVml++] = strokeOpacity;
@@ -134,8 +170,37 @@ PolyGonzo = {
 		};
 		
 		this.remove = function() {
-			a.container.removeChild( canvas );
-			a.container.removeChild( markpane );
+			if( canvas ) panes.overlayLayer.removeChild( canvas );
+			if( markers ) panes.overlayImage.removeChild( markers );
+			if( tracker ) panes.overlayMouseTarget.removeChild( tracker );
+		};
+		
+		this.getTransform = function( style ) {
+			return(
+				style.transform ||
+				style.WebkitTransform ||
+				style.msTransform ||
+				style.MozTransform ||
+				style.OTransform
+			);
+		};
+		
+		this.getTransformOffset = function() {
+			// Get the drawing offset from the grandparent element,
+			// either from the -webkit-transform style or offsetLeft/Top.
+			// TODO: Find a way to do this without using Maps API internals.
+			var parent = canvas.offsetParent;
+			if( ! parent ) return null;
+			var offsetter = parent.offsetParent;
+			var transform = this.getTransform( offsetter.style );
+			var match = transform && transform.match(
+				/translate\s*\(\s*(-?\d+)px\s*,\s*(-?\d+)px\s*\)/
+			);
+			var offset = match ?
+				{ x: +match[1], y: +match[2] } :
+				{ x: offsetter.offsetLeft, y: offsetter.offsetTop };
+			offset.isTransform = !! match;
+			return offset;
 		};
 		
 /*	Untested and out of date
@@ -152,112 +217,185 @@ PolyGonzo = {
 */
 		
 		function onetime() {
-			PolyGonzo.msie = !! document.namespaces;
-			if( PolyGonzo.msie  &&  ! document.namespaces.pgz_vml_ ) {
+			if( PolyGonzo.isVML()  &&  ! document.namespaces.pgz_vml_ ) {
 				document.namespaces.add( 'pgz_vml_', 'urn:schemas-microsoft-com:vml', '#default#VML' );
 				document.createStyleSheet().cssText = 'pgz_vml_\\:*{behavior:url(#default#VML)}';
 			}
 		}
 		
-		function eachPoly( geo, features, zoom, offset, callback ) {
-			var pi = Math.PI, log = Math.log, sin = Math.sin,
-				big = 1 << 28,
-				big180 = big / 180,
-				pi180 = pi / 180,
-				radius = big / pi,
-				oldZoom = Infinity;
-			
-			var totalPolys = 0, totalPoints = 0;
-			var nPlaces = features.length;
-			var markHtml = [];
-			
-			for( var iFeature = -1, feature;  feature = features[++iFeature]; ) {
-				var polys = feature.geometry.coordinates, nPolys = polys.length;
-				totalPolys += nPolys;
-				
-				var featureZoom = feature.zoom != null ? feature.zoom : zoom;
-				if( featureZoom != oldZoom ) {
-					oldZoom = featureZoom;
-					var
-						divisor = Math.pow( 2, 21 - featureZoom ),
-						multX = big180 / divisor,
-						multY = -radius / divisor / 2;
+		function eachPoly( geos, zoom, offset, callback ) {
+			var totalFeatures = 0, totalPolys = 0, totalPoints = 0;
+			for( var geo, iGeo = -1;  geo = geos[++iGeo]; ) {
+				var features = geo.features;
+				var crs = geo.crs  &&  geo.crs.type == 'name'  &&  geo.crs.properties.name || '';
+				var mercator = /EPSG:+3857$/.test( crs );
+				if( mercator ) {
 				}
-				
-				var featureOffset = feature.offset || offset,
-					offsetX = featureOffset.x,
-					offsetY  = featureOffset.y;
-				
-				if( geo.markers && feature.marker ) {
-					var marker = feature.marker, c = feature.properties.centroid;
-					var centroid = ( feature.centroids = feature.centroids || [] )[zoom];
-					if( ! centroid ) {
-						var s = sin( c[1] * pi180 );
-						centroid = feature.centroids[zoom] = [
-							multX * c[0],
-							multY * log( (1+s)/(1-s) )
-						];
-					}
-					markHtml.push(
-						'<div style="position:absolute; overflow:hidden; width:', marker.size.x,
-								'px; height:', marker.size.y,
-								'px; left:', centroid[0] - marker.anchor.x + offsetX,
-								'px; top:', centroid[1] - marker.anchor.y + offsetY,
-								'px;">',
-							'<img src="', marker.url, '" style="width:', marker.size.x,
-									'px; height:', marker.size.y,
-									'px; border:none; position:absolute; left:0; top:0; margin:0; padding:0;" />',
-						'</div>'
-					);
+				else {
+					var pi = Math.PI, log = Math.log, sin = Math.sin,
+						big = 1 << 28,
+						big180 = big / 180,
+						pi180 = pi / 180,
+						radius = big / pi;
 				}
+				var oldZoom = Infinity;
 				
-				var
-					fillColor = feature.fillColor,
-					fillOpacity = feature.fillOpacity,
-					strokeColor = feature.strokeColor,
-					strokeOpacity = feature.strokeOpacity,
-					strokeWidth = feature.strokeWidth;
+				totalFeatures += features.length;
+				var markHtml = [];
 				
-				for( var iPoly = -1, poly;  poly = polys[++iPoly]; ) {
-					var points = poly[0], nPoints = points.length;
-					totalPoints += nPoints;
-					var coords = ( poly.coords = poly.coords || [] )[zoom];
-					if( ! coords ) {
-						coords = poly.coords[zoom] = new Array( nPoints );
-						for( var iPoint = -1, point;  point = points[++iPoint]; ) {
-							var s = sin( point[1] * pi180 );
-							coords[iPoint] = [
-								multX * point[0],
-								multY * log( (1+s)/(1-s) )
-							];
+				for( var iFeature = -1, feature;  feature = features[++iFeature]; ) {
+					var geometry = feature.geometry, type = geometry.type;
+					var polys =
+						type == 'Polygon' ? [ geometry.coordinates ] :
+						type == 'MultiPolygon' ? geometry.coordinates :
+						null;
+					if( ! polys ) continue;
+					var nPolys = polys.length;
+					totalPolys += nPolys;
+					
+					var featureZoom = feature.zoom != null ? feature.zoom : zoom;
+					if( featureZoom != oldZoom ) {
+						oldZoom = featureZoom;
+						if( mercator ) {
+							var
+								multX = Math.pow( 2, featureZoom ) / 156543.03392,
+								multY = -multX;
+						}
+						else {
+							var
+								divisor = Math.pow( 2, 21 - featureZoom ),
+								multX = big180 / divisor,
+								multY = -radius / divisor / 2;
 						}
 					}
-					if( coords.length > 2 ) {
-						var first = coords[0], last = coords[coords.length-1];
-						if( first[0] != last[0]  ||  first[1] != last[1] )
-							coords.push( first );  // close polygon
-						callback( offsetX, offsetY, feature, poly, coords, nPoints, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth );
+					
+					var bbox = feature.bbox;
+					if( bbox ) {
+						var box = ( feature.boxes = feature.boxes || [] )[zoom];
+						if( ! box ) {
+							if( mercator ) {
+								box = [
+									multX * bbox[0], multY * bbox[1],
+									multX * bbox[2], multY * bbox[3]
+								];
+							}
+							else {
+								var s1 = sin( bbox[1] * pi180 );
+								var s3 = sin( bbox[3] * pi180 );
+								box = [
+									multX * bbox[0], multY * log( (1+s1) / (1-s1) ),
+									multX * bbox[2], multY * log( (1+s3) / (1-s3) )
+								];
+							}
+							feature.boxes[zoom] = box;
+						}
+					}
+					
+					var featureOffset = feature.offset || offset,
+						offsetX = featureOffset.x,
+						offsetY  = featureOffset.y;
+					
+					if( geo.markers && feature.marker ) {
+						var marker = feature.marker, c = feature.centroid;
+						var centroid = ( feature.centroids = feature.centroids || [] )[zoom];
+						if( ! centroid ) {
+							if( mercator ) {
+							}
+							else {
+								var s = sin( c[1] * pi180 );
+								centroid = feature.centroids[zoom] = [
+									multX * c[0],
+									multY * log( (1+s)/(1-s) )
+								];
+							}
+						}
+						markHtml.push(
+							'<div style="position:absolute; overflow:hidden; width:', marker.size.x,
+									'px; height:', marker.size.y,
+									'px; left:', centroid[0] - marker.anchor.x + offsetX,
+									'px; top:', centroid[1] - marker.anchor.y + offsetY,
+									'px;">',
+								'<img src="', marker.url, '" style="width:', marker.size.x,
+										'px; height:', marker.size.y,
+										'px; border:none; position:absolute; left:0; top:0; margin:0; padding:0;" />',
+							'</div>'
+						);
+					}
+					
+					var
+						fillColor = feature.fillColor,
+						fillOpacity = feature.fillOpacity,
+						strokeColor = feature.strokeColor,
+						strokeOpacity = feature.strokeOpacity,
+						strokeWidth = feature.strokeWidth,
+						haveRing = false;
+					
+					for( var poly, iPoly = -1;  poly = polys[++iPoly]; ) {
+						for( var ring, iRing = -1;  ring = poly[++iRing]; ) {
+							var nPoints = ring.length;
+							totalPoints += nPoints;
+							var coords = ( ring.coords = ring.coords || [] )[zoom];
+							if( ! coords ) {
+								coords = ring.coords[zoom] = new Array( nPoints );
+								if( mercator ) {
+									for( var iPoint = -1, point;  point = ring[++iPoint]; ) {
+										coords[iPoint] = [
+											multX * point[0],
+											multY * point[1]
+										];
+									}
+								}
+								else {
+									for( var iPoint = -1, point;  point = ring[++iPoint]; ) {
+										var s = sin( point[1] * pi180 );
+										coords[iPoint] = [
+											multX * point[0],
+											multY * log( (1+s)/(1-s) )
+										];
+									}
+								}
+							}
+							if( coords.length > 2 ) {
+								var first = coords[0], last = coords[coords.length-1];
+								if( first[0] != last[0]  ||  first[1] != last[1] )
+									coords.push( first );  // close polygon
+								haveRing = true;
+							}
+						}
+						if( haveRing )
+							callback( offsetX, offsetY, feature, poly, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth );
 					}
 				}
 			}
 			
 			// Add a dummy polygon at the end to fix missing final poly in IE8
-			if( PolyGonzo.msie )
+			if( PolyGonzo.isVML() )
 				callback( offsetX, offsetY, {}, {}, [], 0, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth );
 			
-			markpane.innerHTML =
-				'<div class="PolyGonzoMarkerList">' + markHtml.join('') + '</div>';
+			if( markers )
+				markers.innerHTML =
+					'<div class="PolyGonzoMarkerList">' + markHtml.join('') + '</div>';
 			
-			geo.polygonzo = {
-				counts: { features: nPlaces, polys: totalPolys, points: totalPoints }
+			a.polygonzo = {
+				counts: {
+					features: totalFeatures,
+					polys: totalPolys,
+					points: totalPoints
+				}
 			};
 		}
 		
 		function wireEvent( name ) {
 			tracker[ 'on' + name ] = function( e ) {
 				e = e || window.event;
-				canvasOffset = canvasOffset || $canvas.offset();
-				var x = -canvasOffset.left, y = -canvasOffset.top;
+				var offset = PolyGonzo.elementOffset( canvas );
+				if( ! offset ) return;
+				var x = -offset.left, y = -offset.top;
+				var transform = frame.getTransformOffset();
+				if( transform.isTransform ) {
+					x -= transform.x;
+					y -= transform.y;
+				}
 				if( e.pageX || e.pageY ) {
 					x += e.pageX;
 					y += e.pageY;
@@ -280,33 +418,52 @@ PolyGonzo = {
 		}
 		
 		function hittest( x, y ) {
-			for( var iFeature = -1, feature;  feature = features[++iFeature]; ) {
-				hitZoom = feature.zoom != null ? feature.zoom : zoom;
-				hitOffset = feature.offset || offset;
-				var featureX = x - hitOffset.x, featureY = y - hitOffset.y
-				var polys = feature.geometry.coordinates;
-				for( var iPoly = -1, poly;  poly = polys[++iPoly]; )
-					if( contains( poly, featureX, featureY, hitZoom ) ) {
-						return { /*parent:entity,*/ feature:feature, poly:poly };
+			for( var geo, iGeo = -1;  geo = geos[++iGeo]; ) {
+				if( geo.hittest === false ) continue;
+				var features = geo.features;
+				for( var iFeature = -1, feature;  feature = features[++iFeature]; ) {
+					hitZoom = feature.zoom != null ? feature.zoom : zoom;
+					hitOffset = feature.offset || offset;
+					var featureX = x - hitOffset.x, featureY = y - hitOffset.y;
+					var box = feature.boxes[hitZoom];
+					if( box && (
+					   featureX < box[0]  ||  featureX > box[2]  ||
+					   featureY < box[3]  ||  featureY > box[1]
+					) ) {
+						continue;
 					}
+					var geometry = feature.geometry, type = geometry.type;
+					var polys =
+						type == 'Polygon' ? [ geometry.coordinates ] :
+						type == 'MultiPolygon' ? geometry.coordinates :
+						null;
+					for( var iPoly = -1, poly;  poly = polys[++iPoly]; ) {
+						if( contains( poly, featureX, featureY, hitZoom ) ) {
+							return { /*parent:entity,*/ feature:feature, poly:poly };
+						}
+					}
+				}
 			}
 			return null;
 		}
 		
 		function contains( poly, x, y, zoom ) {
-			var coords = poly.coords[zoom];
-			if( ! coords ) return false;
 			var inside = false;
-			var v = coords[coords.length-1], x1 = v[0], y1 = v[1];
-		
-			for( var i = -1;  v = coords[++i]; ) {
-				var x2 = v[0], y2 = v[1];
+			for( var ring, iRing = -1;  ring = poly[++iRing]; ) {
+				var coords = ring.coords[zoom];
+				if( ! coords  ||  coords.length < 3 ) continue;
 				
-				if( ( y1 < y  &&  y2 >= y ) || ( y2 < y  &&  y1 >= y ) )
-					if ( x1 + ( y - y1 ) / ( y2 - y1 ) * ( x2 - x1 ) < x )
-						inside = ! inside;
-				
-				x1 = x2, y1 = y2;
+				var v = coords[coords.length-1], x1 = v[0], y1 = v[1];
+			
+				for( var i = -1;  v = coords[++i]; ) {
+					var x2 = v[0], y2 = v[1];
+					
+					if( ( y1 < y  &&  y2 >= y ) || ( y2 < y  &&  y1 >= y ) )
+						if ( x1 + ( y - y1 ) / ( y2 - y1 ) * ( x2 - x1 ) < x )
+							inside = ! inside;
+					
+					x1 = x2, y1 = y2;
+				}
 			}
 			return inside;
 		}
@@ -314,7 +471,7 @@ PolyGonzo = {
 	
 	// PolyGonzo.PgOverlay() - Google Maps JavaScript API V2/V3 overlay
 	PgOverlay: function( a ) {
-		var map = a.map, pane, frame, canvas, moveListener;
+		var map = a.map, pane, frame, canvas, markers, tracker, moveListener, zoomListener;
 		
 		var gm = google.maps;
 		var v2 = ! gm.event;
@@ -326,7 +483,12 @@ PolyGonzo = {
 				moveListener = gme.addListener( map, 'moveend', function() {
 					pg.redraw( null, true );
 				});
-				init( map.getPane( G_MAP_MAP_PANE ) );
+				var pane = map.getPane( G_MAP_MAP_PANE );
+				init({
+					overlayLayer: pane,
+					overlayImage: pane,
+					overlayMouseTarget: a.events && pane
+				});
 			};
 			
 			pg.remove = remove;
@@ -340,11 +502,22 @@ PolyGonzo = {
 			var gme = gm.event, pg = new gm.OverlayView;
 			
 			pg.onAdd = function() {
-				moveListener = gme.addListener( map, 'center_changed', function() {
+				function listener() {
 					if( ! map._PolyGonzo_fitting )
-						pg.draw();
+						pg.onAddOneshot( pg.draw, 100 );
+				}
+				moveListener = gme.addListener( map, 'bounds_changed', listener );
+				// TODO: This shouldn't be necessary - bounds_changed is
+				// supposed to be sufficient. But it doesn't always redraw if
+				//  you zoom without moving the map. The oneshot timer
+				// shouldn't be needed either.
+				zoomListener = gme.addListener( map, 'zoom_changed', listener );
+				var p = pg.getPanes();
+				init({
+					overlayLayer: p.overlayLayer,
+					overlayImage: p.overlayImage,
+					overlayMouseTarget: p.overlayMouseTarget
 				});
-				init( pg.getPanes().overlayLayer );
 			};
 			
 			pg.onRemove = remove;
@@ -355,19 +528,31 @@ PolyGonzo = {
 			};
 		};
 		
-		function init( pane ) {
+		pg.onAddOneshot = Oneshot();
+		
+		function Oneshot() {
+			var timer;
+			return function( fun, time ) {
+				clearTimeout( timer );
+				timer = setTimeout( fun, time );
+			};
+		}
+		
+		function init( panes ) {
 			frame = new PolyGonzo.Frame({
-				container: pane,
+				panes: panes,
 				//group: a.group,
-				geo: a.geo,
+				geos: a.geos || [ a.geo ],
 				events: a.events
 			});
 			canvas = frame.canvas;
-			markpane = frame.markpane;
+			markers = frame.markers;
+			tracker = frame.tracker;
 		}
 		
 		function remove() {
 			gme.removeListener( moveListener );
+			zoomListener && gme.removeListener( zoomListener );
 			frame.remove();
 		}
 		
@@ -380,29 +565,25 @@ PolyGonzo = {
 			var margin = { x: width / 3, y: height / 3 };
 			var canvasSize = { width: width + margin.x * 2, height: height + margin.y * 2 };
 			
-			var offset = {
-				x: canvas.offsetParent.offsetParent.offsetLeft,
-				y: canvas.offsetParent.offsetParent.offsetTop
-			};
+			var offset = frame.getTransformOffset();
+			if( ! offset ) return;
 			
-			canvas.width = canvasSize.width;
-			canvas.height = canvasSize.height;
+			function move( element ) {
+				if( ! element ) return;
+				
+				element.width = canvasSize.width;
+				element.height = canvasSize.height;
+				
+				element.style.width = canvasSize.width + 'px';
+				element.style.height = canvasSize.height + 'px';	
+				
+				element.style.left = ( - offset.x - margin.x ) + 'px';
+				element.style.top = ( - offset.y - margin.y ) + 'px';
+			}
 			
-			canvas.style.width = canvasSize.width + 'px';
-			canvas.style.height = canvasSize.height + 'px';	
-			
-			canvas.style.left = ( - offset.x - margin.x ) + 'px';
-			canvas.style.top = ( - offset.y - margin.y ) + 'px';
-			
-			// TODO: refactor
-			markpane.width = canvasSize.width;
-			markpane.height = canvasSize.height;
-			
-			markpane.style.width = canvasSize.width + 'px';
-			markpane.style.height = canvasSize.height + 'px';	
-			
-			markpane.style.left = ( - offset.x - margin.x ) + 'px';
-			markpane.style.top = ( - offset.y - margin.y ) + 'px';
+			move( canvas );
+			move( markers );
+			move( tracker );
 			
 			var zero = converter.fromLatLngToDivPixel(
 				new gm.LatLng( 0, 0 )
@@ -415,8 +596,8 @@ PolyGonzo = {
 				zoom: map.getZoom()
 			});
 			
-			if( a.log ) {
-				var counts = a.geo.polygonzo.counts;
+			var counts = a.polygonzo && a.polygonzo.counts;
+			if( a.log && counts ) {
 				a.log(
 					counts.features, 'places,',
 					counts.polys, 'polys,',
@@ -426,5 +607,22 @@ PolyGonzo = {
 		}
 		
 		return pg;
+	},
+	
+	elementOffset: function( e ) {
+		var left = 0, top = 0;
+		while( e ) {
+			left += e.offsetLeft;
+			top += e.offsetTop;
+			e = e.offsetParent;
+		}
+		return { left:left, top:top };
+	},
+	
+	isVML: function() {
+		if( PolyGonzo.isVML.yes == null )
+			PolyGonzo.isVML.yes =
+				! document.createElement( 'canvas' ).getContext;
+		return PolyGonzo.isVML.yes;
 	}
 };

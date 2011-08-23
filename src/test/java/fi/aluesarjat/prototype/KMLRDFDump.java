@@ -139,13 +139,24 @@ public class KMLRDFDump {
                 JSONObject geometry = new JSONObject();
                 geometry.put("type","MultiPolygon");
                 List<Coordinate> value = polygons.get(code);
+                Double minlong = null, maxlong = null, minlat = null, maxlat = null;
                 if (value != null){
                     JSONArray coordinates = new JSONArray();
                     for (Coordinate coordinate : value){
                         coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
+                        if (minlong == null) {
+                            minlong = maxlong = coordinate.getLongitude();
+                            minlat = maxlat = coordinate.getLatitude();
+                        } else {
+                            minlong = Math.min(minlong, coordinate.getLongitude());
+                            maxlong = Math.max(maxlong, coordinate.getLongitude());
+                            minlat = Math.min(minlat, coordinate.getLatitude());
+                            maxlat = Math.max(maxlat, coordinate.getLatitude());
+                        }
                     }
                     geometry.put("coordinates", toJSONArray(toJSONArray(coordinates))); // TODO : get rid of wrapping
-
+                    feature.put("bbox", toJSONArray(minlong, minlat, maxlong, maxlat));
+                    
                 }else{
                     MultiGeometry multiGeometry = multiGeometries.get(code);
                     if (multiGeometry == null){
@@ -156,10 +167,20 @@ public class KMLRDFDump {
                         JSONArray coordinates = new JSONArray();
                         for (Coordinate coordinate : ((Polygon)geo).getOuterBoundaryIs().getLinearRing().getCoordinates()){
                             coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
+                            if (minlong == null) {
+                                minlong = maxlong = coordinate.getLongitude();
+                                minlat = maxlat = coordinate.getLatitude();
+                            } else {
+                                minlong = Math.min(minlong, coordinate.getLongitude());
+                                maxlong = Math.max(maxlong, coordinate.getLongitude());
+                                minlat = Math.min(minlat, coordinate.getLatitude());
+                                maxlat = Math.max(maxlat, coordinate.getLatitude());
+                            }
                         }
                         array.add(coordinates);
                     }
                     geometry.put("coordinates", toJSONArray(array)); // TODO : get rid of wrapping
+                    feature.put("bbox", toJSONArray(minlong, minlat, maxlong, maxlat));
                 }
                 feature.put("geometry", geometry);
 

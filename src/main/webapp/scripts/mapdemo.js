@@ -10,6 +10,7 @@ var defaultNamespaces = [];
 
 var geoOverlay = {
 		type: "FeatureCollection",
+		//hittest: false,
 		properties: { },
 		features: [ {
 			strokeColor: "#000000",
@@ -20,6 +21,7 @@ var geoOverlay = {
 			fillOpacity: 0.2,
 		    type: "Feature",
 		    properties: {},
+		    boxes: new Array(),
 		    geometry: {type:"MultiPolygon", coordinates:[]}
 		} ]
 	};
@@ -186,6 +188,7 @@ function createOverlay(geo){
 		feature.strokeWidth = 1;
 		feature.fillColor = "#FFC0C0";
 		feature.fillOpacity = 0.1;
+		feature.boxes = new Array(); 
 	}					
 	return new PolyGonzo.PgOverlay({ 
 		map: map, 
