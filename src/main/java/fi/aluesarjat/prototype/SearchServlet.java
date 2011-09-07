@@ -44,22 +44,6 @@ public class SearchServlet extends AbstractSPARQLServlet {
 
     private static final String[] EMPTY = new String[0];
 
-    private static enum Format { 
-        JSON("application/json", "UTF-8"), CSV("text/csv", "ISO-8859-15"); 
-        final String contentType;
-        final String encoding;
-        private Format(String contentType, String encoding) {
-            this.contentType = contentType;
-            this.encoding = encoding;
-        }
-        public String getContentType() {
-            return contentType;
-        }
-        public String getCharacterEncoding() {
-            return encoding;
-        }
-    };
-
     private final JsonFactory jsonFactory = new JsonFactory();
 
     private final SearchService searchService;
@@ -87,7 +71,9 @@ public class SearchServlet extends AbstractSPARQLServlet {
             return;
         }
         Format format = getFormat(request);
-
+        if (format == Format.JSON && request.getParameter("callback") != null) {
+            format = Format.JSONP;
+        }        
         response.setCharacterEncoding(format.getCharacterEncoding());
         response.setContentType(format.getContentType());
         response.setDateHeader("Last-Modified", System.currentTimeMillis());
@@ -107,7 +93,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         boolean includeItems = includes.contains("items");
         boolean includeValues = includes.contains("values");
 
-        if (Format.JSON.equals(format)) {
+        if (Format.JSON.equals(format) || Format.JSONP.equals(format)) {
             SearchResults searchResults = searchService.search(restrictions, includeItems, limit, offset, includeValues);
             serviceJson(searchResults, namespaces, request, response);
         } else if (Format.CSV.equals(format)) {

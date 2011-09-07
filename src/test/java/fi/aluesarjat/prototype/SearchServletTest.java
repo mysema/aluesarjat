@@ -40,6 +40,15 @@ public class SearchServletTest extends AbstractServletTest{
         servlet.service(request, response);
         assertEquals(HttpServletResponse.SC_NOT_MODIFIED, response.getStatus());
     }
+    
+    @Test
+    public void JSON() throws ServletException, IOException{
+        request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
+        request.addParameter("include", "values");
+        servlet.service(request, response);
+
+        assertEquals("application/json", response.getContentType());
+    }
 
     @Test
     public void JSONP_Is_Supported() throws ServletException, IOException{
@@ -51,6 +60,7 @@ public class SearchServletTest extends AbstractServletTest{
         String res = response.getContentAsString();
         assertTrue(res.startsWith("handleResponse("));
         assertTrue(res.endsWith(")"));
+        assertEquals("text/javascript", response.getContentType());
     }
 
     @Test
