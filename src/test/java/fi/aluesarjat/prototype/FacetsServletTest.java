@@ -36,18 +36,28 @@ public class FacetsServletTest extends AbstractServletTest{
     @Test
     public void Correct_CharsetEncoding() throws ServletException, IOException{
         servlet.service(request, response);
+        
         assertEquals("UTF-8", response.getCharacterEncoding());
         assertEquals("application/json", response.getContentType());
         System.err.println(response.getContentAsString());
         assertTrue(response.getContentAsString().contains("Etel\u00E4inen suurpiiri"));
+    }
+    
+    @Test
+    public void JSON() throws ServletException, IOException{
+        servlet.service(request, response);
+     
+        assertEquals("application/json", response.getContentType());
     }
 
     @Test
     public void JSONP_Is_Supported() throws ServletException, IOException{
         request.setParameter("callback", "handleResponse");
         servlet.service(request, response);
+     
         String res = response.getContentAsString();
         assertTrue(res.startsWith("handleResponse("));
         assertTrue(res.endsWith(")"));
+        assertEquals("text/javascript", response.getContentType());
     }
 }

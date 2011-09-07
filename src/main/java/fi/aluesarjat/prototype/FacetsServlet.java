@@ -43,7 +43,11 @@ public class FacetsServlet extends AbstractSPARQLServlet {
 
         response.setDateHeader("Last-Modified", System.currentTimeMillis());
         response.setHeader("Cache-Control", "max-age=86400");
-        response.setContentType("application/json");
+        if (request.getParameter("callback") != null) {
+            response.setContentType("text/javascript");   
+        } else {
+            response.setContentType("application/json");    
+        }        
         response.setCharacterEncoding("UTF-8");
 
         Map<UID, String> namespaces = searchService.getNamespaces();
