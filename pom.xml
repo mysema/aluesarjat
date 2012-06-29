@@ -8,6 +8,7 @@
   <name>Aluesarjat</name>
   <packaging>war</packaging>
   <properties>
+    <failIfNoTests>false</failIfNoTests>
     <finalName>aluesarjat</finalName>
     <extraResources>src/main/resources</extraResources>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
