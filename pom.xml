@@ -146,6 +146,7 @@
 
   </dependencies>
 
+<!-- 
   <repositories>
     <repository>
       <id>guiceyfruit.release</id>
@@ -168,6 +169,7 @@
       </snapshots>
     </repository>
   </repositories>
+ -->  
 
   <build>
     <finalName>${finalName}</finalName>
