@@ -152,6 +152,14 @@
       <id>mysema.source</id>
       <url>https://source.mysema.com/maven2/releases/</url>
     </repository>
+    <repository>
+      <id>guiceyfruit.release</id>
+      <url>http://guiceyfruit.googlecode.com/svn/repo/releases/</url>
+    </repository>
+    <repository>
+      <id>maven2-repository.dev.java.net</id>
+      <url>http://download.java.net/maven/2</url>
+    </repository>    
   </repositories>
 
   <build>
