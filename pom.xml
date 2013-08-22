@@ -15,7 +15,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- versions of dependencies -->
-    <jetty.version>6.1.0-SNAPSHOT</jetty.version>
+    <jetty.version>6.1.15</jetty.version>
     <spring.version>2.5.5</spring.version>
     <rdfbean.version>1.5.5</rdfbean.version>
   </properties>
@@ -150,7 +150,7 @@
   <repositories>
     <repository>
       <id>mysema.source</id>
-      <url>https://source.mysema.com/maven2/releases/</url>
+      <url>http://source.mysema.com/maven2/releases/</url>
     </repository>
     <repository>
       <id>guiceyfruit.release</id>
@@ -178,6 +178,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.0</version>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
