@@ -24,9 +24,9 @@ service jetty restart
 
 ### Data update
 
-Replace the contents of profiles/prod/data/datasets
+Replace the contents of `profiles/prod/data/datasets`
 
-Move the px files to semantic.hri.fi:/opt/aluesarjat
+Move the px files to `semantic.hri.fi:/opt/aluesarjat`
 
 Reset virtuoso on semantic.hri.fi 
 
