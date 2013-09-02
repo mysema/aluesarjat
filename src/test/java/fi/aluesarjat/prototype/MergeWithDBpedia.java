@@ -59,7 +59,7 @@ public class MergeWithDBpedia {
                                     String comment = dbpediaStmt.getObject().getValue();
                                     try {
                                         comment = URLDecoder.decode(comment,"UTF-8");
-                                    }catch(IllegalArgumentException e) {
+                                    } catch (IllegalArgumentException e) {
                                         System.err.println(e.getMessage());
                                     }
                                     comments.add(new STMT(dbpediaSubject, dbpediaStmt.getPredicate(), new LIT(comment, fi)));

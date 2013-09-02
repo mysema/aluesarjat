@@ -191,8 +191,10 @@ public class DataService {
                     logger.info("Skipping existing " + datasetName);
                 }
             }
-        } catch(FileNotFoundException e) {    
+        } catch (FileNotFoundException e) {    
             logger.error(e.getMessage(), e);
+        } catch (IOException e) {    
+        	logger.error(datasetDef + " " + e.getMessage(), e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
