@@ -9,10 +9,10 @@ import com.mysema.rdfbean.guice.RDFBeanRepositoryModule;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.sesame.MemoryRepository;
 
-public class MemoryStoreRDFBeanModule extends RDFBeanRepositoryModule{
+public class MemoryStoreRDFBeanModule extends RDFBeanRepositoryModule {
 
     @Override
-    public List<String> getConfiguration(){
+    public List<String> getConfiguration() {
         return Arrays.asList("/aluesarjat.properties", "/import-parallel.properties");
     }
 

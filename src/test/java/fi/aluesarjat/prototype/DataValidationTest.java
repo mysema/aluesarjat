@@ -30,7 +30,7 @@ public class DataValidationTest {
     private RDFConnection connection;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         repository = new MemoryRepository();
         repository.setSources(ModuleUtils.getSources(baseURI));
         repository.initialize();
@@ -39,37 +39,37 @@ public class DataValidationTest {
     }
 
     @After
-    public void tearDown(){
-        if (connection != null){
+    public void tearDown() {
+        if (connection != null) {
             connection.close();
         }
         repository.close();
     }
 
     @Test
-    public void Validate() throws IOException{
+    public void Validate() throws IOException {
         connection = repository.openConnection();
         UID alueType = new UID(baseURI + "dimensions/", "Alue");
         CloseableIterator<STMT> stmts = connection.findStatements(null, RDF.type, alueType, null, false);
         Set<ID> missing = new HashSet<ID>();
-        try{
-            while (stmts.hasNext()){
+        try {
+            while (stmts.hasNext()) {
                 STMT stmt = stmts.next();
                 CloseableIterator<STMT> polygons = connection.findStatements(stmt.getSubject(), GEO.polygon, null, null, false);
-                try{
-                    if (!polygons.hasNext()){
+                try {
+                    if (!polygons.hasNext()) {
                         missing.add(stmt.getSubject());
                     }
-                }finally{
+                } finally {
                     polygons.close();
                 }
             }
 
-        }finally{
+        } finally {
             stmts.close();
         }
 
-        for (ID id : missing){
+        for (ID id : missing) {
             System.err.println("No polygons for " + id);
         }
 //        assertTrue("Got "+missing.size()+" missing polygons", missing.isEmpty());

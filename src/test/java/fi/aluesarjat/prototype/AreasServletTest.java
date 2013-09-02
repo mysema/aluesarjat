@@ -9,18 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 
-public class AreasServletTest extends AbstractServletTest{
+public class AreasServletTest extends AbstractServletTest {
 
     private AreasServlet servlet;
 
     @Override
-    public void setUp(){
+    public void setUp() {
         super.setUp();
         servlet = new AreasServlet();
     }
 
     @Test
-    public void IfModifiedSince_Handling() throws ServletException, IOException{
+    public void IfModifiedSince_Handling() throws ServletException, IOException {
         servlet.service(request, response);
         assertEquals(200, response.getStatus());
 
@@ -31,35 +31,35 @@ public class AreasServletTest extends AbstractServletTest{
     }
 
     @Test
-    public void Correct_CharsetEncoding() throws ServletException, IOException{
+    public void Correct_CharsetEncoding() throws ServletException, IOException {
         servlet.service(request, response);
         assertEquals("UTF-8", response.getCharacterEncoding());
         assertEquals("application/json", response.getContentType());
     }
 
     @Test
-    public void Level1() throws ServletException, IOException{
+    public void Level1() throws ServletException, IOException {
         request.setParameter("level", "1");
         servlet.service(request, response);
         assertEquals(200, response.getStatus());
     }
 
     @Test
-    public void Level2() throws ServletException, IOException{
+    public void Level2() throws ServletException, IOException {
         request.setParameter("level", "2");
         servlet.service(request, response);
         assertEquals(200, response.getStatus());
     }
 
     @Test
-    public void Level3() throws ServletException, IOException{
+    public void Level3() throws ServletException, IOException {
         request.setParameter("level", "3");
         servlet.service(request, response);
         assertEquals(200, response.getStatus());
     }
 
     @Test
-    public void Level4() throws ServletException, IOException{
+    public void Level4() throws ServletException, IOException {
         request.setParameter("level", "4");
         servlet.service(request, response);
         assertEquals(200, response.getStatus());

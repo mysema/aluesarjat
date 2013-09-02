@@ -14,7 +14,7 @@ public final class RDFUtil {
     public static void dump(Set<STMT> stmts, File file) throws IOException {
         TurtleStringWriter writer = new TurtleStringWriter();
         writer.begin();
-        for (STMT stmt : stmts){
+        for (STMT stmt : stmts) {
             writer.handle(stmt);
         }
         writer.end();
@@ -23,6 +23,6 @@ public final class RDFUtil {
         FileUtils.writeStringToFile(file, writer.toString(), "UTF-8");
     }
     
-    private RDFUtil(){}
+    private RDFUtil() {}
 
 }

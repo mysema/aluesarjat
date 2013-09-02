@@ -149,12 +149,12 @@ public class SearchServiceImpl implements SearchService {
         try {
             CloseableIterator<STMT> stmts = conn.findStatements(null, META.nsPrefix, null, null, false);
             Map<UID,String> namespaces = new HashMap<UID, String>(32);
-            try{
-                while (stmts.hasNext()){
+            try {
+                while (stmts.hasNext()) {
                     STMT stmt = stmts.next();
                     namespaces.put((UID) stmt.getSubject(), stmt.getObject().getValue());
                 }
-            }finally{
+            } finally {
                 stmts.close();
             }
             return namespaces;
@@ -213,11 +213,11 @@ public class SearchServiceImpl implements SearchService {
         query.limit(limit+1).offset(offset);
         query.where(filters.toArray(new Predicate[filters.size()]));
 
-        if (bindings.containsKey(dataset)){
+        if (bindings.containsKey(dataset)) {
             query.from(bindings.get(dataset));
         }
 
-        for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
+        for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()) {
             query.set(entry.getKey(), entry.getValue());
         }
 
@@ -269,7 +269,7 @@ public class SearchServiceImpl implements SearchService {
                 dimensionProperty.stringValue().startsWith(dimensionBase)
             ).distinct();
 
-        for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
+        for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()) {
             query.set(entry.getKey(), entry.getValue());
         }
 
@@ -297,11 +297,11 @@ public class SearchServiceImpl implements SearchService {
         }
         query.where(filters.toArray(new Predicate[filters.size()]));
 
-        if (bindings.containsKey(dataset)){
+        if (bindings.containsKey(dataset)) {
             query.from(bindings.get(dataset));
         }
 
-        for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
+        for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()) {
             query.set(entry.getKey(), entry.getValue());
         }
 
@@ -318,8 +318,8 @@ public class SearchServiceImpl implements SearchService {
         logDuration("findAvailableDatasets:\n" + query, System.currentTimeMillis() - start);
     }
 
-    private void logDuration(String title, long duration){
-        if (log.isWarnEnabled() && duration > 500){
+    private void logDuration(String title, long duration) {
+        if (log.isWarnEnabled() && duration > 500) {
             log.warn(title + " took " + duration + "ms");
         }
     }
@@ -332,9 +332,9 @@ public class SearchServiceImpl implements SearchService {
             List<UID> values = facetRestrictions.get(facet);
             if (facet.equals(SCV.Dataset)) {
                 filters.add(item.has(SCV.dataset, dataset));
-                if (values.size() == 1){
+                if (values.size() == 1) {
                     bindings.put(dataset, values.get(0));
-                }else{
+                } else {
                     filters.add(dataset.in(values));
                 }
             } else {
@@ -399,7 +399,7 @@ public class SearchServiceImpl implements SearchService {
                 row = iter.next();
                 result.addAvailableValue((UID) row.get(dimension.getName()));
             }
-        }finally{
+        } finally {
             iter.close();
         }
 
@@ -415,7 +415,7 @@ public class SearchServiceImpl implements SearchService {
                 row = iter.next();
                 result.addAvailableValue((UID) row.get(dataset.getName()));
             }
-        }finally{
+        } finally {
             iter.close();
         }
 
@@ -435,7 +435,7 @@ public class SearchServiceImpl implements SearchService {
                     row = iter.next();
                     facetValues.put((UID) row.get(dimensionType.getName()), (UID) row.get(dimension.getName()));
                 }
-            }finally{
+            } finally {
                 iter.close();
             }
         }

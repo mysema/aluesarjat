@@ -25,6 +25,6 @@ public final class Constants {
 
     public static final QUID parent = new QUID("parent");
 
-    private Constants(){}
+    private Constants() {}
 
 }

@@ -15,10 +15,10 @@ import org.apache.commons.io.FileUtils;
  */
 public class LoaderDatasetsDump {
    
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         Properties properties = new Properties();
         InputStream in = LoaderDatasetsDump.class.getResourceAsStream("/loader.properties");
-        if (in == null){
+        if (in == null) {
             throw new IllegalArgumentException("Make sure classpath:/loader.properties is available");
         }
         properties.load(in);      
@@ -28,13 +28,13 @@ public class LoaderDatasetsDump {
         Stack<File> unhandled = new Stack<File>();
         unhandled.push(new File(dataDir));
         StringBuilder builder = new StringBuilder();
-        while (!unhandled.isEmpty()){
+        while (!unhandled.isEmpty()) {
             File file = unhandled.pop();
-            if (file.isDirectory()){
-                if (file.listFiles() != null){
+            if (file.isDirectory()) {
+                if (file.listFiles() != null) {
                     unhandled.addAll(Arrays.asList(file.listFiles()));    
                 }                
-            }else if (file.getName().endsWith(".px")){
+            } else if (file.getName().endsWith(".px")) {
                 builder.append(file.toURI().toURL().toString() + " \".\"\n");
             }
         }

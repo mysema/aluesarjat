@@ -19,7 +19,7 @@ public class LoadExternalData {
         repository.initialize();
         NamespaceHandler namespaceHandler = new NamespaceHandler(repository);
         
-        try{
+        try {
             File file = new File("src/test/resources/pc-axis.txt");
             DataService dataService = new DataService(repository, namespaceHandler, baseURI, DataServiceMode.NONTHREADED, true, file.toURI().toURL().toString());
             dataService.initialize();    

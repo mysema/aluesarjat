@@ -64,7 +64,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         HttpServletResponse response = (HttpServletResponse)res;
 
         long ifModifiedSince = request.getDateHeader("If-Modified-Since");
-        if (ifModifiedSince >= LAST_MODIFIED){
+        if (ifModifiedSince >= LAST_MODIFIED) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
@@ -155,14 +155,14 @@ public class SearchServlet extends AbstractSPARQLServlet {
 
     private void serviceJson(SearchResults searchResults, Map<UID, String> namespaces, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String jsonpCallback = request.getParameter("callback");
-        if (jsonpCallback != null){
+        if (jsonpCallback != null) {
             response.getWriter().write(jsonpCallback + "(");
         }
 
         JsonGenerator generator = jsonFactory.createJsonGenerator(response.getWriter());
         generator.writeStartObject();
 
-        if (searchResults.getAvailableValues() != null){
+        if (searchResults.getAvailableValues() != null) {
             addAvailableValues(namespaces, searchResults, generator);
         }
 
@@ -179,7 +179,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         generator.writeEndObject();
         generator.flush();
 
-        if (jsonpCallback != null){
+        if (jsonpCallback != null) {
             response.getWriter().write(")");
         }
         response.getWriter().flush();    }
@@ -188,7 +188,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         String format = req.getParameter("format");
         String accept = req.getHeader("Accept");
         
-        if ("csv".equalsIgnoreCase(format) || "text/csv".equalsIgnoreCase(accept)){
+        if ("csv".equalsIgnoreCase(format) || "text/csv".equalsIgnoreCase(accept)) {
             return Format.CSV;
         } else {
             return Format.JSON;
@@ -201,14 +201,14 @@ public class SearchServlet extends AbstractSPARQLServlet {
         // items
         generator.writeFieldName("items");
         generator.writeStartArray();
-        for (Item item : searchResults.getItems()){
+        for (Item item : searchResults.getItems()) {
             generator.writeStartObject();
             generator.writeFieldName("values");
             generator.writeStartArray();
-            for (UID uid : item.getValues()){
+            for (UID uid : item.getValues()) {
                 if (uid != null) {
                     generator.writeString(getPrefixed(uid, namespaces));
-                }else{
+                } else {
                     generator.writeNull();
                 }
             }
@@ -225,7 +225,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         // headers
         generator.writeFieldName("headers");
         generator.writeStartArray();
-        for (UID header : searchResults.getHeaders()){
+        for (UID header : searchResults.getHeaders()) {
             generator.writeString(getPrefixed(header, namespaces));
         }
         generator.writeEndArray();
@@ -237,7 +237,7 @@ public class SearchServlet extends AbstractSPARQLServlet {
         // availableValues
         generator.writeFieldName("availableValues");
         generator.writeStartObject();
-        for (UID value : searchResults.getAvailableValues()){
+        for (UID value : searchResults.getAvailableValues()) {
             generator.writeBooleanField(getPrefixed(value, namespaces), true);
         }
         generator.writeEndObject();

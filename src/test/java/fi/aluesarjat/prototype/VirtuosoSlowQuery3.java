@@ -14,11 +14,11 @@ import com.mysema.stat.scovo.SCV;
 
 public class VirtuosoSlowQuery3 {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Repository repository = new VirtuosoRepository("localhost:1111", "dba", "dba");
         repository.initialize();
         RDFConnection conn = repository.openConnection();
-        try{
+        try {
             String queryString = "SELECT DISTINCT ?dimension WHERE { ?item ?_c3 ?_c4 , ?_c5 , ?dimension } ";
 
             SPARQLQuery query = conn.createQuery(QueryLanguage.SPARQL, queryString);
@@ -28,12 +28,12 @@ public class VirtuosoSlowQuery3 {
 
             long start = System.currentTimeMillis();
             CloseableIterator<Map<String,NODE>> results = query.getTuples();
-            while (results.hasNext()){
+            while (results.hasNext()) {
                 results.next();
             }
             System.err.println(System.currentTimeMillis()-start);
 
-        }finally{
+        } finally {
             conn.close();
             repository.close();
         }

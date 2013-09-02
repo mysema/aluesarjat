@@ -35,25 +35,25 @@ public class TabularResults {
     private static String prefixes;
 
     @BeforeClass
-    public static void beforeClass(){
+    public static void beforeClass() {
         String baseURI = ModuleUtils.DEFAULT_BASE_URI;
         repository = new VirtuosoRepository("localhost:1111", "dba", "dba", baseURI);
         repository.setSources(ModuleUtils.getSources(baseURI));
         repository.initialize();
 
         // get prefixes
-        repository.execute(new RDFConnectionCallback<Void>(){
+        repository.execute(new RDFConnectionCallback<Void>() {
             @Override
             public Void doInConnection(RDFConnection connection) throws IOException {
                 CloseableIterator<STMT> stmts = connection.findStatements(null, META.nsPrefix, null, null, false);
                 StringBuilder p = new StringBuilder();
-                try{
-                    while (stmts.hasNext()){
+                try {
+                    while (stmts.hasNext()) {
                         STMT stmt = stmts.next();
                         p.append("PREFIX " + stmt.getObject().getValue() + ": <" + stmt.getSubject().getId() + ">\n");
                     }
                     prefixes = p.toString();
-                }finally{
+                } finally {
                     stmts.close();
                 }
                 return null;
@@ -62,12 +62,12 @@ public class TabularResults {
     }
 
     @AfterClass
-    public static void afterClass(){
+    public static void afterClass() {
         repository.close();
     }
 
     @Test
-    public void Table1(){
+    public void Table1() {
         String id = "Taulukko 1. Väkiluku ikäryhmittäin 1. tammikuuta ja ennuste";
 
         StringBuilder query = new StringBuilder(prefixes);
@@ -82,7 +82,7 @@ public class TabularResults {
         query.append("} \n");
         query.append("ORDER BY ?ik ?v \n");
 
-        query(id, query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback() {
             @Override
             public void handle(Map<String, NODE> row) {
                 String ik = row.get("ik").asURI().getLocalName();
@@ -95,7 +95,7 @@ public class TabularResults {
 
 
     @Test
-    public void Table2(){
+    public void Table2() {
         String id = "Taulukko 2. Väkiluku äidinkielen mukaan 1. tammikuuta";
 
         StringBuilder query = new StringBuilder(prefixes);
@@ -110,7 +110,7 @@ public class TabularResults {
         query.append("} \n");
         query.append("ORDER BY ?k ?v");
 
-        query(id, query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback() {
             @Override
             public void handle(Map<String, NODE> row) {
                 String k = row.get("k").asURI().getLocalName();
@@ -122,7 +122,7 @@ public class TabularResults {
     }
 
     @Test
-    public void Table3(){
+    public void Table3() {
         String id = "Taulukko 3. Väestönmuutokset";
 
         StringBuilder query = new StringBuilder(prefixes);
@@ -137,7 +137,7 @@ public class TabularResults {
         query.append("} \n");
         query.append("ORDER BY ?k ?v");
 
-        query(id, query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback() {
             @Override
             public void handle(Map<String, NODE> row) {
                 String k = row.get("k").asURI().getLocalName();
@@ -149,7 +149,7 @@ public class TabularResults {
     }
 
     @Test
-    public void Table4(){
+    public void Table4() {
         String id = "Taulukko 4. Asuntokanta hallintaperusteen ja huoneistotyypin mukaan 31.12.2009 (viimeinen vuosi)";
 
         StringBuilder query = new StringBuilder(prefixes);
@@ -164,7 +164,7 @@ public class TabularResults {
         query.append("GROUP BY ?ha ?hu\n");
         query.append("ORDER BY ?ha ?hu");
 
-        query(id, query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback() {
             @Override
             public void handle(Map<String, NODE> row) {
                 String ha = row.get("ha").asURI().getLocalName();
@@ -177,7 +177,7 @@ public class TabularResults {
     }
 
     @Test
-    public void Table5(){
+    public void Table5() {
         String id = "Taulukko 5. Rakennukset 31.12.2008 (viimeinen vuosi)";
 
         StringBuilder query = new StringBuilder(prefixes);
@@ -191,7 +191,7 @@ public class TabularResults {
         query.append("} \n");
         query.append("ORDER BY ?kt ?yk");
 
-        query(id, query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback() {
             @Override
             public void handle(Map<String, NODE> row) {
                 String kt = row.get("kt").asURI().getLocalName();
@@ -203,7 +203,7 @@ public class TabularResults {
     }
 
     @Test
-    public void Table6(){
+    public void Table6() {
         String id = "Taulukko 6. Asuntotuotanto (kolme viimeistä vuotta)";
 
         StringBuilder query = new StringBuilder(prefixes);
@@ -223,7 +223,7 @@ public class TabularResults {
         query.append("GROUP BY ?k ?v\n");
         query.append("ORDER BY ?k ?v");
 
-        query(id, query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback() {
             @Override
             public void handle(Map<String, NODE> row) {
                 String k = row.get("k").asURI().getLocalName();
@@ -236,7 +236,7 @@ public class TabularResults {
     }
 
     @Test
-    public void Table7_1(){
+    public void Table7_1() {
         String id = "Taulukko 7. Väestön keskitulo, euroa, vuonna 2008 (viimeinen vuosi)";
 
         StringBuilder query = new StringBuilder(prefixes);
@@ -247,7 +247,7 @@ public class TabularResults {
         query.append(" ?i rdf:value ?val . FILTER ( datatype(?val) = xsd:double ) \n");
         query.append("} \n");
 
-        query(id, query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback() {
             @Override
             public void handle(Map<String, NODE> row) {
                 String val = row.get("val").getValue();
@@ -257,7 +257,7 @@ public class TabularResults {
     }
 
     @Test
-    public void Table7_2(){
+    public void Table7_2() {
         String id = "Taulukko 7. Työpaikat toimialan mukaan (kolme viimeistä vuotta)";
 
         StringBuilder query = new StringBuilder(prefixes);
@@ -273,7 +273,7 @@ public class TabularResults {
         query.append("GROUP BY ?t ?v\n");
         query.append("ORDER BY ?t ?v");
 
-        query(id, query.toString(), new RowCallback(){
+        query(id, query.toString(), new RowCallback() {
             @Override
             public void handle(Map<String, NODE> row) {
                 String t = row.get("t").asURI().getLocalName();
@@ -290,18 +290,18 @@ public class TabularResults {
 
         System.out.println(queryString);
         RDFConnection connection = repository.openConnection();
-        try{
+        try {
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, queryString);
             CloseableIterator<Map<String, NODE>> tuplesResult = query.getTuples();
-            try{
-                while (tuplesResult.hasNext()){
+            try {
+                while (tuplesResult.hasNext()) {
                     callback.handle(tuplesResult.next());
                 }
                 System.out.println();
-            }finally{
+            } finally {
                 tuplesResult.close();
             }
-        }finally{
+        } finally {
             connection.close();
         }
 

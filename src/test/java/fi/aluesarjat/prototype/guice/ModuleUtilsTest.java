@@ -22,7 +22,7 @@ public class ModuleUtilsTest {
     private MemoryRepository repository;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         repository = new MemoryRepository();
         repository.setSources(ModuleUtils.getSources("http://www.aluesarjat.fi/data/"));
         repository.initialize();
@@ -38,13 +38,13 @@ public class ModuleUtilsTest {
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         repository.close();
     }
 
     @Test
     public void GetSources() {
-        repository.execute(new RDFConnectionCallback<Void>(){
+        repository.execute(new RDFConnectionCallback<Void>() {
             @Override
             public Void doInConnection(RDFConnection connection) throws IOException {
                 assertTrue(connection.exists(null, null, new UID("http://www.aluesarjat.fi/data/dimensions/Alue"), null, false));

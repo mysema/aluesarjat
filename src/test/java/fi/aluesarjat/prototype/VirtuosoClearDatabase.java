@@ -8,14 +8,14 @@ import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
 
 public class VirtuosoClearDatabase {
 
-    public static void main(String[] args) throws StoreException{
+    public static void main(String[] args) throws StoreException {
         Repository repository = new VirtuosoRepository("localhost:1111", "dba", "dba");
         repository.initialize();
         RDFConnection conn = repository.openConnection();
-        try{
+        try {
             conn.remove(null, null, null, null);
 
-        }finally{
+        } finally {
             conn.close();
             repository.close();
         }

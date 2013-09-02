@@ -61,7 +61,7 @@ public class DataService {
             @Named("baseURI") String baseURI,
             @Named("import.mode") DataServiceMode mode,
             @Named("forceReload") boolean forceReload,
-            @Named("datasets.list") String datasetsList){
+            @Named("datasets.list") String datasetsList) {
         this.repository = repository;
         this.namespaceHandler = namespaceHandler;
         this.baseURI = baseURI;
@@ -72,7 +72,7 @@ public class DataService {
 
     
     @PostConstruct
-    public void initialize() throws IOException{
+    public void initialize() throws IOException {
         loadData(defaultMode);
     }
     
@@ -96,7 +96,7 @@ public class DataService {
 
         logger.info("initializing data");
 
-        if (datasets == null){
+        if (datasets == null) {
 //            datasets = IOUtils.readLines(getStream("/data/datasets"));
             if (datasetsList.startsWith("classpath:")) {
                 datasets = IOUtils.readLines(getStream(datasetsList.substring("classpath:".length())));
@@ -121,7 +121,7 @@ public class DataService {
             }
 
         } else if (mode == DataServiceMode.THREADED) {
-            Thread thread = new Thread(){
+            Thread thread = new Thread() {
                 @Override
                 public void run() {
                     for (String d : datasets) {
@@ -173,7 +173,7 @@ public class DataService {
                     logger.info("Loading " + datasetName + "...");
                     long time = System.currentTimeMillis();
                     InputStream in;
-                    if ("classpath".equals(protocol)){
+                    if ("classpath".equals(protocol)) {
                         in = getStream(path);
                     } else {
                         URLConnection urlConnection = new URL(values[0]).openConnection();

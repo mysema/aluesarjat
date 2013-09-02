@@ -21,11 +21,11 @@ import fi.aluesarjat.prototype.guice.ModuleUtils;
 
 public class DumpData {
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         String baseURI = ModuleUtils.DEFAULT_BASE_URI;
         SesameRepository repository = new MemoryRepository();
 
-        try{
+        try {
             repository.setSources(ModuleUtils.getSources(baseURI));
             repository.initialize();
 
@@ -36,7 +36,7 @@ public class DumpData {
             parser.parse("B02S_ESP_Vakiluku1975", getResourceAsStream("/data/B02S_ESP_Vakiluku1975.px"));
             parser.parse("C02S_VAN_Vakiluku1971", getResourceAsStream("/data/C02S_VAN_Vakiluku1971.px"));
 
-            repository.execute(new RDFConnectionCallback<Void>(){
+            repository.execute(new RDFConnectionCallback<Void>() {
                 @Override
                 public Void doInConnection(RDFConnection connection) throws IOException {
                     Set<STMT> stmts = new HashSet<STMT>(IteratorAdapter.asList(connection.findStatements(null, DC.title, null, null, false)));
@@ -45,12 +45,12 @@ public class DumpData {
                 }
             });
 
-        }finally{
+        } finally {
             repository.close();
         }
     }
 
-    private static InputStream getResourceAsStream(String res){
+    private static InputStream getResourceAsStream(String res) {
         return DumpData.class.getResourceAsStream(res);
     }
 

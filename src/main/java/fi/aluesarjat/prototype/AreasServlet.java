@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
-public class AreasServlet extends HttpServlet{
+public class AreasServlet extends HttpServlet {
 
     private static final long serialVersionUID = -1216436366722412316L;
 
@@ -38,7 +38,7 @@ public class AreasServlet extends HttpServlet{
         HttpServletResponse response = (HttpServletResponse)res;
 
         long ifModifiedSince = request.getDateHeader("If-Modified-Since");
-        if (ifModifiedSince >= LAST_MODIFIED){
+        if (ifModifiedSince >= LAST_MODIFIED) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
@@ -50,17 +50,17 @@ public class AreasServlet extends HttpServlet{
 
         String level = request.getParameter("level");
         String content;
-        if (level == null){
+        if (level == null) {
             content = areas;
-        }else if ("1".equals(level)){
+        } else if ("1".equals(level)) {
             content = areas1;
-        }else if ("2".equals(level)){
+        } else if ("2".equals(level)) {
             content = areas2;
-        }else if ("3".equals(level)){
+        } else if ("3".equals(level)) {
             content = areas3;
-        }else if ("4".equals(level)){
+        } else if ("4".equals(level)) {
             content = areas4;
-        }else{
+        } else {
             throw new IllegalArgumentException("Illegal level " + level);
         }
         response.getWriter().append(content);
@@ -68,7 +68,7 @@ public class AreasServlet extends HttpServlet{
 
     }
 
-    private InputStream getResourceAsStream(String resource){
+    private InputStream getResourceAsStream(String resource) {
         return AreasServlet.class.getResourceAsStream(resource);
     }
 

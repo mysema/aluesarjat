@@ -25,7 +25,7 @@ public abstract class AbstractServletTest {
     protected MockHttpServletResponse response;
 
     @BeforeClass
-    public static void setUpClass() throws ServletException, IOException{
+    public static void setUpClass() throws ServletException, IOException {
         String baseURI = ModuleUtils.DEFAULT_BASE_URI;
         repository = new MemoryRepository();
         repository.setSources(ModuleUtils.getSources(baseURI));
@@ -38,12 +38,12 @@ public abstract class AbstractServletTest {
     }
 
     @AfterClass
-    public static void tearDownClass(){
+    public static void tearDownClass() {
         repository.close();
     }
 
     @Before
-    public void setUp(){
+    public void setUp() {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
     }

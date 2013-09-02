@@ -17,18 +17,18 @@ import org.junit.Test;
 
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
-public class SearchServletTest extends AbstractServletTest{
+public class SearchServletTest extends AbstractServletTest {
 
     private SearchServlet servlet;
 
     @Override
-    public void setUp(){
+    public void setUp() {
         super.setUp();
         servlet = new SearchServlet(new SearchServiceImpl(repository, ModuleUtils.DEFAULT_BASE_URI));
     }
 
     @Test
-    public void IfModifiedSince_Handling() throws ServletException, IOException{
+    public void IfModifiedSince_Handling() throws ServletException, IOException {
         request.setParameter("callback", "handleResponse");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
         request.addParameter("include", "values");
@@ -42,7 +42,7 @@ public class SearchServletTest extends AbstractServletTest{
     }
     
     @Test
-    public void JSON() throws ServletException, IOException{
+    public void JSON() throws ServletException, IOException {
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
         request.addParameter("include", "values");
         servlet.service(request, response);
@@ -51,7 +51,7 @@ public class SearchServletTest extends AbstractServletTest{
     }
 
     @Test
-    public void JSONP_Is_Supported() throws ServletException, IOException{
+    public void JSONP_Is_Supported() throws ServletException, IOException {
         request.setParameter("callback", "handleResponse");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
         request.addParameter("include", "values");
@@ -64,7 +64,7 @@ public class SearchServletTest extends AbstractServletTest{
     }
 
     @Test
-    public void By_Dataset_FacetsOnly() throws ServletException, IOException{
+    public void By_Dataset_FacetsOnly() throws ServletException, IOException {
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
         request.addParameter("include", "values");
         servlet.service(request, response);
@@ -77,7 +77,7 @@ public class SearchServletTest extends AbstractServletTest{
 
 
     @Test
-    public void By_Region_Dataset_and_Year_FacetsOnly() throws ServletException, IOException{
+    public void By_Region_Dataset_and_Year_FacetsOnly() throws ServletException, IOException {
         request.addParameter("value", "alue:_091_603_Laajasalon_peruspiiri");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
         request.addParameter("value", "vuosi:_2001");
@@ -92,7 +92,7 @@ public class SearchServletTest extends AbstractServletTest{
 
 
     @Test
-    public void By_Region_Dataset_and_Year() throws ServletException, IOException{
+    public void By_Region_Dataset_and_Year() throws ServletException, IOException {
         request.addParameter("value", "vuosi:_2001");
         request.addParameter("value", "alue:_091_603_Laajasalon_peruspiiri");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
@@ -109,7 +109,7 @@ public class SearchServletTest extends AbstractServletTest{
     }
 
     @Test
-    public void By_Region_Dataset_and_Year_with_Limit() throws ServletException, IOException{
+    public void By_Region_Dataset_and_Year_with_Limit() throws ServletException, IOException {
         request.addParameter("value", "vuosi:_2001");
         request.addParameter("value", "tuloluokka:_15-vuotta_täyttäneet_yhteensä");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
@@ -125,7 +125,7 @@ public class SearchServletTest extends AbstractServletTest{
     }
 
     @Test
-    public void By_Region_Dataset_and_Year_with_Limit_and_Offset() throws ServletException, IOException{
+    public void By_Region_Dataset_and_Year_with_Limit_and_Offset() throws ServletException, IOException {
         request.addParameter("value", "vuosi:_2001");
         request.addParameter("value", "tuloluokka:_15-vuotta_täyttäneet_yhteensä");
         request.addParameter("value", "dataset:A01HKIS_Vaestotulot");
@@ -142,15 +142,15 @@ public class SearchServletTest extends AbstractServletTest{
     }
 
     private void validateItems(JSONArray jsonArray) {
-        for (Object obj : jsonArray.toArray()){
+        for (Object obj : jsonArray.toArray()) {
             JSONObject o = (JSONObject)obj;
             assertNotNull(o.get("value"));
             assertNotNull(o.get("values"));
         }
     }
 
-    private void validateFacets(JSONObject jsonObject){
-        for(Object key : jsonObject.keySet()){
+    private void validateFacets(JSONObject jsonObject) {
+        for(Object key : jsonObject.keySet()) {
             assertEquals(true, jsonObject.get(key));
         }
     }

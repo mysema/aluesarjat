@@ -10,7 +10,7 @@ import com.mysema.rdfbean.model.Repository;
 public class MemoryStoreRDFBeanModuleTest {
 
     @Test
-    public void Create(){
+    public void Create() {
         Injector injector = Guice.createInjector(new MemoryStoreRDFBeanModule());
         Repository repository = injector.getInstance(Repository.class);
         repository.close();

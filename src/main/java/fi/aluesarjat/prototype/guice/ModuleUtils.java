@@ -21,7 +21,7 @@ public final class ModuleUtils {
     public static RDFSource[] getSources(String baseURI) {
         String dimensions = baseURI + "dimensions/";
         String alueContext = baseURI + "dimensions/Alue";
-        RDFSource[] sources = new RDFSource[]{
+        RDFSource[] sources = new RDFSource[] {
             new RDFSource("classpath:/scovo.rdf", Format.RDFXML, SCV.NS),
             new RDFSource("classpath:/alue.ttl", Format.TURTLE, alueContext),
             new RDFSource("classpath:/area-hierarchy.ttl", Format.TURTLE, alueContext),
@@ -36,8 +36,8 @@ public final class ModuleUtils {
             new RDFSource("classpath:/ext/tarinoidenhelsinki-links.ttl", Format.TURTLE, "http://www.tarinoidenhelsinki.fi")
             };
 
-        if (!baseURI.equals(DEFAULT_BASE_URI)){
-            for (int i = 0; i < sources.length; i++){
+        if (!baseURI.equals(DEFAULT_BASE_URI)) {
+            for (int i = 0; i < sources.length; i++) {
                 sources[i] = transform(sources[i], baseURI);
             }
         }
@@ -55,9 +55,9 @@ public final class ModuleUtils {
         }
     }
 
-    private ModuleUtils(){}
+    private ModuleUtils() {}
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         ModuleUtils.getSources("http://localhost:8080/data/");
     }
 }

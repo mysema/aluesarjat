@@ -12,7 +12,7 @@ import com.mysema.rdfbean.model.Repository;
 public class VirtuosoRDFBeanModuleTest {
 
     @Test
-    public void Create(){
+    public void Create() {
         Injector injector = Guice.createInjector(new VirtuosoRDFBeanModule());
         Repository repository = injector.getInstance(Repository.class);
         repository.close();

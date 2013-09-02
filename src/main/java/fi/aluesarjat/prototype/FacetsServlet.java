@@ -36,7 +36,7 @@ public class FacetsServlet extends AbstractSPARQLServlet {
         HttpServletResponse response = (HttpServletResponse)res;
 
         long ifModifiedSince = request.getDateHeader("If-Modified-Since");
-        if (ifModifiedSince >= LAST_MODIFIED){
+        if (ifModifiedSince >= LAST_MODIFIED) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
@@ -56,24 +56,24 @@ public class FacetsServlet extends AbstractSPARQLServlet {
         JsonGenerator generator = jsonFactory.createJsonGenerator(response.getWriter());
 
         String jsonpCallback = request.getParameter("callback");
-        if (jsonpCallback != null){
+        if (jsonpCallback != null) {
             response.getWriter().write(jsonpCallback + "(");
         }
 
         generator.writeStartObject();
         generator.writeFieldName("facets");
         generator.writeStartArray();
-        for (Facet facet : facets){
+        for (Facet facet : facets) {
             generator.writeStartObject();
             generator.writeStringField("id", getPrefixed(facet.getId(), namespaces));
             generator.writeStringField("name", facet.getName());
             generator.writeFieldName("values");
             generator.writeStartArray();
-            for (Value value : facet.getValues()){
+            for (Value value : facet.getValues()) {
                 generator.writeStartObject();
                 generator.writeStringField("id", getPrefixed(value.getId(), namespaces));
                 generator.writeStringField("name", value.getName());
-                if (value.getDescription() != null){
+                if (value.getDescription() != null) {
                     generator.writeStringField("description", value.getDescription());
                 }
                 generator.writeEndObject();
@@ -85,7 +85,7 @@ public class FacetsServlet extends AbstractSPARQLServlet {
         generator.writeEndObject();
         generator.flush();
 
-        if (jsonpCallback != null){
+        if (jsonpCallback != null) {
             response.getWriter().write(")");
         }
         response.getWriter().flush();

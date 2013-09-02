@@ -39,35 +39,35 @@ public class SubjectGraphServletTest {
     private MockHttpServletResponse response;
 
     @BeforeClass
-    public static void setUpClass() throws ServletException{
+    public static void setUpClass() throws ServletException {
         repository = new MemoryRepository();
         repository.initialize();
         RDFConnection connection = repository.openConnection();
-        try{
+        try {
             UID uid = new UID("http://localhost:80/data/test");
             Set<STMT> stmts = new HashSet<STMT>();
             stmts.add(new STMT(uid, RDF.type, RDFS.Class, uid));
             stmts.add(new STMT(uid, RDFS.label, new LIT("label"), uid));
             connection.update(Collections.<STMT>emptySet(), stmts);
-        }finally{
+        } finally {
             connection.close();
         }
     }
 
     @AfterClass
-    public static void tearDownClass(){
+    public static void tearDownClass() {
         repository.close();
     }
 
     @Before
-    public void setUp(){
+    public void setUp() {
         servlet = new SubjectGraphServlet(repository);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
     }
 
     @Test
-    public void IfModifiedSince_Handling() throws ServletException, IOException{
+    public void IfModifiedSince_Handling() throws ServletException, IOException {
         request.setRequestURI("/data/test");
         servlet.service(request, response);
         assertEquals(200, response.getStatus());
@@ -79,7 +79,7 @@ public class SubjectGraphServletTest {
     }
 
     @Test
-    public void Get_Available_Context() throws ServletException, IOException{
+    public void Get_Available_Context() throws ServletException, IOException {
         request.setRequestURI("/data/test");
         servlet.service(request, response);
 
@@ -90,7 +90,7 @@ public class SubjectGraphServletTest {
     }
 
     @Test
-    public void Get_Available_Context_as_Turtle() throws ServletException, IOException{
+    public void Get_Available_Context_as_Turtle() throws ServletException, IOException {
         request.setRequestURI("/data/test");
         request.addHeader("Accept", Format.TURTLE.getMimetype());
         servlet.service(request, response);
@@ -101,7 +101,7 @@ public class SubjectGraphServletTest {
     }
 
     @Test
-    public void Get_Unavailable_Context() throws ServletException, IOException{
+    public void Get_Unavailable_Context() throws ServletException, IOException {
         request.setRequestURI("/data/unknown");
         servlet.service(request, response);
 
@@ -112,7 +112,7 @@ public class SubjectGraphServletTest {
     }
 
     @Test
-    public void Get_with_Html_Accept() throws ServletException, IOException{
+    public void Get_with_Html_Accept() throws ServletException, IOException {
         request.setRequestURI("/data/unknown");
         request.addHeader("Accept", "text/html");
         servlet.service(request, response);

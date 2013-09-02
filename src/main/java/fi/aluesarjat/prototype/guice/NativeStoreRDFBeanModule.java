@@ -10,10 +10,10 @@ import com.mysema.rdfbean.guice.RDFBeanRepositoryModule;
 import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.sesame.NativeRepository;
 
-public class NativeStoreRDFBeanModule extends RDFBeanRepositoryModule{
+public class NativeStoreRDFBeanModule extends RDFBeanRepositoryModule {
 
     @Override
-    public List<String> getConfiguration(){
+    public List<String> getConfiguration() {
         return Arrays.asList("/aluesarjat.properties", "/import-parallel.properties");
     }
 

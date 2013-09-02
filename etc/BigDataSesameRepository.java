@@ -39,7 +39,7 @@ public class BigDataSesameRepository extends SesameRepository{
         BigdataSail sail;
         if (properties != null){
             sail = new BigdataSail(properties);
-        }else{
+        } else {
             sail = new BigdataSail(tripleStore);
         }
         Repository repository = new BigdataSailRepository(sail);

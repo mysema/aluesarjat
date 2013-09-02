@@ -12,18 +12,18 @@ import org.junit.Test;
 
 import fi.aluesarjat.prototype.guice.ModuleUtils;
 
-public class FacetsServletTest extends AbstractServletTest{
+public class FacetsServletTest extends AbstractServletTest {
 
     private FacetsServlet servlet;
 
     @Override
-    public void setUp(){
+    public void setUp() {
         super.setUp();
         servlet = new FacetsServlet(new SearchServiceImpl(repository, ModuleUtils.DEFAULT_BASE_URI));
     }
 
     @Test
-    public void IfModifiedSince_Handling() throws ServletException, IOException{
+    public void IfModifiedSince_Handling() throws ServletException, IOException {
         servlet.service(request, response);
         assertEquals(200, response.getStatus());
 
@@ -34,7 +34,7 @@ public class FacetsServletTest extends AbstractServletTest{
     }
 
     @Test
-    public void Correct_CharsetEncoding() throws ServletException, IOException{
+    public void Correct_CharsetEncoding() throws ServletException, IOException {
         servlet.service(request, response);
         
         assertEquals("UTF-8", response.getCharacterEncoding());
@@ -44,14 +44,14 @@ public class FacetsServletTest extends AbstractServletTest{
     }
     
     @Test
-    public void JSON() throws ServletException, IOException{
+    public void JSON() throws ServletException, IOException {
         servlet.service(request, response);
      
         assertEquals("application/json", response.getContentType());
     }
 
     @Test
-    public void JSONP_Is_Supported() throws ServletException, IOException{
+    public void JSONP_Is_Supported() throws ServletException, IOException {
         request.setParameter("callback", "handleResponse");
         servlet.service(request, response);
      

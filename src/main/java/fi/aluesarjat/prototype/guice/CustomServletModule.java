@@ -23,7 +23,7 @@ import fi.aluesarjat.prototype.SearchServiceImpl;
 import fi.aluesarjat.prototype.SearchServlet;
 import fi.aluesarjat.prototype.SubjectGraphServlet;
 
-public class CustomServletModule extends ServletModule{
+public class CustomServletModule extends ServletModule {
 
     private static final Logger log = LoggerFactory.getLogger(CustomServletModule.class);
 
@@ -34,13 +34,13 @@ public class CustomServletModule extends ServletModule{
     @Override
     protected void configureServlets() {
         String store = System.getProperty("rdfbean.store");
-        if ("virtuoso".equals(store)){
+        if ("virtuoso".equals(store)) {
             log.info("Using Virtuoso backend");
             install(new VirtuosoRDFBeanModule());
-        }else if ("memory".equals(store)){
+        } else if ("memory".equals(store)) {
             log.info("Using Memory backend");
             install(new MemoryStoreRDFBeanModule());
-        }else{
+        } else {
             log.info("Using NativeStore backend");
             install(new NativeStoreRDFBeanModule());
         }
@@ -62,63 +62,63 @@ public class CustomServletModule extends ServletModule{
 
     @Provides
     @Singleton
-    public NamespaceHandler createNamespaceHandler(Repository repository){
+    public NamespaceHandler createNamespaceHandler(Repository repository) {
         return new NamespaceHandler(repository);
     }
 
     @Provides
     @Singleton
-    public AreasServlet createAreasServlet(){
+    public AreasServlet createAreasServlet() {
         return new AreasServlet();
     }
 
     @Provides
     @Singleton
-    public SPARQLServlet createSPARQLServlet(Repository repository){
+    public SPARQLServlet createSPARQLServlet(Repository repository) {
         return new SPARQLServlet(repository, SPARQL_LIMIT, SPARQL_MAX_QUERY_TIME);
     }
 
     @Provides
     @Singleton
-    public ContextAccessServlet createContextAccessServlet(Repository repository){
+    public ContextAccessServlet createContextAccessServlet(Repository repository) {
         return new ContextAccessServlet(repository);
     }
 
     @Provides
     @Singleton
-    public SubjectGraphServlet createSubjectGraphServlet(Repository repository){
+    public SubjectGraphServlet createSubjectGraphServlet(Repository repository) {
         return new SubjectGraphServlet(repository);
     }
 
     @Provides
     @Singleton
-    public SearchServlet createFacetedSearchServlet(SearchService searchService){
+    public SearchServlet createFacetedSearchServlet(SearchService searchService) {
         return new SearchServlet(searchService);
     }
 
     @Provides
     @Singleton
-    public FacetsServlet createFacetedSearchInitServlet(SearchService searchService){
+    public FacetsServlet createFacetedSearchInitServlet(SearchService searchService) {
         return new FacetsServlet(searchService);
     }
 
     @Provides
     @Singleton
-    public SearchService createSearchService(Repository repository, @Named("baseURI") String baseURI){
+    public SearchService createSearchService(Repository repository, @Named("baseURI") String baseURI) {
         return new SearchServiceImpl(repository, baseURI);
     }
 
     @Provides
     @Named("import.mode")
     @Singleton
-    public DataServiceMode importMode(@Named("import.mode") String mode){
+    public DataServiceMode importMode(@Named("import.mode") String mode) {
         return DataServiceMode.valueOf(mode);
     }
 
     @Provides
     @Named("forceReload")
     @Singleton
-    public boolean forceReload(@Named("forceReload") String forceReload){
+    public boolean forceReload(@Named("forceReload") String forceReload) {
         return Boolean.parseBoolean(forceReload);
     }
 

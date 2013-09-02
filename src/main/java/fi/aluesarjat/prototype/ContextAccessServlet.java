@@ -24,7 +24,7 @@ import com.mysema.rdfbean.model.UID;
  * @author tiwe
  *
  */
-public class ContextAccessServlet extends HttpServlet{
+public class ContextAccessServlet extends HttpServlet {
 
     private static final long serialVersionUID = 3545610671574978570L;
 
@@ -42,43 +42,43 @@ public class ContextAccessServlet extends HttpServlet{
         HttpServletResponse response = (HttpServletResponse)res;
 
         long ifModifiedSince = request.getDateHeader("If-Modified-Since");
-        if (ifModifiedSince >= LAST_MODIFIED){
+        if (ifModifiedSince >= LAST_MODIFIED) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
 
         String context = request.getRequestURL().toString();
         RDFConnection connection = repository.openConnection();
-        try{
+        try {
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "CONSTRUCT { ?s ?p ?o } WHERE { GRAPH ?context { ?s ?p ?o } }");
             query.setBinding("context", new UID(context));
 
             String contentType = null;
             String format = request.getParameter("format");
-            if ("turtle".equals(format)){
+            if ("turtle".equals(format)) {
                 contentType = Format.TURTLE.getMimetype();
-            }else if ("ntriples".equals(format)){
+            } else if ("ntriples".equals(format)) {
                 contentType = Format.NTRIPLES.getMimetype();
-            }else{
+            } else {
                 contentType = getAcceptedType(request, Format.RDFXML);
             }
             response.setDateHeader("Last-Modified", System.currentTimeMillis());
             response.setContentType(contentType);
             query.streamTriples(response.getWriter(), contentType);
-        }finally{
+        } finally {
             connection.close();
         }
     }
 
     // TODO : make sure this works correctly
-    private String getAcceptedType(HttpServletRequest request, Format defaultFormat){
+    private String getAcceptedType(HttpServletRequest request, Format defaultFormat) {
         String accept = request.getHeader("Accept");
-        if (!StringUtils.isEmpty(accept)){
-            if (accept.contains(",")){
+        if (!StringUtils.isEmpty(accept)) {
+            if (accept.contains(",")) {
                 accept = accept.substring(0, accept.indexOf(','));
             }
             return Format.getFormat(accept, defaultFormat).getMimetype();
-        }else{
+        } else {
             return defaultFormat.getMimetype();
         }
     }

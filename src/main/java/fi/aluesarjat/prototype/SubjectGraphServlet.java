@@ -18,7 +18,7 @@ import com.mysema.rdfbean.model.Repository;
 import com.mysema.rdfbean.model.SPARQLQuery;
 import com.mysema.rdfbean.model.UID;
 
-public class SubjectGraphServlet extends HttpServlet{
+public class SubjectGraphServlet extends HttpServlet {
 
     private static final long serialVersionUID = 9007924911100922605L;
 
@@ -36,35 +36,35 @@ public class SubjectGraphServlet extends HttpServlet{
         HttpServletResponse response = (HttpServletResponse)res;
 
         long ifModifiedSince = request.getDateHeader("If-Modified-Since");
-        if (ifModifiedSince >= LAST_MODIFIED){
+        if (ifModifiedSince >= LAST_MODIFIED) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
 
         String subject = request.getRequestURL().toString();
         RDFConnection connection = repository.openConnection();
-        try{
+        try {
             SPARQLQuery query = connection.createQuery(QueryLanguage.SPARQL, "CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o }");
             query.setBinding("s", new UID(subject));
             String contentType = getAcceptedType(request, Format.RDFXML);
             response.setDateHeader("Last-Modified", System.currentTimeMillis());
             response.setContentType(contentType);
             query.streamTriples(response.getWriter(), contentType);
-        }finally{
+        } finally {
             connection.close();
         }
 
     }
 
     // TODO : make sure this works correctly
-    private String getAcceptedType(HttpServletRequest request, Format defaultFormat){
+    private String getAcceptedType(HttpServletRequest request, Format defaultFormat) {
         String accept = request.getHeader("Accept");
-        if (!StringUtils.isEmpty(accept)){
-            if (accept.contains(",")){
+        if (!StringUtils.isEmpty(accept)) {
+            if (accept.contains(",")) {
                 accept = accept.substring(0, accept.indexOf(','));
             }
             return Format.getFormat(accept, defaultFormat).getMimetype();
-        }else{
+        } else {
             return defaultFormat.getMimetype();
         }
     }

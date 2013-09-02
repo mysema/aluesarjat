@@ -22,7 +22,7 @@ public class LogAnalysis {
                 // strip start
                 line = line.substring(line.indexOf("query=") + 6);
                 // strip end
-                if (line.contains("HTTP/1.1")){
+                if (line.contains("HTTP/1.1")) {
                     line = line.substring(0, line.indexOf("HTTP/1.1")-1);    
                 }                
                 // url decode

@@ -67,7 +67,7 @@ public class SearchServiceTest {
     private static final UID UNIT = new UID("http://localhost:8080/data/dimensions/Yksikk\u00F6#Unit");
 
     @BeforeClass
-    public static void setUpClass() throws ServletException, IOException{
+    public static void setUpClass() throws ServletException, IOException {
         String baseURI = ModuleUtils.DEFAULT_BASE_URI;
         repository = new MemoryRepository();
 //        repository.setSources(ModuleUtils.getSources(baseURI));
@@ -267,7 +267,7 @@ public class SearchServiceTest {
 
 
     @AfterClass
-    public static void tearDownClass(){
+    public static void tearDownClass() {
         repository.close();
     }
 

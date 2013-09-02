@@ -44,8 +44,8 @@ public class Reloader {
     }
     
     @PostConstruct
-    public void initialize() throws IOException{
-        if (datasetsList.startsWith("classpath")){
+    public void initialize() throws IOException {
+        if (datasetsList.startsWith("classpath")) {
             // no reload for classpath based lists
             return;
         }
@@ -78,7 +78,7 @@ public class Reloader {
     private void reload() throws IOException {        
         // remove all data
         logger.info("Removing data");
-        repository.execute(new RDFConnectionCallback<Void>(){
+        repository.execute(new RDFConnectionCallback<Void>() {
             @Override
             public Void doInConnection(RDFConnection connection) throws IOException {
                 connection.remove(null, null, null, null);
@@ -92,18 +92,18 @@ public class Reloader {
     }
     
     @PreDestroy
-    public void stop(){
+    public void stop() {
         scheduler.shutdown();
     }
     
-    private void addJob(int hours, int minutes, Runnable runnable){       
+    private void addJob(int hours, int minutes, Runnable runnable) {       
         DateTime dateTime = new DateTime();
         long minutesOfDay = dateTime.getMinuteOfDay();
         long scheduleTime = hours * 60 + minutes;
         long initialDelay;
-        if (minutesOfDay < scheduleTime){
+        if (minutesOfDay < scheduleTime) {
             initialDelay = scheduleTime - minutesOfDay;
-        }else{
+        } else {
             initialDelay = 24 * 60 - minutesOfDay + scheduleTime; 
         }
         System.err.println(initialDelay);

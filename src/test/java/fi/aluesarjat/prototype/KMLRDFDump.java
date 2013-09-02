@@ -56,11 +56,11 @@ public class KMLRDFDump {
 
     private final Map<String,MultiGeometry> multiGeometries = new HashMap<String,MultiGeometry>();
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         new KMLRDFDump().init().handle().dumpRDF().dumpGEOJSON();
     }
 
-    public KMLRDFDump init(){
+    public KMLRDFDump init() {
         areaTitles.put("_091_533_Aluemeri", "Aluemeri");
 
         MemoryRepository repository = new MemoryRepository();
@@ -69,18 +69,18 @@ public class KMLRDFDump {
         repository.load(Format.TURTLE, getClass().getResourceAsStream("/area-titles.ttl"), null, false);
         repository.load(Format.TURTLE, getClass().getResourceAsStream("/area-kauniainen.ttl"), null, false);
 
-        try{
-            repository.execute(new RDFConnectionCallback<Void>(){
+        try {
+            repository.execute(new RDFConnectionCallback<Void>() {
                 @Override
                 public Void doInConnection(RDFConnection connection) throws IOException {
                     List<STMT> stmts = IteratorAdapter.asList(connection.findStatements(null, null, null, null, false));
-                    if (stmts.isEmpty()){
+                    if (stmts.isEmpty()) {
                         throw new IllegalStateException("Got no areas");
                     }
-                    for (STMT stmt : stmts){
-                        if (stmt.getPredicate().equals(DC.identifier)){
+                    for (STMT stmt : stmts) {
+                        if (stmt.getPredicate().equals(DC.identifier)) {
                             areas.put(stmt.getObject().getValue(), stmt.getSubject().asURI());
-                        }else{
+                        } else {
                             areaTitles.put(stmt.getSubject().asURI().ln(), stmt.getObject().getValue());
                         }
                     }
@@ -89,7 +89,7 @@ public class KMLRDFDump {
 
             });
 
-        }finally{
+        } finally {
             repository.close();
         }
         return this;
@@ -97,28 +97,28 @@ public class KMLRDFDump {
 
     private KMLRDFDump handle() throws IOException {
         File areas = new File("src/test/resources/areas");
-        for (File file : areas.listFiles()){
-            if (!file.getName().endsWith(".kml")){
+        for (File file : areas.listFiles()) {
+            if (!file.getName().endsWith(".kml")) {
                 continue;
             }
             System.out.println("handling " + file.getName());
             InputStream is = new FileInputStream(file);
-            try{
+            try {
                 Kml kml = Kml.unmarshal(is);
-                if (kml.getFeature() instanceof Document){
+                if (kml.getFeature() instanceof Document) {
                     Document document = (Document)kml.getFeature();
-                    for (Feature documentFeature : document.getFeature()){
-                        if (documentFeature instanceof Folder){
+                    for (Feature documentFeature : document.getFeature()) {
+                        if (documentFeature instanceof Folder) {
                             Folder folder = (Folder)documentFeature;
-                            for (Feature folderFeature : folder.getFeature()){
-                                if (folderFeature instanceof Placemark){
+                            for (Feature folderFeature : folder.getFeature()) {
+                                if (folderFeature instanceof Placemark) {
                                     handlePlacemark((Placemark)folderFeature);
                                 }
                             }
                         }
                     }
                 }
-            }finally{
+            } finally {
                 is.close();
             }
         }
@@ -126,23 +126,23 @@ public class KMLRDFDump {
     }
 
     @SuppressWarnings("unchecked")
-    private void dumpGEOJSON() throws IOException{
+    private void dumpGEOJSON() throws IOException {
         System.out.println("dumping GEO JSON");
         int counter = 1;
-        for (Set<String> codes : Arrays.asList(level1, level2, level3, level4)){
+        for (Set<String> codes : Arrays.asList(level1, level2, level3, level4)) {
             JSONObject root = new JSONObject();
             root.put("type","FeatureCollection");
             JSONArray features = new JSONArray();
-            for (String code : codes){
+            for (String code : codes) {
                 JSONObject feature = new JSONObject();
                 feature.put("type", "Feature");
                 JSONObject geometry = new JSONObject();
                 geometry.put("type","MultiPolygon");
                 List<Coordinate> value = polygons.get(code);
                 Double minlong = null, maxlong = null, minlat = null, maxlat = null;
-                if (value != null){
+                if (value != null) {
                     JSONArray coordinates = new JSONArray();
-                    for (Coordinate coordinate : value){
+                    for (Coordinate coordinate : value) {
                         coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
                         if (minlong == null) {
                             minlong = maxlong = coordinate.getLongitude();
@@ -157,15 +157,15 @@ public class KMLRDFDump {
                     geometry.put("coordinates", toJSONArray(toJSONArray(coordinates))); // TODO : get rid of wrapping
                     feature.put("bbox", toJSONArray(minlong, minlat, maxlong, maxlat));
                     
-                }else{
+                } else {
                     MultiGeometry multiGeometry = multiGeometries.get(code);
-                    if (multiGeometry == null){
+                    if (multiGeometry == null) {
                         continue;
                     }
                     JSONArray array = new JSONArray();
-                    for (Geometry geo : multiGeometry.getGeometry()){
+                    for (Geometry geo : multiGeometry.getGeometry()) {
                         JSONArray coordinates = new JSONArray();
-                        for (Coordinate coordinate : ((Polygon)geo).getOuterBoundaryIs().getLinearRing().getCoordinates()){
+                        for (Coordinate coordinate : ((Polygon)geo).getOuterBoundaryIs().getLinearRing().getCoordinates()) {
                             coordinates.add(toJSONArray(coordinate.getLongitude(), coordinate.getLatitude()));
                             if (minlong == null) {
                                 minlong = maxlong = coordinate.getLongitude();
@@ -201,7 +201,7 @@ public class KMLRDFDump {
         }
     }
 
-    private KMLRDFDump dumpRDF() throws IOException{
+    private KMLRDFDump dumpRDF() throws IOException {
         System.out.println("dumping RDF");
 
         // centers
@@ -212,10 +212,10 @@ public class KMLRDFDump {
         return this;
     }
 
-    private void handlePlacemark(Placemark placemark) throws IOException{
+    private void handlePlacemark(Placemark placemark) throws IOException {
         Map<String,String> values = new HashMap<String,String>();
-        for (SchemaData schemaData : placemark.getExtendedData().getSchemaData()){
-            for (SimpleData simpleData : schemaData.getSimpleData()){
+        for (SchemaData schemaData : placemark.getExtendedData().getSchemaData()) {
+            for (SimpleData simpleData : schemaData.getSimpleData()) {
                 values.put(simpleData.getName(), simpleData.getValue());
             }
         }
@@ -226,21 +226,21 @@ public class KMLRDFDump {
         Set<String> level;
 
         UID area;
-        if (pien != null){
+        if (pien != null) {
             level = level1;
             area = areas.get(values.get("KOKOTUN"));
-        }else if (!StringUtils.isEmpty(tila)){
+        } else if (!StringUtils.isEmpty(tila)) {
             level = level2;
             area = areas.get(values.get("KOKOTUN"));
-        }else if (!StringUtils.isEmpty(suur)){
+        } else if (!StringUtils.isEmpty(suur)) {
             level = level3;
             area = areas.get(values.get("KOKOTUN"));
-        }else{
+        } else {
             level = level4;
             area = areas.get(values.get("KUNTA"));
         }
 
-        if (area == null){
+        if (area == null) {
             System.err.println("Got no area for " + values.get("KOKOTUN"));
             return;
         }
@@ -248,46 +248,46 @@ public class KMLRDFDump {
         level.add(code);
 
         // polygon
-        if (placemark.getGeometry() instanceof Polygon){
+        if (placemark.getGeometry() instanceof Polygon) {
             StringBuilder p = new StringBuilder();
             Polygon polygon = (Polygon)placemark.getGeometry();
             LinearRing ring = polygon.getOuterBoundaryIs().getLinearRing();
-            for (Coordinate coordinate : ring.getCoordinates()){
-                if (p.length() > 0){
+            for (Coordinate coordinate : ring.getCoordinates()) {
+                if (p.length() > 0) {
                     p.append(" ");
                 }
                 p.append(coordinate.getLatitude()).append(",").append(coordinate.getLongitude());
             }
 
-            if (!polygons.containsKey(code)){
+            if (!polygons.containsKey(code)) {
                 polygonStmts.add(new STMT(area, GEO.polygon, new LIT(p.toString())));
                 polygons.put(code, ring.getCoordinates());
             }
 
 
-        }else if (placemark.getGeometry() instanceof MultiGeometry){
-            if (!multiGeometries.containsKey(code)){
+        } else if (placemark.getGeometry() instanceof MultiGeometry) {
+            if (!multiGeometries.containsKey(code)) {
                 multiGeometries.put(code, (MultiGeometry)placemark.getGeometry());
             }
 
         // center point
-        }else if (placemark.getGeometry() instanceof Point){
-            if (!centers.containsKey(code)){
+        } else if (placemark.getGeometry() instanceof Point) {
+            if (!centers.containsKey(code)) {
                 Coordinate coordinate = ((Point)placemark.getGeometry()).getCoordinates().get(0);
                 centerStmts.add(new STMT(area, GEO.where, new LIT(coordinate.getLatitude()+","+coordinate.getLongitude())));
                 centers.put(code, coordinate);
             }
 
-        }else{
+        } else {
             System.err.println(code + " has geometry of type " + placemark.getGeometry().getClass().getSimpleName());
         }
 
 
     }
 
-    private static JSONArray toJSONArray(Object... objects){
+    private static JSONArray toJSONArray(Object... objects) {
         JSONArray array = new JSONArray();
-        for (Object o : objects){
+        for (Object o : objects) {
             array.add(o);
         }
         return array;

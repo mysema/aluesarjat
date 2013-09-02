@@ -17,11 +17,11 @@ import com.mysema.stat.scovo.SCV;
 
 public class VirtuosoSlowQuery {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Repository repository = new VirtuosoRepository("localhost:1111", "dba", "dba");
         repository.initialize();
         RDFConnection conn = repository.openConnection();
-        try{
+        try {
             String queryString = "SELECT * WHERE {\n" +
               "?dimensionType ?_c2 ?_c3 ; ?_c4 ?dimensionTypeName .\n" +
               "GRAPH ?dimensionType {\n" +
@@ -42,12 +42,12 @@ public class VirtuosoSlowQuery {
 
             long start = System.currentTimeMillis();
             CloseableIterator<Map<String,NODE>> results = query.getTuples();
-            while (results.hasNext()){
+            while (results.hasNext()) {
                 results.next();
             }
             System.err.println(System.currentTimeMillis()-start);
 
-        }finally{
+        } finally {
             conn.close();
             repository.close();
         }

@@ -26,12 +26,12 @@ public abstract class AbstractSPARQLServlet extends HttpServlet {
     protected Map<UID,String> getNamespaces(RDFConnection conn) {
         CloseableIterator<STMT> stmts = conn.findStatements(null, META.nsPrefix, null, null, false);
         Map<UID,String> namespaces = new HashMap<UID, String>(32);
-        try{
-            while (stmts.hasNext()){
+        try {
+            while (stmts.hasNext()) {
                 STMT stmt = stmts.next();
                 namespaces.put(stmt.getSubject().asURI(), stmt.getObject().getValue());
             }
-        }finally{
+        } finally {
             stmts.close();
         }
         return namespaces;

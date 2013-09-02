@@ -15,15 +15,15 @@ import com.mysema.rdfbean.virtuoso.VirtuosoRepository;
 import com.mysema.rdfbean.virtuoso.VirtuosoRepositoryConnection;
 import com.mysema.stat.scovo.ScovoDatasetHandler;
 
-public class VirtuosoRDFBeanModule extends RDFBeanRepositoryModule{
+public class VirtuosoRDFBeanModule extends RDFBeanRepositoryModule {
 
     @Override
-    public List<String> getConfiguration(){
+    public List<String> getConfiguration() {
         return Arrays.asList("/aluesarjat.properties", "/import-serial.properties");
     }
 
     @Override
-    public Repository createRepository(@Config Properties properties){
+    public Repository createRepository(@Config Properties properties) {
         File dataDir = new File(System.getProperty("java.io.tmpdir"), "aluesarjat-virtuoso");
         dataDir.mkdir();
         String baseURI = properties.getProperty("baseURI");        
