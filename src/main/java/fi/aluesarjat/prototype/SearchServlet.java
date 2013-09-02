@@ -24,8 +24,6 @@ import com.mysema.rdfbean.model.UID;
 
 public class SearchServlet extends AbstractSPARQLServlet {
 
-//    private static final Logger log = LoggerFactory.getLogger(SearchServlet.class);
-
     private static final long LAST_MODIFIED = System.currentTimeMillis() / 1000 * 1000;
 
     public static final int EXPORT_LIMIT = 100000;

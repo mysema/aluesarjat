@@ -238,13 +238,7 @@ public class SearchServiceImpl implements SearchService {
                 dimensionsQuery.where(
                         Blocks.pattern(Constants.item, dimensionProperty, dimension, datasetUID), 
                         dimensionProperty.stringValue().startsWith(dimensionBase)
-//                        Blocks.pattern(dimensionProperty, RDFS.subPropertyOf, SCV.dimension) 
                 );
-//                RDFQuery dimensionsQuery = new RDFQueryImpl(conn);
-//                dimensionsQuery.addFlag(Position.START, DEFINE_INFERENCE_DIMENSIONS);
-//                dimensionsQuery.where(
-//                        Blocks.pattern(Constants.item, SCV.dimension, dimension, datasetUID) 
-//                );
                 dimensionsQuery.set(Constants.item, id);
                 CloseableIterator<Map<String, NODE>> dimensions = dimensionsQuery.select(dimension);
                 try {
@@ -273,19 +267,7 @@ public class SearchServiceImpl implements SearchService {
             .where(
                 item.has(dimensionProperty, dimension),
                 dimensionProperty.stringValue().startsWith(dimensionBase)
-//                dimensionProperty.has(RDFS.subPropertyOf, SCV.dimension)
             ).distinct();
-//        RDFQuery query = new RDFQueryImpl(conn);
-//        query.addFlag(Position.START, DEFINE_INFERENCE_DIMENSIONS);
-//        query
-//            .where(filters.toArray(new Predicate[filters.size()]))
-//            .where(
-//                item.has(SCV.dimension, dimension)
-//            ).distinct();
-
-//        if (bindings.containsKey(dataset)){
-//            query.from(bindings.get(dataset));
-//        }
 
         for (Map.Entry<ParamExpression<UID>, UID> entry : bindings.entrySet()){
             query.set(entry.getKey(), entry.getValue());
