@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +141,20 @@ public class DataService {
             }
         }
     }
+    
+    public static List<String> splitDatasetDef(String datasetDef) {
+    	int idx = datasetDef.indexOf(".px");
+    	if (idx > -1) {
+    		String path = datasetDef.substring(0, idx + 3);
+    		String[] rest = datasetDef.substring(idx + 3).trim().split("\\s+");
+    		List<String> elements = new ArrayList<String>(rest.length + 1);
+    		elements.add(path);
+    		elements.addAll(Arrays.asList(rest));
+    		return elements;
+    	} else {
+    		return Collections.emptyList();
+    	}
+    }
 
     public void importData(String datasetDef, boolean reload) {
         try {
@@ -145,17 +162,14 @@ public class DataService {
             PCAxisParser parser = new PCAxisParser(handler);
 
             if (StringUtils.isNotBlank(datasetDef)) {
-                String[] values = datasetDef.split("\\s+");
-                String[] protAndPath = values[0].split(":");
+                List<String> values = splitDatasetDef(datasetDef);
+                String[] protAndPath = values.get(0).split(":");
                 String protocol = protAndPath[0];
                 String path = protAndPath[1];
                 String datasetName = path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'));
-                String[] ignoredValues;
-                if (values.length > 1) {
-                    ignoredValues = new String[values.length - 1];
-                    System.arraycopy(values, 1, ignoredValues, 0, ignoredValues.length);
-                } else {
-                    ignoredValues = new String[0];
+                List<String> ignoredValues = Collections.emptyList();
+                if (values.size() > 1) {
+                	ignoredValues = values.subList(1, values.size());
                 }
 
                 UID uid = ScovoExtDatasetHandler.datasetUID(baseURI, datasetName);
@@ -169,14 +183,14 @@ public class DataService {
                     conn.close();
                 }
                 if (load) {
-                    handler.setIgnoredValues(ignoredValues);
+                    handler.setIgnoredValues(ignoredValues.toArray(new String[ignoredValues.size()]));
                     logger.info("Loading " + datasetName + "...");
                     long time = System.currentTimeMillis();
                     InputStream in;
                     if ("classpath".equals(protocol)) {
                         in = getStream(path);
                     } else {
-                        URLConnection urlConnection = new URL(values[0]).openConnection();
+                        URLConnection urlConnection = new URL(values.get(0)).openConnection();
                         urlConnection.setConnectTimeout(3000);
                         urlConnection.setReadTimeout(3000);
                         in = urlConnection.getInputStream();
