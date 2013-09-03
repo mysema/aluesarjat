@@ -16,7 +16,7 @@ public class DataServiceTest {
 	}
 	
 	@Test
-	public void SplitDatasetDe2f() {
+	public void SplitDatasetDef_With_Spaces() {
 		List<String> elements = DataService.splitDatasetDef("file:/opt/aluesarjat/data/Vaesto sal/Perheet_sal/B01S_ESP_Perhetyypit.px \".\"");
 		assertEquals(Arrays.asList("file:/opt/aluesarjat/data/Vaesto sal/Perheet_sal/B01S_ESP_Perhetyypit.px", "\".\""), elements);
 	}
