@@ -143,17 +143,17 @@ public class DataService {
     }
     
     public static List<String> splitDatasetDef(String datasetDef) {
-    	int idx = datasetDef.indexOf(".px");
-    	if (idx > -1) {
-    		String path = datasetDef.substring(0, idx + 3);
-    		String[] rest = datasetDef.substring(idx + 3).trim().split("\\s+");
-    		List<String> elements = new ArrayList<String>(rest.length + 1);
-    		elements.add(path);
-    		elements.addAll(Arrays.asList(rest));
-    		return elements;
-    	} else {
-    		return Collections.emptyList();
-    	}
+        int idx = datasetDef.indexOf(".px");
+        if (idx > -1) {
+            String path = datasetDef.substring(0, idx + 3);
+            String[] rest = datasetDef.substring(idx + 3).trim().split("\\s+");
+            List<String> elements = new ArrayList<String>(rest.length + 1);
+            elements.add(path);
+            elements.addAll(Arrays.asList(rest));
+            return elements;
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public void importData(String datasetDef, boolean reload) {
@@ -169,7 +169,7 @@ public class DataService {
                 String datasetName = path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'));
                 List<String> ignoredValues = Collections.emptyList();
                 if (values.size() > 1) {
-                	ignoredValues = values.subList(1, values.size());
+                    ignoredValues = values.subList(1, values.size());
                 }
 
                 UID uid = ScovoExtDatasetHandler.datasetUID(baseURI, datasetName);
@@ -208,7 +208,7 @@ public class DataService {
         } catch (FileNotFoundException e) {    
             logger.error(e.getMessage(), e);
         } catch (IOException e) {    
-        	logger.error(datasetDef + " " + e.getMessage(), e);
+            logger.error(datasetDef + " " + e.getMessage(), e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
