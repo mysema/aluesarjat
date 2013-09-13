@@ -260,17 +260,23 @@ function clickOnFeature(event, where) {
         if (!statistics[code]){
             // initial display
             
+        	var dataset = "dataset:A02S_HKI_Vakiluku1962";
+        	if (code.indexOf("_092") == 0) { // VAN
+        	  dataset = "dataset:C02S_VAN_Vakiluku1971";	
+        	} else if (code.indexOf("_049")) { // ESP
+        	  dataset = "dataset:B02S_ESP_Vakiluku1975";		
+        	}
+        	
             var qry = [];
             qry.push(defaultNamespaces)
             qry.push("SELECT ?ikl ?val WHERE {\n");
             //qry.push("  ?item dimension:vuosi vuosi:_2009 ; dimension:alue alue:",code," ; dimension:ikäryhmä ?ik ; rdf:value ?val .\n"); 
             //qry.push("  ?ik dc:title ?ikl . \n");
          
-            qry.push("GRAPH dataset:A02S_HKI_Vakiluku1962 {\n");
+            qry.push("GRAPH ",dataset," {\n");
             qry.push("  ?item dimension:vuosi vuosi:_2013 ;\n"); 
             qry.push("  dimension:alue alue:",code," ;\n"); 
             qry.push("  dimension:ikä ?ik ;\n");
-            qry.push("  scv:dataset dataset:A02S_HKI_Vakiluku1962 ;\n");
             qry.push("  rdf:value ?val .\n");
             qry.push("}\n");
             qry.push("?ik dc:title ?ikl .\n"); 
