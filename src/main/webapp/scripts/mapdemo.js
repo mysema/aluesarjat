@@ -263,7 +263,7 @@ function clickOnFeature(event, where) {
         	var dataset = "dataset:A02S_HKI_Vakiluku1962";
         	if (code.indexOf("_092") == 0) { // VAN
         	  dataset = "dataset:C02S_VAN_Vakiluku1971";	
-        	} else if (code.indexOf("_049")) { // ESP
+        	} else if (code.indexOf("_049") == 0) { // ESP
         	  dataset = "dataset:B02S_ESP_Vakiluku1975";		
         	}
         	
