@@ -8,3 +8,5 @@ test-output
 /.metadata
 .cache
 derby.log
+.idea/
+prototype.iml
